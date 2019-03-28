@@ -12,9 +12,9 @@
 */
 
 Route::get('/', 'ListController@index');
-Route::get('/calendario', 'CalendarController@index');
+Route::get('/apartar', 'CalendarController@index');
 
-Route::post('/', 'ListController@update');
+Route::post('/asignar', 'ListController@update');
 
 Auth::routes();
 

@@ -3,7 +3,9 @@ import './bootstrap';
 import LoginForm from './components/LoginForm';
 import ListCheckbox from './components/ListCheckbox';
 import CalendarModal from './components/CalendarModal';
+import CalendarSpace from './components/CalendarSpace';
 
+export const eventBus = new Vue();
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
@@ -12,11 +14,7 @@ const app = new Vue({
     components: {
         LoginForm,
         ListCheckbox,
-        CalendarModal
-    },
-    methods: {
-        openModal() {
-            console.log('open modal');
-        }
+        CalendarModal,
+        CalendarSpace,
     }
 });

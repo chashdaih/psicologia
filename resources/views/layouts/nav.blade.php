@@ -13,10 +13,15 @@
       
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
-                @auth
-                <a href="/calendario" class="navbar-item">Calendario</a>
-                @endauth
-          </div>
+              @auth
+              <div class="navbar-item">
+                <a href="/apartar" class="navbar-item">Apartar espacio</a>
+              </div>
+              <div class="navbar-item">
+                <a href="/asignar" class="navbar-item">Referir cita</a>
+              </div>
+              @endauth
+            </div>
       
             <div class="navbar-end">
             @guest

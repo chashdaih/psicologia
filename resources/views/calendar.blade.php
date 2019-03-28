@@ -2,52 +2,59 @@
 
 @section('content')
 <section class="section">
-        <div class="container">
-            <h1 class="title">Calendario del día</h1>
-            <h2 class="subtitle">Centro de Servicios Psicológicos Dr. Guillermo Dávila</h2>
+    <div class="container">
+        <h1 class="title">Calendario del día</h1>
+        <h2 class="subtitle">Centro de Servicios Psicológicos Dr. Guillermo Dávila</h2>
 
-            <table class="table is-bordered is-fullwidth is-hoverable">
-                <thead>
+        <table class="table is-bordered is-fullwidth is-hoverable" style="table-layout: fixed;">
+            <thead>
+                <tr>
+                    <th>Cubículos</th>
+                    @foreach ($schedules as $schedule)
+                    <th class="has-text-centered">{{ $schedule }}</th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($data as $cubicule => $appointments)
                     <tr>
-                        <th>
-                            Cubículos
-                        </th>
-                        @foreach ($schedules as $schedule)
-                        <th>{{ $schedule }}</th>
+                        <th>{{ $cubicule }}</th>
+                        @foreach ($appointments as $appointment)
+                        <td style="height:6em;padding:0;">
+                            <calendar-space appointment="{{ $appointment }}"></calendar-space>
+                        </td>
                         @endforeach
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach ($data as $cubicule => $items)
-                        <tr>
-                            <th>{{ $cubicule }}</th>
-                            @foreach ($items as $item)
-                            <td @click="openModal">{{$item}}</td>
-                            @endforeach
-                        </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        {{-- <style>
+            .column {
+                border: 1px solid black;
+            }
+        </style>
+
+        <div class="my-table is-fullwidth">
+            <div class="my-row">
+                <div class="columns">
+                    <div class="column">Cubículos</div>
+                    @foreach ($schedules as $item)
+                    <div class="column">{{ $item }}</div>
                     @endforeach
-                </tbody>
-            </table>
-        </div>
-</section>
-<calendar-modal inline-template>
-    <div class="modal" :class="{ 'is-active': isActive }">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Agendar nueva cita</p>
-                <button class="delete" aria-label="close"></button>
-            </header>
-            <section class="modal-card-body">
-                <!-- Content ... -->
-                Aquí va el form
-            </section>
-            <footer class="modal-card-foot">
-                <button class="button is-success">Agendar cita</button>
-                <button class="button">Cancelar</button>
-            </footer>
-        </div>
+                </div>
+            </div>
+            @foreach ($cubicules as $i => $cubicule)
+            <div class="my-row">
+                <div class="columns">
+                    <div class="column">{{ $cubicule}}</div>
+                </div>
+            </div>
+            @endforeach
+        </div> --}}
+        
     </div>
-</calendar-modal>
+</section>
+<calendar-modal v-on:open-modal="isActive = true"></calendar-modal>
 
 @endsection
