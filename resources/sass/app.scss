@@ -1,3 +1,4 @@
+$navbar-item-hover-background-color:#2E8CB8;
 @import "node_modules/bulma/bulma";
 
 html {
@@ -7,4 +8,11 @@ html {
 body {
     min-height: 100%;
     background-color: #fbf3e8;
+}
+
+#app-nav {
+    background-color: #3298c8;
+}
+#app-nav a {
+    color: white;
 }

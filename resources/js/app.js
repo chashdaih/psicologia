@@ -6,6 +6,7 @@ import CalendarModal from './components/CalendarModal';
 import CalendarSpace from './components/CalendarSpace';
 import FDGForm from './components/FDGForm';
 import CdrForm from './components/CdrForm';
+import Test from './components/Test';
 
 export const eventBus = new Vue();
 
@@ -19,6 +20,7 @@ const app = new Vue({
         CalendarModal,
         CalendarSpace,
         FDGForm,
-        CdrForm
+        CdrForm,
+        Test
     }
 });

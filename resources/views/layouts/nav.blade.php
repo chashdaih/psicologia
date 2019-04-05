@@ -1,4 +1,4 @@
-<nav class="navbar has-shadow" role="navigation" aria-label="main navigation">
+<nav id="app-nav" class="navbar has-shadow" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item" href="/">
             Agenda
@@ -45,11 +45,11 @@
                 <p class="navbar-item">{{ Auth::user()->name }}</p>
                 <div class="navbar-item">
                 <div class="buttons">
-                    <a class="button is-light" href="{{ route('logout') }}"
+                    <p class="button is-light" href="{{ route('logout') }}"
                     onclick="event.preventDefault();
                                   document.getElementById('logout-form').submit();">
                     Cerrar sesión
-                    </a>
+                </p>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>

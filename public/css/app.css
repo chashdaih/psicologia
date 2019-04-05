@@ -7446,7 +7446,7 @@ a.navbar-item:hover,
 a.navbar-item.is-active,
 .navbar-link:hover,
 .navbar-link.is-active {
-  background-color: #fafafa;
+  background-color: #2E8CB8;
   color: #3273dc;
 }
 
@@ -7819,7 +7819,7 @@ a.navbar-item.is-active,
 
   .navbar-item.has-dropdown:hover .navbar-link,
   .navbar-item.has-dropdown.is-active .navbar-link {
-    background-color: #fafafa;
+    background-color: #2E8CB8;
   }
 }
 
@@ -11411,5 +11411,13 @@ html {
 body {
   min-height: 100%;
   background-color: #fbf3e8;
+}
+
+#app-nav {
+  background-color: #3298c8;
+}
+
+#app-nav a {
+  color: white;
 }
 
