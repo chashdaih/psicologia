@@ -30,6 +30,7 @@
 
 <script>
 export default {
+    props: ['url'],
     data() {
         return {
             form: new Form({ email: '', password: '' })
@@ -37,7 +38,7 @@ export default {
     },
     methods: {
         onSubmit() {
-            this.form.post('/login').then(function(response) {
+            this.form.post(this.url).then(function(response) {
                 window.location = "/";
                 // console.log(response);
             });

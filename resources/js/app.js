@@ -4,6 +4,8 @@ import LoginForm from './components/LoginForm';
 import ListCheckbox from './components/ListCheckbox';
 import CalendarModal from './components/CalendarModal';
 import CalendarSpace from './components/CalendarSpace';
+import FDGForm from './components/FDGForm';
+import CdrForm from './components/CdrForm';
 
 export const eventBus = new Vue();
 
@@ -16,5 +18,7 @@ const app = new Vue({
         ListCheckbox,
         CalendarModal,
         CalendarSpace,
+        FDGForm,
+        CdrForm
     }
 });

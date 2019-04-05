@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Agenda</title>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
 
@@ -15,7 +15,7 @@
         @yield('content')
     </div>
 
-    <script src="js/app.js"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     
 </body>
 </html>
