@@ -7,6 +7,7 @@ import CalendarSpace from './components/CalendarSpace';
 import FDGForm from './components/FDGForm';
 import CdrForm from './components/CdrForm';
 import Test from './components/Test';
+import EcprForm from './components/EcprForm';
 
 export const eventBus = new Vue();
 
@@ -21,6 +22,7 @@ const app = new Vue({
         CalendarSpace,
         FDGForm,
         CdrForm,
-        Test
+        Test,
+        EcprForm
     }
 });

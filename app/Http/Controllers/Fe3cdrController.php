@@ -13,7 +13,7 @@ class Fe3cdrController extends Controller
     public function index()
     {
         $records = Fe3cdr::all();
-        return view('students.3.FE3.CDR.index', compact('records'));
+        return view('procedures.3.fe.3.cdr.index', compact('records'));
     }
 
     public function create()
@@ -66,7 +66,7 @@ class Fe3cdrController extends Controller
         ]);
         $fdgs = FE3FDG::select('id','curp', 'name', 'last_name', 'mothers_name')->get();
         $programs = Building::all();
-        return view('students.3.FE3.CDR.create', compact('sections', 'fdgs', 'programs'));
+        return view('procedures.3.fe.3.cdr.create', compact('sections', 'fdgs', 'programs'));
     }
 
     public function store(Request $request)

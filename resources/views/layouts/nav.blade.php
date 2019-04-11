@@ -21,10 +21,7 @@
                 <a href="/asignar" class="navbar-item">Referir cita</a>
               </div>
               <div class="navbar-item">
-                <a href="{{ route('students') }}" class="navbar-item">Estudiantes</a>
-              </div>
-              <div class="navbar-item">
-                <a href="" class="navbar-item">Supervisores</a>
+                <a href="{{ route('procedures') }}" class="navbar-item">Procedimientos</a>
               </div>
               @endauth
             </div>

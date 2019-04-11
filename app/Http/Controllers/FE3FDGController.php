@@ -18,13 +18,13 @@ class FE3FDGController extends Controller
     {
         // $patients = Patient::all();
         $records = FE3FDG::all();
-        return view('students.3.FE3.FDG.index', compact('records'));
+        return view('procedures.3.FE.3.FDG.index', compact('records'));
     }
 
     public function create()
     {
         $programs = Building::all();
-        return view('students.3.FE3.FDG.create', compact('programs'));
+        return view('procedures.3.fe.3.fdg.create', compact('programs'));
     }
 
     public function store()

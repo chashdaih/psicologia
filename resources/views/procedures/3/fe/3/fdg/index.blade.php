@@ -5,13 +5,13 @@
     <div class="container">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-                <li><a href="{{ route('students') }}">Estudiantes</a></li>
+                <li><a href="{{ route('procedures') }}">Procedimientos</a></li>
                 <li class="is-active"><a href="#" aria-current="page">Ficha de datos generales</a></li>
             </ul>
         </nav>
         <h1 class="title">Ficha de datos generales</h1>
         <p class="subtitle">Elige una opción</p>
-        <a href="{{ route('FE3FDG.create') }}">Registrar nuevo paciente</a>
+        <a href="{{ route('fdg.create') }}">Registrar nuevo paciente</a>
         <table class="table is-fullwidth">
             <thead>
                 <tr>

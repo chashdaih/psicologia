@@ -5,13 +5,13 @@
     <div class="container">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-                <li><a href="{{ route('students') }}">Estudiantes</a></li>
+                <li><a href="{{ route('procedures') }}">Procedimientos</a></li>
                 <li class="is-active"><a href="#" aria-current="page">Cuestionario de detección de riesgos en la salud física y mental</a></li>
             </ul>
         </nav>
         <h1 class="title">Cuestionario de detección de riesgos en la salud física y mental</h1>
         <p class="subtitle">Elige una opción</p>
-        <a href="{{ route('fe3cdr.create') }}">Llenar nuevo cuestionario</a>
+        <a href="{{ route('cdr.create') }}">Llenar nuevo cuestionario</a>
         <table class="table is-fullwidth">
             <thead>
                 <tr>

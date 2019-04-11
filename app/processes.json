@@ -1,0 +1,26 @@
+{
+    "fe": {
+        "process": "Servicios psicológicos a través de la Formación Supervisada del Estudiante",
+        "procedures": {
+            "fe1": {
+                "name": "Seguimiento y monitoreo de la adquisición de competencias de los estudiantes",
+                "documents": {
+                    "ecpr": "Evaluación de competencias del estudiante de pregrado",
+                    "ecpo": "Evaluación de competencias del estudiante de posgrado"
+                }
+            },
+            "fe4": {
+                "name":  "Admisión de las personas atendidas",
+                "documents": {
+                    "ps": "Plan de servicios"
+                }
+            },
+            "fe5": {
+                "name": "Evaluación de las personas atendidas",
+                "documents": {
+                    "re": "Resultados de evaluación"
+                }
+            }
+        }
+    }
+}

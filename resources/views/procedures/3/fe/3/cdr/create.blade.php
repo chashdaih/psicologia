@@ -5,7 +5,7 @@
     <div class="container">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-                <li><a href="{{ route('students') }}">Estudiantes</a></li>
+                <li><a href="{{ route('procedures') }}">Estudiantes</a></li>
                 <li><a href="{{ route('fe3cdr.index') }}" aria-current="page">Detección de riesgos en la salud física y mental</a></li>
                 <li class="is-active"><a href="#" aria-current="page">Registrar nuevo cuestionario</a></li>
             </ul>
