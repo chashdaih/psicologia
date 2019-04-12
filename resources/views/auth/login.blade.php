@@ -10,7 +10,7 @@
                         <div class="card-header-title">Iniciar sesión</div>
                     </div>
                     <div class="card-content">
-                        <login-form url="{{ route('login') }}"></login-form>
+                        <login-form url="{{ route('login') }}" redirect="{{ route('home') }}"></login-form>
                     </div>
                 </div>
             </div>

@@ -16,6 +16,7 @@ class CreateResTable extends Migration
         Schema::create('res', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->unsignedInteger('patient_id');
             $table->unsignedInteger('student_id');
             $table->unsignedTinyInteger('building_id');
             $table->unsignedInteger('program_id');

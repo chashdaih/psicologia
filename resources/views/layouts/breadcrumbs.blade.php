@@ -1,9 +1,9 @@
 <nav class="breadcrumb" aria-label="breadcrumbs">
     <ul>
-        @foreach ($bread as $slice)
+        @foreach ($bread as $crumb)
         <li @if ($loop->last) class="is-active" @endif >
-            <a @if ($slice['url']) href="{{ route($slice['url']['base'], $slice['url']['par']) }}" @else href="#" @endif >
-                {{ $slice['title'] }}
+            <a @if ($crumb['url']) href="{{ route($crumb['url']['base'], $crumb['url']['par']) }}" @endif >
+                {{ $crumb['title'] }}
             </a>
         </li>
         @endforeach

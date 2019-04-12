@@ -3,6 +3,7 @@
 @section('content')
 <section class="section">
     <div class="container">
+        @include('layouts.breadcrumbs')
 
         <h1 class="title">Procedimientos</h1>
         <h2 class="subtitle">Coordinación de centros de formación y servicios psicológicos</h2>

@@ -1,0 +1,26 @@
+{
+    "created_at": {
+        "title": "Fecha",
+        "type": "date"
+    },
+    "patient_id": {
+        "title": "Paciente",
+        "type": "select"
+    },
+    "building_id": {
+        "title": "Centro",
+        "type": "select"
+    },
+    "program_id": {
+        "title": "Programa",
+        "type": "select"
+    },
+    "student_id": {
+        "title": "Estudiante",
+        "type": "select"
+    },
+    "egress_type": {
+        "title": "Tipo de egreso",
+        "type": "select"
+    }
+}

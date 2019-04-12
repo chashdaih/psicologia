@@ -5,37 +5,52 @@ namespace App\Http\Controllers;
 use App\Building;
 use App\Bread;
 use App\FE3FDG;
+use App\He;
+use App\Option;
 use App\Program;
-use App\Re;
 use App\Student;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
-class ReController extends Controller
+class HeController extends Controller
 {
+    protected $egress_type;
+
+    public function __construct()
+    {
+        $this->egress_type = [
+            new Option(1, 'Alta/Cierre'),
+            new Option(2, 'Interrupción del tratamiento por mejoría'),
+            new Option(3, 'Interrupción del tratamiento sin mejoría'),
+            new Option(4, 'Alta con referencia'),
+            new Option(5, 'Primer contacto sin asistencia')
+        ];
+    }
+
     public function index()
     {
-        $doc_code = 're';
-        $mBread = new Bread('fe', 'fe5', $doc_code);
+        $doc_code = 'he';
+        $mBread = new Bread('fe', 'fe8', $doc_code);
         $bread = collect($mBread->bread_array);
-        $records = Re::all(); //TODO pagination
+        $records = He::all(); //TODO pagination
         $target = "paciente";
         return view('procedures.3.fe.list', compact('records', 'bread', 'doc_code','target'));
-
     }
 
     public function create()
     {
         $fields = $this->getFields();
-        $values = new Re();
-        $code = 're';
-        $bread = $this->getBread('fe', 'fe5', $code);
+        $values = new He();
+        $code = 'he';
+        $mBread = new Bread('fe', 'fe8', $code);
+        $bread = collect($mBread->bread_array);
         return view('procedures.3.fe.create', compact('bread', 'fields', 'values', 'code'));
     }
 
     protected function getFields()
     {
-        $json = file_get_contents(dirname(__DIR__, 2).'/fields/re.json');
+        $json = file_get_contents(dirname(__DIR__, 2).'/fields/he.json');
         $fields = json_decode($json, true);
 
         $patients = FE3FDG::select('id', DB::raw("CONCAT(name, ' ', last_name, ' ', mothers_name) AS name"))->get(); // TODO where supervisor or student match somewhere...
@@ -47,36 +62,30 @@ class ReController extends Controller
         $fields['building_id']['options'] = $buildings;
         $fields['program_id']['options'] = $programs;
         $fields['student_id']['options'] = $students;
+        $fields['egress_type']['options'] = $this->egress_type;
 
         return $fields;
     }
 
-    protected function getBread($key, $proc, $doc)
-    {
-        $mBread = new Bread($key, $proc, $doc);
-        return collect($mBread->bread_array);
-    }
-
     public function store(Request $request)
     {
-        $validated = $this->validateRe($request);
-        Re::create($validated);
+        $validated = $this->validateHe($request);
+        He::create($validated);
         return response(200);
     }
 
-    protected function validateRe($request)
+    protected function validateHe($request)
     {
-        foreach ($request->except('_token', 'refer_place') as $data => $value) {
+        foreach ($request->except('_token') as $data => $value) {
             $valids[$data] = "required";
         }
-        $valids['refer_place'] = "nullable";
         return $request->validate($valids);
     }
 
     public function show($id)
     {
-        $doc = Re::where('id', $id)->first();
-        return view('procedures.3.fe.5.re.show', compact('doc'));
+        $doc = $this->getFormattedHe($id);
+        return view('procedures.3.fe.8.he.show', compact('doc'));
     }
 
     public function pdf($id)
@@ -84,23 +93,30 @@ class ReController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
 
-        $doc = Re::where('id', $id)->first();
+        $doc = $this->getFormattedHe($id);
 
-        $pdf->loadView('procedures.3.fe.5.re.show', compact('doc'));
-        return $pdf->download('ps_'.$doc->student->nombre_t.'.pdf');
+        $pdf->loadView('procedures.3.fe.8.he.show', compact('doc'));
+        return $pdf->download('he_'.$doc->student->nombre_t.'.pdf');
     }
 
-    public function edit(Re $re)
+    protected function getFormattedHe($id)
+    {
+        $doc = He::where('id', $id)->first();
+        $doc['egress_type'] = $this->egress_type[$doc['egress_type']]->name;
+        return $doc;
+    }
+
+    public function edit(He $he)
     {
         //
     }
 
-    public function update(Request $request, Re $re)
+    public function update(Request $request, He $he)
     {
         //
     }
 
-    public function destroy(Re $re)
+    public function destroy(He $he)
     {
         //
     }

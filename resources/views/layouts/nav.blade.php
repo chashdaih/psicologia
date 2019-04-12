@@ -20,8 +20,15 @@
               <div class="navbar-item">
                 <a href="/asignar" class="navbar-item">Referir cita</a>
               </div>
-              <div class="navbar-item">
-                <a href="{{ route('procedures') }}" class="navbar-item">Procedimientos</a>
+              <div class="navbar-item has-dropdown is-hoverable">
+                <a href="{{ route('procedures') }}" class="navbar-link is-arrowless">Procedimientos</a>
+                <div class="navbar-dropdown">
+                  <a href="#" class="navbar-item">Elaboración y seguimiento de planeación estratégica y operativa</a>
+                  <a href="{{ route('procedures', 'ie') }}" class="navbar-item">Ingreso del estudiante</a>
+                  <a href="{{ route('procedures', 'fe') }}" class="navbar-item">Servicios psicológicos a través de la Formación Supervisada del Estudiante</a>
+                  <a href="{{ route('procedures', 'ee') }}" class="navbar-item">Egreso del estudiante</a>
+                  <a href="#" class="navbar-item">Gestión de recursos humanos, materiales y financieros</a>
+                </div>
               </div>
               @endauth
             </div>

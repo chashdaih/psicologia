@@ -6666,7 +6666,7 @@ a.list-item {
 }
 
 .navbar {
-  background-color: white;
+  background-color: #3298c8;
   min-height: 3.25rem;
   position: relative;
   z-index: 30;
@@ -7447,7 +7447,7 @@ a.navbar-item.is-active,
 .navbar-link:hover,
 .navbar-link.is-active {
   background-color: #2E8CB8;
-  color: #3273dc;
+  color: #93d4f1;
 }
 
 .navbar-item {
@@ -7539,7 +7539,7 @@ a.navbar-item.is-active,
   }
 
   .navbar-menu {
-    background-color: white;
+    background-color: #3298c8;
     box-shadow: 0 8px 16px rgba(10, 10, 10, 0.1);
     padding: 0.5rem 0;
   }
@@ -11413,11 +11413,12 @@ body {
   background-color: #fbf3e8;
 }
 
-#app-nav {
-  background-color: #3298c8;
+.navbar-item,
+.navbar-link {
+  color: white;
 }
 
-#app-nav a {
-  color: white;
+.navbar-dropdown > .navbar-item {
+  color: grey;
 }
 

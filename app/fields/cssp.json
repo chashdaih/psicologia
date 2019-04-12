@@ -1,0 +1,42 @@
+{
+    "file_number": {
+        "title": "No. expediente",
+        "type": "text"
+    },
+    "created_at": {
+        "title": "Fecha",
+        "type": "date"
+    },
+    "patient_id": {
+        "title": "Paciente",
+        "type": "select"
+    },
+    "q1":{
+        "title": "¿Cómo evaluaría la calidad de los servicios que ha recibido?",
+        "type": "select"
+    },
+    "q2":{
+        "title": "¿Le fue de utilidad el servicio recibido?",
+        "type": "select"
+    },
+    "q3":{
+        "title": "¿Recomendaría neustros servicios de atención psicológica?",
+        "type": "select"
+    },
+    "q4":{
+        "title": "¿Los servicios que ha recibido le han ayudado a enfrentarse mejor a sus problemas?",
+        "type": "select"
+    },
+    "q5":{
+        "title": "En general, ¿qué tan satisfecho/a está usted con los servicios que ha recibido?",
+        "type": "select"
+    },
+    "o1": {
+        "title": "Lo que más me gustó de la atención que recibí fue:",
+        "type": "area"
+    },
+    "o2": {
+        "title": "Lo que considero que se tendría que mejorar es:",
+        "type": "area"
+    }
+}

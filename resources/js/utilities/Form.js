@@ -10,7 +10,9 @@ class Form {
             this[field] = data[field];
         }
 
-        this.errors = new Errors()
+        this.errors = new Errors();
+
+        this.isLoading = false;
 
     }
 
@@ -42,6 +44,8 @@ class Form {
 
     submit(requestType, url) {
 
+        this.isLoading = true;
+
         return new Promise((resolve, reject) => {
 
             axios[requestType](url, this.data())
@@ -61,12 +65,15 @@ class Form {
 
     onSuccess(data) {
 
-        this.reset();
+        this.isLoading = false;
 
+        this.reset();
 
     }
 
     onFail(response) {
+
+        this.isLoading = false;
 
         this.errors.record(response.errors);
 

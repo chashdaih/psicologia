@@ -14,11 +14,12 @@ class Bread
         ]
     ];
 
-    public function __construct($key, $proc = null, $doc = null)
+    public function __construct($key = null, $proc = null, $doc = null)
     {
-        $json = file_get_contents(__DIR__.'/processes.json');
+        $json = file_get_contents(__DIR__.'/fields/processes.json');
         $titles = json_decode($json, true);
 
+        if ($key) {
         array_push($this->bread_array, [
             'title' => $titles[$key]['process'],
             'url' => [
@@ -26,10 +27,14 @@ class Bread
                 'par' => $key
             ]
         ]);
+        }
         if ($proc) {
             array_push($this->bread_array, [
                 'title' => $titles[$key]['procedures'][$proc]['name'],
-                'url' => null
+                'url' => [
+                    'base' => 'procedure',
+                    'par' => [$key, filter_var($proc, FILTER_SANITIZE_NUMBER_INT)]
+                ]
             ]);
         }
         if ($doc) {

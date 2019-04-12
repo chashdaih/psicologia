@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Re extends Model
+class He extends Model
 {
     protected $guarded = ['id', 'updated_at'];
     protected $dates = ['created_at'];
@@ -16,8 +16,7 @@ class Re extends Model
         'program_id' => 0,
         'supervisor_id' => 1,
         'student_id' => 0,
-        'refer_needed' => 0,
-        'refer_place' => ''
+        'egress_type' => 0
     ];
 
     public function student() {

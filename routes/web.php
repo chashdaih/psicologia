@@ -15,7 +15,7 @@ Route::get('/', 'ListController@index')->name('home');
 Route::get('/apartar', 'CalendarController@index');
 Route::group(['prefix' => '/procedures/3/'], function() {
     Route::get('{procedure?}', 'ProceduresController@index')->name('procedures');
-    // Route::get('{procedure}/{number}/{doc}', 'ProceduresController@doc')->name('doc');
+    Route::get('{procedure}/{number}', 'ProceduresController@doc')->name('procedure');
     Route::group(['prefix' => 'fe'], function() {
         Route::get('/1/ecpr/pdf/{id}', 'EcprController@pdf')->name('ecpr_pdf');
         Route::resource('/1/ecpr', 'EcprController');
@@ -34,9 +34,15 @@ Route::group(['prefix' => '/procedures/3/'], function() {
         Route::get('/5/re/pdf/{id}', 'ReController@pdf')->name('re_pdf');
         Route::resource('/5/re', 'ReController');
 
+        Route::get('/6/rs/pdf/{id}', 'RsController@pdf')->name('rs_pdf');
         Route::resource('/6/rs', 'RsController');
+
         Route::resource('/7/rs', 'RsController');
+
+        Route::get('/8/he/pdf/{id}', 'HeController@pdf')->name('he_pdf');
         Route::resource('/8/he', 'HeController');
+
+        Route::get('/8/cssp/pdf/{id}', 'CsspController@pdf')->name('cssp_pdf');
         Route::resource('/8/cssp', 'CsspController');
     });
 

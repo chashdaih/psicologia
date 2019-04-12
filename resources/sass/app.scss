@@ -1,4 +1,6 @@
+$navbar-background-color: #3298c8;
 $navbar-item-hover-background-color:#2E8CB8;
+$navbar-item-hover-color:rgb(147, 212, 241);
 @import "node_modules/bulma/bulma";
 
 html {
@@ -10,9 +12,10 @@ body {
     background-color: #fbf3e8;
 }
 
-#app-nav {
-    background-color: #3298c8;
-}
-#app-nav a {
+.navbar-item, .navbar-link {
     color: white;
+}
+
+.navbar-dropdown>.navbar-item {
+    color: grey;
 }
