@@ -1,4 +1,39 @@
 {
+    "ie": {
+        "process": "Ingreso del estudiante",
+        "procedures": {
+            "ie1": {
+                "name": "Registro, renovación y difusión de Programas de Servicios Psicológicos a través de la Formación Supervisada",
+                "documents": {
+                    "rps": "Registro de Programas de Servicios Psicológicos a través de la Formación Supervisada"
+                }
+            },
+            "ie2": {
+                "name": "Ingreso del estudiante a Programas Curriculares",
+                "documents": {
+                    "lps": "Lista de estudiantes inscritos a los Programas de Servicios Psicológicos a través de la Formación Supervisada"
+                }
+            },
+            "ie3": {
+                "name": "Ingreso del estudiante a Programas Extra Curriculares",
+                "documents": {
+                    "lps": "Lista de estudiantes inscritos a los Programas de Servicios Psicológicos a través de la Formación Supervisada"
+                }
+            },
+            "ie4": {
+                "name": "Ingreso del prestador de Servicio Social",
+                "documents": {
+                    "na": "Carta de registro al servicio social"
+                }
+            },
+            "ie5": {
+                "name": "Ingreso del estudiante de posgrado",
+                "documents": {
+                    "na": "Oficio de estudiantes de posgrado asignados"
+                }
+            }
+        }
+    },
     "fe": {
         "process": "Servicios psicológicos a través de la Formación Supervisada del Estudiante",
         "procedures": {
@@ -51,6 +86,23 @@
                 "documents": {
                     "he": "Hoja de egreso",
                     "cssp": "Cuestionario de satisfacción con el servicio psicológico"
+                }
+            }
+        }
+    },
+    "ee": {
+        "process": "Egreso del estudiante",
+        "procedures": {
+            "ee1": {
+                "name": "Egreso del estudiante de Programas Curriculares, Extracurriculares y Posgrado",
+                "documents": {
+                    "es": "Evaluación de la satisfacción del estudiante con la formación a través del servicio psicológico"
+                }
+            },
+            "ee2": {
+                "name": "Egreso del prestador de Servidor Social",
+                "documents": {
+                    "na": "Carta de finalización del servicio social"
                 }
             }
         }

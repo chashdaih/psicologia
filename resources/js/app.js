@@ -11,8 +11,8 @@ import EcprForm from './components/EcprForm';
 import CollapsibleCard from './components/CollapsibleCard';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faFileCode, faFilePdf } from '@fortawesome/free-solid-svg-icons';
-library.add(faFileCode, faFilePdf);
+import { faFileCode, faFilePdf, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+library.add(faFileCode, faFilePdf, faCheck, faTimes);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export const eventBus = new Vue();

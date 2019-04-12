@@ -16,6 +16,9 @@ class CreateRsTable extends Migration
         Schema::create('rs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->unsignedInteger('patient_id');
+            $table->unsignedInteger('supervisor_id');
+            $table->unsignedInteger('student_id')->nullable();
             $table->unsignedTinyInteger('session_number');
             $table->boolean('exist');
         });

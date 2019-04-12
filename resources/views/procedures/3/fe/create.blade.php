@@ -18,7 +18,7 @@
                     @break
                 @case("date")
                 <div class="field">
-                    <input class="input" type="date" v-model="form.{{ $title }}">
+                    <input class="input" type="date" v-model="form.{{ $title }}" required>
                     @break
                 @case("select")
                     <div class="select">
@@ -31,10 +31,16 @@
                     </div>
                     @break
                 @case("area")
+                <div class="field">
                     <textarea v-model="form.{{ $title }}" class="textarea" placeholder="{{ $field['title'] }}"></textarea>
                     @break
                 @case("boolean")
-                    <input type="checkbox" v-model="form.{{ $title }}">
+                <div class="field">
+                    <input type="checkbox" v-model="form.{{ $title }}" required>
+                    @break
+                @case("number")
+                <div class="field">
+                    <input type="number" v-model="form.{{ $title }}" required>
                     @break
                 @endswitch
                 </div>

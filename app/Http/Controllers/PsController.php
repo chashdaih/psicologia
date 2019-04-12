@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Building;
+use App\Bread;
 use App\FE3FDG;
 use App\Option;
 use App\Program;
@@ -13,6 +14,9 @@ use Illuminate\Http\Request;
 
 class PsController extends Controller
 {
+    protected $process = 'fe';
+    protected $number = '4';
+    protected $doc_code = 'ps';
     protected $interventions;
     protected $service_modality;
 
@@ -37,34 +41,36 @@ class PsController extends Controller
     public function index()
     {
         $records = Ps::all(); // TODO pagination
-        $json = file_get_contents(__DIR__.'/processes.json');
-        $titles = json_decode($json, true);
+        // $json = file_get_contents(__DIR__.'/processes.json');
+        // $titles = json_decode($json, true);
         $doc_code = 'ps';
-        $bread = collect([ // TODO write function that generates bread array
-            [
-                'title' => 'Procesos',
-                'url' => [
-                    'base' => 'procedures',
-                    'par' => ''
-                ]
-            ],
-            [
-                'title' => $titles['fe']['process'],
-                'url' => [
-                    'base' => 'procedures',
-                    'par' => 'fe'
-                ]
-            ],
-            [
-                'title' => $titles['fe']['procedures']['fe4']['name'],
-                'url' => null
-            ],
-            [
-                'title' => $titles['fe']['procedures']['fe4']['documents']['ps'],
-                'url' => null
-            ]
+        // $bread = collect([ // TODO write function that generates bread array
+        //     [
+        //         'title' => 'Procesos',
+        //         'url' => [
+        //             'base' => 'procedures',
+        //             'par' => ''
+        //         ]
+        //     ],
+        //     [
+        //         'title' => $titles['fe']['process'],
+        //         'url' => [
+        //             'base' => 'procedures',
+        //             'par' => 'fe'
+        //         ]
+        //     ],
+        //     [
+        //         'title' => $titles['fe']['procedures']['fe4']['name'],
+        //         'url' => null
+        //     ],
+        //     [
+        //         'title' => $titles['fe']['procedures']['fe4']['documents']['ps'],
+        //         'url' => null
+        //     ]
             
-        ]);
+        // ]);
+        $mBread = new Bread($this->process, $this->process.$this->number, $doc_code);
+        $bread = collect($mBread->bread_array);
         $target = "paciente";
         return view('procedures.3.fe.list', compact('records', 'bread', 'doc_code','target'));
     }

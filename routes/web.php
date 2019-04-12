@@ -16,6 +16,13 @@ Route::get('/apartar', 'CalendarController@index');
 Route::group(['prefix' => '/procedures/3/'], function() {
     Route::get('{procedure?}', 'ProceduresController@index')->name('procedures');
     Route::get('{procedure}/{number}', 'ProceduresController@doc')->name('procedure');
+    Route::group(['prefix' => 'ie'], function() {
+        Route::resource('/1/rps', 'RpsController');
+        Route::resource('/2/lps', 'LpsController');
+        Route::resource('/3/lps', 'LpsController');
+        Route::resource('/4/na', 'Ie4naController');
+        Route::resource('/5/na', 'Ie5naController');
+    });
     Route::group(['prefix' => 'fe'], function() {
         Route::get('/1/ecpr/pdf/{id}', 'EcprController@pdf')->name('ecpr_pdf');
         Route::resource('/1/ecpr', 'EcprController');
@@ -44,6 +51,10 @@ Route::group(['prefix' => '/procedures/3/'], function() {
 
         Route::get('/8/cssp/pdf/{id}', 'CsspController@pdf')->name('cssp_pdf');
         Route::resource('/8/cssp', 'CsspController');
+    });
+    Route::group(['prefix' => 'ee'], function() {
+        Route::resource('/1/es', 'EsController');
+        Route::resource('/2/na', 'Ee2naController');
     });
 
 });
