@@ -22,7 +22,7 @@
                         <div class="list is-hoverable">
                             @foreach ($procedure['documents'] as $code => $doc)
                             <a href="{{ route($code.'.index') }}"
-                             class="list-item" >{{ Str::upper($code) }} - {{ $doc }}</a>
+                             class="list-item" >{{ strpos($code, "_") ? $doc : Str::upper($code).' - '.$doc }}</a>
                             @endforeach
                         </div>
                     </div>

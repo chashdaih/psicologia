@@ -30,7 +30,7 @@ Route::group(['prefix' => '/procedures/3/'], function() {
         Route::get('/1/ecpo/pdf/{id}', 'EcpoController@pdf')->name('ecpo_pdf');
         Route::resource('/1/ecpo', 'EcpoController');
 
-        Route::resource('/2/na', 'NaController');
+        Route::resource('/2/e_d', 'Fe2Controller');
 
         Route::resource('/3/fdg', 'FE3FDGController'); // TODO homologate urls
         Route::resource('/3/cdr', 'Fe3cdrController');

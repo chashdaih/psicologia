@@ -9,10 +9,11 @@ import CdrForm from './components/CdrForm';
 import Test from './components/Test';
 import EcprForm from './components/EcprForm';
 import CollapsibleCard from './components/CollapsibleCard';
+import FileInput from './components/FileInput';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faFileCode, faFilePdf, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
-library.add(faFileCode, faFilePdf, faCheck, faTimes);
+import { faFileCode, faFilePdf, faCheck, faTimes, faUpload } from '@fortawesome/free-solid-svg-icons';
+library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export const eventBus = new Vue();
@@ -32,6 +33,7 @@ const app = new Vue({
         CdrForm,
         Test,
         EcprForm,
-        CollapsibleCard
+        CollapsibleCard,
+        FileInput
     }
 });
