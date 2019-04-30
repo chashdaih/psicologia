@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FE3FDG extends Model
 {
-    protected $table = 'FE3FDG';
+    protected $table = 'fe3fdg';
     protected $guarded = [];
     protected $dates = ['birthdate', 'tutor_birthdate_1', 'tutor_birthdate_2'];
     

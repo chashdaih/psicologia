@@ -53,6 +53,7 @@ class LoginController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+
         if (Auth::attempt($credentials)) {
             // Authentication passed...
             return response(200);

@@ -10,7 +10,7 @@ export default {
         return {
             open: false,
             contentStyle: {
-                maxHeight: 0,
+                // maxHeight: 0,
                 overflow: 'hidden',
                 transition: 'max-height 0.2s ease-out'
             }

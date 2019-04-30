@@ -46,7 +46,7 @@
                     </div>
                 </div>
             @else
-                <p class="navbar-item">{{ Auth::user()->name }}</p>
+                <p class="navbar-item">{{ Auth::user()->supervisor->full_name }}</p>
                 <div class="navbar-item">
                 <div class="buttons">
                     <p class="button is-light" href="{{ route('logout') }}"

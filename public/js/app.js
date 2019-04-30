@@ -199,9 +199,10 @@ __webpack_require__.r(__webpack_exports__);
       this.form[field] = value;
     },
     onSubmit: function onSubmit() {
+      var _this = this;
+
       this.form.post(this.url).then(function (response) {
-        // window.location = this.redirect;
-        console.log(response);
+        window.location = _this.redirect; // console.log(response);
       }).catch(function (error) {
         return console.log(error);
       });
@@ -280,7 +281,7 @@ _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__["library"].add(_f
     return {
       open: false,
       contentStyle: {
-        maxHeight: 0,
+        // maxHeight: 0,
         overflow: 'hidden',
         transition: 'max-height 0.2s ease-out'
       }
@@ -1254,8 +1255,7 @@ function isDate18orMoreYearsOld(dateString) {
   methods: {
     onSubmit: function onSubmit() {
       this.form.post(this.url).then(function (response) {
-        // window.location = "/";
-        console.log(response);
+        window.location = "/"; // console.log(response);
       });
     },
     checkIfOver18: function checkIfOver18() {
@@ -5456,7 +5456,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "file is-centered is-boxed has-name",
+        staticClass: "file is-boxed has-name",
         class: _vm.error != "" ? "is-danger" : "is-success"
       },
       [
@@ -5485,11 +5485,18 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("span", { staticClass: "file-name" }, [
-            _vm._v(
-              "\n                " + _vm._s(_vm.file_name) + "\n            "
-            )
-          ]),
+          _c(
+            "span",
+            {
+              staticClass: "file-name",
+              staticStyle: { "background-color": "white" }
+            },
+            [
+              _vm._v(
+                "\n                " + _vm._s(_vm.file_name) + "\n            "
+              )
+            ]
+          ),
           _vm._v(" "),
           _c("span", [
             _c("p", { staticClass: "help is-danger" }, [

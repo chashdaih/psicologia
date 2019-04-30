@@ -29,10 +29,14 @@
                         {{ $record->its_student->nombre_t }}
                     </td>
                     <td>
-                        <a href="{{ route('ecpr.show', $record->id) }}"><i class="far fa-file-code fa-2x"></i></a>
+                        <a href="{{ route('ecpr.show', $record->id) }}">
+                            <fai icon="file-code" size="2x" />
+                        </a>
                     </td>
                     <td>
-                        <a href="{{ route('ecpr_pdf', $record->id) }}"><i class="far fa-file-pdf fa-2x"></i></a>
+                        <a href="{{ route('ecpr_pdf', $record->id) }}">
+                            <fai icon="file-pdf" size="2x" />
+                        </a>
                     </td>
                 </tr>
                 @endforeach

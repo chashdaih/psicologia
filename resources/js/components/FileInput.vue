@@ -1,6 +1,6 @@
 <template>
     <div class="field">
-        <div class="file is-centered is-boxed has-name" :class="error != '' ? 'is-danger' : 'is-success'">
+        <div class="file is-boxed has-name" :class="error != '' ? 'is-danger' : 'is-success'">
             <label class="file-label">
                 <input class="file-input" type="file" name="upload_file" accept="application/pdf" @change="onChange" required>
                 <span class="file-cta">
@@ -11,7 +11,7 @@
                     Subir archivo
                     </span>
                 </span>
-                <span class="file-name">
+                <span class="file-name" style="background-color:white;">
                     {{ file_name }}
                 </span>
                 <span>

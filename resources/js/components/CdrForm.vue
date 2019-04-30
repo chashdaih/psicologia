@@ -80,8 +80,8 @@ export default {
         },
         onSubmit() {
             this.form.post(this.url).then(response => {
-                // window.location = this.redirect;
-                console.log(response);
+                window.location = this.redirect;
+                // console.log(response);
             }).catch(error => console.log(error));
         },
     }

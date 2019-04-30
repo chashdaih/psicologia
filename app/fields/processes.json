@@ -17,19 +17,19 @@
             "ie3": {
                 "name": "Ingreso del estudiante a Programas Extra Curriculares",
                 "documents": {
-                    "lps": "Lista de estudiantes inscritos a los Programas de Servicios Psicológicos a través de la Formación Supervisada"
+                    "lpse": "Lista de estudiantes inscritos a los Programas de Servicios Psicológicos a través de la Formación Supervisada"
                 }
             },
             "ie4": {
                 "name": "Ingreso del prestador de Servicio Social",
                 "documents": {
-                    "na": "Carta de registro al servicio social"
+                    "cr_ss": "Carta de registro al servicio social"
                 }
             },
             "ie5": {
                 "name": "Ingreso del estudiante de posgrado",
                 "documents": {
-                    "na": "Oficio de estudiantes de posgrado asignados"
+                    "o_ep": "Oficio de estudiantes de posgrado asignados"
                 }
             }
         }

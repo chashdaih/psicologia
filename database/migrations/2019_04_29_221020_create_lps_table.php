@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFe2sTable extends Migration
+class CreateLpsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateFe2sTable extends Migration
      */
     public function up()
     {
-        Schema::create('fe2s', function (Blueprint $table) {
+        Schema::create('lps', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateFe2sTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fe2s');
+        Schema::dropIfExists('lps');
     }
 }

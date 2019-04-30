@@ -6,7 +6,7 @@
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
                 <li><a href="{{ route('procedures') }}">Estudiantes</a></li>
-                <li><a href="{{ route('fe3cdr.index') }}" aria-current="page">Detección de riesgos en la salud física y mental</a></li>
+                <li><a href="{{ route('cdr.index') }}" aria-current="page">Detección de riesgos en la salud física y mental</a></li>
                 <li class="is-active"><a href="#" aria-current="page">Registrar nuevo cuestionario</a></li>
             </ul>
         </nav>
@@ -16,8 +16,8 @@
             :fdgs="{{ $fdgs }}"
             :sections="{{ $sections }}"
             :programs="{{ $programs }}"
-            url = "{{ route('fe3cdr.store') }}"
-            redirect = "{{ route('fe3cdr.index') }}"
+            url = "{{ route('cdr.store') }}"
+            redirect = "{{ route('cdr.index') }}"
         ></cdr-form>
     </div>
 </section>

@@ -27,10 +27,14 @@
                         {{ $record->full_name }}
                     </td>
                     <td>
-                        <a href="{{ route('fdg_html', $record->id) }}"><i class="far fa-file-code fa-2x"></i></a>
+                        <a href="{{ route('fdg_html', $record->id) }}">
+                            <fai icon="file-code" size="2x" />
+                        </a>
                     </td>
                     <td>
-                        <a href="{{ route('fdg', $record->id) }}"><i class="far fa-file-pdf fa-2x"></i></a>
+                        <a href="{{ route('fdg', $record->id) }}">
+                            <fai icon="file-pdf" size="2x" />
+                        </a>
                     </td>
                 </tr>
                 @endforeach

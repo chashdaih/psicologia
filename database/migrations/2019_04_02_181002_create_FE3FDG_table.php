@@ -15,6 +15,7 @@ class CreateFe3fdgTable extends Migration
     {
         Schema::create('FE3FDG', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->timestamps();
             $table->unsignedBigInteger('filler'); // user who made the interview
             // identification
             $table->string('name');
@@ -91,10 +92,10 @@ class CreateFe3fdgTable extends Migration
             $table->unsignedBigInteger('supervisor')->nullable();
             $table->unsignedInteger('program');
 
-            $table->foreign('filler')->references('id')->on('users'); // TODO define delete action
-            $table->foreign('supervisor')->references('id')->on('users');
-            $table->foreign('unam_previous_treatment_program')->references('id_centro')->on('centros');
-            $table->foreign('program')->references('id_centro')->on('centros');
+            // $table->foreign('filler')->references('id')->on('users'); // TODO define delete action
+            // $table->foreign('supervisor')->references('id')->on('users');
+            // $table->foreign('unam_previous_treatment_program')->references('id_centro')->on('centros');
+            // $table->foreign('program')->references('id_centro')->on('centros');
         });
     }
 

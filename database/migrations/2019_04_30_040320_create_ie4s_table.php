@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNasTable extends Migration
+class CreateIe4sTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateNasTable extends Migration
      */
     public function up()
     {
-        Schema::create('nas', function (Blueprint $table) {
+        Schema::create('ie4s', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->unsignedInteger('program_id');
+            $table->unsignedInteger('partaker_id');
         });
     }
 
@@ -26,6 +28,6 @@ class CreateNasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nas');
+        Schema::dropIfExists('ie4s');
     }
 }

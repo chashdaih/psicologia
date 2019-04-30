@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>ECPR</title>
+    <title>ECPO</title>
     <style>
         @page {
             margin: 100px 25px;
@@ -56,7 +56,7 @@
 
     <footer class="my-blue">
         <p>ESTE DOCUMENTO FORMA PARTE DEL SISTEMA DE GESTIÓN DE CALIDAD</p>
-        <p>3-FE1-ECPR</p>
+        <p>3-FE1-ECPO</p>
     </footer>
     <script type="text/php">
         if (isset($pdf)) {
@@ -71,7 +71,7 @@
         }
     </script>
 
-    <h1>Evaluación de competencias del estudiante de pregrado</h1>
+    <h1>Evaluación de competencias del estudiante de posgrado</h1>
 
     <div style="width:100%; text-align: right;">
         <p><span style="font-weight:bold">Fecha: </span>{{ $doc->created_at->format('d/m/Y') }}</p>

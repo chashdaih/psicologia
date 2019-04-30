@@ -20,28 +20,34 @@
                 </tr>
             </thead>
             <tbody>
-                {{-- @foreach ($records as $record)
+                @foreach ($records as $program)
+                @foreach ($program->fe2s as $fe2)
                 <tr>
                     <td>
-                        {{ $record->student->nombre_t }}
+                        {{ $fe2->full_name }}
                     </td>
                     <td>
-                        @if ()
-                            
-                        @endif
-                    </td>
-                    <td>
-                        <a href="{{ route($doc_code.'.show', $record->id) }}">
-                            <fai icon="file-code" size="2x" />
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ route($doc_code.'_pdf', $record->id) }}">
+                        <a href="{{ route($doc_code.'_download', $program->id_practica."_".$fe2->num_cuenta."_0") }}">
                             <fai icon="file-pdf" size="2x" />
                         </a>
                     </td>
-                </tr>
-                @endforeach --}}
+                    <td>
+                        @if ($fe2->pivot->evaluation_stage > 0)
+                        <a href="{{ route($doc_code.'_download', $program->id_practica."_".$fe2->num_cuenta."_1") }}">
+                            <fai icon="file-pdf" size="2x" />
+                        </a>  
+                        @endif
+                    </td>
+                    <td>
+                        @if ($fe2->pivot->evaluation_stage > 1)
+                        <a href="{{ route($doc_code.'_download', $program->id_practica."_".$fe2->num_cuenta."_2") }}">
+                            <fai icon="file-pdf" size="2x" />
+                        </a>  
+                        @endif
+                    </td>
+                </tr>    
+                @endforeach
+                @endforeach
             </tbody>
         </table>
     </div>

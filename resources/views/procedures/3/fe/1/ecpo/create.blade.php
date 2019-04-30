@@ -9,7 +9,7 @@
                 <li class="is-active"><a href="#" aria-current="page">{{ $doc_name }}</a></li>
             </ul> --}}
         </nav>
-        <h1 class="title">Evaluación de competencias del estudiante de pregrado</h1>
+        <h1 class="title">Evaluación de competencias del estudiante de posgrado</h1>
         <ecpr-form inline-template :fields={{ $doc }} url={{ route($doc_code.'.store') }}>
             <form @submit.prevent="onSubmit">
                 <div class="field">

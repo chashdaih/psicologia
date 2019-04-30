@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Supervisor;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -37,6 +38,18 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
+        // $supervisors = Supervisor::whereRaw("num_trabajador REGEXP '^[0-9]+$'")->take(10)->get();
+
+        // $supervisors = Supervisor::where('nombre', 'violeta')->get();
+        // foreach ($supervisors as $supervisor) {
+        //     User::create([
+        //         'email' => $supervisor->correo,
+        //         'number' => $supervisor->num_trabajador,
+        //         'password' => Hash::make($supervisor->password),
+        //         'type' => 2
+        //     ]);
+        // }
+        
         $this->middleware('guest');
     }
 
