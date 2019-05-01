@@ -59,7 +59,8 @@ class Fe2Controller extends Controller
         if($path) {
             $record->save();
         }
-        return view($this->base_url.'.index', $this->params);
+        // return view($this->base_url.'.index', $this->params);
+        return redirect()->route($this->doc_code.'.index');
     }
 
     protected function validateForm()

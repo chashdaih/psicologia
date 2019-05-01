@@ -177,7 +177,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     var fields = {
-      curp: 0,
+      FE3FDG_id: 0,
       center: 0,
       program: '',
       student: 1,
@@ -1255,7 +1255,7 @@ function isDate18orMoreYearsOld(dateString) {
   methods: {
     onSubmit: function onSubmit() {
       this.form.post(this.url).then(function (response) {
-        window.location = "/"; // console.log(response);
+        window.location = this.url; // console.log(response);
       });
     },
     checkIfOver18: function checkIfOver18() {
@@ -1685,8 +1685,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.form.curp,
-                        expression: "form.curp"
+                        value: _vm.form.FE3FDG_id,
+                        expression: "form.FE3FDG_id"
                       }
                     ],
                     attrs: { required: "" },
@@ -1702,7 +1702,7 @@ var render = function() {
                           })
                         _vm.$set(
                           _vm.form,
-                          "curp",
+                          "FE3FDG_id",
                           $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
@@ -1718,7 +1718,7 @@ var render = function() {
                     _vm._l(_vm.fdgs, function(fdg) {
                       return _c(
                         "option",
-                        { key: fdg.id, domProps: { value: fdg.curp } },
+                        { key: fdg.id, domProps: { value: fdg.id } },
                         [
                           _vm._v(
                             _vm._s(
@@ -6877,8 +6877,8 @@ function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Apache24\htdocs\agenda\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Apache24\htdocs\agenda\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Apache24\htdocs\psicologia\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Apache24\htdocs\psicologia\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -10,6 +10,6 @@ class Fe3cdr extends Model
     
     public function patient()
     {
-        return $this->belongsTo(FE3FDG::class, 'curp', 'curp');
+        return $this->belongsTo(FE3FDG::class, 'FE3FDG_id', 'id');
     }
 }

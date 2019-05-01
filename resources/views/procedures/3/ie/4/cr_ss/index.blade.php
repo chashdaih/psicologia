@@ -5,7 +5,6 @@
     <div class="container">
         @include('layouts.breadcrumbs')
         <h1 class="title">{{ $bread->last()['title'] }}</h1>
-        {{-- <p class="subtitle">Elige una opción</p> --}}
         <div class="container">
             <button class="button"><a href="{{ route($doc_code.'.create') }}">Subir archivo</a></button>
         </div>

@@ -908,7 +908,7 @@ export default {
     methods: {
         onSubmit() {
             this.form.post(this.url).then(function(response) {
-                window.location = "/";
+                window.location = this.url;
                 // console.log(response);
             });
         },

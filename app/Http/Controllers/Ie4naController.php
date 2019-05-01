@@ -55,7 +55,8 @@ class Ie4naController extends Controller
         if ($path) {
             $ie4->save();
         }
-        return view($this->base_url.'.index', $this->params);
+        // return view($this->base_url.'.index', $this->params);
+        return redirect()->route($this->doc_code.'.index');
     }
 
     protected function validateForm()
