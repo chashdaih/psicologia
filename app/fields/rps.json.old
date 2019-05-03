@@ -2,63 +2,63 @@
     {
         "name": "Programa",
         "fields": {
-            "programa": {
+            "program_name": {
                 "title": "Nombre del programa",
                 "type": "text"
             },
-            "escenario": {
+            "scene": {
                 "title": "Escenario de práctica",
                 "type": "text"
             },
-            "direccion": {
+            "scene_address": {
                 "title": "Dirección del escenario",
                 "type": "text"
             },
-            "institucion": {
+            "scene_institution": {
                 "title": "Institución a la que pertenece el escenario",
                 "type": "text"
             },
-            "car_esc": {
+            "scene_chars": {
                 "title": "Características del escenario",
                 "type": "text"
             },
-            "convenio":{
+            "colaboration":{
                 "title": "Convenio o bases de colaboración",
                 "type": "boolean"
             },
-            "num_convenio": {
-                "title": "No. de convenio",
-                "type": "text"
-            },
-            "periodicidad": {
+            "anual": {
                 "title": "Semestral/Anual",
-                "type": "text"
+                "type": "select"
             },
-            "semestre": {
-                "title": "Semestres los que va dirigido",
-                "type": "text"
+            "start_date": {
+                "title": "Fecha de inicio",
+                "type": "date"
             },
-            "dias_pr": {
+            "end_date": {
+                "title": "Fecha de término",
+                "type": "date"
+            },
+            "days": {
                 "title": "Días",
                 "type": "text"
             },
-            "horario": {
+            "time": {
                 "title": "Horario",
                 "type": "text"
             },
-            "horas_sem": {
+            "weekly_hours": {
                 "title": "No de horas a cubrir a la semana",
                 "type": "number"
             },
-            "cupo": {
+            "max_students": {
                 "title": "No. máximo de alumnos",
                 "type": "number"
             },
-            "requisitos": {
+            "entry_requirements": {
                 "title": "Requisitos de ingreso al programa",
                 "type": "area"
             },
-            "asig_emp": {
+            "subjects_2008": {
                 "title": "Asignaturas académicas del plan curricular 2008 con las cuales empata el programa de práctica",
                 "type": "area"
             }
@@ -67,63 +67,63 @@
     {
         "name": "Programa de práctica en escenarios especializados",
         "fields": {
-            "resumen": {
+            "summary": {
                 "title": "Resumen (300 palabras)",
                 "type": "text"
             },
-            "justificacion": {
+            "justification": {
                 "title": "Justificación del programa",
                 "type": "text"
             },
-            "objetivo_g": {
+            "overall_objective": {
                 "title": "Objetivo general",
                 "type": "text"
             },
-            "objetivo_es": {
+            "specific_objectives": {
                 "title": "Objetivos específicos",
                 "type": "text"
             },
-            "mec_int": {
+            "theory_practical_interaction": {
                 "title": "Mecanismo de interacción teórico-práctica",
                 "type": "text"
             },
-            "enfoque": {
+            "service_approach": {
                 "title": "Enfoque del servicio",
                 "type": "text"
             },
-            "act_ac_sug": {
+            "suggested_courses": {
                 "title": "Actividad académica curricular sugerida",
                 "type": "text"
             },
-            "rel_serv_psic": {
+            "relation": {
                 "title": "Relación de servicios psicológicos",
                 "type": "text"
             },
-            "lin_pract": {
+            "rules": {
                 "title": "Lineamientos del reglamento de prácticas a los que se adhieren",
                 "type": "text"
             },
-            "mod_sup": {
+            "supervision_model": {
                 "title": "Modelo de supervisión",
                 "type": "text"
             },
-            "estra_ev_imp": {
+            "service_impact_evaluation": {
                 "title": "Estrategia de seguimiento y evaluación de impacto del servicio",
                 "type": "text"
             },
-            "competencias": {
+            "professional_skills": {
                 "title": "Competencias profesionales a desarollar",
                 "type": "text"
             },
-            "missing": {
+            "professional_skills_activities": {
                 "title": "Actividades a través de las cuales se alcanzan las competencias",
                 "type": "text"
             },
-            "estra_ev_comp": {
+            "professional_skills_evaluation": {
                 "title": "Estrategias de evaluación de competencias",
                 "type": "text"
             },
-            "criterios_eva": {
+            "accreditation_criteria": {
                 "title": "Criterios de acreditación",
                 "type": "text"
             }
@@ -132,7 +132,7 @@
     {
         "name": "Referencias (Mínimo 10 referencias en formato APA)",
         "fields": {
-            "referencias": {
+            "references_apa": {
                 "title": "",
                 "type": "area"
             }

@@ -10,10 +10,10 @@ class Appointment extends Model
     protected $primaryKey = 'id_cita';
     public $timestamps = false;
 
-    public function student()
-    {
-        return $this->belongsTo('App\Student', 'id_terapeuta');
-    }
+    // public function student()
+    // {
+    //     return $this->belongsTo('App\Student', 'id_terapeuta');
+    // }
 
     public function supervisor()
     {

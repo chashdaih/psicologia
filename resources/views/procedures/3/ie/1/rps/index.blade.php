@@ -15,6 +15,7 @@
                 <tr>
                     <th>Nombre del programa</th>
                     {{-- <th>Centro</th> --}}
+                    <th>Periodo</th>
                     <th>Ver registro online</th>
                     <th>Descargar pdf</th>
                 </tr>
@@ -23,18 +24,19 @@
                 @foreach ($records as $record)
                 <tr>
                     <td>
-                        {{ $record->program_name }}
+                        {{ $record->programa }}
                     </td>
                     {{-- <td>
                         {{ $record->center->nombre }}
                     </td> --}}
+                    <td>{{ $record->semestre_activo }}</td>
                     <td>
-                        <a href="{{ route($doc_code.'.show', $record->id) }}">
+                        <a href="{{ route($doc_code.'.show', $record->id_practica) }}">
                             <fai icon="file-code" size="2x" />
                         </a>
                     </td>
                     <td>
-                        <a href="{{ route($doc_code.'_pdf', $record->id) }}">
+                        <a href="{{ route($doc_code.'_pdf', $record->id_practica) }}">
                             <fai icon="file-pdf" size="2x" />
                         </a>
                     </td>

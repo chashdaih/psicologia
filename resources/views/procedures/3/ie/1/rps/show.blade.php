@@ -28,29 +28,6 @@
 
         </table>
         @endforeach
-        {{-- <h2>Programa</h2>
-        <table>
-            <tr>
-                <td>Nombre del programa</td>
-                <td>{{ $doc->program_name }}</td>
-            </tr>
-            <tr>
-                <td>Escenario de práctica</td>
-                <td>{{ $doc->scene }}</td>
-            </tr>
-            <tr>
-                <td>Dirección del escenario</td>
-                <td>{{ $doc->scene_address }}</td>
-            </tr>
-            <tr>
-                <td>Institución a la que pertenece el escenario</td>
-                <td>{{ $doc->scene }}</td>
-            </tr>
-            <tr>
-                <td>Características del escenario</td>
-                <td>{{ $doc->scene_chars}}</td>
-            </tr>
-        </table> --}}
     </div>
 </section>
 @endsection

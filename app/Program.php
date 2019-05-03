@@ -8,10 +8,19 @@ class Program extends Model
 {
     protected $table = 'practicas';
     protected $primaryKey = 'id_practica';
+
+    public $timestamps = false;
+
+    protected $guarded = [];
     
     public function center()
     {
         return $this->belongsTo(Center::class, 'id_centro', 'id_centro');
+    }
+
+    public function supervisor()
+    {
+        return $this->belongsTo('App\Supervisor', 'id_supervisor', 'id_supervisor');
     }
 
     public function partakers()
