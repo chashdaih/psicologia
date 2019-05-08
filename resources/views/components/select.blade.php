@@ -2,13 +2,13 @@
     {{ $errors->has($title) ? ":error=true" : '' }}
     title="{{ $title }}">
     <div>
-    <label class="label">{{ $field['title'] }}</label>
+    <label class="label">{{ $title }}</label>
     <div class="control">
         <div class="select">
-            <select name="{{ $title }}"  >
-                <option value="0" disabled>Seleccione una opción</option>
-                @foreach ($field['options'] as $option)
-                <option :value="{{ $option->id }}">{{ $option->name }}</option>
+            <select name="{{ $field }}"  >
+                {{-- <option value="0" disabled>Seleccione una opción</option> --}}
+                @foreach ($options as $building)
+                <option :value="{{ $building->id_centro }}">{{ $building->nombre }}</option>
                 @endforeach
             </select>
         </div>

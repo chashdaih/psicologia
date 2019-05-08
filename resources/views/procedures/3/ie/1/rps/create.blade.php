@@ -21,7 +21,26 @@
         @endif
         <form method="POST" action="{{ route($doc_code.'.store') }}">
             @csrf
-            @foreach ($sections as $section)
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title">PROGRAMA</p>
+                </header>
+                <div class="card-content">
+                    @component('components.text-input', [
+                        'title'=>'Nombre del programa',
+                        'field'=>'programa',
+                        'errors'=>$errors,
+                        'type'=> 'text'
+                        ])@endcomponent
+                    @component('components.select', [
+                        'title'=>'Centro al cual pertenece el programa',
+                        'field'=>'escenario',
+                        'errors'=>$errors,
+                        'options'=> $buildings
+                        ])@endcomponent
+                </div>
+            </div>
+            {{-- @foreach ($sections as $section)
             <h2>{{ $section['name'] }}</h2>
             @foreach ($section['fields'] as $title => $field)
             @php $type = $field['type'] @endphp
@@ -54,10 +73,10 @@
                 @break
             @endswitch
             @endforeach
-            @endforeach
+            @endforeach --}}
             <div class="field">
                 <div class="control">
-                    <button class="button is-link">Enviar</button>
+                    <button class="button is-link">Registrar</button>
                 </div>
             </div>
         </form>

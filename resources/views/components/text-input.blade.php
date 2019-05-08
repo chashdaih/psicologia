@@ -2,7 +2,8 @@
     {{ $errors->has($title) ? ":error=true" : '' }}
     title="{{ $title }}">
     <div>
-    <label class="label">{{ $field['title'] }}</label>
+    <label class="label">{{ $title }}</label>
+    {{-- <label class="label">{{ $field['title'] }}</label> --}}
     <div class="control">
         <input name="{{ $title }}"
             class="input{{ $errors->has($title)? ' is-danger':'' }}"
@@ -12,7 +13,7 @@
             min=0
             step=1
             @endif
-            placeholder="{{ $field['title'] }}"
+            placeholder="{{ $title }}"
             v-on:input="clearError"
             ref="{{ $title }}"
             >

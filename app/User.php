@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Supervisor::class, 'number', 'num_trabajador');
     }
+
+    public function partaker()
+    {
+        return $this->belongsTo('App\Partaker', 'number', 'num_cuenta');
+    }
 }

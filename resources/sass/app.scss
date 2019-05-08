@@ -1,7 +1,10 @@
+@import "~bulma/sass/utilities/_all";
 $navbar-background-color: #3298c8;
 $navbar-item-hover-background-color:#2E8CB8;
 $navbar-item-hover-color:rgb(147, 212, 241);
-@import "node_modules/bulma/bulma";
+// @import "node_modules/bulma/bulma";
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
 
 html {
     height: 100%;

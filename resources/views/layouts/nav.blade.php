@@ -30,6 +30,11 @@
                   <a href="#" class="navbar-item">Gestión de recursos humanos, materiales y financieros</a>
                 </div>
               </div>
+              @if (Auth::user()->type == 3)
+              <div class="navbar-item">
+                <a href="{{ route('insc') }}" class="navbar-item">Inscribirse a programa</a>
+              </div>   
+              @endif
               @endauth
             </div>
       
@@ -46,18 +51,22 @@
                     </div>
                 </div>
             @else
-                <p class="navbar-item">{{ Auth::user()->supervisor->full_name }}</p>
+                @if (Auth::user()->type == 3)
+                <p class="navbar-item">{{ Auth::user()->partaker->full_name }}</p>
+                @else
+                <p class="navbar-item">{{ Auth::user()->supervisor->full_name }}</p>   
+                @endif
                 <div class="navbar-item">
-                <div class="buttons">
-                    <p class="button is-light" href="{{ route('logout') }}"
-                    onclick="event.preventDefault();
-                                  document.getElementById('logout-form').submit();">
-                    Cerrar sesión
-                </p>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </div>
+                  <div class="buttons">
+                      <p class="button is-light" href="{{ route('logout') }}"
+                      onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                      Cerrar sesión
+                  </p>
+                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                          @csrf
+                      </form>
+                  </div>
                 </div>
             @endguest
           </div>

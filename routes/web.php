@@ -18,6 +18,7 @@ Route::group(['prefix' => '/procedures/3/', 'middleware' => 'auth'], function() 
     Route::get('{procedure}/{number}', 'ProceduresController@doc')->name('procedure');
     Route::group(['prefix' => 'ie'], function() {
         Route::get('/1/rps/pdf/{id}', 'RpsController@pdf')->name('rps_pdf');
+        Route::get('/1/rps/filter/{stage}', 'RpsController@filter')->name('rps_filter');
         Route::resource('/1/rps', 'RpsController');
         Route::get('/2/lps/pdf/{id}', 'LpsController@pdf')->name('lps_pdf');
         Route::resource('/2/lps', 'LpsController');
@@ -78,5 +79,10 @@ Route::get('/pdf/fe3/cdr/{id}', 'DynamicPDFController@fe3cdr')->name('cdr');
 Route::get('/html/fe3/cdr/{id}', 'DynamicPDFController@fe3cdr_html')->name('cdr_html');
 
 Route::post('/asignar', 'ListController@update');
+
+Route::get('/inscribirse', 'EnrollController@index')->name('insc');
+Route::get('/inscribirse/{id}', 'EnrollController@detail')->name('insc.det');
+Route::post('/inscribirse/{id}', 'EnrollController@enroll')->name('insc.enroll');
+Route::post('/save_enroll_docs', 'EnrollController@docs')->name('insc.docs');
 
 Auth::routes();

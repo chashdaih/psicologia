@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Supervisor;
+use App\Partaker;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -50,6 +51,15 @@ class RegisterController extends Controller
         //     ]);
         // }
         
+        $student = Partaker::where('num_cuenta', '408077109')->first();
+        User::create([
+            'email' => $student->correo,
+            'number' => $student->num_cuenta,
+            'password' => Hash::make($student->num_cuenta),
+            'type' => 3
+        ]);
+
+
         $this->middleware('guest');
     }
 

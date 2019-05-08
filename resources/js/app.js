@@ -10,11 +10,13 @@ import Test from './components/Test';
 import EcprForm from './components/EcprForm';
 import CollapsibleCard from './components/CollapsibleCard';
 import FileInput from './components/FileInput';
+import SmallFile from './components/SmallFile';
 import TextInput from './components/TextInput';
+import SortableTable from './components/SortableTable';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faFileCode, faFilePdf, faCheck, faTimes, faUpload } from '@fortawesome/free-solid-svg-icons';
-library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload);
+import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload } from '@fortawesome/free-solid-svg-icons';
+library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export const eventBus = new Vue();
@@ -36,6 +38,8 @@ const app = new Vue({
         EcprForm,
         CollapsibleCard,
         FileInput,
-        TextInput
+        SmallFile,
+        TextInput,
+        SortableTable
     }
 });

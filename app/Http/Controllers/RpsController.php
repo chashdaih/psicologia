@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Bread;
+use App\Building;
 use App\Option;
 use App\Program;
 use App\ProgramData;
@@ -35,19 +36,25 @@ class RpsController extends Controller
                     // ->where('semestre_activo', '2019-2')
                     ->orderBy('semestre_activo', 'desc')
                     ->get();
+        
+        $stages = $records->unique();
 
         // $records = Doc::where('supervisor_id', Auth::user()->supervisor->id_supervisor)->get();
         $this->params['records'] = $records;
+        $this->params['stages'] = $stages;
 
         return view($this->base_url.'.index', $this->params);
     }
 
     public function create()
     {
-        $this->params['sections'] = $this->getSections();
-        $values = new Doc();
-        $values->supervisor_id = Auth::user()->supervisor->id_supervisor;
-        $this->params['values'] = $values;
+        // $this->params['sections'] = $this->getSections();
+        // $values = new Doc();
+        // $values->supervisor_id = Auth::user()->supervisor->id_supervisor;
+        // $this->params['values'] = $values;
+
+        $buildings = Building::all();
+        $this->params['buildings']= $buildings;
 
         return view($this->base_url.'.create', $this->params);
     }
@@ -64,6 +71,7 @@ class RpsController extends Controller
 
     public function store(Request $request)
     {
+        dd($request);
         $valProgram = $this->validateProgram($request);
         $valProgram['id_supervisor'] = Auth::user()->supervisor->id_supervisor;
         $valProgram['coordinacion'] = 'CLINICA'; // TODO
@@ -186,5 +194,20 @@ class RpsController extends Controller
 
         $pdf->loadView($this->base_url.'.show', $this->params);
         return $pdf->download($this->doc_code.'.pdf');
+    }
+    
+    public function filter($stage)
+    {
+        if ($stage == "0") {
+            $records = Program::where('id_supervisor', Auth::user()->supervisor->id_supervisor)
+                    ->orderBy('semestre_activo', 'desc')
+                    ->get();
+        } else {
+            $records = Program::where('id_supervisor', Auth::user()->supervisor->id_supervisor)
+                        ->where('escenario', $stage)
+                        ->orderBy('semestre_activo', 'desc')
+                        ->get();
+        }
+        return $records;
     }
 }
