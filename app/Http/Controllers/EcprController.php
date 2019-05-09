@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Ecpr;
-use App\Student;
+// use App\Student;
+use App\Partaker;
 use Illuminate\Http\Request;
 
 class EcprController extends Controller
@@ -17,7 +18,7 @@ class EcprController extends Controller
 
     public function create()
     {
-        $students = Student::where('Sistema', 'Escolarizado')->get();
+        $students = Partaker::all();//Student::where('Sistema', 'Escolarizado')->get();
         // dd($students);
         $sections = collect(include('ecpr.php'));
         $ecpr = new Ecpr();

@@ -1,6 +1,6 @@
-@extends('layouts.pdf_base')
+@extends('layouts.pdf_otherbase')
 
-@section('content')
+{{-- @section('content')
 <section class="section">
     <h1 style="text-align:center;">Registro de prácticas supervisadas</h1>
     <div>
@@ -30,4 +30,4 @@
         @endforeach
     </div>
 </section>
-@endsection
+@endsection --}}

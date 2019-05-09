@@ -7,8 +7,8 @@
         <div class="select">
             <select name="{{ $field }}"  >
                 {{-- <option value="0" disabled>Seleccione una opción</option> --}}
-                @foreach ($options as $building)
-                <option :value="{{ $building->id_centro }}">{{ $building->nombre }}</option>
+                @foreach ($options as $option)
+                <option :value="{{ $option->primary_key }}">{{ $option->full_name }}</option>
                 @endforeach
             </select>
         </div>

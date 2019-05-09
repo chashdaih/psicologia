@@ -1,18 +1,18 @@
 <text-input class="field" inline-template
-    {{ $errors->has($title) ? ":error=true" : '' }}
+    {{ $errors->has($field) ? ":error=true" : '' }}
     title="{{ $title }}">
     <div>
-    <label class="label">{{ $field['title'] }}</label>
+    <label class="label">{{ $title }}</label>
     <div class="control">
-        <textarea name="{{ $title }}"
-            class="textarea{{ $errors->has($title)? ' is-danger':'' }}"
-            placeholder="{{ $field['title'] }}"
+        <textarea name="{{ $field }}"
+            class="textarea{{ $errors->has($field)? ' is-danger':'' }}"
+            placeholder="{{ $title }}"
             v-on:input="clearError"
             ref="{{ $title }}"
-            >{{  old($title) }}</textarea>
+            >{{  old($field) }}</textarea>
     </div>
-    @if ($errors->has($title))
-    <p v-if="hasError" class="help is-danger">{{ $errors->first($title) }}</p>
+    @if ($errors->has($field))
+    <p v-if="hasError" class="help is-danger">{{ $errors->first($field) }}</p>
     @endif
     </div>
 </text-input>

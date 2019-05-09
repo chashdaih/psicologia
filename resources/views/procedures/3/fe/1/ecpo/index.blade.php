@@ -12,7 +12,6 @@
             </ul>
         </nav>
         <h1 class="title">{{ $doc_name }}</h1>
-        {{-- <p class="subtitle">Elige una opción</p> --}}
         <button class="button"><a href="{{ route($doc_code.'.create') }}">Llenar nuevo cuestionario</a></button>
         <table class="table is-fullwidth">
             <thead>
@@ -26,7 +25,7 @@
                 @foreach ($records as $record)
                 <tr>
                     <td>
-                        {{ $record->its_student->nombre_t }}
+                        {{ $record->its_student }}
                     </td>
                     <td>
                         <a href="{{ route($doc_code.'.show', $record->id) }}">
@@ -38,12 +37,6 @@
                             <fai icon="file-pdf" size="2x" />
                         </a>
                     </td>
-                    {{-- <td>
-                        <a href="{{ route($doc_code.'.show', $record->id) }}"><i class="far fa-file-code fa-2x"></i></a>
-                    </td>
-                    <td>
-                        <a href="{{ route($doc_code.'_pdf', $record->id) }}"><i class="far fa-file-pdf fa-2x"></i></a>
-                    </td> --}}
                 </tr>
                 @endforeach
             </tbody>

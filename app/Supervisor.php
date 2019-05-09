@@ -14,4 +14,7 @@ class Supervisor extends Model
     public function getFullNameAttribute() {
         return $this->nombre.' '.$this->ap_paterno.' '.$this->ap_materno;
     }
+    public function getPrimaryKeyAttribute() {
+        return $this->id_supervisor;
+    }
 }

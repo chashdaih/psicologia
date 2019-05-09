@@ -30,7 +30,7 @@
             </a>
           </b-table-column>
           <b-table-column label="Duplicar programa" centered>
-            <a :href='url + "_pdf/" + props.row.id_practica'>
+            <a :href='url + "/pdf/" + props.row.id_practica'>
                 <fai icon="clone" size="2x" />
             </a>
           </b-table-column>

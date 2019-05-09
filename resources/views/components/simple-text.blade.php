@@ -1,8 +1,7 @@
 <text-input class="field" inline-template
-    {{ $errors->has($field) ? ":error=true" : '' }}
+    {{ $errors->has($title) ? ":error=true" : '' }}
     title="{{ $title }}">
     <div>
-    <label class="label">{{ $title }}</label>
     <div class="control">
         <input name="{{ $field }}"
             class="input{{ $errors->has($field)? ' is-danger':'' }}"

@@ -15,12 +15,16 @@ class Program extends Model
     
     public function center()
     {
-        return $this->belongsTo(Center::class, 'id_centro', 'id_centro');
+        return $this->belongsTo('App\Building', 'id_centro', 'id_centro');
     }
 
     public function supervisor()
     {
         return $this->belongsTo('App\Supervisor', 'id_supervisor', 'id_supervisor');
+    }
+    public function supervisord()
+    {
+        return $this->belongsTo('App\Supervisor', 'id_supervisord', 'id_supervisor');
     }
 
     public function partakers()

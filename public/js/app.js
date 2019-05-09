@@ -6170,7 +6170,7 @@ var render = function() {
                         "a",
                         {
                           attrs: {
-                            href: _vm.url + "_pdf/" + props.row.id_practica
+                            href: _vm.url + "/pdf/" + props.row.id_practica
                           }
                         },
                         [_c("fai", { attrs: { icon: "clone", size: "2x" } })],

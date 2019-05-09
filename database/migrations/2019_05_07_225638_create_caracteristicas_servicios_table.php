@@ -16,6 +16,11 @@ class CreateCaracteristicasServiciosTable extends Migration
         Schema::create('caracteristicas_servicios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('program_id');
+            // características del programa
+            $table->unsignedTinyInteger('dirigido_a');
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
+            // características del servicio
             $table->string('gen_horas_total');
             $table->boolean('gen_l')->default(false);
             $table->string('gen_hora_l')->nullable();
@@ -44,7 +49,12 @@ class CreateCaracteristicasServiciosTable extends Migration
             $table->string('serv_hora_s')->nullable();
             $table->unsignedTinyInteger('pacientes_semana');
             $table->unsignedTinyInteger('minimo_pacientes_semestre');
-            $table->unsignedTinyInteger('tipo_servicio');
+            $table->boolean('primer_contacto')->default(false);
+            $table->boolean('admision')->default(false);
+            $table->boolean('evaluacion')->default(false);
+            $table->boolean('orientacion')->default(false);
+            $table->boolean('intervencion')->default(false);
+            $table->boolean('egreso')->default(false);
             // problematica atendida
             $table->boolean('depresion')->default(false);
             $table->boolean('duelo')->default(false);
@@ -57,15 +67,16 @@ class CreateCaracteristicasServiciosTable extends Migration
             $table->boolean('desarrollo_ad')->default(false);
             $table->boolean('conductuales_niños')->default(false);
             $table->boolean('conductuales_ad')->default(false);
-            $table->boolean('auutolesion')->default(false);
+            $table->boolean('autolesion')->default(false);
             $table->boolean('ansiedad')->default(false);
             $table->boolean('estres')->default(false);
             $table->boolean('sexualidad')->default(false);
             $table->boolean('violencia')->default(false);
             $table->boolean('sustancias')->default(false);
-            $table->boolean('intervencion')->default(false);
+            $table->boolean('p_intervencion')->default(false);
             $table->string('otra_problematica')->nullable();
             $table->unsignedTinyInteger('enfoque_servicio');
+            $table->string('otro_enfoque')->nullable();
             // caracteristicas de la supervisión y evaluación
             $table->boolean('individual')->default(false);
             $table->boolean('grupal')->default(false);
@@ -84,12 +95,10 @@ class CreateCaracteristicasServiciosTable extends Migration
             $table->boolean('con_colegas')->default(false);
             $table->boolean('analisis_caso')->default(false);
             $table->string('ensenanza_otra')->nullable();
-            $table->text('contenido_tematico');
-            $table->text('seguimiento_impacto');
             // competencias profesionales a desarrollar
             $table->boolean('fundamentales')->default(false);
             $table->boolean('entrevista')->default(false);
-            $table->boolean('evaluacion')->default(false);
+            $table->boolean('c_evaluacion')->default(false);
             $table->boolean('impresion_diagnostica')->default(false);
             $table->boolean('implementacion_intervenciones')->default(false);
             $table->boolean('integracion_expediente')->default(false);

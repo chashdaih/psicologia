@@ -62,7 +62,7 @@ class Ecpr extends Model
 
     public function its_student()
     {
-        return $this->belongsTo(Student::class, 'student', 'id_usuario');
+        return $this->belongsTo('App\Partaker', 'student', 'num_cuenta');
     }
     public function its_supervisor()
     {
