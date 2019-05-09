@@ -85,4 +85,6 @@ Route::get('/inscribirse/{id}', 'EnrollController@detail')->name('insc.det');
 Route::post('/inscribirse/{id}', 'EnrollController@enroll')->name('insc.enroll');
 Route::post('/save_enroll_docs', 'EnrollController@docs')->name('insc.docs');
 
+Route::resource('/evaluar', 'EvaluateStudentController');
+
 Auth::routes();

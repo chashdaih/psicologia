@@ -33,7 +33,11 @@
               @if (Auth::user()->type == 3)
               <div class="navbar-item">
                 <a href="{{ route('insc') }}" class="navbar-item">Inscribirse a programa</a>
-              </div>   
+              </div>
+              @else
+              <div class="navbar-item">
+                <a href="{{ route('evaluar.index') }}" class="navbar-item">Evaluar estudiante</a>
+              </div>
               @endif
               @endauth
             </div>

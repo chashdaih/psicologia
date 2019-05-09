@@ -17,7 +17,7 @@ class CreateFe3cdrsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             // identification
-            $table->unsignedBigInteger('FE3FDG_id');
+            $table->unsignedBigInteger('patient_id');
             $table->unsignedTinyInteger('center');
             $table->string('program');
             $table->unsignedTinyInteger('student');
@@ -252,7 +252,7 @@ class CreateFe3cdrsTable extends Migration
             $table->unsignedTinyInteger('susothscore')->nullable();
             $table->unsignedTinyInteger('susothint')->nullable();
 
-            $table->foreign('FE3FDG_id')->references('id')->on('FE3FDG');
+            // $table->foreign('FE3FDG_id')->references('id')->on('FE3FDG');
         });
     }
 

@@ -14,9 +14,12 @@
             <thead>
                 <tr>
                     <th>Nombre del estudiante</th>
-                    <th>Evaluación inicial</th>
-                    <th>Evaluación intermedia</th>
-                    <th>Evaluación final</th>
+                    <th>Evaluación 1</th>
+                    <th>Evaluación 2</th>
+                    <th>Evaluación 3</th>
+                    <th>Evaluación 4</th>
+                    <th>Evaluación 5</th>
+                    <th>Evaluación 6</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,6 +44,27 @@
                     <td>
                         @if ($fe2->pivot->evaluation_stage > 1)
                         <a href="{{ route($doc_code.'_download', $program->id_practica."_".$fe2->num_cuenta."_2") }}">
+                            <fai icon="file-pdf" size="2x" />
+                        </a>  
+                        @endif
+                    </td>
+                    <td>
+                        @if ($fe2->pivot->evaluation_stage > 2)
+                        <a href="{{ route($doc_code.'_download', $program->id_practica."_".$fe2->num_cuenta."_3") }}">
+                            <fai icon="file-pdf" size="2x" />
+                        </a>  
+                        @endif
+                    </td>
+                    <td>
+                        @if ($fe2->pivot->evaluation_stage > 3)
+                        <a href="{{ route($doc_code.'_download', $program->id_practica."_".$fe2->num_cuenta."_4") }}">
+                            <fai icon="file-pdf" size="2x" />
+                        </a>  
+                        @endif
+                    </td>
+                    <td>
+                        @if ($fe2->pivot->evaluation_stage > 4)
+                        <a href="{{ route($doc_code.'_download', $program->id_practica."_".$fe2->num_cuenta."_5") }}">
                             <fai icon="file-pdf" size="2x" />
                         </a>  
                         @endif

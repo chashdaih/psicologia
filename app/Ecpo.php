@@ -60,9 +60,9 @@ class Ecpo extends Model
         'q73' => 0,
     ];
 
-    public function its_student()
+    public function partaker()
     {
-        return $this->belongsTo(Student::class, 'student', 'id_usuario');
+        return $this->belongsTo('App\Partaker', 'student', 'num_cuenta');
     }
     public function its_supervisor()
     {

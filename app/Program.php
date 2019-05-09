@@ -32,6 +32,11 @@ class Program extends Model
         return $this->belongsToMany('App\Partaker', 'asigna_practica', 'id_practica', 'id_participante');
     }
 
+    public function evaluations()
+    {
+        return $this->belongsToMany('App\EvaluateStudent','participante', 'partaker_id', 'id_participante');
+    }
+
     public function ie4s()
     {
         return $this->belongsToMany('App\Partaker', 'ie4s', 'program_id', 'partaker_id');

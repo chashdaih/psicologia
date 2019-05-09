@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Building;
 use App\Fe3cdr;
-use App\FE3FDG;
+// use App\FE3FDG;
+use App\Patient;
 use App\Http\Requests\StoreFe3cdr;
 use Illuminate\Http\Request;
 
@@ -64,7 +65,8 @@ class Fe3cdrController extends Controller
                 ]
             ]
         ]);
-        $fdgs = FE3FDG::select('id','curp', 'name', 'last_name', 'mothers_name')->get();
+        // $fdgs = FE3FDG::select('id','curp', 'name', 'last_name', 'mothers_name')->get();
+        $fdgs = Patient::all();
         $programs = Building::all();
         return view('procedures.3.fe.3.cdr.create', compact('sections', 'fdgs', 'programs'));
     }

@@ -177,7 +177,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     var fields = {
-      FE3FDG_id: 0,
+      patient_id: 0,
       center: 0,
       program: '',
       student: 1,
@@ -1875,8 +1875,8 @@ var render = function() {
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.form.FE3FDG_id,
-                        expression: "form.FE3FDG_id"
+                        value: _vm.form.patient_id,
+                        expression: "form.patient_id"
                       }
                     ],
                     attrs: { required: "" },
@@ -1892,7 +1892,7 @@ var render = function() {
                           })
                         _vm.$set(
                           _vm.form,
-                          "FE3FDG_id",
+                          "patient_id",
                           $event.target.multiple
                             ? $$selectedVal
                             : $$selectedVal[0]
@@ -1908,15 +1908,15 @@ var render = function() {
                     _vm._l(_vm.fdgs, function(fdg) {
                       return _c(
                         "option",
-                        { key: fdg.id, domProps: { value: fdg.id } },
+                        { key: fdg.id, domProps: { value: fdg.id_paciente } },
                         [
                           _vm._v(
                             _vm._s(
-                              fdg.name +
+                              fdg.nombre +
                                 " " +
-                                fdg.last_name +
+                                fdg.a_paterno +
                                 " " +
-                                fdg.mothers_name
+                                fdg.a_materno
                             )
                           )
                         ]

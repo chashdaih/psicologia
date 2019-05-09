@@ -25,7 +25,7 @@
                 @foreach ($records as $record)
                 <tr>
                     <td>
-                        {{ $record->its_student }}
+                        {{ $record->partaker->full_name }}
                     </td>
                     <td>
                         <a href="{{ route($doc_code.'.show', $record->id) }}">

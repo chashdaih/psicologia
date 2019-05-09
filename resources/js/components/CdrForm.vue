@@ -8,9 +8,9 @@
                 <div class="field">
                     <div class="control">
                         <div class="select is-info">
-                            <select v-model="form.FE3FDG_id" required>
+                            <select v-model="form.patient_id" required>
                                 <option value="0" disabled>Por favor, seleccione un paciente</option>
-                                <option v-for="fdg in fdgs" :value="fdg.id" :key="fdg.id">{{ fdg.name + " " + fdg.last_name + " " + fdg.mothers_name }}</option>
+                                <option v-for="fdg in fdgs" :value="fdg.id_paciente" :key="fdg.id">{{ fdg.nombre + " " + fdg.a_paterno + " " + fdg.a_materno }}</option>
                             </select>
                         </div>
                     </div>
@@ -65,7 +65,7 @@ export default {
         }
     },
     created() {
-        let fields = {FE3FDG_id:0, center:0, program: '', student: 1, supervisor: 1};
+        let fields = {patient_id:0, center:0, program: '', student: 1, supervisor: 1};
         for (let section in this.sections) {
             let questions = this.sections[section].questions;
             for (let id in questions) {

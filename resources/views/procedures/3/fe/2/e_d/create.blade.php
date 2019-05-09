@@ -43,9 +43,12 @@
                 <div class="control">
                     <div class="select">
                         <select name="evaluation_stage">
-                            <option value="0">Inicial</option>
-                            <option value="1">Intermedia</option>
-                            <option value="2">Final</option>
+                            <option value="0">1</option>
+                            <option value="1">2</option>
+                            <option value="2">3</option>
+                            <option value="3">4</option>
+                            <option value="4">5</option>
+                            <option value="5">6</option>
                         </select>
                     </div>
                 </div>

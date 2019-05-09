@@ -18,4 +18,9 @@ class Partaker extends Model
         return $this->hasMany('App\Es', 'student_id', 'num_cuenta');
     }
 
+    public function evaluation()
+    {
+        return $this->belongsTo('App\EvaluateStudent', 'num_cuenta', 'partaker_id');
+    }
+
 }

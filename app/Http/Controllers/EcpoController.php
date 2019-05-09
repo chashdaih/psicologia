@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Ecpo;
-use App\Student;
+// use App\Student;
 use Illuminate\Http\Request;
 
 class EcpoController extends Controller

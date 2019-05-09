@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Document;
+use App\EvaluateStudent;
 use App\Program;
 use App\ProgramData;
 use App\ProgramPartaker;
@@ -58,6 +59,11 @@ class EnrollController extends Controller
             'historial_ac' => 0,
             'constancia' => 0,
             'id_tramite' => $rel->id_tramite
+        ]);
+
+        $evaluation = EvaluateStudent::create([
+            'program_id' => $id,
+            'partaker_id' => $partaker_id
         ]);
 
         return redirect()->route('insc')->with('message', "¡Éxito! Registrado al programa");
