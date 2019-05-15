@@ -1,0 +1,24 @@
+@import "~bulma/sass/utilities/_all";
+$navbar-background-color: #3298c8;
+$navbar-item-hover-background-color:#2E8CB8;
+$navbar-item-hover-color:rgb(147, 212, 241);
+// @import "node_modules/bulma/bulma";
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    background-color: #fbf3e8;
+}
+
+.navbar-item, .navbar-link {
+    color: white;
+}
+
+.navbar-dropdown>.navbar-item {
+    color: grey;
+}

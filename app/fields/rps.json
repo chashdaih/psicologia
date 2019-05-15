@@ -1,0 +1,141 @@
+[
+    {
+        "name": "Programa",
+        "fields": {
+            "programa": {
+                "title": "Nombre del programa",
+                "type": "text"
+            },
+            "escenario": {
+                "title": "Escenario de práctica",
+                "type": "text"
+            },
+            "direccion": {
+                "title": "Dirección del escenario",
+                "type": "text"
+            },
+            "institucion": {
+                "title": "Institución a la que pertenece el escenario",
+                "type": "text"
+            },
+            "car_esc": {
+                "title": "Características del escenario",
+                "type": "text"
+            },
+            "convenio":{
+                "title": "Convenio o bases de colaboración",
+                "type": "boolean"
+            },
+            "num_convenio": {
+                "title": "No. de convenio",
+                "type": "text"
+            },
+            "periodicidad": {
+                "title": "Semestral/Anual",
+                "type": "text"
+            },
+            "semestre": {
+                "title": "Semestres los que va dirigido",
+                "type": "text"
+            },
+            "dias_pr": {
+                "title": "Días",
+                "type": "text"
+            },
+            "horario": {
+                "title": "Horario",
+                "type": "text"
+            },
+            "horas_sem": {
+                "title": "No de horas a cubrir a la semana",
+                "type": "number"
+            },
+            "cupo": {
+                "title": "No. máximo de alumnos",
+                "type": "number"
+            },
+            "requisitos": {
+                "title": "Requisitos de ingreso al programa",
+                "type": "area"
+            },
+            "asig_emp": {
+                "title": "Asignaturas académicas del plan curricular 2008 con las cuales empata el programa de práctica",
+                "type": "area"
+            }
+        }
+    },
+    {
+        "name": "Programa de práctica en escenarios especializados",
+        "fields": {
+            "resumen": {
+                "title": "Resumen (300 palabras)",
+                "type": "text"
+            },
+            "justificacion": {
+                "title": "Justificación del programa",
+                "type": "text"
+            },
+            "objetivo_g": {
+                "title": "Objetivo general",
+                "type": "text"
+            },
+            "objetivo_es": {
+                "title": "Objetivos específicos",
+                "type": "text"
+            },
+            "mec_int": {
+                "title": "Mecanismo de interacción teórico-práctica",
+                "type": "text"
+            },
+            "enfoque": {
+                "title": "Enfoque del servicio",
+                "type": "text"
+            },
+            "act_ac_sug": {
+                "title": "Actividad académica curricular sugerida",
+                "type": "text"
+            },
+            "rel_serv_psic": {
+                "title": "Relación de servicios psicológicos",
+                "type": "text"
+            },
+            "lin_pract": {
+                "title": "Lineamientos del reglamento de prácticas a los que se adhieren",
+                "type": "text"
+            },
+            "mod_sup": {
+                "title": "Modelo de supervisión",
+                "type": "text"
+            },
+            "estra_ev_imp": {
+                "title": "Estrategia de seguimiento y evaluación de impacto del servicio",
+                "type": "text"
+            },
+            "competencias": {
+                "title": "Competencias profesionales a desarollar",
+                "type": "text"
+            },
+            "missing": {
+                "title": "Actividades a través de las cuales se alcanzan las competencias",
+                "type": "text"
+            },
+            "estra_ev_comp": {
+                "title": "Estrategias de evaluación de competencias",
+                "type": "text"
+            },
+            "criterios_eva": {
+                "title": "Criterios de acreditación",
+                "type": "text"
+            }
+        }
+    },
+    {
+        "name": "Referencias (Mínimo 10 referencias en formato APA)",
+        "fields": {
+            "referencias": {
+                "title": "",
+                "type": "area"
+            }
+        }
+    }
+]

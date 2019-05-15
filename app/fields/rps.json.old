@@ -1,0 +1,141 @@
+[
+    {
+        "name": "Programa",
+        "fields": {
+            "program_name": {
+                "title": "Nombre del programa",
+                "type": "text"
+            },
+            "scene": {
+                "title": "Escenario de práctica",
+                "type": "text"
+            },
+            "scene_address": {
+                "title": "Dirección del escenario",
+                "type": "text"
+            },
+            "scene_institution": {
+                "title": "Institución a la que pertenece el escenario",
+                "type": "text"
+            },
+            "scene_chars": {
+                "title": "Características del escenario",
+                "type": "text"
+            },
+            "colaboration":{
+                "title": "Convenio o bases de colaboración",
+                "type": "boolean"
+            },
+            "anual": {
+                "title": "Semestral/Anual",
+                "type": "select"
+            },
+            "start_date": {
+                "title": "Fecha de inicio",
+                "type": "date"
+            },
+            "end_date": {
+                "title": "Fecha de término",
+                "type": "date"
+            },
+            "days": {
+                "title": "Días",
+                "type": "text"
+            },
+            "time": {
+                "title": "Horario",
+                "type": "text"
+            },
+            "weekly_hours": {
+                "title": "No de horas a cubrir a la semana",
+                "type": "number"
+            },
+            "max_students": {
+                "title": "No. máximo de alumnos",
+                "type": "number"
+            },
+            "entry_requirements": {
+                "title": "Requisitos de ingreso al programa",
+                "type": "area"
+            },
+            "subjects_2008": {
+                "title": "Asignaturas académicas del plan curricular 2008 con las cuales empata el programa de práctica",
+                "type": "area"
+            }
+        }
+    },
+    {
+        "name": "Programa de práctica en escenarios especializados",
+        "fields": {
+            "summary": {
+                "title": "Resumen (300 palabras)",
+                "type": "text"
+            },
+            "justification": {
+                "title": "Justificación del programa",
+                "type": "text"
+            },
+            "overall_objective": {
+                "title": "Objetivo general",
+                "type": "text"
+            },
+            "specific_objectives": {
+                "title": "Objetivos específicos",
+                "type": "text"
+            },
+            "theory_practical_interaction": {
+                "title": "Mecanismo de interacción teórico-práctica",
+                "type": "text"
+            },
+            "service_approach": {
+                "title": "Enfoque del servicio",
+                "type": "text"
+            },
+            "suggested_courses": {
+                "title": "Actividad académica curricular sugerida",
+                "type": "text"
+            },
+            "relation": {
+                "title": "Relación de servicios psicológicos",
+                "type": "text"
+            },
+            "rules": {
+                "title": "Lineamientos del reglamento de prácticas a los que se adhieren",
+                "type": "text"
+            },
+            "supervision_model": {
+                "title": "Modelo de supervisión",
+                "type": "text"
+            },
+            "service_impact_evaluation": {
+                "title": "Estrategia de seguimiento y evaluación de impacto del servicio",
+                "type": "text"
+            },
+            "professional_skills": {
+                "title": "Competencias profesionales a desarollar",
+                "type": "text"
+            },
+            "professional_skills_activities": {
+                "title": "Actividades a través de las cuales se alcanzan las competencias",
+                "type": "text"
+            },
+            "professional_skills_evaluation": {
+                "title": "Estrategias de evaluación de competencias",
+                "type": "text"
+            },
+            "accreditation_criteria": {
+                "title": "Criterios de acreditación",
+                "type": "text"
+            }
+        }
+    },
+    {
+        "name": "Referencias (Mínimo 10 referencias en formato APA)",
+        "fields": {
+            "references_apa": {
+                "title": "",
+                "type": "area"
+            }
+        }
+    }
+]
