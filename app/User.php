@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'number', 'name', 'email', 'password',
+        'type', 'email', 'password',
     ];
 
     /**
@@ -29,11 +29,11 @@ class User extends Authenticatable
 
     public function supervisor()
     {
-        return $this->belongsTo(Supervisor::class, 'number', 'num_trabajador');
+        return $this->belongsTo('App\Supervisor', 'email', 'correo');
     }
 
     public function partaker()
     {
-        return $this->belongsTo('App\Partaker', 'number', 'num_cuenta');
+        return $this->belongsTo('App\Partaker', 'email', 'correo');
     }
 }

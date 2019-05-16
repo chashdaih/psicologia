@@ -1,4 +1,126 @@
-@extends('layouts.app')
+@extends('layouts.base')
+@section('content')
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-header-title">Registrar nuevo usuario</div>
+                    </div>
+                    <div class="card-content">
+                        <form method="POST" action="{{ route('register') }}">
+                        {{ csrf_field() }}
+                            <text-input class="field" inline-template
+                                {{ $errors->has('type') ? ":error=true" : '' }}
+                                title="type">
+                                <div>
+                                <label class="label">Tipo de usuario</label>
+                                <div class="control">
+                                    <div class="select">
+                                        <select name="type">
+                                            <option value=2>Supervisor</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                @if ($errors->has('type'))
+                                <p v-if="hasError" class="help is-danger">{{ $errors->first('type') }}</p>
+                                @endif
+                                </div>
+                            </text-input>
+                            @component('components.text-input', [
+                                'title'=>'Correo electrónico',
+                                'field'=>'email',
+                                'errors'=>$errors,
+                                'type'=> 'email'
+                                ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'Contraseña',
+                                'field'=>'password',
+                                'errors'=>$errors,
+                                'type'=> 'password'
+                                ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'Confirmar contraseña',
+                                'field'=>'password_confirmation',
+                                'errors'=>$errors,
+                                'type'=> 'password'
+                                ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'Nombre',
+                                'field'=>'nombre',
+                                'errors'=>$errors,
+                                'type'=> 'text'
+                                ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'Apellido paterno',
+                                'field'=>'ap_paterno',
+                                'errors'=>$errors,
+                                'type'=> 'text'
+                                ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'Apellido materno',
+                                'field'=>'ap_materno',
+                                'errors'=>$errors,
+                                'type'=> 'text'
+                                ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'Número de trabajador',
+                                'field'=>'num_trabajador',
+                                'errors'=>$errors,
+                                'type'=> 'text'
+                                ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'RFC',
+                                'field'=>'rfc',
+                                'errors'=>$errors,
+                                'type'=> 'text'
+                                ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'Adscripción',
+                                'field'=>'coordinacion',
+                                'errors'=>$errors,
+                                'type'=> 'text'
+                                ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'Nombramiento',
+                                'field'=>'nombramiento',
+                                'errors'=>$errors,
+                                'type'=> 'text'
+                                ])@endcomponent
+                            @component('components.select', [
+                                'title'=>'Centro al cual pertenece el usuario',
+                                'field'=>'id_centro',
+                                'errors'=>$errors,
+                                'options'=> $buildings
+                                ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'Teléfono',
+                                'field'=>'telefono',
+                                'errors'=>$errors,
+                                'type'=> 'text'
+                                ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'Celular',
+                                'field'=>'celular',
+                                'errors'=>$errors,
+                                'type'=> 'text'
+                                ])@endcomponent
+                            <div class="field">
+                                <p class="control">
+                                    <button class="button is-success">Registrar</button>
+                                </p>
+                             </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endsection
+
+{{-- @extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -74,4 +196,4 @@
         </div>
     </div>
 </div>
-@endsection
+@endsection --}}

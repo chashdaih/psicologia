@@ -8,8 +8,14 @@ class Supervisor extends Model
 {
     protected $table = 'supervisores';
     protected $primaryKey = 'id_supervisor';
+    public $timestamps = false;
 
-    // protected $appends = ['full_name'];
+    protected $guarded = [];
+
+    protected $attributes = [
+        'estatus' => 'Activa',
+        'password' => ''
+    ];
 
     public function getFullNameAttribute() {
         return $this->nombre.' '.$this->ap_paterno.' '.$this->ap_materno;

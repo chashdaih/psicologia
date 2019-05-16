@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Building;
+use App\Supervisor;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -47,11 +49,34 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => 'required|string|max:255',
+        $fields = [
+            'type' => 'required|integer',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+            'password' => 'required|string|confirmed',
+        ];
+
+        if($data['type'] == 2) {
+            $fields = array_merge($fields,[
+                'nombre' => 'required|string',
+                'ap_paterno' => 'required|string',
+                'ap_materno' => 'required|string',
+                'num_trabajador' => 'required|string',
+                'rfc' => 'required|string',
+                'coordinacion' => 'required|string',
+                'nombramiento' => 'required|string',
+                'id_centro' => 'required|integer',
+                'telefono' => 'required|string',
+                'celular' => 'required|string',
+            ]);
+        }
+
+        return Validator::make($data, $fields);
+    }
+
+    public function showRegistrationForm()
+    {
+        $buildings = Building::all();
+        return view('auth.register', compact('buildings'));
     }
 
     /**
@@ -62,8 +87,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        if ($data['type'] == 2) {
+            Supervisor::create([
+                'nombre' => $data['nombre'],
+                'ap_paterno' => $data['ap_paterno'],
+                'ap_materno' => $data['ap_materno'],
+                'coordinacion' => $data['coordinacion'],
+                'nombramiento' => $data['nombramiento'],
+                'telefono' => $data['telefono'],
+                'celular' => $data['celular'],
+                'correo' => $data['email'],
+                'num_trabajador' => $data['num_trabajador'],
+                'rfc' => $data['rfc'],
+                'tipo_supervisor' => $data['type'],
+                'id_centro' => $data['id_centro'],
+            ]);
+        }
+
         return User::create([
-            'name' => $data['name'],
+            'type' => $data['type'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
