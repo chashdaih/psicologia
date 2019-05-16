@@ -15,7 +15,7 @@
             placeholder="{{ $title }}"
             v-on:input="clearError"
             ref="{{ $title }}"
-            {{-- @if(!isset($nullable)) required @endif --}}
+            @if(!isset($nullable)) required @endif
             >
     </div>
     @if ($errors->has($field))

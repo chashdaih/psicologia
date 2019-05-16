@@ -9,8 +9,4 @@ class CaracteristicasServicio extends Model
     protected $guarded = [];
 
     public $timestamps = false;
-
-    protected $attributes = [
-        'gen_l' => false
-    ];
 }

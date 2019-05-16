@@ -21,8 +21,15 @@ class CreateCaracteristicasServiciosTable extends Migration
             $table->date('fecha_fin');
             // características del servicio
             $table->boolean('pre_pos');
-            $table->unsignedTinyInteger('pre')->nullable();
-            $table->unsignedTinyInteger('pos')->nullable();
+            // $table->unsignedTinyInteger('pre')->nullable(); // old
+            // $table->unsignedTinyInteger('pos')->nullable();
+            $table->boolean('quinto')->nullable();
+            $table->boolean('sexto')->nullable();
+            $table->boolean('septimo')->nullable();
+            $table->boolean('octavo')->nullable();
+            $table->boolean('especialidad')->nullable();
+            $table->boolean('maestria')->nullable();
+            $table->boolean('doctorado')->nullable();
             $table->unsignedTinyInteger('gen_horas_total');
             $table->boolean('gen_l')->default(false);
             $table->string('gen_hora_l')->nullable();

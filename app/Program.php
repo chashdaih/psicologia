@@ -14,6 +14,7 @@ class Program extends Model
     protected $guarded = [];
 
     protected $attributes = [
+        'id_supervisord' => '',
         'coordinacion'=> '',
         'descripcion'=> '',
         'nombre_supervisor'=> '',

@@ -13,6 +13,7 @@ use App\ProgramaSemana;
 use App\ProgramData;
 use App\Rps as Doc;
 use App\Supervisor;
+use App\SupInSitu;
 use App\Http\Requests\StoreProgramData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -25,7 +26,7 @@ class RpsController extends Controller
     protected $base_url;
     protected $params;
     
-    protected $programFields = ['cupo_actual', 'id_centro', 'id_supervisor', 'id_supervisord', 'periodicidad', 'programa', 'tipo'];
+    protected $programFields = ['cupo', 'cupo_actual', 'id_centro', 'id_supervisor', 'id_supervisord', 'periodicidad', 'programa', 'tipo'];
 
     public function __construct()
     {
@@ -77,7 +78,8 @@ class RpsController extends Controller
 
         CaracteristicasServicio::create(
             collect($request->only([
-                'fecha_inicio', 'fecha_fin', 'gen_horas_total', 'gen_l', 'gen_hora_l', 'gen_ma', 'pre_pos', 'pre', 'pos',
+                'fecha_inicio', 'fecha_fin', 'gen_horas_total', 'gen_l', 'gen_hora_l', 'gen_ma', 'pre_pos', //'pre', 'pos',
+                'quinto', 'sexto', 'septimo', 'octavo', 'especialidad', 'maestria', 'doctorado',
                 'gen_hora_ma', 'gen_mi', 'gen_hora_mi', 'gen_j', 'gen_hora_j', 'gen_v', 'gen_hora_v', 'gen_s',
                 'gen_hora_s', 'serv_horas_total', 'serv_l', 'serv_hora_l', 'serv_ma', 'serv_hora_ma', 'serv_mi',
                 'serv_hora_mi', 'serv_j', 'serv_hora_j', 'serv_v', 'serv_hora_v', 'serv_s', 'serv_hora_s',
@@ -109,6 +111,22 @@ class RpsController extends Controller
             $cuando = $request['cuando'][$key];
             $como = $request['como'][$key];
             CriteriosAcr::create(compact('program_id', 'criterio', 'cuando', 'como'));
+        }
+
+        // in situ supervisors
+        foreach ($request['reg_sup_id'] as $key => $value) {
+            $reg_sup_id = $value;
+            SupInSitu::create(compact('program_id', 'reg_sup_id'));
+        }
+        foreach ($request['full_name'] as $key => $value) {
+            $full_name = $value;
+            $ascription = $request['ascription'][$key];
+            $nomination = $request['nomination'][$key];
+            $phone = $request['phone'][$key];
+            $cellphone = $request['cellphone'][$key];
+            $email = $request['email'][$key];
+            $worker_number = $request['worker_number'][$key];
+            SupInSitu::create(compact('program_id', 'full_name', 'ascription', 'nomination', 'phone', 'cellphone', 'email', 'worker_number'));
         }
 
         return redirect()->route($this->doc_code.'.index');
@@ -161,20 +179,23 @@ class RpsController extends Controller
 
         $criteriosAc = CriteriosAcr::where('program_id', $id)->get();
         $this->params['criteriosAc'] = $criteriosAc;
+
+        $supsInSitu = SupInSitu::where('program_id', $id)->get();
+        $this->params['supsInSitu'] = $supsInSitu;
     }
     
-    public function filter($stage)
-    {
-        if ($stage == "0") {
-            $records = Program::where('id_supervisor', Auth::user()->supervisor->id_supervisor)
-                    ->orderBy('semestre_activo', 'desc')
-                    ->get();
-        } else {
-            $records = Program::where('id_supervisor', Auth::user()->supervisor->id_supervisor)
-                        ->where('escenario', $stage)
-                        ->orderBy('semestre_activo', 'desc')
-                        ->get();
-        }
-        return $records;
-    }
+    // public function filter($stage)
+    // {
+    //     if ($stage == "0") {
+    //         $records = Program::where('id_supervisor', Auth::user()->supervisor->id_supervisor)
+    //                 ->orderBy('semestre_activo', 'desc')
+    //                 ->get();
+    //     } else {
+    //         $records = Program::where('id_supervisor', Auth::user()->supervisor->id_supervisor)
+    //                     ->where('escenario', $stage)
+    //                     ->orderBy('semestre_activo', 'desc')
+    //                     ->get();
+    //     }
+    //     return $records;
+    // }
 }

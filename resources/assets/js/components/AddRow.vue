@@ -1,9 +1,10 @@
 <script>
 import TextInput from './TextInput';
+import RelatedInput from './RelatedInput';
 
 export default {
     components: {
-        TextInput
+        TextInput, RelatedInput
     },
     data() {
         return {

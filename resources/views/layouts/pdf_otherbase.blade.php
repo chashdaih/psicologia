@@ -137,34 +137,68 @@
         </table>
     </div>
     <div>
-        <p style="background-color:#96B804;font-family:fontB;text-align: center;">DATOS DEL SUPERVISOR IN SITU</p>
+        <p style="background-color:#96B804;font-family:fontB;text-align: center;">DATOS @if(count($supsInSitu) < 2) DEL SUPERVISOR @else DE LOS SUPERVISORES @endif IN SITU</p>
+        @foreach ($supsInSitu as $supInSitu)
+        @if ($supInSitu->reg_sup_id)
         <table style="width: 100%; table-layout: fixed">
             <tr>
                 <td class="left" ><p class="p-left">NOMBRE</p></td>
-                <td class="right"><p>{{ $doc->supervisord->full_name }}</p></td>
+                <td class="right"><p>{{ $supInSitu->supervisor->full_name }}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">ADSCRIPCIÓN</p></td>
-                <td class="right"><p>{{ $doc->supervisord->coordinacion }}</p></td>
+                <td class="right"><p>{{ $supInSitu->supervisor->coordinacion }}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">NOMBRAMIENTO</p></td>
-                <td class="right"><p>{{ $doc->supervisord->nombramiento }}</p></td>
+                <td class="right"><p>{{ $supInSitu->supervisor->nombramiento }}</p></td>
             </tr>
         </table>
         <table style="width: 100%; table-layout: fixed">
             <tr>
-                <td ><p style="text-align:center;"><span style="font-family:fontB;">Teléfono: </span>{{ $doc->supervisord->telefono }}</p></td>
-                <td ><p style="text-align:center;"><span style="font-family:fontB;">Celular: </span>{{ $doc->supervisord->celular }}</p></td>
-                <td ><p style="text-align:center;"><span style="font-family:fontB;">e-mail: </span>{{ $doc->supervisord->correo }}</p></td>
+                <td ><p style="text-align:center;"><span style="font-family:fontB;">Teléfono: </span>{{ $supInSitu->supervisor->telefono }}</p></td>
+                <td ><p style="text-align:center;"><span style="font-family:fontB;">Celular: </span>{{ $supInSitu->supervisor->celular }}</p></td>
+                <td ><p style="text-align:center;"><span style="font-family:fontB;">e-mail: </span>{{ $supInSitu->supervisor->correo }}</p></td>
             </tr>
         </table>
         <table style="width: 100%; table-layout: fixed">
             <tr>
                 <td class="left" ><p class="p-left">Número de trabajador: </p></td>
-                <td class="right"><p>{{ $doc->supervisord->num_trabajador }}</p></td>
+                <td class="right"><p>{{ $supInSitu->supervisor->num_trabajador }}</p></td>
             </tr>
         </table>
+        <br>
+        @else {{-- ELSE --}}
+        <table style="width: 100%; table-layout: fixed">
+            <tr>
+                <td class="left" ><p class="p-left">NOMBRE</p></td>
+                <td class="right"><p>{{ $supInSitu->full_name }}</p></td>
+            </tr>
+            <tr>
+                <td class="left"><p class="p-left">ADSCRIPCIÓN</p></td>
+                <td class="right"><p>{{ $supInSitu->ascription }}</p></td>
+            </tr>
+            <tr>
+                <td class="left"><p class="p-left">NOMBRAMIENTO</p></td>
+                <td class="right"><p>{{ $supInSitu->nomination }}</p></td>
+            </tr>
+        </table>
+        <table style="width: 100%; table-layout: fixed">
+            <tr>
+                <td ><p style="text-align:center;"><span style="font-family:fontB;">Teléfono: </span>{{ $supInSitu->phone }}</p></td>
+                <td ><p style="text-align:center;"><span style="font-family:fontB;">Celular: </span>{{ $supInSitu->cellphone }}</p></td>
+                <td ><p style="text-align:center;"><span style="font-family:fontB;">e-mail: </span>{{ $supInSitu->email }}</p></td>
+            </tr>
+        </table>
+        <table style="width: 100%; table-layout: fixed">
+            <tr>
+                <td class="left" ><p class="p-left">Número de trabajador: </p></td>
+                <td class="right"><p>{{ $supInSitu->worker_number }}</p></td>
+            </tr>
+        </table>
+        <br>
+        @endif
+        @endforeach
     </div>
     <div>
         <p style="background-color:#96B804;font-family:fontB;text-align: center;">CARACTERISTICAS DEL PROGRAMA</p>

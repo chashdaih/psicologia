@@ -10,10 +10,13 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _TextInput__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TextInput */ "./resources/assets/js/components/TextInput.vue");
+/* harmony import */ var _RelatedInput__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RelatedInput */ "./resources/assets/js/components/RelatedInput.vue");
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    TextInput: _TextInput__WEBPACK_IMPORTED_MODULE_0__["default"]
+    TextInput: _TextInput__WEBPACK_IMPORTED_MODULE_0__["default"],
+    RelatedInput: _RelatedInput__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
@@ -1524,9 +1527,12 @@ _fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_0__["library"].add(_f
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
+/* harmony import */ var _TextInput__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TextInput */ "./resources/assets/js/components/TextInput.vue");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    TextInput: _TextInput__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   props: {
     oldValue: {
       "default": 0

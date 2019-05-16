@@ -28,7 +28,7 @@ class StoreProgramData extends FormRequest
             'cupo_actual' => 'required|integer|min:0',
             'id_centro' => 'required',
             'id_supervisor' => 'required',
-            'id_supervisord' => 'required',
+            // 'id_supervisord' => 'required',
             'periodicidad' => 'required|integer|min:0|max:4',
             'programa' => 'required',
             'tipo' => 'required',
