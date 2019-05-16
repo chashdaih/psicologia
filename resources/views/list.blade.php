@@ -3,7 +3,9 @@
 @section('content')
 <section class="section">
     <div class="container">
-        <h1 class="title">Citas del día</h1>
+        <h1 class="title">Bienvenido al sistema</h1>
+        <a href="{{ route('rps.create') }}">Registrar nuevo programa de servicios psicológicos a través de la formación supervisada</a>
+        {{-- <h1 class="title">Citas del día</h1>
         <h2 class="subtitle">Centro de Servicios Psicológicos Dr. Guillermo Dávila</h2>
         
         <table id="appointments-table" class="table is-striped is-hoverable">
@@ -31,7 +33,7 @@
                 </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table> --}}
     </div>
 </section>
 @endsection

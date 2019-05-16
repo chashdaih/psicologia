@@ -8,14 +8,17 @@ use App\Bread;
 use App\Building;
 use App\CaracteristicasServicio;
 use App\CriteriosAcr;
+use App\Notifications\ProgramRegistered;
 use App\Program;
 use App\ProgramaSemana;
 use App\ProgramData;
 use App\Rps as Doc;
+// use App\Mail\RpsMail;
 use App\Supervisor;
 use App\SupInSitu;
 use App\Http\Requests\StoreProgramData;
 use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Arr;
 
 class RpsController extends Controller
@@ -128,6 +131,8 @@ class RpsController extends Controller
             $worker_number = $request['worker_number'][$key];
             SupInSitu::create(compact('program_id', 'full_name', 'ascription', 'nomination', 'phone', 'cellphone', 'email', 'worker_number'));
         }
+
+        $user->notify(new ProgramRegistered($program_id));
 
         return redirect()->route($this->doc_code.'.index');
     }
