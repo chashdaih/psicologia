@@ -43,6 +43,15 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+
+        // $supervisors = Supervisor::distinct('correo')->where('correo', 'LIKE', '%@%.%')->pluck('correo');
+        // foreach ($supervisors as $sup) {
+        //     User::create([
+        //         'type' => 2,
+        //         'email' => $sup,
+        //         'password' => bcrypt(1234),
+        //     ]);
+        // }
     }
 
     /**
