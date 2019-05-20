@@ -1,7 +1,7 @@
 <nav id="app-nav" class="navbar has-shadow" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item" href="/">
-            Agenda
+            Inicio
           </a>
       
           <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -14,12 +14,12 @@
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
               @auth
-              <div class="navbar-item">
+              {{-- <div class="navbar-item">
                 <a href="/apartar" class="navbar-item">Apartar espacio</a>
               </div>
               <div class="navbar-item">
                 <a href="/asignar" class="navbar-item">Referir cita</a>
-              </div>
+              </div> --}}
               <div class="navbar-item has-dropdown is-hoverable">
                 <a href="{{ route('procedures') }}" class="navbar-link is-arrowless">Procedimientos</a>
                 <div class="navbar-dropdown">

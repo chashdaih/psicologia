@@ -20,7 +20,7 @@ class Program extends Model
         'nombre_supervisor'=> '',
         'Piloto'=> 0,
         'problema'=> '',
-        'semestre_activo'=> '2019-2', // TODO get global variable
+        'semestre_activo'=> '2020-1', // TODO get global variable
         'tipo_programa'=> '', 
         'titulacion'=> 0,
         'convenio'=> '',

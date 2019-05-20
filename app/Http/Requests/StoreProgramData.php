@@ -25,7 +25,7 @@ class StoreProgramData extends FormRequest
     {
         return [
             // program
-            'cupo_actual' => 'required|integer|min:0',
+            'cupo' => 'required|integer|min:0',
             'id_centro' => 'required',
             'id_supervisor' => 'required',
             // 'id_supervisord' => 'required',

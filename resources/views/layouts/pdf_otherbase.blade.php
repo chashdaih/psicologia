@@ -26,7 +26,15 @@
         height: 50px;
         text-align: center;
     }
-    .header p{
+    .unam {
+        position: absolute;
+    }
+    .psico {
+        position: absolute;
+        top:0;
+        right: 17mm;
+    }
+    .header p {
         margin:0;
     }
     table {
@@ -73,13 +81,13 @@
         }
     </script>
     <div class="header">
-        {{-- <img style="position: absolute" src="{{ asset('img/unam.jpg') }}"> --}}
+        <img class="unam" src="{{ asset('img/unam.jpg') }}">
         <div class="block" style="text-align: center;">
             <p style="font-size:12pt;">Coordinación de Centros de Formación y Servicios Psicológicos</p>
             <p style="font-size:10pt;">FACULTAD DE PSICOLOGÍA, UNAM</p>
             <p style="font-size:9pt;font-family: fontB;">REGISTRO DE PROGRAMAS DE SERVICIOS PSICOLÓGICOS A TRAVÉS DE LA FORMACIÓN SUPERVISADA</p>
         </div>
-        {{-- <img class="block" src="{{ asset('img/psi.jpg') }}"> --}}
+        <img class="psico" src="{{ asset('img/psi.jpg') }}">
     </div>
     <div>
         <p style="font-size:10pt;">Los Programas de Servicios Psicológicos a través de la Formación Supervisada

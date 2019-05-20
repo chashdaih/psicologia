@@ -9,7 +9,7 @@
             placeholder="{{ $title }}"
             v-on:input="clearError"
             ref="{{ $title }}"
-            >{{  old($field) }}</textarea>
+            >{{  old($field, isset($prev)?$prev:null) }}</textarea>
     </div>
     @if ($errors->has($field))
     <p v-if="hasError" class="help is-danger">{{ $errors->first($field) }}</p>

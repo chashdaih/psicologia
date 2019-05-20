@@ -5,10 +5,13 @@
     <label class="label">{{ $title }}</label>
     <div class="control">
         <div class="select">
-            <select name="{{ $field }}"  >
-                {{-- <option value="0" disabled>Seleccione una opción</option> --}}
+            <select name="{{ $field }}">
                 @foreach ($options as $option)
-                <option :value="{{ $option->primary_key }}">{{ $option->full_name }}</option>
+                <option :value="{{ $option->primary_key }}"
+                    @if ($option->primary_key == old($field, isset($prev)?$prev:null))
+                    selected="selected"
+                    @endif
+                    >{{ $option->full_name }}</option>
                 @endforeach
             </select>
         </div>

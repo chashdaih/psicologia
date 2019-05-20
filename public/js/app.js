@@ -1670,31 +1670,79 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['ldata', 'url', 'stages'],
+  props: ['ldata', 'url', 'stages', 'supervisors'],
   data: function data() {
     return {
       data: this.ldata,
-      isPaginated: true,
-      isPaginationSimple: false,
-      defaultSortDirection: "asc",
-      currentPage: 1,
-      perPage: 5,
-      selected_stage: null
+      selected_stage: 0,
+      selected_supervisor: 0,
+      semestres: ['2020-1', '2019-2', '2019-1', '2018-2', '2018-1', '2017-2'],
+      selected_sem: '2020-1',
+      isLoading: false
     };
   },
   methods: {
-    filterByStage: function filterByStage() {
+    filter: function filter() {
       var _this = this;
 
-      // if (this.selected_stage != "") {
-      axios.get(this.url + "/filter/" + this.selected_stage).then(function (response) {
+      this.isLoading = true;
+      axios.get(this.url + "/filter/" + this.selected_stage + "/" + this.selected_supervisor + "/" + this.selected_sem).then(function (response) {
+        _this.isLoading = false;
         _this.data = response.data;
       })["catch"](function (error) {
-        console.log(error);
+        this.isLoading = false; // console.log(error);
+        // TODO alert error
       });
-    } // }
-
+    }
   }
 });
 
@@ -6124,130 +6172,282 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container", attrs: { id: "app" } }, [
-    _c(
-      "section",
-      [
-        _c(
-          "form",
-          { attrs: { action: "" } },
-          [
-            _c(
-              "b-field",
-              { attrs: { label: "Filtrar por escenario", horizontal: "" } },
-              [
-                _c(
-                  "b-select",
-                  {
-                    attrs: { placeholder: "Selecciona un escenario" },
-                    on: {
-                      input: function($event) {
-                        return _vm.filterByStage()
-                      }
-                    },
-                    model: {
-                      value: _vm.selected_stage,
-                      callback: function($$v) {
-                        _vm.selected_stage = $$v
-                      },
-                      expression: "selected_stage"
+  return _c(
+    "div",
+    [
+      _c(
+        "form",
+        { attrs: { action: "" } },
+        [
+          _c(
+            "b-field",
+            { attrs: { label: "Filtrar por escenario", horizontal: "" } },
+            [
+              _c(
+                "b-select",
+                {
+                  attrs: { placeholder: "Selecciona un escenario" },
+                  on: {
+                    input: function($event) {
+                      return _vm.filter()
                     }
                   },
-                  [
-                    _c("option", { attrs: { value: "0" } }, [
-                      _vm._v("Todos los escenarios")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.stages, function(stage, index) {
-                      return _c(
-                        "option",
-                        { key: index, domProps: { value: stage.escenario } },
-                        [_vm._v(_vm._s(stage.escenario))]
-                      )
-                    })
-                  ],
-                  2
-                )
-              ],
-              1
-            )
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c("b-table", {
-          attrs: { data: _vm.data },
-          scopedSlots: _vm._u([
-            {
-              key: "default",
-              fn: function(props) {
-                return [
-                  _c(
-                    "b-table-column",
-                    {
-                      attrs: {
-                        field: "programa",
-                        label: "Nombre del programa",
-                        sortable: ""
-                      }
+                  model: {
+                    value: _vm.selected_stage,
+                    callback: function($$v) {
+                      _vm.selected_stage = $$v
                     },
-                    [_vm._v(_vm._s(props.row.programa))]
-                  ),
+                    expression: "selected_stage"
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "0" } }, [
+                    _vm._v("Todos los escenarios")
+                  ]),
                   _vm._v(" "),
-                  _c(
-                    "b-table-column",
-                    {
-                      attrs: {
-                        field: "semestre_activo",
-                        label: "Periodo",
-                        sortable: ""
-                      }
+                  _vm._l(_vm.stages, function(stage) {
+                    return _c(
+                      "option",
+                      {
+                        key: stage.id_centro,
+                        domProps: { value: stage.id_centro }
+                      },
+                      [_vm._v(_vm._s(stage.nombre))]
+                    )
+                  })
+                ],
+                2
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c(
+        "form",
+        { attrs: { action: "" } },
+        [
+          _c(
+            "b-field",
+            { attrs: { label: "Filtrar por supervisor", horizontal: "" } },
+            [
+              _c(
+                "b-select",
+                {
+                  attrs: { placeholder: "Selecciona un supervisor" },
+                  on: {
+                    input: function($event) {
+                      return _vm.filter()
+                    }
+                  },
+                  model: {
+                    value: _vm.selected_supervisor,
+                    callback: function($$v) {
+                      _vm.selected_supervisor = $$v
                     },
-                    [_vm._v(_vm._s(props.row.semestre_activo))]
-                  ),
+                    expression: "selected_supervisor"
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "0" } }, [
+                    _vm._v("Todos los supervisores")
+                  ]),
                   _vm._v(" "),
-                  _c(
-                    "b-table-column",
-                    { attrs: { label: "Descargar pdf", centered: "" } },
-                    [
-                      _c(
-                        "a",
-                        {
-                          attrs: { href: _vm.url + "/" + props.row.id_practica }
-                        },
-                        [
-                          _c("fai", { attrs: { icon: "file-pdf", size: "2x" } })
-                        ],
-                        1
-                      )
-                    ]
-                  ),
+                  _vm._l(_vm.supervisors, function(supervisor) {
+                    return _c(
+                      "option",
+                      {
+                        key: supervisor.id_supervisor,
+                        domProps: { value: supervisor.id_supervisor }
+                      },
+                      [_vm._v(_vm._s(supervisor.full_name))]
+                    )
+                  })
+                ],
+                2
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c(
+        "form",
+        { attrs: { action: "" } },
+        [
+          _c(
+            "b-field",
+            { attrs: { label: "Filtrar por periodo", horizontal: "" } },
+            [
+              _c(
+                "b-select",
+                {
+                  attrs: { placeholder: "Selecciona un periodo" },
+                  on: {
+                    input: function($event) {
+                      return _vm.filter()
+                    }
+                  },
+                  model: {
+                    value: _vm.selected_sem,
+                    callback: function($$v) {
+                      _vm.selected_sem = $$v
+                    },
+                    expression: "selected_sem"
+                  }
+                },
+                [
+                  _c("option", { attrs: { value: "0" } }, [
+                    _vm._v("Todos los periodos")
+                  ]),
                   _vm._v(" "),
-                  _c(
-                    "b-table-column",
-                    { attrs: { label: "Duplicar programa", centered: "" } },
-                    [
+                  _vm._l(_vm.semestres, function(sem) {
+                    return _c(
+                      "option",
+                      { key: sem, domProps: { value: sem } },
+                      [_vm._v(_vm._s(sem))]
+                    )
+                  })
+                ],
+                2
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _vm.data.length > 0
+        ? _c("b-table", {
+            attrs: {
+              data: _vm.data,
+              loading: _vm.isLoading,
+              paginated: true,
+              "per-page": 5
+            },
+            scopedSlots: _vm._u(
+              [
+                {
+                  key: "default",
+                  fn: function(props) {
+                    return [
                       _c(
-                        "a",
+                        "b-table-column",
                         {
                           attrs: {
-                            href: _vm.url + "/pdf/" + props.row.id_practica
+                            field: "programa",
+                            label: "Nombre del programa",
+                            sortable: ""
                           }
                         },
-                        [_c("fai", { attrs: { icon: "clone", size: "2x" } })],
-                        1
+                        [_vm._v(_vm._s(props.row.programa))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-table-column",
+                        {
+                          attrs: {
+                            field: "full_name",
+                            label: "Supervisor",
+                            sortable: ""
+                          }
+                        },
+                        [_vm._v(_vm._s(props.row.full_name))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-table-column",
+                        {
+                          attrs: {
+                            field: "semestre_activo",
+                            label: "Periodo",
+                            sortable: ""
+                          }
+                        },
+                        [_vm._v(_vm._s(props.row.semestre_activo))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-table-column",
+                        {
+                          attrs: {
+                            field: "centro",
+                            label: "Centro",
+                            sortable: ""
+                          }
+                        },
+                        [_vm._v(_vm._s(props.row.centro))]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-table-column",
+                        { attrs: { label: "Editar", centered: "" } },
+                        [
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href:
+                                  _vm.url +
+                                  "/" +
+                                  props.row.id_practica +
+                                  "/edit"
+                              }
+                            },
+                            [
+                              _c("fai", {
+                                attrs: { icon: "file-code", size: "2x" }
+                              })
+                            ],
+                            1
+                          )
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "b-table-column",
+                        { attrs: { label: "Descargar pdf", centered: "" } },
+                        [
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href: _vm.url + "/pdf/" + props.row.id_practica
+                              }
+                            },
+                            [
+                              _c("fai", {
+                                attrs: { icon: "file-pdf", size: "2x" }
+                              })
+                            ],
+                            1
+                          )
+                        ]
                       )
                     ]
-                  )
-                ]
-              }
-            }
-          ])
-        })
-      ],
-      1
-    )
-  ])
+                  }
+                }
+              ],
+              null,
+              false,
+              4268517151
+            )
+          })
+        : _c("p", [_vm._v("No hay registros con los filtros especificados")])
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -7656,8 +7856,8 @@ function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\Users\chas\Documents\code\psicologia\blog - Copy\resources\assets\js\app.js */"./resources/assets/js/app.js");
-module.exports = __webpack_require__(/*! D:\Users\chas\Documents\code\psicologia\blog - Copy\resources\assets\sass\app.scss */"./resources/assets/sass/app.scss");
+__webpack_require__(/*! C:\Apache24\htdocs\5-4\resources\assets\js\app.js */"./resources/assets/js/app.js");
+module.exports = __webpack_require__(/*! C:\Apache24\htdocs\5-4\resources\assets\sass\app.scss */"./resources/assets/sass/app.scss");
 
 
 /***/ })

@@ -15,7 +15,8 @@
             </ul>
         </div>
         @endif
-        <form method="POST" action="{{ route($doc_code.'.store') }}">
+        <form method="POST" action="{{ isset($program) ? route($doc_code.'.update', [$program->id_practica]) : route($doc_code.'.store') }}">
+            @if(isset($program)) <input name="_method" type="hidden" value="PUT"> @endif
             {{ csrf_field() }}
             <div class="card">
                 <header class="card-header">
@@ -26,13 +27,15 @@
                         'title'=>'Nombre del programa',
                         'field'=>'programa',
                         'errors'=>$errors,
-                        'type'=> 'text'
+                        'type'=> 'text',
+                        'prev' => isset($program) ? $program->programa : null
                         ])@endcomponent
                     @component('components.select', [
                         'title'=>'Centro al cual pertenece el programa',
                         'field'=>'id_centro',
                         'errors'=>$errors,
-                        'options'=> $buildings
+                        'options'=> $buildings,
+                        'prev' => isset($program) ? $program->id_centro : null
                         ])@endcomponent
                 </div>
             </div>
@@ -46,8 +49,10 @@
                         'title'=>'Supervisor académico',
                         'field'=>'id_supervisor',
                         'errors'=>$errors,
-                        'options'=> $supervisors
+                        'options'=> $supervisors,
+                        'prev' => isset($program) ? $program->id_supervisor : null
                         ])@endcomponent
+            @if (!isset($program))
                     <label class="label">Supervisor in situ</label>
                     <add-row inline-template>
                         <div>
@@ -125,6 +130,7 @@
                             <button class="button is-info" type="button" v-on:click="addRow">Añadir otro supervisor in situ</button>
                         </div>
                     </add-row>
+                    @endif
                 </div>
             </div>
             <br>
@@ -137,24 +143,25 @@
                         'title'=>'Resumen',
                         'field'=>'resumen',
                         'errors'=>$errors,
+                        'prev'=> isset($inf_prac) ? $inf_prac->resumen : null
                         ])@endcomponent
                     @component('components.area-input', [
                         'title'=>'Justificación',
                         'field'=>'justificacion',
                         'errors'=>$errors,
-                        'type'=> 'text'
+                        'prev'=> isset($inf_prac) ? $inf_prac->justificacion : null
                         ])@endcomponent
                     @component('components.area-input', [
                         'title'=>'Objetivo general',
                         'field'=>'objetivo_g',
                         'errors'=>$errors,
-                        'type'=> 'text'
+                        'prev'=> isset($inf_prac) ? $inf_prac->objetivo_g : null
                         ])@endcomponent
                     @component('components.area-input', [
                         'title'=>'Objetivos específicos',
                         'field'=>'objetivo_es',
                         'errors'=>$errors,
-                        'type'=> 'text'
+                        'prev'=> isset($inf_prac) ? $inf_prac->objetivo_es : null
                         ])@endcomponent
                     <text-input class="field" inline-template
                         {{ $errors->has('tipo') ? ":error=true" : '' }}
@@ -164,8 +171,12 @@
                         <div class="control">
                             <div class="select">
                                 <select name="tipo"> {{-- TODO cambiar esto de lugar --}}
-                                    <option value="CURRICULAR">Curricular</option>
-                                    <option value="EXTRACURRICULAR">Extracurricular</option>
+                                    <option value="CURRICULAR"
+                                     @if(old('tipo', isset($program)?$program->tipo:null) == "CURRICULAR") selected @endif 
+                                     >Curricular</option>
+                                    <option value="EXTRACURRICULAR"
+                                    @if(old('tipo', isset($program)?$program->tipo:null) == "EXTRACURRICULAR") selected="selected" @endif
+                                    >Extracurricular</option>
                                 </select>
                             </div>
                         </div>
@@ -182,10 +193,18 @@
                         <div class="control">
                             <div class="select">
                                 <select name="periodicidad"> {{-- TODO cambiar esto de lugar --}}
-                                    <option value=1>1</option>
-                                    <option value=2>2</option>
-                                    <option value=3>3</option>
-                                    <option value=4>4</option>
+                                    <option value=1
+                                    @if(old('periodicidad', isset($program)?$program->periodicidad:null) == 1) selected="selected" @endif
+                                    >1</option>
+                                    <option value=2
+                                    @if(old('periodicidad', isset($program)?$program->periodicidad:null) == 2) selected="selected" @endif
+                                    >2</option>
+                                    <option value=3
+                                    @if(old('periodicidad', isset($program)?$program->periodicidad:null) == 3) selected="selected" @endif
+                                    >3</option>
+                                    <option value=4
+                                    @if(old('periodicidad', isset($program)?$program->periodicidad:null) == 4) selected="selected" @endif
+                                    >4</option>
                                 </select>
                             </div>
                         </div>
@@ -200,42 +219,27 @@
                             <div class="control">
                                 <div class="select">
                                     <select v-model="selected" name="pre_pos"> 
-                                        <option value=0>Pregrado</option>
-                                        <option value=1>Posgrado</option>
+                                        <option value=0
+                                        @if(old('pre_pos', isset($car_serv)?$car_serv->pre_pos:null) == 0) selected="selected" @endif
+                                        >Pregrado</option>
+                                        <option value=1
+                                        @if(old('pre_pos', isset($car_serv)?$car_serv->pre_pos:null) == 1) selected="selected" @endif
+                                        >Posgrado</option>
                                     </select>
                                 </div>
                             </div>
                             <template v-if="selected == 0">
                             <label class="label">Semestres a los que va dirigido el programa</label>
-                            @component('components.check', ['title'=>'5to', 'field'=>'quinto'])@endcomponent
-                            @component('components.check', ['title'=>'6to', 'field'=>'sexto'])@endcomponent
-                            @component('components.check', ['title'=>'7mo', 'field'=>'septimo'])@endcomponent
-                            @component('components.check', ['title'=>'8vo', 'field'=>'octavo'])@endcomponent
-                            {{-- <div class="control">
-                                <div class="select">
-                                    <select name="pre"> 
-                                        <option value=5>5to</option>
-                                        <option value=6>6to</option>
-                                        <option value=7>7mo</option>
-                                        <option value=8>8vo</option>
-                                    </select>
-                                </div>
-                            </div> --}}
+                            @component('components.check', ['title'=>'5to', 'field'=>'quinto', 'prev' => isset($car_serv)?$car_serv->quinto:null])@endcomponent
+                            @component('components.check', ['title'=>'6to', 'field'=>'sexto', 'prev' => isset($car_serv)?$car_serv->sexto:null])@endcomponent
+                            @component('components.check', ['title'=>'7mo', 'field'=>'septimo', 'prev' => isset($car_serv)?$car_serv->septimo:null])@endcomponent
+                            @component('components.check', ['title'=>'8vo', 'field'=>'octavo', 'prev' => isset($car_serv)?$car_serv->octavo:null])@endcomponent
                             </template>
                             <template v-else>
                             <label class="label">Grados a los que va dirigido el programa</label>
-                            @component('components.check', ['title'=>'Especialidad', 'field'=>'especialidad'])@endcomponent
-                            @component('components.check', ['title'=>'Maestría', 'field'=>'maestria'])@endcomponent
-                            @component('components.check', ['title'=>'Doctorado', 'field'=>'doctorado'])@endcomponent
-                            {{-- <div class="control">
-                                <div class="select">
-                                    <select name="pos"> 
-                                        <option value=0>Especialidad</option>
-                                        <option value=1>Maestria</option>
-                                        <option value=2>Doctorado</option>
-                                    </select>
-                                </div>
-                            </div> --}}
+                            @component('components.check', ['title'=>'Especialidad', 'field'=>'especialidad', 'prev' => isset($car_serv)?$car_serv->especialidad:null])@endcomponent
+                            @component('components.check', ['title'=>'Maestría', 'field'=>'maestria', 'prev' => isset($car_serv)?$car_serv->maestria:null])@endcomponent
+                            @component('components.check', ['title'=>'Doctorado', 'field'=>'doctorado', 'prev' => isset($car_serv)?$car_serv->doctorado:null])@endcomponent
                             </template>
                             <br>
                         </div>
@@ -244,31 +248,36 @@
                         'title'=>'Fecha de inicio',
                         'field'=>'fecha_inicio',
                         'errors'=>$errors,
-                        'type'=> 'date'
+                        'type'=> 'date',
+                        'prev'=> isset($car_serv) ? $car_serv->fecha_inicio : null
                         ])@endcomponent
                     @component('components.text-input', [
                         'title'=>'Fecha de término',
                         'field'=>'fecha_fin',
                         'errors'=>$errors,
-                        'type'=> 'date'
+                        'type'=> 'date',
+                        'prev'=> isset($car_serv) ? $car_serv->fecha_fin : null
                         ])@endcomponent
                     @component('components.area-input', [
                         'title'=>'Requisitos de ingreso al programa',
                         'field'=>'requisitos',
                         'errors'=>$errors,
-                        'type'=> 'text'
+                        'type'=> 'text',
+                        'prev'=> isset($inf_prac) ? $inf_prac->requisitos : null
                         ])@endcomponent
                     @component('components.area-input', [
                         'title'=>'Asignaturas académicas del plan curricular 2008 con las cuales empata el programa',
                         'field'=>'asig_emp',
                         'errors'=>$errors,
-                        'type'=> 'text'
+                        'type'=> 'text',
+                        'prev'=> isset($inf_prac) ? $inf_prac->asig_emp : null
                         ])@endcomponent
                     @component('components.text-input', [
                         'title'=>'No. máximo de alumnos',
-                        'field'=>'cupo_actual',
+                        'field'=>'cupo',
                         'errors'=>$errors,
-                        'type'=> 'number'
+                        'type'=> 'number',
+                        'prev'=> isset($program) ? $program->cupo : null
                         ])@endcomponent
                 </div>
             </div>
@@ -283,7 +292,8 @@
                         'title'=>'No. de horas a la semana',
                         'field'=>'gen_horas_total',
                         'errors'=>$errors,
-                        'type'=> 'number'
+                        'type'=> 'number',
+                        'prev'=> isset($car_serv) ? $car_serv->gen_horas_total : null
                         ])@endcomponent
                     <table class="table is-fullwidth">
                         <thead>
@@ -294,28 +304,46 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('gen_l')) checked @endif value="1" name="gen_l"> Lunes</label></td>
-                                <td><input name="gen_hora_l" class="input" type="text" placeholder="Horario lunes"></td>
+                                <td><label class="checkbox"><input type="checkbox" 
+                                    @if(old('gen_l', isset($car_serv)?$car_serv->gen_l:null)) checked @endif value="1" name="gen_l"
+                                     > Lunes</label></td>
+                                <td><input value="{{ old('gen_hora_l', isset($car_serv)?$car_serv->gen_hora_l:null) }}"
+                                    name="gen_hora_l" class="input" type="text" placeholder="Horario lunes"></td>
                             </tr>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('gen_ma')) checked @endif value="1" name="gen_ma"> Martes</label></td>
-                                <td><input name="gen_hora_ma" class="input" type="text" placeholder="Horario martes"></td>
+                                <td><label class="checkbox"><input type="checkbox"
+                                     @if(old('gen_ma', isset($car_serv)?$car_serv->gen_ma:null)) checked @endif value="1" name="gen_ma"
+                                     > Martes</label></td>
+                                <td><input value="{{ old('gen_hora_ma', isset($car_serv)?$car_serv->gen_hora_ma:null) }}"
+                                    name="gen_hora_ma" class="input" type="text" placeholder="Horario martes"></td>
                             </tr>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('gen_mi')) checked @endif value="1" name="gen_mi"> Miercoles</label></td>
-                                <td><input name="gen_hora_mi" class="input" type="text" placeholder="Horario miercoles"></td>
+                                <td><label class="checkbox"><input type="checkbox" 
+                                    @if(old('gen_mi', isset($car_serv)?$car_serv->gen_mi:null)) checked @endif value="1" name="gen_mi"
+                                    > Miercoles</label></td>
+                                <td><input value="{{ old('gen_hora_mi', isset($car_serv)?$car_serv->gen_hora_mi:null) }}"
+                                    name="gen_hora_mi" class="input" type="text" placeholder="Horario miercoles"></td>
                             </tr>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('gen_j')) checked @endif value="1" name="gen_j"> Jueves</label></td>
-                                <td><input name="gen_hora_j" class="input" type="text" placeholder="Horario jueves"></td>
+                                <td><label class="checkbox"><input type="checkbox" 
+                                    @if(old('gen_j', isset($car_serv)?$car_serv->gen_j:null)) checked @endif value="1" name="gen_j"
+                                    > Jueves</label></td>
+                                <td><input value="{{ old('gen_hora_j', isset($car_serv)?$car_serv->gen_hora_j:null) }}"
+                                    name="gen_hora_j" class="input" type="text" placeholder="Horario jueves"></td>
                             </tr>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('gen_v')) checked @endif value="1" name="gen_v"> Viernes</label></td>
-                                <td><input name="gen_hora_v" class="input" type="text" placeholder="Horario viernes"></td>
+                                <td><label class="checkbox"><input type="checkbox"
+                                     @if(old('gen_v', isset($car_serv)?$car_serv->gen_v:null)) checked @endif value="1" name="gen_v"
+                                     > Viernes</label></td>
+                                <td><input value="{{ old('gen_hora_v', isset($car_serv)?$car_serv->gen_hora_v:null) }}"
+                                    name="gen_hora_v" class="input" type="text" placeholder="Horario viernes"></td>
                             </tr>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('gen_s')) checked @endif value="1" name="gen_s"> Sábado</label></td>
-                                <td><input name="gen_hora_s" class="input" type="text" placeholder="Horario sabado"></td>
+                                <td><label class="checkbox"><input type="checkbox" 
+                                    @if(old('gen_s', isset($car_serv)?$car_serv->gen_s:null)) checked @endif value="1" name="gen_s"
+                                    > Sábado</label></td>
+                                <td><input value="{{ old('gen_hora_s', isset($car_serv)?$car_serv->gen_hora_s:null) }}"
+                                    name="gen_hora_s" class="input" type="text" placeholder="Horario sabado"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -324,7 +352,8 @@
                         'title'=>'No. de horas a la semana',
                         'field'=>'serv_horas_total',
                         'errors'=>$errors,
-                        'type'=> 'number'
+                        'type'=> 'number',
+                        'prev'=> isset($car_serv) ? $car_serv->serv_horas_total : null
                         ])@endcomponent
                     <table class="table is-fullwidth">
                         <thead>
@@ -335,28 +364,46 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('serv_l')) checked @endif value="1" name="serv_l"> Lunes</label></td>
-                                <td><input name="serv_hora_l" class="input" type="text" placeholder="Horario lunes"></td>
+                                <td><label class="checkbox"><input type="checkbox" 
+                                    @if(old('serv_l', isset($car_serv)?$car_serv->serv_l:null)) checked @endif value="1" name="serv_l"
+                                    > Lunes</label></td>
+                                <td><input value="{{ old('serv_hora_l', isset($car_serv)?$car_serv->serv_hora_l:null) }}"
+                                    name="serv_hora_l" class="input" type="text" placeholder="Horario lunes"></td>
                             </tr>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('serv_ma')) checked @endif value="1" name="serv_ma"> Martes</label></td>
-                                <td><input name="serv_hora_ma" class="input" type="text" placeholder="Horario martes"></td>
+                                <td><label class="checkbox"><input type="checkbox" 
+                                    @if(old('serv_ma', isset($car_serv)?$car_serv->serv_ma:null)) checked @endif value="1" name="serv_ma"
+                                    > Martes</label></td>
+                                <td><input value="{{ old('serv_hora_ma', isset($car_serv)?$car_serv->serv_hora_ma:null) }}"
+                                    name="serv_hora_ma" class="input" type="text" placeholder="Horario martes"></td>
                             </tr>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('serv_mi')) checked @endif value="1" name="serv_mi"> Miercoles</label></td>
-                                <td><input name="serv_hora_mi" class="input" type="text" placeholder="Horario miercoles"></td>
+                                <td><label class="checkbox"><input type="checkbox" 
+                                    @if(old('serv_mi', isset($car_serv)?$car_serv->serv_mi:null)) checked @endif value="1" name="serv_mi"
+                                    > Miercoles</label></td>
+                                <td><input value="{{ old('serv_hola_mi', isset($car_serv)?$car_serv->serv_hola_mi:null) }}"
+                                    name="serv_hora_mi" class="input" type="text" placeholder="Horario miercoles"></td>
                             </tr>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('serv_j')) checked @endif value="1" name="serv_j"> Jueves</label></td>
-                                <td><input name="serv_hora_j" class="input" type="text" placeholder="Horario jueves"></td>
+                                <td><label class="checkbox"><input type="checkbox"
+                                     @if(old('serv_j', isset($car_serv)?$car_serv->serv_j:null)) checked @endif value="1" name="serv_j"
+                                     > Jueves</label></td>
+                                <td><input value="{{ old('serv_hora_j', isset($car_serv)?$car_serv->serv_hora_j:null) }}"
+                                    name="serv_hora_j" class="input" type="text" placeholder="Horario jueves"></td>
                             </tr>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('serv_v')) checked @endif value="1" name="serv_v"> Viernes</label></td>
-                                <td><input name="serv_hora_v" class="input" type="text" placeholder="Horario viernes"></td>
+                                <td><label class="checkbox"><input type="checkbox"
+                                     @if(old('serv_v', isset($car_serv)?$car_serv->serv_v:null)) checked @endif value="1" name="serv_v"
+                                     > Viernes</label></td>
+                                <td><input value="{{ old('serv_hora_v', isset($car_serv)?$car_serv->serv_hora_v:null) }}"
+                                    name="serv_hora_v" class="input" type="text" placeholder="Horario viernes"></td>
                             </tr>
                             <tr>
-                                <td><label class="checkbox"><input type="checkbox" @if(old('serv_s')) checked @endif value="1" name="serv_s"> Sábado</label></td>
-                                <td><input name="serv_hora_s" class="input" type="text" placeholder="Horario sabado"></td>
+                                <td><label class="checkbox"><input type="checkbox" 
+                                    @if(old('serv_s', isset($car_serv)?$car_serv->serv_s:null)) checked @endif value="1" name="serv_s"
+                                    > Sábado</label></td>
+                                <td><input value="{{ old('serv_hora_s', isset($car_serv)?$car_serv->serv_hora_s:null) }}"
+                                    name="serv_hora_s" class="input" type="text" placeholder="Horario sabado"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -364,90 +411,92 @@
                         'title'=>'Número de personas atendidas a la semana (Tomando en cuenta el número de personas que puede atender un estudiante por semana)',
                         'field'=>'pacientes_semana',
                         'errors'=>$errors,
-                        'type'=> 'number'
+                        'type'=> 'number',
+                        'prev'=> isset($car_serv) ? $car_serv->pacientes_semana : null
                         ])@endcomponent
                     @component('components.text-input', [
                         'title'=>'Cantidad mínima de usuarios que se atenderán en el semestre',
                         'field'=>'minimo_pacientes_semestre',
                         'errors'=>$errors,
-                        'type'=> 'number'
+                        'type'=> 'number',
+                        'prev'=> isset($car_serv) ? $car_serv->minimo_pacientes_semestre : null
                         ])@endcomponent
                     <div class="field">
                         <label class="label">Identifica el tipo de servicio que brinda el programa (puedes marcar más de una opción)</label>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('primer_contacto')) checked @endif value="1" name="primer_contacto"> Primer contacto</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('primer_contacto', isset($car_serv)?$car_serv->primer_contacto:null)) checked @endif value="1" name="primer_contacto"> Primer contacto</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('admision')) checked @endif value="1" name="admision"> Admisión</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('admision', isset($car_serv)?$car_serv->admision:null)) checked @endif value="1" name="admision"> Admisión</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('evaluacion')) checked @endif value="1" name="evaluacion"> Evaluación</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('evaluacion', isset($car_serv)?$car_serv->evaluacion:null)) checked @endif value="1" name="evaluacion"> Evaluación</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('orientacion')) checked @endif value="1" name="orientacion"> Orientación / Consejo breve</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('orientacion', isset($car_serv)?$car_serv->orientacion:null)) checked @endif value="1" name="orientacion"> Orientación / Consejo breve</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('intervencion')) checked @endif value="1" name="intervencion"> Intervención</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('intervencion', isset($car_serv)?$car_serv->intervencion:null)) checked @endif value="1" name="intervencion"> Intervención</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('egreso')) checked @endif value="1" name="egreso"> Egreso</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('egreso', isset($car_serv)?$car_serv->egreso:null)) checked @endif value="1" name="egreso"> Egreso</label>
                         </div>
                     </div>
                     <div class="field">
                         <label class="label">Problemática atendida (puedes marcar más de una opción)</label>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('depresion')) checked @endif value="1" name="depresion"> Depresión</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('depresion', isset($car_serv)?$car_serv->depresion:null)) checked @endif value="1" name="depresion"> Depresión</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('duelo')) checked @endif value="1" name="duelo"> Duelo</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('duelo', isset($car_serv)?$car_serv->duelo:null)) checked @endif value="1" name="duelo"> Duelo</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('psicosis')) checked @endif value="1" name="psicosis"> Psicosis</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('psicosis', isset($car_serv)?$car_serv->psicosis:null)) checked @endif value="1" name="psicosis"> Psicosis</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('epilepsia')) checked @endif value="1" name="epilepsia"> Epilepsia</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('epilepsia', isset($car_serv)?$car_serv->epilepsia:null)) checked @endif value="1" name="epilepsia"> Epilepsia</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('demencia')) checked @endif value="1" name="demencia"> Demencia</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('demencia', isset($car_serv)?$car_serv->demencia:null)) checked @endif value="1" name="demencia"> Demencia</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('emocionales_niños')) checked @endif value="1" name="emocionales_niños"> Trastornos emocionales niños</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('emocionales_niños', isset($car_serv)?$car_serv->emocionales_niños:null)) checked @endif value="1" name="emocionales_niños"> Trastornos emocionales niños</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('emocionales_ad')) checked @endif value="1" name="emocionales_ad"> Trastornos emocionales adolescentes</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('emocionales_ad', isset($car_serv)?$car_serv->emocionales_ad:null)) checked @endif value="1" name="emocionales_ad"> Trastornos emocionales adolescentes</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('conductuales_niños')) checked @endif value="1" name="conductuales_niños"> Trastornos conductuales niños</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('conductuales_niños', isset($car_serv)?$car_serv->conductuales_niños:null)) checked @endif value="1" name="conductuales_niños"> Trastornos conductuales niños</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('conductuales_ad')) checked @endif value="1" name="conductuales_ad"> Trastornos conductuales adolescentes</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('conductuales_ad', isset($car_serv)?$car_serv->conductuales_ad:null)) checked @endif value="1" name="conductuales_ad"> Trastornos conductuales adolescentes</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('desarrollo_niños')) checked @endif value="1" name="desarrollo_niños"> Trastornos del desarrollo niños</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('desarrollo_niños', isset($car_serv)?$car_serv->desarrollo_niños:null)) checked @endif value="1" name="desarrollo_niños"> Trastornos del desarrollo niños</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('desarrollo_ad')) checked @endif value="1" name="desarrollo_ad"> Trastornos del desarrollo adolescentes</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('desarrollo_ad', isset($car_serv)?$car_serv->desarrollo_ad:null)) checked @endif value="1" name="desarrollo_ad"> Trastornos del desarrollo adolescentes</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('autolesion')) checked @endif value="1" name="autolesion"> Autolesión / suicidio</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('autolesion', isset($car_serv)?$car_serv->autolesion:null)) checked @endif value="1" name="autolesion"> Autolesión / suicidio</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('ansiedad')) checked @endif value="1" name="ansiedad"> Ansiedad</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('ansiedad', isset($car_serv)?$car_serv->ansiedad:null)) checked @endif value="1" name="ansiedad"> Ansiedad</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('estres')) checked @endif value="1" name="estres"> Estrés</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('estres', isset($car_serv)?$car_serv->estres:null)) checked @endif value="1" name="estres"> Estrés</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('sexualidad')) checked @endif value="1" name="sexualidad"> Sexualidad</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('sexualidad', isset($car_serv)?$car_serv->sexualidad:null)) checked @endif value="1" name="sexualidad"> Sexualidad</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('violencia')) checked @endif value="1" name="violencia"> Violencia</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('violencia', isset($car_serv)?$car_serv->violencia:null)) checked @endif value="1" name="violencia"> Violencia</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('sustancias')) checked @endif value="1" name="sustancias"> Trastornos por el consumo de sustancias</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('sustancias', isset($car_serv)?$car_serv->sustancias:null)) checked @endif value="1" name="sustancias"> Trastornos por el consumo de sustancias</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('p_intervencion')) checked @endif value="1" name="p_intervencion"> Intervención psicoeducativa</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('p_intervencion', isset($car_serv)?$car_serv->p_intervencion:null)) checked @endif value="1" name="p_intervencion"> Intervención psicoeducativa</label>
                         </div>
 
                         <div class="field is-horizontal is-expanded">
@@ -457,7 +506,8 @@
                             <div class="field-body">
                                 <div class="field">
                                     <div class="control">
-                                        <input class="input"  type="text" name="otra_problematica" placeholder="Otros"></label>
+                                        <input class="input" value="{{ old('otra_problematica', isset($car_serv)?$car_serv->otra_problematica:null) }}"
+                                         type="text" name="otra_problematica" placeholder="Otros"></label>
                                     </div>
                                 </div>
                             </div>
@@ -471,20 +521,17 @@
                         <div class="control">
                             <div class="select">
                                 <select name="enfoque_servicio"> {{-- TODO cambiar esto de lugar --}}
-                                    <option value="0">Cognitivo-conductual</option>
-                                    <option value="1">Conductual</option>
-                                    <option value="2">Cognitivo</option>
-                                    <option value="3">Sistémico</option>
-                                    <option value="4">Psicoinámico</option>
-                                    <option value="5">Gestalt</option>
-                                    <option value="6">Constructivista</option>
-                                    <option value="7">Otro</option>
+                                    <option value="0" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 0) selected="selected" @endif>Cognitivo-conductual</option>
+                                    <option value="1" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 1) selected="selected" @endif>Conductual</option>
+                                    <option value="2" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 2) selected="selected" @endif>Cognitivo</option>
+                                    <option value="3" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 3) selected="selected" @endif>Sistémico</option>
+                                    <option value="4" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 4) selected="selected" @endif>Psicoinámico</option>
+                                    <option value="5" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 5) selected="selected" @endif>Gestalt</option>
+                                    <option value="6" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 6) selected="selected" @endif>Constructivista</option>
+                                    <option value="7" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 7) selected="selected" @endif>Otro</option>
                                 </select>
                             </div>
                         </div>
-                        {{-- <div class="control">
-                            <input class="input"  type="text" name="otro_enfoque" placeholder="Otro"></label>
-                        </div> --}}
                         <div class="field is-horizontal is-expanded">
                             <div class="field-label is-normal">
                                 <label class="label">Otro</label>
@@ -492,7 +539,8 @@
                             <div class="field-body">
                                 <div class="field">
                                     <div class="control">
-                                        <input class="input"  type="text" name="otro_enfoque" placeholder="Otro"></label>
+                                        <input class="input" value="{{ old('otro_enfoque', isset($car_serv)?$car_serv->otro_enfoque:null) }}"
+                                        type="text" name="otro_enfoque" placeholder="Otro"></label>
                                     </div>
                                 </div>
                             </div>
@@ -516,7 +564,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('individual')) checked @endif value="1" name="individual"> Individual</label>
+                                    <label class="label"><input type="checkbox" @if(old('individual', isset($car_serv)?$car_serv->individual:null)) checked @endif value="1" name="individual"> Individual</label>
                                 </div>
                             </td>
                             <td><p>Aquella en la que participan
@@ -530,7 +578,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('grupal')) checked @endif value="1" name="grupal"> Grupal</label>
+                                    <label class="label"><input type="checkbox" @if(old('grupal', isset($car_serv)?$car_serv->grupal:null)) checked @endif value="1" name="grupal"> Grupal</label>
                                 </div>
                             </td>
                             <td><p>Participan un supervisor
@@ -543,7 +591,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('colaborativa')) checked @endif value="1" name="colaborativa"> Colaborativa</label>
+                                    <label class="label"><input type="checkbox" @if(old('colaborativa', isset($car_serv)?$car_serv->colaborativa:null)) checked @endif value="1" name="colaborativa"> Colaborativa</label>
                                 </div>
                             </td>
                             <td><p>La supervisión se brinda
@@ -556,7 +604,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('indirecta')) checked @endif value="1" name="indirecta"> Indirecta</label>
+                                    <label class="label"><input type="checkbox" @if(old('indirecta', isset($car_serv)?$car_serv->indirecta:null)) checked @endif value="1" name="indirecta"> Indirecta</label>
                                 </div>
                             </td>
                             <td><p>Se realiza después de la intervención, incluye varias submodalidades: narrada, 
@@ -566,7 +614,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('directa')) checked @endif value="1" name="directa"> Directa</label>
+                                    <label class="label"><input type="checkbox" @if(old('directa', isset($car_serv)?$car_serv->directa:null)) checked @endif value="1" name="directa"> Directa</label>
                                 </div>
                             </td>
                             <td><p>Es la que se desarrolla durante la sesión
@@ -581,7 +629,8 @@
                                 </div>
                             </td>
                             <td>
-                                <input class="input"  type="text" name="supervision_otra" placeholder="Otra (descríbala)"></label>
+                                <input class="input" value="{{ old('supervision_otra', isset($car_serv)?$car_serv->supervision_otra:null) }}"
+                                type="text" name="supervision_otra" placeholder="Otra (descríbala)"></label>
                             </td>
                         </tr>
                     </table>
@@ -591,7 +640,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('observacion')) checked @endif value="1" name="observacion"> Observación</label>
+                                    <label class="label"><input type="checkbox" @if(old('observacion', isset($car_serv)?$car_serv->observacion:null)) checked @endif value="1" name="observacion"> Observación</label>
                                 </div>
                             </td>
                             <td><p>Los supervisados en forma directa o a través de una videograbación observan a un experto y 
@@ -601,7 +650,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('juego_roles')) checked @endif value="1" name="juego_roles"> Juego de roles</label>
+                                    <label class="label"><input type="checkbox" @if(old('juego_roles', isset($car_serv)?$car_serv->juego_roles:null)) checked @endif value="1" name="juego_roles"> Juego de roles</label>
                                 </div>
                             </td>
                             <td><p>Uno de los estudiantes actúa
@@ -614,7 +663,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('modelamiento')) checked @endif value="1" name="modelamiento"> Modelamiento</label>
+                                    <label class="label"><input type="checkbox" @if(old('modelamiento', isset($car_serv)?$car_serv->modelamiento:null)) checked @endif value="1" name="modelamiento"> Modelamiento</label>
                                 </div>
                             </td>
                             <td><p>En el modelaje, el supervisor lleva a 
@@ -626,7 +675,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('moldeamiento')) checked @endif value="1" name="moldeamiento"> Moldeamiento</label>
+                                    <label class="label"><input type="checkbox" @if(old('moldeamiento', isset($car_serv)?$car_serv->moldeamiento:null)) checked @endif value="1" name="moldeamiento"> Moldeamiento</label>
                                 </div>
                             </td>
                             <td><p>El supervisado interviene directamente, 
@@ -639,7 +688,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('cascada')) checked @endif value="1" name="cascada"> Cascada</label>
+                                    <label class="label"><input type="checkbox" @if(old('cascada', isset($car_serv)?$car_serv->cascada:null)) checked @endif value="1" name="cascada"> Cascada</label>
                                 </div>
                             </td>
                             <td><p>(experto/novato). 
@@ -655,7 +704,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('auto_supervision')) checked @endif value="1" name="auto_supervision"> Auto supervisión</label>
+                                    <label class="label"><input type="checkbox" @if(old('auto_supervision', isset($car_serv)?$car_serv->auto_supervision:null)) checked @endif value="1" name="auto_supervision"> Auto supervisión</label>
                                 </div>
                             </td>
                             <td><p>Esta estrategia es útil cuando no
@@ -670,7 +719,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('equipo_reflexivo')) checked @endif value="1" name="equipo_reflexivo"> Equipo reflexivo</label>
+                                    <label class="label"><input type="checkbox" @if(old('equipo_reflexivo', isset($car_serv)?$car_serv->equipo_reflexivo:null)) checked @endif value="1" name="equipo_reflexivo"> Equipo reflexivo</label>
                                 </div>
                             </td>
                             <td><p>Esta estrategia tiene como base 
@@ -682,7 +731,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('con_colegas')) checked @endif value="1" name="con_colegas"> Supervisión con colegas</label>
+                                    <label class="label"><input type="checkbox" @if(old('con_colegas', isset($car_serv)?$car_serv->con_colegas:null)) checked @endif value="1" name="con_colegas"> Supervisión con colegas</label>
                                 </div>
                             </td>
                             <td><p>Esta estrategia, se ha dado 
@@ -698,7 +747,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('analisis_caso')) checked @endif value="1" name="analisis_caso"> Análisis de caso</label>
+                                    <label class="label"><input type="checkbox" @if(old('analisis_caso', isset($car_serv)?$car_serv->analisis_caso:null)) checked @endif value="1" name="analisis_caso"> Análisis de caso</label>
                                 </div>
                             </td>
                             <td><p>En esta estrategia la 
@@ -715,7 +764,8 @@
                                 </div>
                             </td>
                             <td>
-                                <input class="input"  type="text" name="ensenanza_otra" placeholder="Otra (descríbala)"></label>
+                                <input class="input" value="{{ old('ensenanza_otra', isset($car_serv)?$car_serv->ensenanza_otra:null) }}"
+                                type="text" name="ensenanza_otra" placeholder="Otra (descríbala)"></label>
                             </td>
                         </tr>
                     </table>
@@ -723,40 +773,39 @@
                         'title'=>'Contenido temático (temas y subtemas)',
                         'field'=>'cont_tematico',
                         'errors'=>$errors,
-                        'type'=> 'text'
+                        'type'=> 'text',
+                        'prev'=> isset($inf_prac) ? $inf_prac->cont_tematico : null
                         ])@endcomponent
                     @component('components.area-input', [
                         'title'=>'Estrategia de seguimiento y evaluación de impacto del servicio',
                         'field'=>'estra_ev_imp',
                         'errors'=>$errors,
-                        'type'=> 'text'
+                        'type'=> 'text',
+                        'prev'=> isset($inf_prac) ? $inf_prac->estra_ev_imp : null
                         ])@endcomponent
                     <div class="field">
                         <label class="label">Competencias profesionales a desarrollar</label>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('fundamentales')) checked @endif value="1" name="fundamentales"> Fundamentales</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('fundamentales', isset($car_serv)?$car_serv->fundamentales:null)) checked @endif value="1" name="fundamentales"> Fundamentales</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('entrevista')) checked @endif value="1" name="entrevista"> Entrevista</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('entrevista', isset($car_serv)?$car_serv->entrevista:null)) checked @endif value="1" name="entrevista"> Entrevista</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('c_evaluacion')) checked @endif value="1" name="c_evaluacion"> Evaluación</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('c_evaluacion', isset($car_serv)?$car_serv->c_evaluacion:null)) checked @endif value="1" name="c_evaluacion"> Evaluación</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('impresion_diagnostica')) checked @endif value="1" name="impresion_diagnostica"> Impresión diagnóstica</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('impresion_diagnostica', isset($car_serv)?$car_serv->impresion_diagnostica:null)) checked @endif value="1" name="impresion_diagnostica"> Impresión diagnóstica</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('implementacion_intervenciones')) checked @endif value="1" name="implementacion_intervenciones"> Diseño / Implementación de intervenciones</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('implementacion_intervenciones', isset($car_serv)?$car_serv->implementacion_intervenciones:null)) checked @endif value="1" name="implementacion_intervenciones"> Diseño / Implementación de intervenciones</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('integracion_expediente')) checked @endif value="1" name="integracion_expediente"> Integración de expediente</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('integracion_expediente', isset($car_serv)?$car_serv->integracion_expediente:null)) checked @endif value="1" name="integracion_expediente"> Integración de expediente</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('elaboracion_documentos')) checked @endif value="1" name="elaboracion_documentos"> Elaboración de documentos escritos de avances y resultados</label>
+                            <label class="checkbox"><input type="checkbox" @if(old('elaboracion_documentos', isset($car_serv)?$car_serv->elaboracion_documentos:null)) checked @endif value="1" name="elaboracion_documentos"> Elaboración de documentos escritos de avances y resultados</label>
                         </div>
-                        {{-- <div class="control">
-                            <input class="input"  type="text" name="competencias_otra" placeholder="Otra (descríbala)"></label>
-                        </div> --}}
                         <div class="field is-horizontal is-expanded">
                             <div class="field-label is-normal">
                                 <label class="label">Otra</label>
@@ -764,7 +813,8 @@
                             <div class="field-body">
                                 <div class="field">
                                     <div class="control">
-                                        <input class="input"  type="text" name="competencias_otra" placeholder="Otra (descríbala)"></label>
+                                        <input class="input" value="{{ old('ensenanza_otra', isset($car_serv)?$car_serv->ensenanza_otra:null) }}"
+                                        type="text" name="competencias_otra" placeholder="Otra (descríbala)"></label>
                                     </div>
                                 </div>
                             </div>
@@ -773,6 +823,7 @@
                 </div>
             </div>
             <br>
+            @if(!isset($program))
             <div class="card">
                 <header class="card-header">
                     <p class="card-header-title is-centered">ACTIVIDADES A TRAVÉS DE LAS CUALES SE ALCANZAN LAS COMPETENCIAS</p>
@@ -823,6 +874,7 @@
                 </div>
             </div>
             <br>
+            @endif
             <div class="card">
                 <header class="card-header">
                     <p class="card-header-title is-centered">ESTRATEGIAS DE EVALUACIÓN DE COMPETENCIAS</p>
@@ -832,7 +884,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('formativa')) checked @endif value="1" name="formativa"> Formativa</label>
+                                    <label class="label"><input type="checkbox" @if(old('formativa', isset($car_serv)?$car_serv->formativa:null)) checked @endif value="1" name="formativa"> Formativa</label>
                                 </div>
                             </td>
                             <td><p>Ya que se dirige al desarrollo de competencias profesionales desde la licenciatura y hasta el posgrado.</p>
@@ -841,7 +893,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('integrativa')) checked @endif value="1" name="integrativa"> Integrativa</label>
+                                    <label class="label"><input type="checkbox" @if(old('integrativa', isset($car_serv)?$car_serv->integrativa:null)) checked @endif value="1" name="integrativa"> Integrativa</label>
                                 </div>
                             </td>
                             <td><p>Al considerar las diferentes aproximaciones teóricas para la evaluación, intervención e investigación psicológicas y la necesidad de integrar estrategias y recursos que conduzcan a la optimización del proceso de supervisión.</p>
@@ -850,7 +902,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('contextual')) checked @endif value="1" name="contextual"> Contextual comunitaria o institucional</label>
+                                    <label class="label"><input type="checkbox" @if(old('contextual', isset($car_serv)?$car_serv->contextual:null)) checked @endif value="1" name="contextual"> Contextual comunitaria o institucional</label>
                                 </div>
                             </td>
                             <td><p>Ya que considera el ámbito comunitario o institucional, destacando que además de la formación teórico-técnica los estudiantes deben conocer métodos de investigación, acercamiento e inserción comunitaria para trabajar directamente con su población, o bien, para atender a la población que enfocada como comunidad, se constituye por las usuarias de diferentes instituciones de salud, educativas o sociales.</p>
@@ -859,7 +911,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('holistica')) checked @endif value="1" name="holistica"> Holística</label>
+                                    <label class="label"><input type="checkbox" @if(old('holistica', isset($car_serv)?$car_serv->holistica:null)) checked @endif value="1" name="holistica"> Holística</label>
                                 </div>
                             </td>
                             <td><p>En cuanto considerar una concepción integral bio-psico-socio-cultural del ser humano aplicable a la concepción de salud en general y salud mental en particular.</p>
@@ -868,7 +920,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('plural')) checked @endif value="1" name="plural"> Plural e incluyente</label>
+                                    <label class="label"><input type="checkbox" @if(old('plural', isset($car_serv)?$car_serv->plural:null)) checked @endif value="1" name="plural"> Plural e incluyente</label>
                                 </div>
                             </td>
                             <td><p>Para reconocer la complejidad y diversidad de los usuarios y de las necesidades de atención psicológica desde una perspectiva de equidad, procurando en todo momento la inclusión de todos los casos que pueden ser atendidos, pero la cual habrá de regirse por criterios de competencia para su manejo o, cuando sea necesario, saber cuándo y en qué forma hacer la derivación o referencia institucional de los mismos.</p>
@@ -877,7 +929,7 @@
                         <tr>
                             <td style="width: 15%">
                                 <div class="control">
-                                    <label class="label"><input type="checkbox" @if(old('reflexiva')) checked @endif value="1" name="reflexiva"> Reflexiva y con autonomía profesional</label>
+                                    <label class="label"><input type="checkbox" @if(old('reflexiva', isset($car_serv)?$car_serv->reflexiva:null)) checked @endif value="1" name="reflexiva"> Reflexiva y con autonomía profesional</label>
                                 </div>
                             </td>
                             <td><p>Planteando que la formación profesional del psicólogo integra varios momentos y espacios de reflexión que se refieren al análisis sobre el caudal de conocimientos adquiridos, sobre la acción para y durante su puesta en práctica y sobre todo, para la reflexión durante la acción recíproca de la supervisión.</p>
@@ -887,6 +939,7 @@
                 </div>
             </div>
             <br>
+            @if(!isset($program))
             <div class="card">
                 <div class="card-content">
                     <add-row inline-template>
@@ -934,20 +987,22 @@
                 </div>
             </div>
             <br>
+            @endif
             <div class="card">
                 <div class="card-content">
                     @component('components.area-input', [
                         'title'=>'Referencias',
                         'field'=>'referencias',
                         'errors'=>$errors,
-                        'type'=> 'text'
+                        'type'=> 'text',
+                        'prev'=> isset($inf_prac) ? $inf_prac->referencias : null
                         ])@endcomponent
                 </div>
             </div>
             <br>
             <div class="field">
                 <div class="control">
-                    <button class="button is-link">Registrar</button>
+                    <button class="button is-link">{{ isset($program) ? 'Actualizar' : 'Registrar' }}</button>
                 </div>
             </div>
         </form>
