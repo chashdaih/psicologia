@@ -1,6 +1,8 @@
 <text-input class="field" inline-template
     {{ $errors->has($field) ? ":error=true" : '' }}
-    title="{{ $title }}">
+    title="{{ $title }}"
+    type="{{ $type }}"
+    >
     <div>
     <label class="label">{{ $title }}</label>
     <div class="control">
@@ -10,12 +12,16 @@
             value="{{ isset($prev) ? $prev : old($field) }}"
             @if ($type == "number")
             min=0
+            max=255
             step=1
             @endif
             placeholder="{{ $title }}"
             v-on:input="clearError"
             ref="{{ $title }}"
-            @if(!isset($nullable)) required @endif
+            {{-- @if(!isset($nullable)) required @endif --}}
+            v-on:keypress="isNumber($event)"
+            {{-- v-on:change="isNumber" --}}
+            v-on:keydown.enter.prevent
             >
     </div>
     @if ($errors->has($field))

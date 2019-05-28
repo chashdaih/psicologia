@@ -17,8 +17,8 @@ class CreateCaracteristicasServiciosTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedInteger('program_id');
             // características del programa
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
+            $table->date('fecha_inicio')->nullable();
+            $table->date('fecha_fin')->nullable();
             // características del servicio
             $table->boolean('pre_pos');
             // $table->unsignedTinyInteger('pre')->nullable(); // old

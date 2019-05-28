@@ -18,8 +18,9 @@ class Supervisor extends Model
     ];
 
     public function getFullNameAttribute() {
-        return $this->nombre.' '.$this->ap_paterno.' '.$this->ap_materno;
+        return preg_replace('/\s+/', ' ',ucwords(mb_strtolower($this->nombre.' '.$this->ap_paterno.' '.$this->ap_materno)));
     }
+    
     public function getPrimaryKeyAttribute() {
         return $this->id_supervisor;
     }

@@ -24,6 +24,16 @@ class ProgramData extends Model
         'mod_sup'=> '',
         'competencias'=> '',
         'estra_ev_comp'=> '',
-        'criterios_eva' => ''
+        'criterios_eva' => '',
+        // si se mandan en el form
+        'resumen' => '',
+        'justificacion'=> '',
+        'objetivo_g' => '',
+        'objetivo_es' => '',
+        'cont_tematico' => '',
+        'requisitos' => '',
+        'referencias' => '',
+        'estra_ev_imp' => '',
+        'asig_emp' => ''
     ];
 }

@@ -15,10 +15,11 @@ import TextInput from './components/TextInput';
 import SortableTable from './components/SortableTable'; 
 import RelatedInput from './components/RelatedInput';
 import AddRow from './components/AddRow';
+import SupsTable from './components/SupsTable';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload } from '@fortawesome/free-solid-svg-icons';
-library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload);
+import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
+library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export const eventBus = new Vue();
@@ -44,6 +45,15 @@ const app = new Vue({
         TextInput,
         SortableTable,
         RelatedInput,
-        AddRow
+        AddRow,
+        SupsTable
+    },
+    data: {
+        isActive: false
+    },
+    methods: {
+        toggleMenu() {
+            this.isActive = !this.isActive;
+        }
     }
 });

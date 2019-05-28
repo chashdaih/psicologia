@@ -25,29 +25,26 @@ class StoreProgramData extends FormRequest
     {
         return [
             // program
-            'cupo' => 'required|integer|min:0',
+            'cupo' => 'nullable|integer|min:0', //
             'id_centro' => 'required',
             'id_supervisor' => 'required',
-            // 'id_supervisord' => 'required',
-            'periodicidad' => 'required|integer|min:0|max:4',
-            'programa' => 'required',
+            'periodicidad' => 'nullable|integer|min:0|max:4', //
+            'programa' => 'required', //
             'tipo' => 'required',
             // program data
-            'resumen' => 'required',
-            'justificacion'=> 'required',
-            'objetivo_g' => 'required',
-            'objetivo_es' => 'required',
-            'cont_tematico' => 'required',
-            // 'criterios_eva' => 'required', // old
-            'requisitos' => 'required',
-            'referencias' => 'required',
-            'estra_ev_imp' => 'required',
-            'asig_emp' => 'required',
+            'resumen' => 'nullable',
+            'justificacion'=> 'nullable',
+            'objetivo_g' => 'nullable',
+            'objetivo_es' => 'nullable',
+            'cont_tematico' => 'nullable',
+            'requisitos' => 'nullable',
+            'referencias' => 'nullable',
+            'estra_ev_imp' => 'nullable',
+            'asig_emp' => 'nullable',
             // caracteristicas servicio
-            // 'dirigido_a' => 'required', // old
-            'fecha_inicio' => 'required',
-            'fecha_fin' => 'required',
-            'gen_horas_total' => 'required|integer|min:0',
+            'fecha_inicio' => 'nullable',
+            'fecha_fin' => 'nullable',
+            'gen_horas_total' => 'nullable|integer|min:0',
             'gen_l'=> 'nullable|boolean',
             'gen_hora_l'=> 'nullable',
             'gen_ma'=> 'nullable|boolean',
@@ -60,7 +57,7 @@ class StoreProgramData extends FormRequest
             'gen_hora_v'=> 'nullable',
             'gen_s'=> 'nullable|boolean',
             'gen_hora_s'=> 'nullable',
-            'serv_horas_total' => 'required',
+            'serv_horas_total' => 'nullable',
             'serv_l'=> 'nullable|boolean',
             'serv_hora_l'=> 'nullable',
             'serv_ma'=> 'nullable|boolean',
@@ -73,8 +70,8 @@ class StoreProgramData extends FormRequest
             'serv_hora_v'=> 'nullable',
             'serv_s'=> 'nullable|boolean',
             'serv_hora_s'=> 'nullable',
-            'pacientes_semana' => 'required',
-            'minimo_pacientes_semestre' => 'required',
+            'pacientes_semana' => 'nullable|integer|min:0',
+            'minimo_pacientes_semestre' => 'nullable|integer|min:0',
             'primer_contacto'=> 'nullable',
             'admision'=> 'nullable|boolean',
             'evaluacion'=> 'nullable|boolean',

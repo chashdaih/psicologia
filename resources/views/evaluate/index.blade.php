@@ -6,7 +6,7 @@
         <h1 class="title">Evaluar estudiante</h1>
 
         @foreach ($programs as $program)
-        {{-- @if (count($program->evaluations)>0)
+        @if (count($program->evaluations)>0)
         <h2 class="subtitle ">{{ $program->programa }}</h2>
         <table class="table is-fullwidth">
             <thead>
@@ -36,7 +36,9 @@
                 @endforeach
             </tbody>
         </table>
-        @endif --}}
+        @else
+        <p>No hay alumnos inscritos</p>
+        @endif
         @endforeach
 
     </div>

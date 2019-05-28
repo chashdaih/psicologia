@@ -8,9 +8,16 @@
             <select name="{{ $field }}">
                 @foreach ($options as $option)
                 <option :value="{{ $option->primary_key }}"
-                    @if ($option->primary_key == old($field, isset($prev)?$prev:null))
-                    selected="selected"
+                    @if(old($field, isset($prev)?$prev:null))
+                        @if ($option->primary_key == old($field, isset($prev)?$prev:null) )
+                        selected="selected"
+                        @endif
+                    @else
+                        @if ($option->primary_key == $id )
+                        selected="selected"
+                        @endif
                     @endif
+
                     >{{ $option->full_name }}</option>
                 @endforeach
             </select>

@@ -19,6 +19,7 @@ Route::group(['prefix' => '/procedures/3/', 'middleware' => 'auth'], function() 
     Route::group(['prefix' => 'ie'], function() {
         Route::get('/1/rps/pdf/{id}', 'RpsController@pdf')->name('rps_pdf');
         Route::get('/1/rps/filter/{stage}/{sup}/{per}', 'RpsController@filter')->name('rps_filter');
+        Route::get('/1/rps/del-row/{type}/{id}', 'RpsController@deleteRow')->name('del_row');
         Route::resource('/1/rps', 'RpsController');
         Route::get('/2/lps/pdf/{id}', 'LpsController@pdf')->name('lps_pdf');
         Route::resource('/2/lps', 'LpsController');
@@ -86,5 +87,7 @@ Route::post('/inscribirse/{id}', 'EnrollController@enroll')->name('insc.enroll')
 Route::post('/save_enroll_docs', 'EnrollController@docs')->name('insc.docs');
 
 Route::resource('/evaluar', 'EvaluateStudentController');
+
+Route::resource('/supervisor', 'SupervisorController');
 
 Auth::routes();

@@ -6,7 +6,7 @@
         <input name="{{ $field }}"
             class="input{{ $errors->has($field)? ' is-danger':'' }}"
             type="{{ $type }}"
-            value="{{  old($field) }}"
+            value="{{ isset($prev) ? $prev : old($field) }}"
             @if ($type == "number")
             min=0
             step=1
@@ -14,6 +14,7 @@
             placeholder="{{ $title }}"
             v-on:input="clearError"
             ref="{{ $title }}"
+            v-on:keydown.enter.prevent
             >
     </div>
     @if ($errors->has($field))

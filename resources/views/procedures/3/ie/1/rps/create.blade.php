@@ -15,7 +15,9 @@
             </ul>
         </div>
         @endif
-        <form method="POST" action="{{ isset($program) ? route($doc_code.'.update', [$program->id_practica]) : route($doc_code.'.store') }}">
+        <form method="POST" 
+        action="{{ isset($program) ? route($doc_code.'.update', [$program->id_practica]) : route($doc_code.'.store') }}"
+        >
             @if(isset($program)) <input name="_method" type="hidden" value="PUT"> @endif
             {{ csrf_field() }}
             <div class="card">
@@ -30,13 +32,18 @@
                         'type'=> 'text',
                         'prev' => isset($program) ? $program->programa : null
                         ])@endcomponent
+                    @if (Auth::user()->type == 6)
                     @component('components.select', [
                         'title'=>'Centro al cual pertenece el programa',
                         'field'=>'id_centro',
                         'errors'=>$errors,
                         'options'=> $buildings,
-                        'prev' => isset($program) ? $program->id_centro : null
+                        'prev' => isset($program) ? $program->id_centro : null,
+                        'id' => Auth::user()->supervisor->id_centro
                         ])@endcomponent
+                    @else
+                    <input name="id_centro" type="hidden" value={{  Auth::user()->supervisor->id_centro }}>
+                    @endif
                 </div>
             </div>
             <br>
@@ -45,92 +52,65 @@
                     <p class="card-header-title is-centered">SUPERVISORES</p>
                 </header>
                 <div class="card-content">
+                    @if(Auth::user()->type != 2)
                     @component('components.select', [
                         'title'=>'Supervisor académico',
                         'field'=>'id_supervisor',
                         'errors'=>$errors,
                         'options'=> $supervisors,
-                        'prev' => isset($program) ? $program->id_supervisor : null
+                        'prev' => isset($program) ? $program->id_supervisor : null,
+                        'id' => $user_id
                         ])@endcomponent
-            @if (!isset($program))
+                    @else
+                    <input name="id_supervisor" type="hidden" value={{  Auth::user()->supervisor->id_supervisor }}>
+                    @endif
                     <label class="label">Supervisor in situ</label>
-                    <add-row inline-template>
+                    <add-row inline-template
+                    @if(isset($sups))
+                        :sups=0
+                        :old={{ count($sups) }}
+                    @endif
+                    >
                         <div>
                             <table class="table is-fullwidth">
-                                <tr v-for="row in rows" :key="row">
+                                @if(isset($sups))
+                                @foreach ($sups as $key => $sup)
+                                <template  v-if="visible[{{ $key }}]">
+                                <tr>
+                                    @component('components.insitu-row', [
+                                        'supervisors' => $supervisors,
+                                        'user_id' => $user_id,
+                                        'data' => $sup,
+                                        'errors'=> $errors
+                                    ])@endcomponent
                                     <td>
-                                    <related-input inline-template>
-                                        <div>
-                                            <div class="control">
-                                                <label class="checkbox">
-                                                    <input v-model="selected" type="checkbox" value="1">
-                                                    Registrar nuevo supervisor
-                                                </label>
-                                            </div>
-                                            <template v-if="selected">
-                                                @component('components.text-input', [
-                                                    'title'=>'Nombre completo',
-                                                    'field'=>'full_name[]',
-                                                    'errors'=>$errors,
-                                                    'type'=> 'text'
-                                                    ])@endcomponent
-                                                @component('components.text-input', [
-                                                    'title'=>'Adscripción',
-                                                    'field'=>'ascription[]',
-                                                    'errors'=>$errors,
-                                                    'type'=> 'text'
-                                                    ])@endcomponent
-                                                @component('components.text-input', [
-                                                    'title'=>'Nombramiento',
-                                                    'field'=>'nomination[]',
-                                                    'errors'=>$errors,
-                                                    'type'=> 'text'
-                                                    ])@endcomponent
-                                                @component('components.text-input', [
-                                                    'title'=>'Teléfono',
-                                                    'field'=>'phone[]',
-                                                    'errors'=>$errors,
-                                                    'type'=> 'text'
-                                                    ])@endcomponent
-                                                @component('components.text-input', [
-                                                    'title'=>'Celular',
-                                                    'field'=>'cellphone[]',
-                                                    'errors'=>$errors,
-                                                    'type'=> 'text'
-                                                    ])@endcomponent
-                                                @component('components.text-input', [
-                                                    'title'=>'Correo electrónico',
-                                                    'field'=>'email[]',
-                                                    'errors'=>$errors,
-                                                    'type'=> 'email'
-                                                    ])@endcomponent
-                                                @component('components.text-input', [
-                                                    'title'=>'Número de trabajador',
-                                                    'field'=>'worker_number[]',
-                                                    'errors'=>$errors,
-                                                    'type'=> 'number'
-                                                    ])@endcomponent
-                                            </template>
-                                            <template v-else>
-                                                <div class="control">
-                                                    <div class="select">
-                                                        <select name="reg_sup_id[]">
-                                                            @foreach ($supervisors as $option)
-                                                            <option value="{{ $option->primary_key }}">{{ $option->full_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </template>
-                                        </div>
-                                    </related-input>
+                                        <button class="button is-danger is-outlined" type="button"
+                                        :id={{ $key }}
+                                        @click="deleteOld('{{ route('del_row', ['sup', $sup->id]) }}')"
+                                        >Borrar</button>
+                                    </td>
+                                </tr>
+                                </template>
+                                @endforeach
+                                @endif
+                                <tr v-for="row in rows" :key="row">
+                                    @component('components.insitu-row', [
+                                        'supervisors' => $supervisors,
+                                        'user_id' => $user_id,
+                                        'errors'=> $errors
+                                    ])@endcomponent
+                                    <td>
+                                        <button v-if="row==rows && rows>sups" 
+                                            class="button is-danger is-outlined"
+                                            type="button" @click="deleteRow(row)">
+                                            Borrar renglón
+                                        </button>
                                     </td>
                                 </tr>
                             </table>
                             <button class="button is-info" type="button" v-on:click="addRow">Añadir otro supervisor in situ</button>
                         </div>
                     </add-row>
-                    @endif
                 </div>
             </div>
             <br>
@@ -823,13 +803,17 @@
                 </div>
             </div>
             <br>
-            @if(!isset($program))
             <div class="card">
                 <header class="card-header">
                     <p class="card-header-title is-centered">ACTIVIDADES A TRAVÉS DE LAS CUALES SE ALCANZAN LAS COMPETENCIAS</p>
                 </header>
                 <div class="card-content">
-                    <add-row inline-template>
+                    <add-row inline-template
+                    @if(isset($acts))
+                        :sups=0
+                        :old={{ count($acts) }}
+                    @endif
+                    >
                         <div>
                             <table class="table">
                                 <thead>
@@ -840,30 +824,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if(isset($acts))
+                                    @foreach ($acts as $key => $act)
+                                    <template  v-if="visible[{{ $key }}]">
+                                    <tr>
+                                        @component('components.semana-row', [
+                                            'data' => $act,
+                                            'errors'=> $errors
+                                        ])@endcomponent
+                                        <td>
+                                            <button class="button is-danger is-outlined" type="button"
+                                            :id={{ $key }}
+                                            @click="deleteOld('{{ route('del_row', ['act', $act->id]) }}')"
+                                            >Borrar</button>
+                                        </td>
+                                    </tr>
+                                    </template>
+                                    @endforeach
+                                    @endif
                                     <tr v-for="row in rows" :key="row">
+                                        @component('components.semana-row',compact('errors'))@endcomponent
                                         <td>
-                                            @component('components.simple-text', [
-                                                'title'=>'Semana',
-                                                'field'=>'semana[]',
-                                                'errors'=>$errors,
-                                                'type'=> 'text'
-                                                ])@endcomponent
-                                        </td>
-                                        <td>
-                                            @component('components.simple-text', [
-                                                'title'=>'Actividad',
-                                                'field'=>'actividad[]',
-                                                'errors'=>$errors,
-                                                'type'=> 'text'
-                                                ])@endcomponent
-                                        </td>
-                                        <td>
-                                            @component('components.simple-text', [
-                                                'title'=>'Competencias',
-                                                'field'=>'competencias[]',
-                                                'errors'=>$errors,
-                                                'type'=> 'text'
-                                                ])@endcomponent
+                                            <button v-if="row==rows && rows>sups" class="button is-danger is-outlined" type="button" @click="deleteRow(row)">
+                                                Borrar renglón
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -874,7 +858,6 @@
                 </div>
             </div>
             <br>
-            @endif
             <div class="card">
                 <header class="card-header">
                     <p class="card-header-title is-centered">ESTRATEGIAS DE EVALUACIÓN DE COMPETENCIAS</p>
@@ -939,10 +922,14 @@
                 </div>
             </div>
             <br>
-            @if(!isset($program))
             <div class="card">
                 <div class="card-content">
-                    <add-row inline-template>
+                    <add-row inline-template
+                    @if(isset($crits))
+                        :sups=0
+                        :old={{ count($crits) }}
+                    @endif
+                    >
                         <div>
                             <table class="table is-fullwidth">
                                 <thead>
@@ -953,30 +940,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if(isset($crits))
+                                    @foreach ($crits as $key => $crit)
+                                    <template  v-if="visible[{{ $key }}]">
+                                    <tr>
+                                        @component('components.criterio-row', [
+                                            'data' => $crit,
+                                            'errors'=> $errors
+                                        ])@endcomponent
+                                        <td>
+                                            <button class="button is-danger is-outlined" type="button"
+                                            :id={{ $key }}
+                                            @click="deleteOld('{{ route('del_row', ['crit', $crit->id]) }}')"
+                                            >Borrar</button>
+                                        </td>
+                                    </tr>
+                                    </template>
+                                    @endforeach
+                                    @endif
                                     <tr v-for="row in rows" :key="row">
+                                        @component('components.criterio-row', compact('errors'))@endcomponent
                                         <td>
-                                            @component('components.simple-text', [
-                                                'title'=>'Criterios de acreditación',
-                                                'field'=>'criterio[]',
-                                                'errors'=>$errors,
-                                                'type'=> 'text'
-                                                ])@endcomponent
-                                        </td>
-                                        <td>
-                                            @component('components.simple-text', [
-                                                'title'=>'¿Cuándo se mide?',
-                                                'field'=>'cuando[]',
-                                                'errors'=>$errors,
-                                                'type'=> 'text'
-                                                ])@endcomponent
-                                        </td>
-                                        <td>
-                                            @component('components.simple-text', [
-                                                'title'=>'¿Cómo se mide?',
-                                                'field'=>'como[]',
-                                                'errors'=>$errors,
-                                                'type'=> 'text'
-                                                ])@endcomponent
+                                            <button v-if="row==rows && rows>sups" class="button is-danger is-outlined" type="button" @click="deleteRow(row)">
+                                                Borrar renglón
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -987,7 +974,6 @@
                 </div>
             </div>
             <br>
-            @endif
             <div class="card">
                 <div class="card-content">
                     @component('components.area-input', [

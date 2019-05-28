@@ -14,7 +14,7 @@ class Program extends Model
     protected $guarded = [];
 
     protected $attributes = [
-        'id_supervisord' => '',
+        'id_supervisord' => null,
         'coordinacion'=> '',
         'descripcion'=> '',
         'nombre_supervisor'=> '',
@@ -32,7 +32,14 @@ class Program extends Model
         'direccion'=> '',
         'semestre'=> '',
         'institucion'=> '',
-        'car_esc'=> ''
+        'car_esc'=> '',
+        // estos datos si se llenan, pero ahora se permiten registros incompletos
+        'cupo' => '0',
+        // 'id_centro' => 'required',
+        // 'id_supervisor' => 'required',
+        'periodicidad' => '0',
+        'programa' => '',
+        // 'tipo' => 'required',
     ];
     
     public function center()
@@ -56,7 +63,8 @@ class Program extends Model
 
     public function evaluations()
     {
-        return $this->belongsToMany('App\EvaluateStudent','participante', 'partaker_id', 'id_participante');
+        // return $this->belongsToMany('App\EvaluateStudent','participante', 'partaker_id', 'id_participante');
+        return $this->belongsToMany('App\Partaker','evaluate_students', 'program_id', 'partaker_id');
     }
 
     public function ie4s()
