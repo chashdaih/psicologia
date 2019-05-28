@@ -6,16 +6,37 @@ use auth;
 use App\Building;
 use App\Supervisor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SupervisorController extends Controller
 {
+
+    protected function fixNames($records)
+    {
+        if($records) {
+            foreach ($records as $record) {
+                $record->full_name = ucwords(mb_strtolower($record->full_name));
+                // $record->full_name = preg_replace('/\s+/', ' ',ucwords(mb_strtolower($record->full_name)));
+            }
+        }
+        return $records;
+    }
+
     public function index()
     {
         // $user_type = Auth::user()->type;
         // dd($user_type);
 
-        $supervisors = Supervisor::all();
+        // $supervisors = Supervisor::all();
         $stages = Building::all();
+        $supervisors = DB::table('supervisores as s')
+            // ->where('estatus', '=', 'Activa')
+            ->join('centros as c', 's.id_centro', '=', 'c.id_centro')
+            ->select('s.id_supervisor', 'c.nombre as centro', 's.estatus',
+            DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"))
+            ->orderBy('s.nombre', 'asc')
+            ->get();
+        $supervisors = $this->fixNames($supervisors);
 
         return view('supervisor.index', compact('supervisors', 'stages'));
     }
