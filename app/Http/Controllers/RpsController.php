@@ -35,7 +35,9 @@ class RpsController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $this->user_id = Auth::user()->supervisor->id_supervisor;
+            if (Auth::user()->type != 3) {
+                $this->user_id = Auth::user()->supervisor->id_supervisor;
+            }
             return $next($request);
         });
         $doc_code = $this->doc_code;
@@ -237,6 +239,8 @@ class RpsController extends Controller
 
     public function update(StoreProgramData $request, $id)
     {
+        $request['cupo_actual'] = $request['cupo'];
+        
         Program::where('id_practica', $id)->update(
             collect($request->only($this->programFields))
                 ->filter(function($value) {

@@ -19,7 +19,7 @@ class EnrollController extends Controller
 
     public function index()
     {
-        $programs = Program::where('semestre_activo', '2019-2')
+        $programs = Program::where('semestre_activo', '2020-1')
         ->where('cupo_actual','>', '0')
         ->get();
 
@@ -73,24 +73,24 @@ class EnrollController extends Controller
     {
         $partaker_id = Auth::user()->partaker->num_cuenta;
 
-        $files = $request->validate([
+        $this->validate($request, [
             'id_tramite' => 'required',
             'seguro_imss' => 'nullable|mimes:pdf|max:14000',
             'carta_comp' => 'nullable|mimes:pdf|max:14000',
             'historial_ac' => 'nullable|mimes:pdf|max:14000'
         ]);
 
-        $doc = Document::where('id_tramite', $files['id_tramite'])->first();
+        $doc = Document::where('id_tramite', $request['id_tramite'])->first();
 
-        if (array_key_exists('seguro_imss', $files)) {
+        if ($request->file('seguro_imss')) {
             $request->file("seguro_imss")->storeAs($partaker_id, 'seguro.pdf');
             $doc['seguro_imss'] = 1;
         }
-        if (array_key_exists('carta_comp', $files)) {
+        if ($request->file('carta_comp')) {
             $request->file("carta_comp")->storeAs($partaker_id, 'carta.pdf');
             $doc['carta_comp'] = 1;
         }
-        if (array_key_exists('historial_ac', $files)) {
+        if ($request->file('historial_ac')) {
             $request->file("historial_ac")->storeAs($partaker_id, 'historial.pdf');
             $doc['historial_ac'] = 1;
         }
@@ -98,7 +98,7 @@ class EnrollController extends Controller
         $doc->save();
 
         if ($doc['seguro_imss'] && $doc['carta_comp'] && $doc['historial_ac']) {
-            $enrolled = ProgramPartaker::where('id_tramite', $files['id_tramite'])->first();
+            $enrolled = ProgramPartaker::where('id_tramite', $request['id_tramite'])->first();
             $enrolled->estado = "Inscrito";
             $enrolled->save();
         }

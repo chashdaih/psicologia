@@ -47,6 +47,11 @@ class Program extends Model
         return $this->belongsTo('App\Building', 'id_centro', 'id_centro');
     }
 
+    public function program_data()
+    {
+        return $this->hasOne('App\ProgramData', 'id_practica', 'id_practica');
+    }
+
     public function supervisor()
     {
         return $this->belongsTo('App\Supervisor', 'id_supervisor', 'id_supervisor');

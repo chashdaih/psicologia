@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Building;
+use App\Partaker;
 use App\Supervisor;
 use App\User;
 use App\Http\Controllers\Controller;
@@ -52,6 +53,17 @@ class RegisterController extends Controller
         //         'password' => bcrypt(1234),
         //     ]);
         // }
+
+        // $students = Partaker::distinct('correo')->where('correo', 'LIKE', '%@%.%')->pluck('correo');
+        // // dd($students);
+        // foreach ($students as $student) {
+        //     $nuevo = User::firstOrCreate([
+        //         'type' => 3,
+        //         'email' => $student,
+        //         'password' => '$2y$10$691V4gXO0qI0AVTectZBYu7ZGXLE7CiA3F1q9.eAPVd/V7XLGNbh.'
+        //     ]);
+        // }
+        // dd("done");
     }
 
     /**

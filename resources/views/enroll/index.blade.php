@@ -84,18 +84,29 @@
                         @endif
                     </div>
                     <div class="column">
-                        <p><span class="has-text-weight-bold">Periodicidad: </span>{{ $program->periodicidad }}</p>
+                        <p><span class="has-text-weight-bold">Duración (en semestres): </span>{{ $program->periodicidad }}</p>
                         <p>{{ $program->horario }}</p>
                     </div>
                 </div>
-                <p class="has-text-weight-bold">Descripción breve</p>
-                <p>{{ $program->descripcion }}</p>
+                <p class="has-text-weight-bold">Resumen</p>
+                <p>{{ $program->program_data->resumen }}</p>
+                <br>
                 <p class="has-text-weight-bold">Escenario</p>
-                <p>{{ $program->escenario }}</p>
-                <p>{{ $program->direccion }}</p>
+                <p>{{ $program->center->nombre }}</p>
             </div>
             <footer class="card-footer">
-                <a href="{{ route('insc.det', $program->id_practica) }}" class="card-footer-item">Ver más detalles / Inscribirse</a>
+                {{-- <a href="{{ route('insc.det', $program->id_practica) }}" class="card-footer-item">Ver más detalles / Inscribirse</a> --}}
+
+                <a href="{{ route('rps_pdf', $program->id_practica) }}" class="card-footer-item">Ver programa completo</a>
+                {{-- <a href="" class="card-footer-item">Inscribirse al programa</a> --}}
+                <span class="card-footer-item">
+                        <form action="{{ route('insc.enroll', $program->id_practica) }}" method="POST" >
+                            {{ csrf_field() }}
+                            <button class="button  is-primary is-outlined" type="submit">Inscribirse al programa</button>
+                        </form>
+
+                </span>
+
             </footer>
         </div>
         <br>
