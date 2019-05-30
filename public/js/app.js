@@ -1777,6 +1777,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['records', 'url', 'stages', 'supervisors', 'stage', 'supervisor'],
   data: function data() {
@@ -1793,6 +1795,9 @@ __webpack_require__.r(__webpack_exports__);
       isActive: false,
       rowId: null
     };
+  },
+  mounted: function mounted() {
+    this.$refs.autocomplete.setSelected("Todos los supervisores");
   },
   methods: {
     filter: function filter() {
@@ -1817,6 +1822,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     closeModal: function closeModal() {
       this.isActive = false;
+    },
+    allSups: function allSups() {
+      this.selected_supervisor = 0;
+      this.filter();
+      this.$refs.autocomplete.setSelected("Todos los supervisores");
     }
   },
   computed: {
@@ -6474,6 +6484,7 @@ var render = function() {
                   _c(
                     "b-autocomplete",
                     {
+                      ref: "autocomplete",
                       attrs: {
                         placeholder: "Selecciona un supervisor",
                         "keep-first": false,
@@ -6501,9 +6512,8 @@ var render = function() {
                           "a",
                           {
                             on: {
-                              click: function() {
-                                _vm.selected_supervisor = 0
-                                _vm.filter()
+                              click: function($event) {
+                                return _vm.allSups()
                               }
                             }
                           },

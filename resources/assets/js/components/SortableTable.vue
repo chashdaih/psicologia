@@ -25,9 +25,11 @@
                 :open-on-focus=true
                 :data="filteredDataObj"
                 field="full_name"
-                @select="option => {selected_supervisor = option.id_supervisor; filter();}">
+                @select="option => {selected_supervisor = option.id_supervisor; filter();}"
+                ref="autocomplete"
+                >
                 <template slot="header">
-                    <a @click="()=> {selected_supervisor=0; filter();}">
+                    <a @click="allSups()">
                         <span> Todos los supervisores </span>
                     </a> 
                 </template>
@@ -141,6 +143,9 @@ export default {
       rowId: null
     };
   },
+  mounted() {
+    this.$refs.autocomplete.setSelected("Todos los supervisores");
+  },
   methods: {
     filter() {
         this.isLoading = true;
@@ -164,6 +169,11 @@ export default {
     },
     closeModal() {
       this.isActive = false;
+    },
+    allSups() {
+      this.selected_supervisor=0;
+      this.filter();
+      this.$refs.autocomplete.setSelected("Todos los supervisores");
     }
   },
   computed: {
