@@ -1759,6 +1759,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['records', 'url', 'stages', 'supervisors', 'stage', 'supervisor'],
   data: function data() {
@@ -1771,7 +1789,9 @@ __webpack_require__.r(__webpack_exports__);
       isLoading: false,
       csrf: document.head.querySelector('meta[name="csrf-token"]').content,
       sups: this.supervisors,
-      name: ''
+      name: '',
+      isActive: false,
+      rowId: null
     };
   },
   methods: {
@@ -1786,6 +1806,17 @@ __webpack_require__.r(__webpack_exports__);
         this.isLoading = false;
         console.log(error); // TODO alert error
       });
+    },
+    confirmDelete: function confirmDelete(id) {
+      this.rowId = id;
+      this.isActive = true;
+    },
+    deleteRow: function deleteRow() {
+      // TODO ajax 
+      this.$refs[this.rowId].submit();
+    },
+    closeModal: function closeModal() {
+      this.isActive = false;
     }
   },
   computed: {
@@ -1867,41 +1898,65 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['url', 'stages', 'supervisors', 'stage'],
+  props: ['url', 'stages', 'supervisors'],
   data: function data() {
     return {
-      selected_stage: this.stage,
-      selected_supervisor: this.supervisor,
-      semestres: ['2020-1', '2019-2', '2019-1', '2018-2', '2018-1', '2017-2'],
-      selected_sem: '2020-1',
+      sups: this.supervisors,
+      selected_stage: 0,
+      selected_supervisor: 0,
       isLoading: false,
       csrf: document.head.querySelector('meta[name="csrf-token"]').content,
-      sups: this.supervisors,
       name: ''
     };
   },
   methods: {
-    filter: function filter() {
-      var _this = this;
-
-      this.isLoading = true;
-      axios.get(this.url + "/filter/" + this.selected_stage + "/" + this.selected_supervisor + "/" + this.selected_sem).then(function (response) {
-        _this.isLoading = false;
-        _this.recs = response.data;
-      })["catch"](function (error) {
-        this.isLoading = false;
-        console.log(error); // TODO alert error
-      });
+    filter: function filter() {// this.isLoading = true;
+      // axios.get(this.url + "/filter/" + this.selected_stage + "/" + this.selected_supervisor + "/" + this.selected_sem)
+      // .then(response => {
+      // this.isLoading = false;
+      //   this.sups = response.data
+      // }).catch(function(error) {
+      // this.isLoading = false;
+      //   console.log(error);
+      //   // TODO alert error
+      // })
     }
   },
+  //   mounted() {
+  //       console.log(this.supervisors);
+  //   },
   computed: {
-    filteredDataObj: function filteredDataObj() {
-      var _this2 = this;
-
-      return this.supervisors.filter(function (option) {
-        return option.full_name.toString().toLowerCase().indexOf(_this2.name.toLowerCase()) >= 0;
-      });
+    filteredDataObj: function filteredDataObj() {//   return this.supervisors.filter((option) => {
+      //       return option.full_name
+      //           .toString()
+      //           .toLowerCase()
+      //           .indexOf(this.name.toLowerCase()) >= 0
+      //   })
     }
   }
 });
@@ -6421,7 +6476,7 @@ var render = function() {
                     {
                       attrs: {
                         placeholder: "Selecciona un supervisor",
-                        "keep-first": true,
+                        "keep-first": false,
                         "open-on-focus": true,
                         data: _vm.filteredDataObj,
                         field: "full_name"
@@ -6640,6 +6695,7 @@ var render = function() {
                           _c(
                             "form",
                             {
+                              ref: props.row.id_practica,
                               attrs: {
                                 action: _vm.url + "/" + props.row.id_practica,
                                 method: "POST"
@@ -6663,7 +6719,14 @@ var render = function() {
                                 "button",
                                 {
                                   staticClass: "button is-danger is-outlined",
-                                  attrs: { type: "submit" }
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      return _vm.confirmDelete(
+                                        props.row.id_practica
+                                      )
+                                    }
+                                  }
                                 },
                                 [
                                   _c("fai", {
@@ -6682,15 +6745,80 @@ var render = function() {
               ],
               null,
               false,
-              1098137655
+              3574197319
             )
           })
-        : _c("p", [_vm._v("No hay registros con los filtros especificados")])
+        : _c("p", [_vm._v("No hay registros con los filtros especificados")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "modal", class: { "is-active": _vm.isActive } },
+        [
+          _c("div", {
+            staticClass: "modal-background",
+            on: { click: _vm.closeModal }
+          }),
+          _vm._v(" "),
+          _c("div", { staticClass: "modal-card" }, [
+            _c("header", { staticClass: "modal-card-head" }, [
+              _c("p", { staticClass: "modal-card-title" }, [
+                _vm._v("¡Atención!")
+              ]),
+              _vm._v(" "),
+              _c("button", {
+                staticClass: "delete",
+                attrs: { "aria-label": "close" },
+                on: { click: _vm.closeModal }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _c("footer", { staticClass: "modal-card-foot" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "button is-danger",
+                  on: {
+                    click: function($event) {
+                      return _vm.deleteRow()
+                    }
+                  }
+                },
+                [_vm._v("Borrar programa")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                { staticClass: "button", on: { click: _vm.closeModal } },
+                [_vm._v("Cancelar")]
+              )
+            ])
+          ])
+        ]
+      )
     ],
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("section", { staticClass: "modal-card-body" }, [
+      _c("p", { staticClass: "has-text-weight-semibold" }, [
+        _vm._v("¿Está seguro que desea borrar el programa?")
+      ]),
+      _vm._v(" "),
+      _c("p", { staticClass: "is-italic" }, [
+        _vm._v(
+          "Borrar el programa dará de baja a todos los estudiantes inscritos y se eliminarán sus documentos."
+        )
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -6712,173 +6840,227 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm.stages
-      ? _c(
-          "form",
-          { attrs: { action: "" } },
-          [
-            _c(
-              "b-field",
-              { attrs: { label: "Filtrar por escenario", horizontal: "" } },
-              [
-                _c(
-                  "b-select",
-                  {
-                    attrs: { placeholder: "Selecciona un escenario" },
-                    on: {
-                      input: function($event) {
-                        return _vm.filter()
+  return _c(
+    "div",
+    [
+      _vm.stages
+        ? _c(
+            "form",
+            { attrs: { action: "" } },
+            [
+              _c(
+                "b-field",
+                { attrs: { label: "Filtrar por escenario", horizontal: "" } },
+                [
+                  _c(
+                    "b-select",
+                    {
+                      attrs: { placeholder: "Selecciona un escenario" },
+                      on: {
+                        input: function($event) {
+                          return _vm.filter()
+                        }
+                      },
+                      model: {
+                        value: _vm.selected_stage,
+                        callback: function($$v) {
+                          _vm.selected_stage = $$v
+                        },
+                        expression: "selected_stage"
                       }
                     },
-                    model: {
-                      value: _vm.selected_stage,
-                      callback: function($$v) {
-                        _vm.selected_stage = $$v
+                    [
+                      _c("option", { attrs: { value: "0" } }, [
+                        _vm._v("Todos los escenarios")
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.stages, function(stage) {
+                        return _c(
+                          "option",
+                          {
+                            key: stage.id_centro,
+                            domProps: { value: stage.id_centro }
+                          },
+                          [_vm._v(_vm._s(stage.nombre))]
+                        )
+                      })
+                    ],
+                    2
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _vm.supervisors
+        ? _c(
+            "form",
+            { attrs: { action: "" } },
+            [
+              _c(
+                "b-field",
+                { attrs: { label: "Buscar por nombre", horizontal: "" } },
+                [
+                  _c(
+                    "b-autocomplete",
+                    {
+                      attrs: {
+                        placeholder: "Selecciona un supervisor",
+                        "keep-first": true,
+                        "open-on-focus": true,
+                        data: _vm.filteredDataObj,
+                        field: "full_name"
                       },
-                      expression: "selected_stage"
-                    }
-                  },
-                  [
-                    _c("option", { attrs: { value: "0" } }, [
-                      _vm._v("Todos los escenarios")
-                    ]),
-                    _vm._v(" "),
-                    _vm._l(_vm.stages, function(stage) {
-                      return _c(
-                        "option",
-                        {
-                          key: stage.id_centro,
-                          domProps: { value: stage.id_centro }
+                      on: {
+                        select: function(option) {
+                          _vm.selected_supervisor = option.id_supervisor
+                          _vm.filter()
+                        }
+                      },
+                      model: {
+                        value: _vm.name,
+                        callback: function($$v) {
+                          _vm.name = $$v
                         },
-                        [_vm._v("@" + _vm._s(stage.nombre))]
-                      )
-                    })
-                  ],
-                  2
-                )
-              ],
-              1
-            )
-          ],
-          1
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _vm.supervisors
-      ? _c(
-          "form",
-          { attrs: { action: "" } },
-          [
-            _c(
-              "b-field",
-              { attrs: { label: "Filtrar por supervisor", horizontal: "" } },
-              [
+                        expression: "name"
+                      }
+                    },
+                    [
+                      _c("template", { slot: "header" }, [
+                        _c(
+                          "a",
+                          {
+                            on: {
+                              click: function() {
+                                _vm.selected_supervisor = 0
+                                _vm.filter()
+                              }
+                            }
+                          },
+                          [_c("span", [_vm._v(" Todos los supervisores ")])]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("template", { slot: "empty" }, [
+                        _vm._v("No hay resultados para " + _vm._s(_vm.name))
+                      ])
+                    ],
+                    2
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("b-table", {
+        attrs: { data: _vm.sups, loading: _vm.isLoading },
+        scopedSlots: _vm._u([
+          {
+            key: "default",
+            fn: function(props) {
+              return [
                 _c(
-                  "b-autocomplete",
+                  "b-table-column",
                   {
                     attrs: {
-                      placeholder: "Selecciona un supervisor",
-                      "keep-first": true,
-                      "open-on-focus": true,
-                      data: _vm.filteredDataObj,
-                      field: "full_name"
-                    },
-                    on: {
-                      select: function(option) {
-                        _vm.selected_supervisor = option.id_supervisor
-                        _vm.filter()
-                      }
-                    },
-                    model: {
-                      value: _vm.name,
-                      callback: function($$v) {
-                        _vm.name = $$v
-                      },
-                      expression: "name"
+                      field: "full_name",
+                      label: "Supervisor",
+                      sortable: ""
                     }
                   },
-                  [
-                    _c("template", { slot: "header" }, [
-                      _c(
-                        "a",
-                        {
-                          on: {
-                            click: function() {
-                              _vm.selected_supervisor = 0
-                              _vm.filter()
-                            }
-                          }
-                        },
-                        [_c("span", [_vm._v(" Todos los supervisores ")])]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("template", { slot: "empty" }, [
-                      _vm._v("No hay resultados para @" + _vm._s(_vm.name))
-                    ])
-                  ],
-                  2
-                )
-              ],
-              1
-            )
-          ],
-          1
-        )
-      : _vm._e(),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c(
-      "form",
-      { attrs: { action: "" } },
-      [
-        _c(
-          "b-field",
-          { attrs: { label: "Filtrar por periodo", horizontal: "" } },
-          [
-            _c(
-              "b-select",
-              {
-                attrs: { placeholder: "Selecciona un periodo" },
-                on: {
-                  input: function($event) {
-                    return _vm.filter()
-                  }
-                },
-                model: {
-                  value: _vm.selected_sem,
-                  callback: function($$v) {
-                    _vm.selected_sem = $$v
-                  },
-                  expression: "selected_sem"
-                }
-              },
-              [
-                _c("option", { attrs: { value: "0" } }, [
-                  _vm._v("Todos los periodos")
-                ]),
+                  [_vm._v(_vm._s(props.row.full_name))]
+                ),
                 _vm._v(" "),
-                _vm._l(_vm.semestres, function(sem) {
-                  return _c("option", { key: sem, domProps: { value: sem } }, [
-                    _vm._v("@" + _vm._s(sem))
-                  ])
-                })
-              ],
-              2
-            )
-          ],
-          1
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("br")
-  ])
+                _c(
+                  "b-table-column",
+                  { attrs: { field: "centro", label: "Centro", sortable: "" } },
+                  [_vm._v(_vm._s(props.row.centro))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-table-column",
+                  {
+                    attrs: { field: "estatus", label: "Estatus", sortable: "" }
+                  },
+                  [_vm._v(_vm._s(props.row.estatus))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-table-column",
+                  { attrs: { label: "Editar", centered: "" } },
+                  [
+                    _c(
+                      "a",
+                      {
+                        attrs: {
+                          href: _vm.url + "/" + props.row.id_practica + "/edit"
+                        }
+                      },
+                      [_c("fai", { attrs: { icon: "file-code", size: "2x" } })],
+                      1
+                    )
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-table-column",
+                  { attrs: { label: "Eliminar", centered: "" } },
+                  [
+                    _c(
+                      "form",
+                      {
+                        attrs: {
+                          action: _vm.url + "/" + props.row.id_practica,
+                          method: "POST"
+                        }
+                      },
+                      [
+                        _c("input", {
+                          attrs: {
+                            type: "hidden",
+                            name: "_method",
+                            value: "DELETE"
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("input", {
+                          attrs: { type: "hidden", name: "_token" },
+                          domProps: { value: _vm.csrf }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "button is-danger is-outlined",
+                            attrs: { type: "submit" }
+                          },
+                          [_c("fai", { attrs: { icon: "trash", size: "2x" } })],
+                          1
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ]
+            }
+          }
+        ])
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

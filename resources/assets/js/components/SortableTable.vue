@@ -21,7 +21,7 @@
             <b-autocomplete
                 v-model="name"
                 placeholder="Selecciona un supervisor"
-                :keep-first=true
+                :keep-first=false
                 :open-on-focus=true
                 :data="filteredDataObj"
                 field="full_name"
@@ -91,17 +91,35 @@
         </b-table-column>
 
         <b-table-column label="Eliminar" centered>
-          <form :action='url + "/" + props.row.id_practica' method="POST">
+          <form :action='url + "/" + props.row.id_practica' method="POST" :ref=props.row.id_practica>
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="_token" :value="csrf" />
-            <button type="submit" class="button is-danger is-outlined">
+            <button @click.prevent="confirmDelete(props.row.id_practica)" class="button is-danger is-outlined">
               <fai icon="trash" size="2x" />
             </button>
           </form>
         </b-table-column>
       </template>
     </b-table>
+
     <p v-else>No hay registros con los filtros especificados</p>
+    <div class="modal" v-bind:class="{'is-active': isActive}">
+      <div class="modal-background" @click="closeModal"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">¡Atención!</p>
+          <button class="delete" aria-label="close" @click="closeModal"></button>
+        </header>
+        <section class="modal-card-body">
+          <p class="has-text-weight-semibold">¿Está seguro que desea borrar el programa?</p>
+          <p class="is-italic">Borrar el programa dará de baja a todos los estudiantes inscritos y se eliminarán sus documentos.</p>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-danger" @click="deleteRow()">Borrar programa</button>
+          <button class="button" @click="closeModal">Cancelar</button>
+        </footer>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -118,7 +136,9 @@ export default {
       isLoading: false,
       csrf: document.head.querySelector('meta[name="csrf-token"]').content,
       sups: this.supervisors,
-      name: ''
+      name: '',
+      isActive: false,
+      rowId: null
     };
   },
   methods: {
@@ -133,6 +153,17 @@ export default {
           console.log(error);
           // TODO alert error
         })
+    },
+    confirmDelete(id) {
+      this.rowId = id;
+      this.isActive =  true;
+    },
+    deleteRow() {
+      // TODO ajax 
+      this.$refs[this.rowId].submit();
+    },
+    closeModal() {
+      this.isActive = false;
     }
   },
   computed: {

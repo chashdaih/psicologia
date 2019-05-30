@@ -8,10 +8,13 @@ use App\Bread;
 use App\Building;
 use App\CaracteristicasServicio;
 use App\CriteriosAcr;
+use App\Document;
+use App\EvaluateStudent;
 use App\Notifications\ProgramRegistered;
 use App\Program;
 use App\ProgramaSemana;
 use App\ProgramData;
+use App\ProgramPartaker;
 use App\Rps as Doc;
 // use App\Mail\RpsMail;
 use App\Supervisor;
@@ -350,7 +353,7 @@ class RpsController extends Controller
     }
     
 
-    public function destroy($id)
+    public function destroy($id) // api
     {
         Program::where('id_practica', $id)->delete();
         ProgramData::where('id_practica', $id)->delete();
@@ -358,10 +361,18 @@ class RpsController extends Controller
         ProgramaSemana::where('program_id', $id)->delete();
         CriteriosAcr::where('program_id', $id)->delete();
         SupInSitu::where('program_id', $id)->delete();
+        // registros de estudiantes inscritos al programa
+        EvaluateStudent::where('program_id', $id)->delete();
+        $tramites = ProgramPartaker::where('id_practica', $id)->get();
+        foreach ($tramites as $tramite) {
+            Document::where('id_tramite', $tramite->id_tramite)->delete();
+            $tramite->delete();
+        }
 
-        // TODO: Mandar mensaje de borrado con éxito
+        // TODO: ajax
+        // return 200;
 
-        return redirect()->route($this->doc_code.'.index');
+        return redirect()->route($this->doc_code.'.index')->with('success', 'Programa borrado exitosamente');
 
     }
 

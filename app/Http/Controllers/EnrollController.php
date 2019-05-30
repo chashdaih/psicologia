@@ -23,6 +23,8 @@ class EnrollController extends Controller
         ->where('cupo_actual','>', '0')
         ->get();
 
+        // dd(Auth::user()->partaker);
+
         $enroll_programs = ProgramPartaker::where('id_participante', Auth::user()->partaker->num_cuenta)->get();
         // dd($enroll_programs);
         
