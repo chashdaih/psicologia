@@ -24,4 +24,8 @@ class Supervisor extends Model
     public function getPrimaryKeyAttribute() {
         return $this->id_supervisor;
     }
+
+    public function center() {
+        return $this->belongsTo('App\Building', 'id_centro', 'id_centro');
+    }
 }

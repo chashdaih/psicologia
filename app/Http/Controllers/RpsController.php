@@ -64,12 +64,11 @@ class RpsController extends Controller
     public function index()
     {
         $id_centro = Auth::user()->supervisor->id_centro;
-        if ($id_centro == 10) {
-            $id_centro = 0;
-        }
+        // if ($id_centro == 10) {
+        //     $id_centro = 0;
+        // }
 
-        $this->params['records'] = $this->filter($id_centro,
-                                Auth::user()->supervisor->id_supervisor, '2020-1');
+        $this->params['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, '2020-1');
 
         $user_type = Auth::user()->type;
 
@@ -429,6 +428,10 @@ class RpsController extends Controller
     
     public function filter($stage, $sup, $per) // webservice
     {
+        if(Auth::user()->supervisor->id_centro == 10) {
+            $stage = 0;
+        }
+
         $records = DB::table('practicas as p')
         ->when($stage > 0, function ($query) use ($stage) {
             return $query->where('p.id_centro', '=', $stage);

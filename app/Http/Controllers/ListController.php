@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use App\Partaker;
 use App\Appointment;
 use Illuminate\Http\Request;
 

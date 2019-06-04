@@ -17,10 +17,12 @@
   v-bind:class="{ 'is-active': isActive }">
       <div class="navbar-start">
         @auth
-        {{-- <div class="navbar-item">
-          <a href="/apartar" class="navbar-item">Apartar espacio</a>
-        </div>
+        @if(Auth::user()->type == 5)
         <div class="navbar-item">
+          <a href="{{ route('apartar') }}" class="navbar-item">Apartar espacio</a>
+        </div>
+        @endif
+        {{-- <div class="navbar-item">
           <a href="/asignar" class="navbar-item">Referir cita</a>
         </div> --}}
         <div class="navbar-item has-dropdown is-hoverable" >

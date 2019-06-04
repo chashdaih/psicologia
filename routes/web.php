@@ -12,7 +12,10 @@
 */
 
 Route::get('/', 'ListController@index')->name('home');
-Route::get('/apartar', 'CalendarController@index');
+Route::get('/apartar/{fecha?}', 'CalendarController@index')->name('apartar');
+Route::get('/getStudents/{sup_id}', 'CalendarController@getStudents')->name('get_students');
+Route::post('/make-appo', 'CalendarController@makeAppo')->name('make_appo');
+Route::delete('/cancel_appo/{id}', 'CalendarController@cancelAppo')->name('cancel_appo');
 Route::group(['prefix' => '/procedures/3/', 'middleware' => 'auth'], function() {
     Route::get('{procedure?}', 'ProceduresController@index')->name('procedures');
     Route::get('{procedure}/{number}', 'ProceduresController@doc')->name('procedure');
@@ -85,6 +88,7 @@ Route::get('/inscribirse', 'EnrollController@index')->name('insc');
 Route::get('/inscribirse/{id}', 'EnrollController@detail')->name('insc.det');
 Route::post('/inscribirse/{id}', 'EnrollController@enroll')->name('insc.enroll');
 Route::post('/save_enroll_docs', 'EnrollController@docs')->name('insc.docs');
+Route::get('/generateLetter/{program_id}', 'EnrollController@cartaCompromiso')->name('insc.carta');
 
 Route::resource('/evaluar', 'EvaluateStudentController');
 

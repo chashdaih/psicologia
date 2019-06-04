@@ -15,7 +15,7 @@
                                 'title'=>'Correo electrónico',
                                 'field'=>'email',
                                 'errors'=>$errors,
-                                'type'=> 'email'
+                                'type'=> 'text'
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Contraseña',

@@ -52,6 +52,11 @@ class Program extends Model
         return $this->hasOne('App\ProgramData', 'id_practica', 'id_practica');
     }
 
+    public function car_ser()
+    {
+        return $this->hasOne('App\CaracteristicasServicio', 'program_id', 'id_practica');
+    }
+
     public function supervisor()
     {
         return $this->belongsTo('App\Supervisor', 'id_supervisor', 'id_supervisor');

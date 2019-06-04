@@ -28,7 +28,6 @@
                             @if ($enr->document->seguro_imss)
                             color="is-primary"
                             text="seguro.pdf"
-                            {{-- @else --}}
                             @endif
                             ></small-file>
                         </div>
@@ -40,9 +39,6 @@
                             @if ($enr->document->carta_comp)
                             color="is-primary"
                             text="carta_compromiso.pdf"
-                            {{-- @else
-                            color="is-warning"
-                            text="Elige un archivo..." --}}
                             @endif
                             ></small-file>
                         </div>
@@ -54,13 +50,16 @@
                             @if ($enr->document->historial_ac)
                             color="is-primary"
                             text="Historial.pdf"
-                            {{-- @else --}}
                             @endif
                             ></small-file>
                         </div>
                         <div class="column">
                             <button class="button" type="submit">Enviar Documentos</button>
                         </div>
+                    </div>
+                    <div>
+                        <a class="button is-info" href="{{ route('insc.carta', $enr->id_practica) }}">Generar carta compromiso</a>
+                        <p class="is-italic">Por favor, revisa la carta, imprímela, firmala y sube un solo archivo que contenga las dos páginas</p>
                     </div>
                 </form>
             @endforeach
@@ -70,47 +69,13 @@
     <br>
     <div class="container">
         <h1 class="title">Prácticas disponibles</h1>
-        @foreach ($programs as $program)
-        <div class="card">
-            <header class="card-header">
-                <p class="card-header-title">{{ $program->programa }}</p>
-            </header>
-            <div class="card-content">
-                <div class="columns">
-                    <div class="column">
-                        @if ($program->supervisor)
-                        <p class="has-text-weight-bold">Supervisor</p>
-                        <p>{{ $program->supervisor->full_name }}</p>
-                        @endif
-                    </div>
-                    <div class="column">
-                        <p><span class="has-text-weight-bold">Duración (en semestres): </span>{{ $program->periodicidad }}</p>
-                        <p>{{ $program->horario }}</p>
-                    </div>
-                </div>
-                <p class="has-text-weight-bold">Resumen</p>
-                <p>{{ $program->program_data->resumen }}</p>
-                <br>
-                <p class="has-text-weight-bold">Escenario</p>
-                <p>{{ $program->center->nombre }}</p>
-            </div>
-            <footer class="card-footer">
-                {{-- <a href="{{ route('insc.det', $program->id_practica) }}" class="card-footer-item">Ver más detalles / Inscribirse</a> --}}
-
-                <a href="{{ route('rps_pdf', $program->id_practica) }}" class="card-footer-item">Ver programa completo</a>
-                {{-- <a href="" class="card-footer-item">Inscribirse al programa</a> --}}
-                <span class="card-footer-item">
-                        <form action="{{ route('insc.enroll', $program->id_practica) }}" method="POST" >
-                            {{ csrf_field() }}
-                            <button class="button  is-primary is-outlined" type="submit">Inscribirse al programa</button>
-                        </form>
-
-                </span>
-
-            </footer>
-        </div>
-        <br>
-        @endforeach
+        {{-- @foreach ($programs as $program) --}}
+        <programs-list 
+            :programs="{{ json_encode($programs) }}"
+            pdf-url="{{ route('rps_pdf', 0) }}"
+            en-url="{{ route('insc.enroll', 0) }}"
+        ></programs-list>
+        {{-- @endforeach --}}
     </div>
 </section>
 @endsection

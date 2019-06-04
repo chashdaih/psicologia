@@ -54,16 +54,16 @@ class RegisterController extends Controller
         //     ]);
         // }
 
-        // $students = Partaker::distinct('correo')->where('correo', 'LIKE', '%@%.%')->pluck('correo');
-        // // dd($students);
-        // foreach ($students as $student) {
-        //     $nuevo = User::firstOrCreate([
-        //         'type' => 3,
-        //         'email' => $student,
-        //         'password' => '$2y$10$691V4gXO0qI0AVTectZBYu7ZGXLE7CiA3F1q9.eAPVd/V7XLGNbh.'
-        //     ]);
-        // }
-        // dd("done");
+        $students = Partaker::distinct('num_cuenta')->pluck('num_cuenta')->take(50);
+        // dd($students);
+        foreach ($students as $student) {
+            $nuevo = User::firstOrCreate([
+                'type' => 3,
+                'email' => $student,
+                'password' => bcrypt($student)
+            ]);
+        }
+        dd("done");
     }
 
     /**

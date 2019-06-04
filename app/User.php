@@ -9,6 +9,7 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -17,6 +18,8 @@ class User extends Authenticatable
     protected $fillable = [
         'type', 'email', 'password',
     ];
+
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -34,6 +37,6 @@ class User extends Authenticatable
 
     public function partaker()
     {
-        return $this->belongsTo('App\Partaker', 'email', 'correo');
+        return $this->belongsTo('App\Partaker', 'email', 'num_cuenta');
     }
 }

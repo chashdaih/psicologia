@@ -3,6 +3,8 @@ import './bootstrap';
 import LoginForm from './components/LoginForm';
 import ListCheckbox from './components/ListCheckbox';
 import CalendarModal from './components/CalendarModal';
+import CalDateSel from './components/CalDateSel';
+import CalCancelModal from './components/CalCancelModal';
 import CalendarSpace from './components/CalendarSpace';
 import FDGForm from './components/FDGForm';
 import CdrForm from './components/CdrForm';
@@ -16,6 +18,7 @@ import SortableTable from './components/SortableTable';
 import RelatedInput from './components/RelatedInput';
 import AddRow from './components/AddRow';
 import SupsTable from './components/SupsTable';
+import ProgramsList from './components/ProgramsList';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -34,7 +37,9 @@ const app = new Vue({
         LoginForm,
         ListCheckbox,
         CalendarModal,
+        CalCancelModal,
         CalendarSpace,
+        CalDateSel,
         FDGForm,
         CdrForm,
         Test,
@@ -46,7 +51,8 @@ const app = new Vue({
         SortableTable,
         RelatedInput,
         AddRow,
-        SupsTable
+        SupsTable,
+        ProgramsList
     },
     data: {
         isActive: false

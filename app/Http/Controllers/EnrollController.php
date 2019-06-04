@@ -9,6 +9,7 @@ use App\Program;
 use App\ProgramData;
 use App\ProgramPartaker;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EnrollController extends Controller
 {
@@ -19,13 +20,21 @@ class EnrollController extends Controller
 
     public function index()
     {
-        $programs = Program::where('semestre_activo', '2020-1')
+        $programs = DB::table('practicas as p')
+        ->where('semestre_activo', '2020-1')
         ->where('cupo_actual','>', '0')
+        ->join('supervisores as s', 'p.id_supervisor', 's.id_supervisor')
+        ->join('informacion_practicas as i', 'p.id_practica', 'i.id_practica')
+        ->join('centros as c', 'p.id_centro', 'c.id_centro')
+        ->select('programa', 'periodicidad', 'p.horario', 'p.id_practica', 'c.nombre', 'i.resumen', 's.id_supervisor', 'c.id_centro',
+            DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name")
+        )->get();
+
+        $programs = $this->fixNames($programs);
+
+        $enroll_programs = ProgramPartaker::where('id_participante', Auth::user()->partaker->num_cuenta)
+        ->where('ciclo_activo', '2020-1')
         ->get();
-
-        // dd(Auth::user()->partaker);
-
-        $enroll_programs = ProgramPartaker::where('id_participante', Auth::user()->partaker->num_cuenta)->get();
         // dd($enroll_programs);
         
         return view('enroll.index', compact('programs', 'enroll_programs'));
@@ -46,7 +55,7 @@ class EnrollController extends Controller
         $rel = ProgramPartaker::create([
             'id_participante' => $partaker_id,
             'id_practica' => $id,
-            'ciclo_activo' => '2019-2',
+            'ciclo_activo' => '2020-1',
             'estado' => 'Necesita Documentacion'
         ]);
 
@@ -106,5 +115,36 @@ class EnrollController extends Controller
         }
 
         return redirect()->route('insc');
+    }
+
+    public function cartaCompromiso($program_id)
+    {
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+
+        $program = Program::where('id_practica', $program_id)->first();
+
+        if ($program->semestre_activo == '2020-1') {
+
+            // dd($program->car_ser->fecha_inicio->format('jS \\of F Y'));
+            
+            $pdf->loadView('enroll.carta_compromiso_pre', compact('program'));
+            return $pdf->download('carta_compromiso.pdf');
+
+        }
+
+        // TODO conectar con el viejo sistema
+        return 404;
+
+    }
+
+    protected function fixNames($records)
+    {
+        if($records) {
+            foreach ($records as $record) {
+                $record->full_name = preg_replace('/\s+/', ' ',ucwords(mb_strtolower($record->full_name)));
+            }
+        }
+        return $records;
     }
 }

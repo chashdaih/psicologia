@@ -10,7 +10,7 @@ class Partaker extends Model
     protected $primaryKey = 'num_cuenta';
 
     public function getFullNameAttribute() {
-        return $this->nombre_part.' '.$this->ap_paterno.' '.$this->ap_materno;
+        return preg_replace('/\s+/', ' ',ucwords(mb_strtolower($this->nombre_part.' '.$this->ap_paterno.' '.$this->ap_materno)));
     }
 
     public function ess()
