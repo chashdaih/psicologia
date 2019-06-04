@@ -32,7 +32,7 @@
                         'type'=> 'text',
                         'prev' => isset($program) ? $program->programa : null
                         ])@endcomponent
-                    @if (Auth::user()->type == 6)
+                    @if (Auth::user()->type == 6 || Auth::user()->supervisor->id_centro == 10)
                     @component('components.select', [
                         'title'=>'Centro al cual pertenece el programa',
                         'field'=>'id_centro',
