@@ -95,3 +95,7 @@ Route::resource('/evaluar', 'EvaluateStudentController');
 Route::resource('/supervisor', 'SupervisorController');
 
 Auth::routes();
+
+Route::get('refresh-csrf', function(){
+    return csrf_token();
+});

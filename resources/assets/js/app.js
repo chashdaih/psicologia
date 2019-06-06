@@ -61,5 +61,18 @@ const app = new Vue({
         toggleMenu() {
             this.isActive = !this.isActive;
         }
+    },
+    mounted() {
+        let csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+
+        setInterval(refreshToken, 3600000); // 1 hour 
+
+        function refreshToken(){
+            axios.get('refresh-csrf').then((data)=>{
+                csrfToken = data.data; // the new token
+            });
+        }
+
+        setInterval(refreshToken, 3600000); // 1 hour 
     }
 });
