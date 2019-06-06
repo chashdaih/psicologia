@@ -19,7 +19,7 @@
             <tbody>
             @foreach ($cubicules as $key => $cubicule)
                 <tr>
-                    <th>{{ $cubicule }}</th>
+                    <th class="is-size-7">{{ $cubicule }}</th>
                     @foreach ($calendarData[$key] as $time => $data)
                     <td style="padding: 0;">
                         <calendar-space @if($data) v-bind:appointment="{{ json_encode($data) }}" @endif room="{{ $cubicule }}" time={{ $time }}></calendar-space>

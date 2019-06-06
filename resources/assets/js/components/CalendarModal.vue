@@ -42,6 +42,7 @@
                                     <select name="terapeuta" v-model="selectedStudent" @change="studentSelected">
                                         <option value=0 disabled>Selecciona un alumno</option>
                                         <option v-for="student in students" :value="student.num_cuenta" :key="student.num_cuenta">{{ student.full_name }}</option>
+                                        <option value = 9999>El Supervisor brinda la atención</option>
                                     </select>
                                 </div>
                             </div>

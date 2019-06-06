@@ -21,7 +21,8 @@ class CalendarController extends Controller
         }
 
         $sql = "select distinct sala from cita";
-        $cubicules = ['1', '2', '3', '4', '17', '19', '20', '21', '22', 'C?mara 5-6', 'C?mara 7-8', 'C?mara 9-10', 'C?mara 14-15'];
+        // $cubicules = ['1', '2', '3', '4', '17', '19', '20', '21', '22', 'C?mara 5-6', 'C?mara 7-8', 'C?mara 9-10', 'C?mara 14-15'];
+        $cubicules = ['1', '2', '3', '4', '17', '19', '20', '21', '22', '23', '24', '25', 'Cámara 5-6', 'Cámara 7-8', 'Cámara 9-10', 'Cámara 14-15'];
         $schedules = ['8:00:00', '9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00'];
 
         $schs = array_fill(0, count($schedules), null);

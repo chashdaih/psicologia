@@ -11,8 +11,8 @@
         ])@endcomponent
 </td>
 <td>
-    @component('components.simple-text', [
-        'title'=>'Actividad',
+    @component('components.area-input', [
+        'title'=>'',
         'field'=>'actividad[]',
         'errors'=>$errors,
         'type'=> 'text',
@@ -20,8 +20,8 @@
         ])@endcomponent
 </td>
 <td>
-    @component('components.simple-text', [
-        'title'=>'Competencias',
+    @component('components.area-input', [
+        'title'=>'',
         'field'=>'competencias[]',
         'errors'=>$errors,
         'type'=> 'text',

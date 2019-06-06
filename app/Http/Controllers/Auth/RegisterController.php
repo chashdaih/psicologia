@@ -54,16 +54,16 @@ class RegisterController extends Controller
         //     ]);
         // }
 
-        $students = Partaker::distinct('num_cuenta')->pluck('num_cuenta')->take(50);
-        // dd($students);
-        foreach ($students as $student) {
-            $nuevo = User::firstOrCreate([
-                'type' => 3,
-                'email' => $student,
-                'password' => bcrypt($student)
-            ]);
-        }
-        dd("done");
+        // $students = Partaker::distinct('num_cuenta')->pluck('num_cuenta')->take(50);
+        // // dd($students);
+        // foreach ($students as $student) {
+        //     $nuevo = User::firstOrCreate([
+        //         'type' => 3,
+        //         'email' => $student,
+        //         'password' => bcrypt($student)
+        //     ]);
+        // }
+        // dd("done");
     }
 
     /**
