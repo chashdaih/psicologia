@@ -21,7 +21,9 @@
             {{-- @if(!isset($nullable)) required @endif --}}
             v-on:keypress="isNumber($event)"
             {{-- v-on:change="isNumber" --}}
+            @if(!isset($send))
             v-on:keydown.enter.prevent
+            @endif
             >
     </div>
     @if ($errors->has($field))

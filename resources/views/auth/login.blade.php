@@ -12,16 +12,18 @@
                         <form method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
                             @component('components.text-input', [
-                                'title'=>'Correo electrónico',
+                                'title'=>'Correo electrónico / Número de cuenta',
                                 'field'=>'email',
                                 'errors'=>$errors,
-                                'type'=> 'text'
+                                'type'=> 'text',
+                                'send'=> true
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Contraseña',
                                 'field'=>'password',
                                 'errors'=>$errors,
-                                'type'=> 'password'
+                                'type'=> 'password',
+                                'send'=> true
                                 ])@endcomponent
                             <div class="field">
                                 <p class="control">
