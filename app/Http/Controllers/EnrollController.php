@@ -52,6 +52,14 @@ class EnrollController extends Controller
     {
         $partaker_id = Auth::user()->partaker->num_cuenta;
 
+        $registered_programs = ProgramPartaker::where('id_participante', $partaker_id)
+        ->where('ciclo_activo', '2020-1')
+        ->first();
+
+        if ($registered_programs) {
+            return redirect()->route('insc')->with('message', "No puedes inscribirte a otro programa hasta dentro de algún tiempo");
+        }
+
         $rel = ProgramPartaker::create([
             'id_participante' => $partaker_id,
             'id_practica' => $id,

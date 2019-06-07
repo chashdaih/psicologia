@@ -20,6 +20,11 @@
                             <p class="has-text-weight-bold">Programa</p>
                             <p>{{ $enr->program->programa}}</p>
                         </div>
+                        @if ($enr->document->seguro_imss && $enr->document->carta_comp && $enr->document->historial_ac)
+                        <div class="column">
+                            <p class="subtitle">Ya has subido todos los documentos</p>
+                        </div>
+                        @else
                         <div class="column">
                             <p class="has-text-weight-bold">Seguro</p>
                             <small-file
@@ -28,6 +33,7 @@
                             @if ($enr->document->seguro_imss)
                             color="is-primary"
                             text="seguro.pdf"
+                            :disable=true
                             @endif
                             ></small-file>
                         </div>
@@ -39,6 +45,7 @@
                             @if ($enr->document->carta_comp)
                             color="is-primary"
                             text="carta_compromiso.pdf"
+                            :disable=true
                             @endif
                             ></small-file>
                         </div>
@@ -50,12 +57,14 @@
                             @if ($enr->document->historial_ac)
                             color="is-primary"
                             text="Historial.pdf"
+                            :disable=true
                             @endif
                             ></small-file>
                         </div>
                         <div class="column">
                             <button class="button" type="submit">Enviar Documentos</button>
                         </div>
+                        @endif
                     </div>
                     <div>
                         <a class="button is-info" href="{{ route('insc.carta', $enr->id_practica) }}">Generar carta compromiso</a>

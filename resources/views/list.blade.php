@@ -6,6 +6,8 @@
         <h1 class="title">Bienvenido al sistema</h1>
         @if(Auth::user()->type != 3)
         <a href="{{ route('rps.create') }}">Registrar nuevo programa de servicios psicológicos a través de la formación supervisada</a>
+        @else
+        @include('home.students')
         @endif
         {{-- <h1 class="title">Citas del día</h1>
         <h2 class="subtitle">Centro de Servicios Psicológicos Dr. Guillermo Dávila</h2>

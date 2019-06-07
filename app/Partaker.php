@@ -23,4 +23,13 @@ class Partaker extends Model
         return $this->belongsTo('App\EvaluateStudent', 'num_cuenta', 'partaker_id');
     }
 
+    public function tramites()
+    {
+        return $this->belongsTo('App\ProgramPartaker', 'num_cuenta', 'id_participante');
+    }
+
+    public function programs()
+    {
+        return $this->belongsToMany('App\Program', 'asigna_practica', 'id_participante', 'id_practica');
+    }
 }

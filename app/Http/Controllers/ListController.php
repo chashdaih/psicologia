@@ -16,9 +16,18 @@ class ListController extends Controller
 
     public function index()
     {
-        $appointments = Appointment::where('fecha', '2019-03-02')->orderBy('hora', 'asc')->get();
+        // $appointments = Appointment::where('fecha', '2019-03-02')->orderBy('hora', 'asc')->get();
 
-        return view('list', compact('appointments'));
+        $data = [];
+
+        if (Auth::user()->type == 3) { // participante (estudiante)
+            $tramites = Auth::user()->partaker->tramites;
+            // dd($tramites->document);
+            $data = compact('tramites');
+        }
+
+
+        return view('list', $data);
     }
 
     public function update(Request $request)

@@ -2,7 +2,7 @@
     <div class="field">
         <div class="file is-small is-boxed has-name" :class="error != '' ? 'is-danger' : color_class">
             <label class="file-label">
-                <input class="file-input" type="file" :name="name" accept="application/pdf" @change="onChange">
+                <input class="file-input" :disabled="disable" type="file" :name="name" accept="application/pdf" @change="onChange">
                 <span class="file-cta">
                     <span class="file-icon">
                     <fai icon="upload" />
@@ -28,7 +28,8 @@ export default {
         'serv_error': String,
         'name': String,
         'color': { default: 'is-warning' },
-        'text': { default: 'Elige un archivo...' }
+        'text': { default: 'Elige un archivo...' },
+        'disable': { type: Boolean, default: false }
     },//['serv_error', 'name', 'color', 'text'],
     data(){
         return {
