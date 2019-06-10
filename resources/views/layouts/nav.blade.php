@@ -43,6 +43,9 @@
         <div class="navbar-item">
           <a href="{{ route('evaluar.index') }}" class="navbar-item">Evaluar estudiante</a>
         </div>
+        {{-- <div class="navbar-item">
+          <a href="{{ route('cub_type.index') }}" class="navbar-item">Registrar tipo de cubículo</a>
+        </div> --}}
         @endif
         @endauth
       </div>
@@ -51,12 +54,9 @@
       @guest
           <div class="navbar-item">
               <div class="buttons">
-                  <a href="{{ route('register') }}" class="button is-primary">
-                  <strong>Registrarse</strong>
-                  </a>
-                  <a href="{{ route('login') }}" class="button is-light">
-                  Iniciar sesión
-                  </a>
+                <a href="{{ route('login') }}" class="button is-light">
+                Iniciar sesión
+                </a>
               </div>
           </div>
       @else
@@ -77,6 +77,13 @@
                 Administrar supervisores
               </a>
               @endif
+            </div>
+          </div>
+          <div class="navbar-item">
+            <div class="buttons">
+              <a href="{{ route('register') }}" class="button is-primary">
+                <strong>Registrar supervisor</strong>
+              </a>
             </div>
           </div>
           @endif

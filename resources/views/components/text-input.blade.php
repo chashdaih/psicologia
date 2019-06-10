@@ -18,7 +18,7 @@
             placeholder="{{ $title }}"
             v-on:input="clearError"
             ref="{{ $title }}"
-            {{-- @if(!isset($nullable)) required @endif --}}
+            @if(isset($required) && $required) required @endif
             v-on:keypress="isNumber($event)"
             {{-- v-on:change="isNumber" --}}
             @if(!isset($send))

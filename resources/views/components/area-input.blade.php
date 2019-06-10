@@ -9,6 +9,7 @@
             placeholder="{{ $title }}"
             v-on:input="clearError"
             ref="{{ $title }}"
+            @if(isset($required) && $required) required @endif
             >{{  old($field, isset($prev)?$prev:null) }}</textarea>
     </div>
     @if ($errors->has($field))
