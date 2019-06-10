@@ -15,10 +15,6 @@
         "title": "Programa",
         "type": "select"
     },
-    "student_id": {
-        "title": "Estudiante",
-        "type": "select"
-    },
     "refer_needed": {
         "title": "¿Fue necesario hacer referencia?",
         "type": "boolean"

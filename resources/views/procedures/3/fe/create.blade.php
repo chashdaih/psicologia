@@ -6,49 +6,70 @@
         @include('layouts.breadcrumbs')
         <h1 class="title">{{ $bread->last()['title'] }}</h1>
 
-        <ecpr-form inline-template :fields={{ $values }} url={{ route($code.'.store') }}>
-            <form @submit.prevent="onSubmit">
+        {{-- <ecpr-form inline-template :fields={{ $values }} url={{ route($code.'.store') }}> --}}
+        <form method="POST" action="{{ route($code.'.store') }}" >
             @foreach ($fields as $title => $field)
-            <div class="field">
+            {{-- <div class="field">
                 <label class="label">{{ $field['title'] }}</label>
-                <div class="control">
-                @switch($field['type'])
-                @case("text")
-                    <input class="input" type="text" v-model="form.{{ $title }}" placeholder="{{ $field['title'] }}">
-                    @break
-                @case("date")
-                <div class="field">
-                    <input class="input" type="date" v-model="form.{{ $title }}" required>
-                    @break
-                @case("select")
-                    <div class="select">
-                        <select v-model="form.{{ $title }}">
+                <div class="control"> --}}
+                @if ($field['type'] == "text")
+                @component('components.text-input', [
+                    'title'=>$field['title'],
+                    'field'=>$title,
+                    'errors'=>$errors,
+                    'type'=> 'text',
+                    'prev' => null
+                    ])@endcomponent
+                    {{-- <input class="input" type="text" v-model="form.{{ $title }}" placeholder="{{ $field['title'] }}"> --}}
+                @elseif ($field['type'] == "select")
+                @component('components.select', [
+                    'title'=>$field['title'],
+                    'field'=>$title,
+                    'errors'=>$errors,
+                    'options'=> $field['options'],
+                    'prev' => null,
+                    'id' => Auth::user()->supervisor->id_centro
+                    ])@endcomponent
+                    {{-- <div class="select">
+                        <select name={{ $title }}>
                             <option value="0" disabled>Seleccione una opción</option>
                             @foreach ($field['options'] as $option)
-                            <option :value="{{ $option->id }}">{{ $option->name }}</option>
+                            <option value="{{ $option->id }}">{{ $option->name }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    @break
-                @case("area")
+                    </div> --}}
+                @elseif ($field['type'] == "date")
+                @component('components.text-input', [
+                    'title'=> $field['title'],
+                    'field'=> $title,
+                    'errors'=>$errors,
+                    'type'=> 'date',
+                    'prev'=> null,
+                    'required' => true
+                    ])@endcomponent
+                @elseif ($field['type'] == "area")
+                @component('components.area-input', [
+                    'title'=> $field['title'],
+                    'field'=> $title,
+                    'errors'=>$errors,
+                    'prev'=> null
+                    ])@endcomponent
+                @elseif ($field['type'] == "boolean")
+                @component('components.check', [
+                    'title'=> $field['title'],
+                    'field'=> $title,
+                    'prev' => null
+                    ])@endcomponent
+                @elseif ($field['type'] == "number")
                 <div class="field">
-                    <textarea v-model="form.{{ $title }}" class="textarea" placeholder="{{ $field['title'] }}"></textarea>
-                    @break
-                @case("boolean")
-                <div class="field">
-                    <input type="checkbox" v-model="form.{{ $title }}" required>
-                    @break
-                @case("number")
-                <div class="field">
-                    <input type="number" v-model="form.{{ $title }}" required>
-                    @break
-                @endswitch
-                </div>
-            </div>
+                    <input type="number" name={{ $title }} required>
+                @endif
+                {{-- </div>
+            </div> --}}
             @endforeach
-            <button v-bind:class="{ 'is-loading': form.isLoading }" class="button" type="submit">Registrar</button>
-            </form>
-        </ecpr-form>
+            <button class="button" type="submit">Registrar</button>
+        </form>
+        {{-- </ecpr-form> --}}
     </div>
 </section>
 @endsection

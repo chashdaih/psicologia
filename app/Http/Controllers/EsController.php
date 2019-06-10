@@ -41,7 +41,7 @@ class EsController extends Controller
                     ->where('semestre_activo', '2019-2')->get();
         $this->params['programs'] = $programs;
 
-        $json = file_get_contents(dirname(__DIR__, 2).'/fields/'.$this->doc_code.'.json');
+        $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.$this->doc_code.'.json');
         $questions = json_decode($json, true);
         // dd($questions);
         $this->params['questions'] = $questions;
@@ -69,7 +69,7 @@ class EsController extends Controller
         $doc = $this->getFormatedDoc($id);
         $this->params['doc']= $doc;
 
-        $json = file_get_contents(dirname(__DIR__, 2).'/fields/'.$this->doc_code.'.json');
+        $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.$this->doc_code.'.json');
         $questions = json_decode($json, true);
         $this->params['questions'] = $questions;
 
@@ -84,7 +84,7 @@ class EsController extends Controller
         $doc = $this->getFormatedDoc($id);
         $this->params['doc']= $doc;
 
-        $json = file_get_contents(dirname(__DIR__, 2).'/fields/'.$this->doc_code.'.json');
+        $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.$this->doc_code.'.json');
         $questions = json_decode($json, true);
         $this->params['questions'] = $questions;
 
@@ -114,5 +114,13 @@ class EsController extends Controller
     public function destroy(Es $es)
     {
         //
+    }
+
+    protected function dirname_r($path, $count=1){
+        if ($count > 1) {
+           return dirname($this->dirname_r($path, --$count));
+        } else {
+           return dirname($path);
+        }
     }
 }

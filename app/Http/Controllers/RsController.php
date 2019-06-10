@@ -36,7 +36,7 @@ class RsController extends Controller
 
     protected function getFields()
     {
-        $json = file_get_contents(dirname(__DIR__, 2).'/fields/'.$this->doc_code.'.json');
+        $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.$this->doc_code.'.json');
         $fields = json_decode($json, true);
 
         $patients = FE3FDG::select('id', DB::raw("CONCAT(name, ' ', last_name, ' ', mothers_name) AS name"))->get(); // TODO where supervisor or student match somewhere...
@@ -79,5 +79,13 @@ class RsController extends Controller
     public function destroy(Rs $rs)
     {
         //
+    }
+
+    protected function dirname_r($path, $count=1){
+        if ($count > 1) {
+           return dirname($this->dirname_r($path, --$count));
+        } else {
+           return dirname($path);
+        }
     }
 }

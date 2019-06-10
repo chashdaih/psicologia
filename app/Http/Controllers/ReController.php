@@ -7,7 +7,8 @@ use App\Bread;
 use App\FE3FDG;
 use App\Program;
 use App\Re;
-use App\Student;
+// use App\Student;
+use App\Partaker;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
@@ -35,18 +36,20 @@ class ReController extends Controller
 
     protected function getFields()
     {
-        $json = file_get_contents(dirname(__DIR__, 2).'/fields/re.json');
+        $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/re.json');
         $fields = json_decode($json, true);
 
-        $patients = FE3FDG::select('id', DB::raw("CONCAT(name, ' ', last_name, ' ', mothers_name) AS name"))->get(); // TODO where supervisor or student match somewhere...
-        $buildings = Building::select('id_centro as id', 'nombre as name')->get();
-        $programs = Program::select('id_practica as id', 'programa as name')->where('id_supervisor', 1)->get();
-        $students = Student::select('id_usuario as id', DB::raw("CONCAT(nombre_t, ' ', ap_paterno_t, ' ', ap_materno_t) AS name"))->where('Sistema', 'Escolarizado')->get(); // TODO get supervisor's students
+        $patients = FE3FDG::select('id as primary_key', DB::raw("CONCAT(name, ' ', last_name, ' ', mothers_name) AS full_name"))->get(); // TODO where supervisor or student match somewhere...
+        $buildings = Building::select('id_centro as primary_key', 'nombre as full_name')->get();
+        $programs = Program::select('id_practica as primary_key', 'programa as full_name')->where('id_supervisor', 1)->get();
+        // $students = Partaker::select('num_cuenta as id', DB::raw("CONCAT(nombre_part, ' ', ap_paterno, ' ', ap_materno) AS name"))
+        // ->where('Sistema', 'Escolarizado')
+        // ->get(); // TODO get supervisor's students
         
         $fields['patient_id']['options'] = $patients;
         $fields['building_id']['options'] = $buildings;
         $fields['program_id']['options'] = $programs;
-        $fields['student_id']['options'] = $students;
+        // $fields['student_id']['options'] = $students;
 
         return $fields;
     }
@@ -103,5 +106,13 @@ class ReController extends Controller
     public function destroy(Re $re)
     {
         //
+    }
+
+    protected function dirname_r($path, $count=1){
+        if ($count > 1) {
+           return dirname($this->dirname_r($path, --$count));
+        } else {
+           return dirname($path);
+        }
     }
 }

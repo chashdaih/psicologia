@@ -7,7 +7,7 @@
         <div class="select">
             <select name="{{ $field }}">
                 @foreach ($options as $option)
-                <option :value="{{ $option->primary_key }}"
+                <option value="{{ $option->primary_key }}"
                     @if(old($field, isset($prev)?$prev:null))
                         @if ($option->primary_key == old($field, isset($prev)?$prev:null) )
                         selected="selected"
