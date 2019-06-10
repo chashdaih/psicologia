@@ -76,14 +76,10 @@
               <a class="navbar-item" href="{{ route('supervisor.index') }}">
                 Administrar supervisores
               </a>
-              @endif
-            </div>
-          </div>
-          <div class="navbar-item">
-            <div class="buttons">
-              <a href="{{ route('register') }}" class="button is-primary">
-                <strong>Registrar supervisor</strong>
+              <a href="{{ route('register') }}" class="navbar-item">
+                Registrar supervisor
               </a>
+              @endif
             </div>
           </div>
           @endif

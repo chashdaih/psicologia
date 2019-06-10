@@ -4,13 +4,42 @@
     <div class="container">
         <div class="columns">
             <div class="column">
+                @if(session('success'))
+                <div class="notification is-primary">
+                    <button class="delete"></button>
+                    {{session('success')}}
+                </div>
+                @elseif ($errors->any())
+                <div class="notification is-danger">
+                    <p>El formulario contiene errores:</p>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-header-title">Registrar nuevo usuario</div>
+                        <div class="card-header-title">
+                            @if (isset($supervisor))
+                                @if ($supervisor->id_supervisor == Auth::user()->supervisor->id_supervisor)
+                                    Editar mis datos 
+                                @else
+                                    Editar los datos de {{ $sup->full_name }}
+                                @endif
+                            @else
+                            Registrar nuevo usuario
+                            @endif
+                        </div>
                     </div>
                     <div class="card-content">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form class="control" 
+                        method="POST" 
+                        action="{{ isset($supervisor) ? route('supervisor.update', $supervisor->id_supervisor) : route('register') }}">
                         {{ csrf_field() }}
+                        @if(isset($supervisor)) <input name="_method" type="hidden" value="PUT"> @endif
+                        @if(!isset($supervisor))
                             <text-input class="field" inline-template
                                 {{ $errors->has('type') ? ":error=true" : '' }}
                                 title="type">
@@ -19,7 +48,11 @@
                                 <div class="control">
                                     <div class="select">
                                         <select name="type">
-                                            <option value=2>Supervisor</option>
+                                            @foreach ($sup_types as $key => $type)
+                                            <option value={{$key}}
+                                            @if (isset($supervisor) && $key == Auth::user()->type) selected @endif
+                                            >{{$type}}</option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -32,7 +65,8 @@
                                 'title'=>'Correo electrónico',
                                 'field'=>'email',
                                 'errors'=>$errors,
-                                'type'=> 'email'
+                                'type'=> 'email',
+                                'prev' => isset($supervisor) ? $supervisor->correo : null
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Contraseña',
@@ -46,69 +80,87 @@
                                 'errors'=>$errors,
                                 'type'=> 'password'
                                 ])@endcomponent
+                            @endif
                             @component('components.text-input', [
                                 'title'=>'Nombre',
                                 'field'=>'nombre',
                                 'errors'=>$errors,
-                                'type'=> 'text'
+                                'type'=> 'text',
+                                'prev' => isset($supervisor) ? $supervisor->nombre : null
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Apellido paterno',
                                 'field'=>'ap_paterno',
                                 'errors'=>$errors,
-                                'type'=> 'text'
+                                'type'=> 'text',
+                                'prev' => isset($supervisor) ? $supervisor->ap_paterno : null
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Apellido materno',
                                 'field'=>'ap_materno',
                                 'errors'=>$errors,
-                                'type'=> 'text'
+                                'type'=> 'text',
+                                'prev' => isset($supervisor) ? $supervisor->ap_materno : null
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Número de trabajador',
                                 'field'=>'num_trabajador',
                                 'errors'=>$errors,
-                                'type'=> 'text'
+                                'type'=> 'text',
+                                'prev' => isset($supervisor) ? $supervisor->num_trabajador : null
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'RFC',
                                 'field'=>'rfc',
                                 'errors'=>$errors,
-                                'type'=> 'text'
+                                'type'=> 'text',
+                                'prev' => isset($supervisor) ? $supervisor->rfc : null
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Adscripción',
                                 'field'=>'coordinacion',
                                 'errors'=>$errors,
-                                'type'=> 'text'
+                                'type'=> 'text',
+                                'prev' => isset($supervisor) ? $supervisor->coordinacion : null
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Nombramiento',
                                 'field'=>'nombramiento',
                                 'errors'=>$errors,
-                                'type'=> 'text'
+                                'type'=> 'text',
+                                'prev' => isset($supervisor) ? $supervisor->nombramiento : null
                                 ])@endcomponent
                             @component('components.select', [
                                 'title'=>'Centro al cual pertenece el usuario',
                                 'field'=>'id_centro',
                                 'errors'=>$errors,
-                                'options'=> $buildings
+                                'options'=> $buildings,
+                                'prev' => isset($supervisor) ? $supervisor->id_centro : null,
+                                'id' => isset($supervisor) ? Auth::user()->supervisor->id_centro : null
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Teléfono',
                                 'field'=>'telefono',
                                 'errors'=>$errors,
-                                'type'=> 'text'
+                                'type'=> 'text',
+                                'prev' => isset($supervisor) ? $supervisor->telefono : null,
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Celular',
                                 'field'=>'celular',
                                 'errors'=>$errors,
-                                'type'=> 'text'
+                                'type'=> 'text',
+                                'prev' => isset($supervisor) ? $supervisor->celular : null,
                                 ])@endcomponent
                             <div class="field">
                                 <p class="control">
-                                    <button class="button is-success">Registrar</button>
+                                    <button class="button is-success">
+                                        @if (isset($supervisor))
+                                        Actualizar
+                                        @else
+                                        Registrar
+                                        @endif
+                                    </button>
                                 </p>
                              </div>
                         </form>

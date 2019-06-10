@@ -51,14 +51,33 @@ class SupervisorController extends Controller
     // {
     // }
 
-    public function edit($id)
+    public function edit(Supervisor $supervisor)
     {
-        //
+        $buildings = Building::all();
+
+        $sup_types = [2=>'Supervisor', 5=>'Jefe de centro', 6=>'Coordinación'];
+
+        return view('auth.register', compact('buildings', 'supervisor', 'sup_types'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Supervisor $supervisor)
     {
-        //
+        $this->validate($request, [
+            'nombre' => 'required|string',
+            'ap_paterno' => 'required|string',
+            'ap_materno' => 'required|string',
+            'num_trabajador' => 'required|string',
+            'rfc' => 'required|string',
+            'coordinacion' => 'required|string',
+            'nombramiento' => 'required|string',
+            'id_centro' => 'required|integer',
+            'telefono' => 'required|string',
+            'celular' => 'required|string'
+        ]);
+
+        $supervisor->update($request->all());
+
+        return redirect()->route('supervisor.edit', $supervisor)->with('success', 'Información actualizada exitosamente');
     }
 
     public function destroy($id)

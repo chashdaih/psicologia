@@ -13,12 +13,12 @@
                         selected="selected"
                         @endif
                     @else
-                        @if ($option->primary_key == $id )
+                        @if (isset($id) && $option->primary_key == $id )
                         selected="selected"
                         @endif
                     @endif
 
-                    >{{ $option->full_name }}</option>
+                    >{{ str_limit($option->full_name, 100) }}</option>
                 @endforeach
             </select>
         </div>

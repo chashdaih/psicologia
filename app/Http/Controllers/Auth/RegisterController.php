@@ -30,11 +30,11 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
-    // protected function redirectTo()
-    // {
-    //     redirect()->route('login');
-    // }
+    // protected $redirectTo = '/';
+    protected function redirectTo()
+    {
+        redirect()->route('home');
+    }
 
     /**
      * Create a new controller instance.
@@ -43,7 +43,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth');
 
         // $supervisors = Supervisor::distinct('correo')->where('correo', 'LIKE', '%@%.%')->pluck('correo');
         // foreach ($supervisors as $sup) {
@@ -101,7 +101,8 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         $buildings = Building::all();
-        return view('auth.register', compact('buildings'));
+        $sup_types = [2=>'Supervisor', 5=>'Jefe de centro', 6=>'Coordinación'];
+        return view('auth.register', compact('buildings', 'sup_types'));
     }
 
     /**
@@ -112,7 +113,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        if ($data['type'] == 2) {
+        if ($data['type'] == 2 || $data['type'] == 5 || $data['type'] == 6) {
             Supervisor::create([
                 'nombre' => $data['nombre'],
                 'ap_paterno' => $data['ap_paterno'],
