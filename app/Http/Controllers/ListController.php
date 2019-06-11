@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Partaker;
+use App\ProgramPartaker;
 use App\Appointment;
 use Illuminate\Http\Request;
 
@@ -38,4 +39,18 @@ class ListController extends Controller
         $appointment->save();
         return response(200);
     }
+
+    public function enrollmentProof($tramit_id)
+    {
+        $programPartaker = ProgramPartaker::where('id_tramite', $tramit_id)->first();
+
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+            
+        $pdf->loadView('home.enrollment_proof', compact('programPartaker'));
+        return $pdf->download('comprobante_registro.pdf');
+
+    }
+
+
 }

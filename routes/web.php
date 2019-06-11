@@ -12,6 +12,8 @@
 */
 
 Route::get('/', 'ListController@index')->name('home');
+Route::get('/partaker/enrollment_proof/{tramit_id}', 'ListController@enrollmentProof')->name('e_proof');
+
 Route::get('/apartar/{fecha?}', 'CalendarController@index')->name('apartar');
 Route::get('/getStudents/{sup_id}', 'CalendarController@getStudents')->name('get_students');
 Route::post('/make-appo', 'CalendarController@makeAppo')->name('make_appo');

@@ -4,7 +4,7 @@
             <p class="subtitle">Práctica inscrita:</p>
             <p>{{ $tramites->program->programa }}</p>
             @if ($tramites->document && $tramites->document->seguro_imss && $tramites->document->carta_comp && $tramites->document->historial_ac)
-            <p>Tu registro está completo</p>
+            <a href="{{ route('e_proof', $tramites->document->id_tramite) }}">Descargar comprobante de inscripción</a>
             @else
             <a href="{{ route('insc') }}">Subir documentación faltante</a>
             @endif
