@@ -92,7 +92,7 @@ Route::get('/generateLetter/{program_id}', 'EnrollController@cartaCompromiso')->
 
 Route::resource('/evaluar', 'EvaluateStudentController');
 
-Route::resource('/supervisor', 'SupervisorController');
+Route::resource('/supervisor', 'SupervisorController', ['middleware' => 'auth']);
 
 Auth::routes();
 

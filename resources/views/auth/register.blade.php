@@ -26,7 +26,7 @@
                                 @if ($supervisor->id_supervisor == Auth::user()->supervisor->id_supervisor)
                                     Editar mis datos 
                                 @else
-                                    Editar los datos de {{ $sup->full_name }}
+                                    Editar los datos de {{ $supervisor->full_name }}
                                 @endif
                             @else
                             Registrar nuevo usuario

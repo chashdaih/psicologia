@@ -53,7 +53,7 @@ class SupervisorController extends Controller
 
     public function edit(Supervisor $supervisor)
     {
-        $buildings = Building::all();
+        $buildings = Building::where('id_centro', '<', 12)->get();
 
         $sup_types = [2=>'Supervisor', 5=>'Jefe de centro', 6=>'Coordinación'];
 

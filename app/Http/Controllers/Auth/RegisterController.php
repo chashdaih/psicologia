@@ -100,7 +100,7 @@ class RegisterController extends Controller
 
     public function showRegistrationForm()
     {
-        $buildings = Building::all();
+        $buildings = Building::where('id_centro', '<', 12)->get();
         $sup_types = [2=>'Supervisor', 5=>'Jefe de centro', 6=>'Coordinación'];
         return view('auth.register', compact('buildings', 'sup_types'));
     }
