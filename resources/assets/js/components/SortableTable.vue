@@ -26,6 +26,7 @@
                 :data="filteredDataObj"
                 field="full_name"
                 @select="option => {selected_supervisor = option.id_supervisor; filter();}"
+                @focus="clearName"
                 ref="autocomplete"
                 >
                 <template slot="header">
@@ -79,6 +80,11 @@
           field="centro" 
           label="Centro" 
           sortable>{{ props.row.centro }}</b-table-column>
+
+        <b-table-column
+          field="tipo" 
+          label="Curricular / Extra" 
+          sortable>{{ props.row.tipo }}</b-table-column>
 
         <b-table-column label="Editar" centered>
           <a :href='url + "/" + props.row.id_practica + "/edit"'>
@@ -174,6 +180,9 @@ export default {
       this.selected_supervisor=0;
       this.filter();
       this.$refs.autocomplete.setSelected("Todos los supervisores");
+    },
+    clearName() {
+      this.name = '';
     }
   },
   computed: {

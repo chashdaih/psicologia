@@ -29,7 +29,7 @@
                                     Editar los datos de {{ $supervisor->full_name }}
                                 @endif
                             @else
-                            Registrar nuevo usuario
+                            Registrar nuevo supervisor
                             @endif
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                                 {{ $errors->has('type') ? ":error=true" : '' }}
                                 title="type">
                                 <div>
-                                <label class="label">Tipo de usuario</label>
+                                <label class="label">Nivel de acceso</label>
                                 <div class="control">
                                     <div class="select">
                                         <select name="type">
@@ -131,7 +131,7 @@
                                 'prev' => isset($supervisor) ? $supervisor->nombramiento : null
                                 ])@endcomponent
                             @component('components.select', [
-                                'title'=>'Centro al cual pertenece el usuario',
+                                'title'=>'Centro al cual pertenece el supervisor',
                                 'field'=>'id_centro',
                                 'errors'=>$errors,
                                 'options'=> $buildings,

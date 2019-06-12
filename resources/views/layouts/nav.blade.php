@@ -26,7 +26,7 @@
           <a href="/asignar" class="navbar-item">Referir cita</a>
         </div> --}}
         <div class="navbar-item has-dropdown is-hoverable" >
-          <a href="{{ route('procedures') }}" class="navbar-link is-arrowless">Procedimientos</a>
+          <a href="{{ route('procedures') }}" class="navbar-link is-arrowless">Procesos</a>
           <div class="navbar-dropdown" style="background-color: white;">
             <a href="#" class="navbar-item">Elaboración y seguimiento de planeación estratégica y operativa</a>
             <a href="{{ route('procedures', 'ie') }}" class="navbar-item">Ingreso del estudiante</a>
