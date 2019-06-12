@@ -26,6 +26,7 @@
                 :data="filteredDataObj"
                 field="full_name"
                 @select="option => {selected_supervisor = option.id_supervisor; filter();}"
+                @focus="clearName"
                 ref="autocomplete"
                 >
                 <template slot="header">
@@ -174,6 +175,9 @@ export default {
       this.selected_supervisor=0;
       this.filter();
       this.$refs.autocomplete.setSelected("Todos los supervisores");
+    },
+    clearName() {
+      this.name = '';
     }
   },
   computed: {
