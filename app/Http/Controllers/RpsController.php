@@ -69,7 +69,6 @@ class RpsController extends Controller
         // }
 
         $this->params['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, '2020-1');
-
         $user_type = Auth::user()->type;
 
         if ($user_type == 5) { // jefe de centro
@@ -451,7 +450,7 @@ class RpsController extends Controller
         })
         ->join('centros as c', 'p.id_centro', '=', 'c.id_centro')
         ->join('supervisores as s', 'p.id_supervisor', '=', 's.id_supervisor')
-        ->select('p.id_practica', 'p.programa', 'p.semestre_activo', 'c.nombre as centro',
+        ->select('p.id_practica', 'p.programa', 'p.semestre_activo', 'c.nombre as centro', 'p.tipo',
             DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"))
             ->orderBy('p.semestre_activo', 'desc')
         ->get();
