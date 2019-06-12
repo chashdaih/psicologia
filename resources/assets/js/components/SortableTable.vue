@@ -81,6 +81,11 @@
           label="Centro" 
           sortable>{{ props.row.centro }}</b-table-column>
 
+        <b-table-column
+          field="tipo" 
+          label="Curricular / Extra" 
+          sortable>{{ props.row.tipo }}</b-table-column>
+
         <b-table-column label="Editar" centered>
           <a :href='url + "/" + props.row.id_practica + "/edit"'>
               <fai icon="file-code" size="2x" />
