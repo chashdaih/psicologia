@@ -351,6 +351,7 @@
                     @if ($car->egreso)
                     <p class="p-left">EGRESO</p>
                     @endif
+                    <p class="p-left">{{$car->otro_servicio}}</p>
                 </td>
             </tr>
             <tr>

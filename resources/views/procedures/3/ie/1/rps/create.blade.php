@@ -421,6 +421,19 @@
                         <div class="control">
                             <label class="checkbox"><input type="checkbox" @if(old('egreso', isset($car_serv)?$car_serv->egreso:null)) checked @endif value="1" name="egreso"> Egreso</label>
                         </div>
+                        <div class="field is-horizontal is-expanded">
+                            <div class="field-label is-normal">
+                                <label class="label">Otros</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="field">
+                                    <div class="control">
+                                        <input class="input" value="{{ old('otra_problematica', isset($car_serv)?$car_serv->otro_servicio:null) }}"
+                                            type="text" name="otro_servicio" placeholder="Otros"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="field">
                         <label class="label">Problemática atendida (puedes marcar más de una opción)</label>

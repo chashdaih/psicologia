@@ -64,6 +64,7 @@ class CreateCaracteristicasServiciosTable extends Migration
             $table->boolean('orientacion')->default(false);
             $table->boolean('intervencion')->default(false);
             $table->boolean('egreso')->default(false);
+            $table->string('otro_servicio')->nullable();
             // problematica atendida
             $table->boolean('depresion')->default(false);
             $table->boolean('duelo')->default(false);
