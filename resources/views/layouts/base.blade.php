@@ -13,7 +13,7 @@
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ url(mix('/css/app.css')) }}">
 </head>
 <body>
 
@@ -22,9 +22,9 @@
         @yield('content')
     </div>
 
-    <script src="{{ asset('js/manifest.js') }}"></script>
-    <script src="{{ asset('js/vendor.js') }}"></script>
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ url(mix('/js/manifest.js')) }}"></script>
+    <script src="{{ url(mix('/js/vendor.js')) }}"></script>
+    <script src="{{ url(mix('/js/app.js')) }}"></script>
     
 </body>
 </html>
