@@ -96,7 +96,13 @@ class RpsController extends Controller
 
     public function create()
     {
-        $buildings = Building::all();
+        $buildings = Building::when(Auth::user()->supervisor->id_centro == 10, function($query) {
+            return $query->where('id_centro', '>', 11);
+        }, function ($query) {
+            return $query->where('id_centro', '<', 12);
+        })
+        ->get();
+        // dd($buildings);
         $this->params['buildings']= $buildings;
 
         $supervisors = Supervisor::distinct('correo')
