@@ -1,6 +1,7 @@
 import './bootstrap';
 
-import LoginForm from './components/LoginForm';
+// import LoginForm from './components/LoginForm';
+import LoginToggle from './components/LoginToggle';
 import ListCheckbox from './components/ListCheckbox';
 import CalendarModal from './components/CalendarModal';
 import CalDateSel from './components/CalDateSel';
@@ -34,7 +35,8 @@ Vue.component('fai', FontAwesomeIcon);
 const app = new Vue({
     el: '#app',
     components: {
-        LoginForm,
+        // LoginForm,
+        LoginToggle,
         ListCheckbox,
         CalendarModal,
         CalCancelModal,
