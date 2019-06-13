@@ -24,6 +24,7 @@ Route::group(['prefix' => '/procedures/3/', 'middleware' => 'auth'], function() 
     Route::group(['prefix' => 'ie'], function() {
         Route::get('/1/rps/pdf/{id}', 'RpsController@pdf')->name('rps_pdf');
         Route::get('/1/rps/filter/{stage}/{sup}/{per}', 'RpsController@filter')->name('rps_filter');
+        Route::get('/1/rps/excel/{stage}/{sup}/{per}', 'RpsController@rps_excel')->name('rps_excel');
         Route::get('/1/rps/del-row/{type}/{id}', 'RpsController@deleteRow')->name('del_row');
         Route::resource('/1/rps', 'RpsController');
         Route::get('/2/lps/pdf/{id}', 'LpsController@pdf')->name('lps_pdf');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Excel;
 use Validator;
 use App\Bread;
 use App\Building;
@@ -456,6 +457,27 @@ class RpsController extends Controller
         ->get();
 
         return $this->fixNames($records);
+    }
+
+    public function rps_excel($stage, $sup, $per)
+    {
+        Excel::create('Listado', function($excel) use ($stage, $sup, $per) {
+            $records = $this->filter($stage, $sup, $per);
+            $excel->sheet('Hoja 1', function($sheet) use ($records) {
+                $row = 2;
+                $sheet->row(1, ['Total de programas: '.count($records)]);
+                $sheet->row($row, [null, 'Programa', 'Centro', 'Curricular / Extracurricular', 'Nombre del supervisor']);
+                foreach ($records as $rec) {
+                    $sheet->row(++$row, [
+                        null,
+                        $rec->programa,
+                        $rec->centro,
+                        $rec->tipo,
+                        $rec->full_name
+                    ]);
+                }
+            });
+        })->download('xlsx');
     }
 
     public function deleteRow($type, $id)

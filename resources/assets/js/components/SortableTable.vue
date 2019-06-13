@@ -55,6 +55,10 @@
         </b-field>
     </form>
     <br>
+    <div v-if="supervisors" class="has-text-centered">
+      <a class="button is-success" :href='url + "/excel/" + selected_stage + "/" + selected_supervisor + "/" + selected_sem'>Descargar excel</a>
+    </div>
+    <br>
     <b-table  v-if="recs.length > 0"
       :data="recs"
       :loading="isLoading"
