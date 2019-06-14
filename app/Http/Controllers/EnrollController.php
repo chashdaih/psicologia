@@ -28,16 +28,12 @@ class EnrollController extends Controller
         ->join('centros as c', 'p.id_centro', 'c.id_centro')
         ->select('programa', 'periodicidad', 'p.horario', 'p.id_practica', 'c.nombre', 'i.resumen', 's.id_supervisor', 'c.id_centro',
             DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name")
-        )->get();
+        )->orderBy('programa', 'asc')
+        ->get();
 
         $programs = $this->fixNames($programs);
-
-        $enroll_programs = ProgramPartaker::where('id_participante', Auth::user()->partaker->num_cuenta)
-        ->where('ciclo_activo', '2020-1')
-        ->get();
-        // dd($enroll_programs);
         
-        return view('enroll.index', compact('programs', 'enroll_programs'));
+        return view('enroll.index', compact('programs'));
     }
 
     public function detail($id)
@@ -85,7 +81,7 @@ class EnrollController extends Controller
             'partaker_id' => $partaker_id
         ]);
 
-        return redirect()->route('insc')->with('message', "¡Éxito! Registrado al programa");
+        return redirect()->route('home')->with('message', "¡Éxito! Registrado al programa");
     }
 
     public function docs(Request $request)
@@ -122,7 +118,7 @@ class EnrollController extends Controller
             $enrolled->save();
         }
 
-        return redirect()->route('insc');
+        return redirect()->route('home');
     }
 
     public function cartaCompromiso($program_id)

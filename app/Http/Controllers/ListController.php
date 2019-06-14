@@ -23,8 +23,14 @@ class ListController extends Controller
 
         if (Auth::user()->type == 3) { // participante (estudiante)
             $tramites = Auth::user()->partaker->tramites;
-            // dd($tramites->document);
-            $data = compact('tramites');
+            // dd($tramites->document);  
+
+            $enroll_programs = ProgramPartaker::where('id_participante', Auth::user()->partaker->num_cuenta)
+            ->where('ciclo_activo', '2020-1')
+            ->get();
+            // dd($enroll_programs);
+
+            $data = compact('tramites', 'enroll_programs');  
         }
 
 

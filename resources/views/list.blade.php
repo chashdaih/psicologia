@@ -2,6 +2,11 @@
 
 @section('content')
 <section class="section">
+    @if (session('message'))
+    <div class="notification is-primary">
+        {{ session('message') }}
+    </div>
+    @endif
     <div class="container">
         <h1 class="title">Bienvenido al sistema</h1>
         @if(Auth::user()->type != 3)

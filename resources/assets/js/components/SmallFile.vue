@@ -1,6 +1,6 @@
 <template>
     <div class="field">
-        <div class="file is-small is-boxed has-name" :class="error != '' ? 'is-danger' : color_class">
+        <div class="file is-small is-boxed has-name is-centered" :class="error != '' ? 'is-danger' : color_class">
             <label class="file-label">
                 <input class="file-input" :disabled="disable" type="file" :name="name" accept="application/pdf" @change="onChange">
                 <span class="file-cta">
