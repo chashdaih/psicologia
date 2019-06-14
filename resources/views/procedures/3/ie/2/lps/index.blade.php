@@ -5,8 +5,16 @@
     <div class="container">
         @include('layouts.breadcrumbs')
         <h1 class="title">{{ $bread->last()['title'] }}</h1>
+        <lps-table
+            url="{{ route($doc_code.".index") }}"
+            :records="{{ $records }}" 
+            @if(isset($stages)):stages="{{ $stages }}"@endif
+            @if(isset($supervisors)):supervisors="{{ $supervisors }}"@endif
+            :supervisor={{ Auth::user()->supervisor->id_supervisor }}
+            :stage={{ Auth::user()->supervisor->id_centro }}
+            ></lps-table>
 
-        <table class="table is-fullwidth">
+        {{-- <table class="table is-fullwidth">
             <thead>
                 <tr>
                     <th>Nombre del programa</th>
@@ -35,7 +43,7 @@
                 </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table> --}}
     </div>
 </section>
 @endsection

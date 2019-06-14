@@ -12,6 +12,7 @@ use App\CriteriosAcr;
 use App\Document;
 use App\EvaluateStudent;
 use App\Notifications\ProgramRegistered;
+use App\Partaker;
 use App\Program;
 use App\ProgramaSemana;
 use App\ProgramData;
@@ -24,6 +25,7 @@ use App\Http\Requests\StoreProgramData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class RpsController extends Controller
 {
@@ -65,9 +67,6 @@ class RpsController extends Controller
     public function index()
     {
         $id_centro = Auth::user()->supervisor->id_centro;
-        // if ($id_centro == 10) {
-        //     $id_centro = 0;
-        // }
 
         $this->params['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, '2020-1');
         $user_type = Auth::user()->type;
@@ -495,5 +494,21 @@ class RpsController extends Controller
         }
         
         return 200;
+    }
+
+    public function partakers($id)
+    {
+        $pps = ProgramPartaker::where('id_practica', $id)->get();
+        $this->params['pps'] = $pps;
+
+        return view($this->base_url.'.partakers', $this->params);
+    }
+
+    public function seguro($id_tramite)
+    {
+        // dd(storage_path('/'));
+        // return response()->download(asset('storage/'.$id_tramite . '/seguro.pdf'));
+
+        return response()->download(public_path() . '/storage/'.$id_tramite . '/seguro.pdf');
     }
 }

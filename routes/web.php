@@ -14,6 +14,9 @@
 Route::get('/', 'ListController@index')->name('home');
 Route::get('/partaker/enrollment_proof/{tramit_id}', 'ListController@enrollmentProof')->name('e_proof');
 
+
+Route::get('tramite/{id_tramite}/seguro', 'RpsController@seguro')->name('seguro');
+
 Route::get('/apartar/{fecha?}', 'CalendarController@index')->name('apartar');
 Route::get('/getStudents/{sup_id}', 'CalendarController@getStudents')->name('get_students');
 Route::post('/make-appo', 'CalendarController@makeAppo')->name('make_appo');
@@ -26,7 +29,10 @@ Route::group(['prefix' => '/procedures/3/', 'middleware' => 'auth'], function() 
         Route::get('/1/rps/filter/{stage}/{sup}/{per}', 'RpsController@filter')->name('rps_filter');
         Route::get('/1/rps/excel/{stage}/{sup}/{per}', 'RpsController@rps_excel')->name('rps_excel');
         Route::get('/1/rps/del-row/{type}/{id}', 'RpsController@deleteRow')->name('del_row');
+        Route::get('1/rps/{id}/partakers', 'RpsController@partakers');
         Route::resource('/1/rps', 'RpsController');
+
+
         Route::get('/2/lps/pdf/{id}', 'LpsController@pdf')->name('lps_pdf');
         Route::resource('/2/lps', 'LpsController');
         Route::resource('/3/lpse', 'LpsController');

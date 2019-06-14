@@ -22,4 +22,9 @@ class ProgramPartaker extends Model
     {
         return $this->belongsTo('App\Program', 'id_practica', 'id_practica');
     }
+
+    public function partaker()
+    {
+        return $this->belongsTo('App\Partaker', 'id_participante', 'num_cuenta');
+    }
 }

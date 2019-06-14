@@ -21,6 +21,7 @@ import AddRow from './components/AddRow';
 import SupsTable from './components/SupsTable';
 import ProgramsList from './components/ProgramsList';
 import DissNoti from './components/DissNoti';
+import LpsTable from './components/LpsTable';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -56,7 +57,8 @@ const app = new Vue({
         AddRow,
         SupsTable,
         ProgramsList,
-        DissNoti
+        DissNoti,
+        LpsTable
     },
     data: {
         isActive: false

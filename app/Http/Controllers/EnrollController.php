@@ -98,15 +98,15 @@ class EnrollController extends Controller
         $doc = Document::where('id_tramite', $request['id_tramite'])->first();
 
         if ($request->file('seguro_imss')) {
-            $request->file("seguro_imss")->storeAs($partaker_id, 'seguro.pdf');
+            $request->file("seguro_imss")->storeAs('public/'.$doc->id_tramite, 'seguro.pdf');
             $doc['seguro_imss'] = 1;
         }
         if ($request->file('carta_comp')) {
-            $request->file("carta_comp")->storeAs($partaker_id, 'carta.pdf');
+            $request->file("carta_comp")->storeAs($doc->id_tramite, 'carta.pdf');
             $doc['carta_comp'] = 1;
         }
         if ($request->file('historial_ac')) {
-            $request->file("historial_ac")->storeAs($partaker_id, 'historial.pdf');
+            $request->file("historial_ac")->storeAs($doc->id_tramite, 'historial.pdf');
             $doc['historial_ac'] = 1;
         }
 

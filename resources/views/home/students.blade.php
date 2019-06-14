@@ -1,4 +1,4 @@
-@if (count($tramites))
+@if ($tramites)
     {{-- @foreach ($tramites as $tramite) --}}
         @if ($tramites->document && $tramites->document->seguro_imss && $tramites->document->carta_comp && $tramites->document->historial_ac)
         <p class="subtitle">Estás registrado al programa: {{ $tramites->program->programa }}</p>

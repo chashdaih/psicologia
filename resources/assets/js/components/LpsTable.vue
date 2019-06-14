@@ -85,19 +85,8 @@
           label="Centro" 
           sortable>{{ props.row.centro }}</b-table-column>
 
-        <b-table-column
-          field="tipo" 
-          label="Curricular / Extra" 
-          sortable>{{ props.row.tipo }}</b-table-column>
-
-        <b-table-column label="Editar" centered>
+        <b-table-column label="Ver lista de alumnos inscritos al programa" centered>
           <a :href='url + "/" + props.row.id_practica + "/edit"'>
-              <fai icon="file-code" size="2x" />
-          </a>
-        </b-table-column>
-
-        <b-table-column label="Ver alumnos inscritos" centered>
-          <a :href='url + "/" + props.row.id_practica + "/partakers"'>
               <fai icon="file-code" size="2x" />
           </a>
         </b-table-column>
@@ -108,36 +97,10 @@
           </a>
         </b-table-column>
 
-        <b-table-column label="Eliminar" centered>
-          <form :action='url + "/" + props.row.id_practica' method="POST" :ref=props.row.id_practica>
-            <input type="hidden" name="_method" value="DELETE">
-            <input type="hidden" name="_token" :value="csrf" />
-            <button @click.prevent="confirmDelete(props.row.id_practica)" class="button is-danger is-outlined">
-              <fai icon="trash" size="2x" />
-            </button>
-          </form>
-        </b-table-column>
       </template>
     </b-table>
 
     <p v-else>No hay registros con los filtros especificados</p>
-    <div class="modal" v-bind:class="{'is-active': isActive}">
-      <div class="modal-background" @click="closeModal"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">¡Atención!</p>
-          <button class="delete" aria-label="close" @click="closeModal"></button>
-        </header>
-        <section class="modal-card-body">
-          <p class="has-text-weight-semibold">¿Está seguro que desea borrar el programa?</p>
-          <p class="is-italic">Borrar el programa dará de baja a todos los estudiantes inscritos y se eliminarán sus documentos.</p>
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-danger" @click="deleteRow()">Borrar programa</button>
-          <button class="button" @click="closeModal">Cancelar</button>
-        </footer>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -155,7 +118,6 @@ export default {
       csrf: document.head.querySelector('meta[name="csrf-token"]').content,
       sups: this.supervisors,
       name: '',
-      isActive: false,
       rowId: null
     };
   },
@@ -177,14 +139,10 @@ export default {
     },
     confirmDelete(id) {
       this.rowId = id;
-      this.isActive =  true;
     },
     deleteRow() {
       // TODO ajax 
       this.$refs[this.rowId].submit();
-    },
-    closeModal() {
-      this.isActive = false;
     },
     allSups() {
       this.selected_supervisor=0;
