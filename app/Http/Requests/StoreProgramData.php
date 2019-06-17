@@ -42,8 +42,8 @@ class StoreProgramData extends FormRequest
             'estra_ev_imp' => 'nullable',
             'asig_emp' => 'nullable',
             // caracteristicas servicio
-            'fecha_inicio' => 'nullable',
-            'fecha_fin' => 'nullable',
+            'fecha_inicio' => 'nullable|date',
+            'fecha_fin' => 'nullable|date',
             'gen_horas_total' => 'nullable|integer|min:0',
             'gen_l'=> 'nullable|boolean',
             'gen_hora_l'=> 'nullable',

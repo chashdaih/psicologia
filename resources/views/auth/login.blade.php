@@ -29,14 +29,14 @@
         <div class="columns">
             <div class="column">
                 <h1 class="title">
-                    Bienvenido al sistema
+                    Bienvenid@ a los Centros de Formación y Servicios Psicológicos.
                 </h1>
-                <h2 class="subtitle">
-                    Bienvenido
-                </h2>
             </div>
             <login-toggle inline-template>
                 <div class="column">
+                    <h2 class="subtitle has-text-centered" v-if="!students && !supervisors">
+                        Ingresa según tu perfil
+                    </h2>
                     <div class="tabs is-toggle  is-large is-centered">
                         <ul>
                             <li :class="{ 'is-active': students }">
@@ -52,7 +52,8 @@
                         </ul>
                     </div>
                     <div v-if="students" class="students">
-                        <p class="subtitle">No olvides que tu número de cuenta también es tu contraseña</p>
+                        <p class="subtitle">Bienvenido al sistema.</p>
+                        <p>Al ingresar como estudiante, podrás registrate en Programas de Servicios Psicológicos a través de la Formación Supervisada.</p>
                         <br>
                         <form method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
@@ -78,7 +79,8 @@
                         </form>
                     </div>
                     <div v-if="supervisors" class="supervisors">
-                        <p class="subtitle">Bienvenido</p>
+                        <p class="subtitle">Bienvenido al sistema.</p>
+                        <p>Al ingresar como supervisor, podrás registrar y ver tus Programas de Servicios, así como las listas de los estudiantes registrados en tus programas.</p>
                         <br>
                                 <form method="POST" action="{{ route('login') }}">
                                 {{ csrf_field() }}
@@ -86,7 +88,7 @@
                                         'title'=>'Correo electrónico',
                                         'field'=>'email',
                                         'errors'=>$errors,
-                                        'type'=> 'text',
+                                        'type'=> 'email',
                                         'send'=> true
                                         ])@endcomponent
                                     @component('components.text-input', [

@@ -54,16 +54,26 @@ class RegisterController extends Controller
         //     ]);
         // }
 
-        // $students = Partaker::distinct('num_cuenta')->pluck('num_cuenta')->take(50);
+        // $students = Partaker::distinct('num_cuenta')->pluck('num_cuenta');
         // // dd($students);
+        // set_time_limit(0);
         // foreach ($students as $student) {
-        //     $nuevo = User::firstOrCreate([
-        //         'type' => 3,
-        //         'email' => $student,
-        //         'password' => bcrypt($student)
-        //     ]);
+        //     if (!User::where('email', $student)->first()) {
+        //         User::create([
+        //             'type' => 3,
+        //             'email' => $student,
+        //             'password' => bcrypt($student)
+        //             ]);
+        //     }
+        //     // $nuevo = User::updateOrCreate([
+        //     //     'type' => 3,
+        //     //     'email' => $student,
+        //     //     'password' => bcrypt($student)
+        //     //     ]);
         // }
         // dd("done");
+
+        // dd(new User(['type' =>3, 'email'=>413004381, 'password' =>bcrypt(413004381)]));
     }
 
     /**

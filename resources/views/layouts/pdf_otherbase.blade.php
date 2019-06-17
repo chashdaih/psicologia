@@ -26,7 +26,7 @@
         height: 50px;
         text-align: center;
     }
-    .unam {
+    /* .unam {
         position: absolute;
     }
     .psico {
@@ -36,7 +36,7 @@
     }
     .header p {
         margin:0;
-    }
+    } */
     table {
         border-collapse: collapse;
     }
@@ -80,15 +80,9 @@
             $pdf->page_text(40, $y, $doc_full_code, $font, $size, $color);
         }
     </script>
-    <div class="header">
-        <img class="unam" src="{{ asset('img/unam.jpg') }}">
-        <div class="block" style="text-align: center;">
-            <p style="font-size:12pt;">Coordinación de Centros de Formación y Servicios Psicológicos</p>
-            <p style="font-size:10pt;">FACULTAD DE PSICOLOGÍA, UNAM</p>
-            <p style="font-size:9pt;font-family: fontB;">REGISTRO DE PROGRAMAS DE SERVICIOS PSICOLÓGICOS A TRAVÉS DE LA FORMACIÓN SUPERVISADA</p>
-        </div>
-        <img class="psico" src="{{ asset('img/psi.jpg') }}">
-    </div>
+    @component('pdf.header')
+    REGISTRO DE PROGRAMAS DE SERVICIOS PSICOLÓGICOS A TRAVÉS DE LA FORMACIÓN SUPERVISADA
+    @endcomponent
     <div>
         <p style="font-size:10pt;">Los Programas de Servicios Psicológicos a través de la Formación Supervisada
              permiten que estudiantes de los semestres intermedios de la Carrera (5° a 8º) y estudiantes de posgrado
@@ -129,20 +123,24 @@
                 <td class="left"><p class="p-left">NOMBRAMIENTO</p></td>
                 <td class="right"><p>{{ $doc->supervisor->nombramiento }}</p></td>
             </tr>
+            <tr>
+                <td class="left"><p class="p-left">CORREO</p></td>
+                <td class="right"><p>{{ $doc->supervisor->correo }}</p></td>
+            </tr>
         </table>
-        <table style="width: 100%; table-layout: fixed">
+        {{-- <table style="width: 100%; table-layout: fixed">
             <tr>
                 <td ><p style="text-align:center;"><span style="font-family:fontB;">Teléfono: </span>{{ $doc->supervisor->telefono }}</p></td>
                 <td ><p style="text-align:center;"><span style="font-family:fontB;">Celular: </span>{{ $doc->supervisor->celular }}</p></td>
                 <td ><p style="text-align:center;"><span style="font-family:fontB;">e-mail: </span>{{ $doc->supervisor->correo }}</p></td>
             </tr>
-        </table>
-        <table style="width: 100%; table-layout: fixed">
+        </table> --}}
+        {{-- <table style="width: 100%; table-layout: fixed">
             <tr>
                 <td class="left" ><p class="p-left">Número de trabajador: </p></td>
                 <td class="right"><p>{{ $doc->supervisor->num_trabajador }}</p></td>
             </tr>
-        </table>
+        </table> --}}
     </div>
     <div>
         <p style="background-color:#96B804;font-family:fontB;text-align: center;">DATOS @if(count($supsInSitu) < 2) DEL SUPERVISOR @else DE LOS SUPERVISORES @endif IN SITU</p>
@@ -161,8 +159,12 @@
                 <td class="left"><p class="p-left">NOMBRAMIENTO</p></td>
                 <td class="right"><p>{{ $supInSitu->supervisor->nombramiento }}</p></td>
             </tr>
+            <tr>
+                <td class="left"><p class="p-left">CORREO</p></td>
+                <td class="right"><p>{{ $supInSitu->supervisor->correo }}</p></td>
+            </tr>
         </table>
-        <table style="width: 100%; table-layout: fixed">
+        {{-- <table style="width: 100%; table-layout: fixed">
             <tr>
                 <td ><p style="text-align:center;"><span style="font-family:fontB;">Teléfono: </span>{{ $supInSitu->supervisor->telefono }}</p></td>
                 <td ><p style="text-align:center;"><span style="font-family:fontB;">Celular: </span>{{ $supInSitu->supervisor->celular }}</p></td>
@@ -174,7 +176,7 @@
                 <td class="left" ><p class="p-left">Número de trabajador: </p></td>
                 <td class="right"><p>{{ $supInSitu->supervisor->num_trabajador }}</p></td>
             </tr>
-        </table>
+        </table> --}}
         <br>
         @else {{-- ELSE --}}
         <table style="width: 100%; table-layout: fixed">
@@ -190,8 +192,12 @@
                 <td class="left"><p class="p-left">NOMBRAMIENTO</p></td>
                 <td class="right"><p>{{ $supInSitu->nomination }}</p></td>
             </tr>
+            <tr>
+                <td class="left"><p class="p-left">CORREO</p></td>
+                <td class="right"><p>{{ $supInSitu->email }}</p></td>
+            </tr>
         </table>
-        <table style="width: 100%; table-layout: fixed">
+        {{-- <table style="width: 100%; table-layout: fixed">
             <tr>
                 <td ><p style="text-align:center;"><span style="font-family:fontB;">Teléfono: </span>{{ $supInSitu->phone }}</p></td>
                 <td ><p style="text-align:center;"><span style="font-family:fontB;">Celular: </span>{{ $supInSitu->cellphone }}</p></td>
@@ -203,7 +209,7 @@
                 <td class="left" ><p class="p-left">Número de trabajador: </p></td>
                 <td class="right"><p>{{ $supInSitu->worker_number }}</p></td>
             </tr>
-        </table>
+        </table> --}}
         <br>
         @endif
         @endforeach
@@ -213,19 +219,19 @@
         <table style="width: 100%; table-layout: fixed">
             <tr>
                 <td class="left" ><p class="p-left">RESUMEN</p></td>
-                <td class="right"><p>{{ $datos->resumen }}</p></td>
+                <td class="right"><p>{!! nl2br(e($datos->resumen)) !!}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">JUSTIFICACION</p></td>
-                <td class="right"><p>{{ $datos->justificacion }}</p></td>
+                <td class="right"><p>{!! nl2br(e($datos->justificacion)) !!}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">OBJETIVO GENERAL</p></td>
-                <td class="right"><p>{{ $datos->objetivo_g }}</p></td>
+                <td class="right"><p>{!! nl2br(e($datos->objetivo_g)) !!}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">OBJETIVOS ESPECÍFICOS</p></td>
-                <td class="right"><p>{{ $datos->objetivo_es }}</p></td>
+                <td class="right"><p>{!! nl2br(e($datos->objetivo_es)) !!}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">EL PROGRAMA VA DIRIGIDO A</p></td>
@@ -245,19 +251,19 @@
             @endif
             <tr>
                 <td class="left"><p class="p-left">FECHA DE INICIO</p></td>
-                <td class="right"><p>{{ $car->fecha_inicio }}</p></td>
+                <td class="right"><p>{{ $car->fecha_inicio->formatLocalized('%d de %B %Y') }}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">FECHA DE TÉRMINO</p></td>
-                <td class="right"><p>{{ $car->fecha_fin }}</p></td>
+                <td class="right"><p>{{ $car->fecha_fin->formatLocalized('%d de %B %Y') }}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">REQUISITOS DE INGRESO AL PROGRAMA</p></td>
-                <td class="right"><p>{{ $datos->requisitos }}</p></td>
+                <td class="right"><p>{!! nl2br(e($datos->requisitos)) !!}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">ASIGNATURAS ACADÉMICAS DEL PLAN CURRICULAR 2008 CON LAS CUALES EMPATA EL PROGRAMA</p></td>
-                <td class="right"><p>{{ $datos->asig_emp }}</p></td>
+                <td class="right"><p>{!! nl2br(e($datos->asig_emp)) !!}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">NO. MÁXIMO DE ALUMNOS</p></td>
@@ -271,7 +277,7 @@
             <tr>
                 <td class="left">
                     <p class="p-left">HORARIO GENERAL DEL PROGRAMA</p>
-                    <p class="p-left">(Indicar el horario en el que los alumnos asisten)</p>
+                    <p>Horario en el que los alumnos asisten</p>
                 </td>
                 <td>
                     <p class="p-left">No. de horas: {{ $car->gen_horas_total }}</p>
@@ -298,7 +304,7 @@
             <tr>
                 <td class="left">
                     <p class="p-left">HORARIO DE SERVICIO PSICOLÓGICO</p>
-                    <p class="p-left">(Indicar el horario destinado al servicio, en el cual se les realizarán asignaciones de personas que solicitan atención)</p>
+                    <p class="">Horario destinado al servicio, en el cual se les realizarán asignaciones de personas que solicitan atención</p>
                 </td>
                 <td>
                     <p class="p-left">No. de horas: {{ $car->serv_horas_total }}</p>
@@ -323,8 +329,7 @@
                 </td>
             </tr>
             <tr>
-                <td><p class="p-left">NÚMERO DE PERSONAS ATENDIDAS A LA SEMANA (Tomando en cuenta el número de 
-                    personas que puede atender un estudiante por semana): <span style="font-family: font;">{{ $car->pacientes_semana }}</span></p></td>
+                <td><p class="p-left">NÚMERO DE PERSONAS ATENDIDAS A LA SEMANA <span style="font-family: font;">{{ $car->pacientes_semana }}</span></p></td>
                 <td><p class="p-left">CANTIDAD MÍNIMA DE USUARIOS QUE SE ATENDERÁN EN
                     EL SEMESTRE: <span style="font-family: font;">{{ $car->minimo_pacientes_semestre }}</span></p></td>
             </tr>
@@ -503,11 +508,11 @@
             </tr>
             <tr>
                 <td class="left" ><p class="p-left">CONTENIDO TEMÁTICO (TEMAS Y SUBTEMAS)</p></td>
-                <td class="right"><p>{{ $datos->cont_tematico }}</p></td>
+                <td class="right"><p>{!! nl2br(e($datos->cont_tematico)) !!}</p></td>
             </tr>
             <tr>
                 <td class="left" ><p class="p-left">ESTRATEGIA DE SEGUIMIENTO Y EVALUACIÓN DE IMPACTO DEL SERVICIO</p></td>
-                <td class="right"><p>{{ $datos->estra_ev_imp }}</p></td>
+                <td class="right"><p>{!! nl2br(e($datos->estra_ev_imp)) !!}</p></td>
             </tr>
             <tr>
                 <td class="left">
@@ -577,9 +582,9 @@
                 </tr>
                 @foreach ($semanas as $semana)
                 <tr>
-                    <td class="right"><p>{{ $semana->semana }}</p></td>
-                    <td class="right"><p>{{ $semana->actividad }}</p></td>
-                    <td class="right"><p>{{ $semana->competencias }}</p></td>
+                    <td class="right"><p>{!! nl2br(e($semana->semana)) !!}</p></td>
+                    <td class="right"><p>{!! nl2br(e($semana->actividad)) !!}</p></td>
+                    <td class="right"><p>{!! nl2br(e($semana->competencias)) !!}</p></td>
                 </tr>
                 @endforeach
         </table>
@@ -594,9 +599,9 @@
             </tr>
             @foreach ($criteriosAc as $criterio)
             <tr>
-                <td class="right"><p>{{ $criterio->criterio }}</p></td>
-                <td class="right"><p>{{ $criterio->cuando }}</p></td>
-                <td class="right"><p>{{ $criterio->como }}</p></td>
+                <td class="right"><p>{!! nl2br(e($criterio->criterio)) !!}</p></td>
+                <td class="right"><p>{!! nl2br(e($criterio->cuando)) !!}</p></td>
+                <td class="right"><p>{!! nl2br(e($criterio->como)) !!}</p></td>
             </tr>
             @endforeach
         </table>
@@ -604,7 +609,7 @@
     <div>
         <p style="background-color:#96B804;font-family:fontB;text-align: center;">REFERENCIAS</p>
         <table style="width: 100%; table-layout: fixed">
-            <tr><td class="right"><p>{{ $datos->referencias }}</p></td></tr>
+            <tr><td class="right"><p>{!! nl2br(e($datos->referencias)) !!}</p></td></tr>
         </table>
     </div>
 </body>
