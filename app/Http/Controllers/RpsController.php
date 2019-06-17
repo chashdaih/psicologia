@@ -115,6 +115,8 @@ class RpsController extends Controller
 
     public function store(StoreProgramData $request)
     {
+        // dd($request);
+
         $request['cupo_actual'] = $request['cupo'];
 
         $program = Program::create( collect($request->only($this->programFields))
@@ -279,11 +281,14 @@ class RpsController extends Controller
             return null !== $value;
         })->toArray();
 
+        // $carSer['program_id'] = $id;
+
         // dd($carSer);
 
         if (count($carSer)){
             CaracteristicasServicio::where('program_id', $id)->update($carSer);
         }
+
 
         //insitu
         if (isset($request['full_name'])) {

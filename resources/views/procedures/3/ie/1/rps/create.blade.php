@@ -224,20 +224,30 @@
                             <br>
                         </div>
                     </related-input>
-                    @component('components.text-input', [
+                    <date-component
+                        label="Fecha de inicio"
+                        name="fecha_inicio"
+                        old=@if(old('fecha_inicio')) {{old('fecha_inicio')}} @elseif(isset($car_serv)){{ $car_serv->fecha_inicio->addDays(1)->format('Y-m-d') }} @else {{null}} @endif
+                        ></date-component>
+                        <date-component
+                            label="Fecha de término"
+                            name="fecha_fin"
+                            old=@if(old('fecha_fin')) {{old('fecha_fin')}} @elseif(isset($car_serv)){{ $car_serv->fecha_fin->addDays(1)->format('Y-m-d') }} @else {{null}} @endif
+                        ></date-component>
+                    {{-- @component('components.text-input', [
                         'title'=>'Fecha de inicio',
                         'field'=>'fecha_inicio',
                         'errors'=>$errors,
                         'type'=> 'date',
                         'prev'=> isset($car_serv) ? $car_serv->fecha_inicio : null
-                        ])@endcomponent
-                    @component('components.text-input', [
+                        ])@endcomponent --}}
+                    {{-- @component('components.text-input', [
                         'title'=>'Fecha de término',
                         'field'=>'fecha_fin',
                         'errors'=>$errors,
                         'type'=> 'date',
                         'prev'=> isset($car_serv) ? $car_serv->fecha_fin : null
-                        ])@endcomponent
+                        ])@endcomponent --}}
                     @component('components.area-input', [
                         'title'=>'Requisitos de ingreso al programa',
                         'field'=>'requisitos',

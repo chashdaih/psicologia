@@ -22,10 +22,11 @@ import SupsTable from './components/SupsTable';
 import ProgramsList from './components/ProgramsList';
 import DissNoti from './components/DissNoti';
 import LpsTable from './components/LpsTable';
+import DateComponent from './components/DateComponent';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash } from '@fortawesome/free-solid-svg-icons';
-library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash);
+import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar } from '@fortawesome/free-solid-svg-icons';
+library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export const eventBus = new Vue();
@@ -58,7 +59,8 @@ const app = new Vue({
         SupsTable,
         ProgramsList,
         DissNoti,
-        LpsTable
+        LpsTable,
+        DateComponent
     },
     data: {
         isActive: false
