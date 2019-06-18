@@ -90,9 +90,15 @@
           label="Curricular / Extra" 
           sortable>{{ props.row.tipo }}</b-table-column>
 
-        <b-table-column label="Editar" centered>
+        <b-table-column label="Editar programa" centered>
           <a :href='url + "/" + props.row.id_practica + "/edit"'>
               <fai icon="file-code" size="2x" />
+          </a>
+        </b-table-column>
+
+        <b-table-column label="Descargar programa en pdf" centered>
+          <a :href='url + "/pdf/" + props.row.id_practica'>
+              <fai icon="file-pdf" size="2x" />
           </a>
         </b-table-column>
 
@@ -102,9 +108,9 @@
           </a>
         </b-table-column>
 
-        <b-table-column label="Descargar pdf" centered>
-          <a :href='url + "/pdf/" + props.row.id_practica'>
-              <fai icon="file-pdf" size="2x" />
+        <b-table-column label="Descargar lista de estudiantes inscritos en pdf (3-IE2-LPS)" centered>
+          <a :href='lps + props.row.id_practica'>
+              <fai icon="file-code" size="2x" />
           </a>
         </b-table-column>
 
@@ -143,7 +149,7 @@
 
 <script>
 export default {
-    props:['records', 'url', 'stages', 'supervisors', 'stage', 'supervisor'],
+    props:['records', 'url', 'stages', 'supervisors', 'stage', 'supervisor', 'lps'],
   data() {
     return {
       recs: this.records,

@@ -8,9 +8,9 @@
     </div>
     @endif
     <div class="container">
-        <h1 class="title">Bienvenido al sistema</h1>
         @if(Auth::user()->type != 3)
-        <a href="{{ route('rps.create') }}">Registrar nuevo programa de servicios psicológicos a través de la formación supervisada</a>
+        @include('home.supervisors')
+        {{-- <a href="{{ route('rps.create') }}">Registrar nuevo programa de servicios psicológicos a través de la formación supervisada</a> --}}
         @else
         @include('home.students')
         @endif
@@ -45,4 +45,9 @@
         </table> --}}
     </div>
 </section>
+{{-- <footer class="footer">
+    <div class="content has-text-centered">
+        <p>hola</p>
+    </div>
+</footer> --}}
 @endsection

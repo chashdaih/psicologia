@@ -507,6 +507,9 @@ class RpsController extends Controller
 
     public function partakers($id)
     {
+        $program = Program::where('id_practica', $id)->first();
+        $this->params['program'] = $program;
+
         $pps = ProgramPartaker::where('id_practica', $id)->get();
         $this->params['pps'] = $pps;
 

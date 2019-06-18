@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Building;
 use App\Partaker;
 use App\ProgramPartaker;
 use App\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ListController extends Controller
 {
@@ -15,24 +17,99 @@ class ListController extends Controller
         $this->middleware('auth');
     }
 
+    protected function fixNames($records)
+    {
+        if($records) {
+            foreach ($records as $record) {
+                $record->full_name = ucwords(mb_strtolower($record->full_name));
+                // $record->full_name = preg_replace('/\s+/', ' ',ucwords(mb_strtolower($record->full_name)));
+            }
+        }
+        return $records;
+    }
+    
+    public function filter($stage, $sup, $per) // webservice
+    {
+        if(Auth::user()->supervisor->id_centro == 10) {
+            $stage = 0;
+        }
+
+        $records = DB::table('practicas as p')
+        ->when($stage > 0, function ($query) use ($stage) {
+            return $query->where('p.id_centro', '=', $stage);
+        })
+        ->when($sup > 0, function ($query) use ($sup) {
+            return $query->where('p.id_supervisor', '=', $sup);
+        })
+        ->when($per != 0, function ($query) use ($per) {
+            // dd($per);
+            return $query->where('p.semestre_activo', '=', $per);
+        })
+        ->join('centros as c', 'p.id_centro', '=', 'c.id_centro')
+        ->join('supervisores as s', 'p.id_supervisor', '=', 's.id_supervisor')
+        ->select('p.id_practica', 'p.programa', 'p.semestre_activo', 'c.nombre as centro', 'p.tipo',
+            DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"))
+            ->orderBy('p.semestre_activo', 'desc')
+        ->get();
+
+        return $this->fixNames($records);
+    }
+
     public function index()
     {
-        // $appointments = Appointment::where('fecha', '2019-03-02')->orderBy('hora', 'asc')->get();
-
         $data = [];
 
         if (Auth::user()->type == 3) { // participante (estudiante)
-            $tramites = Auth::user()->partaker->tramites;
-            // dd($tramites->document);  
 
             $enroll_programs = ProgramPartaker::where('id_participante', Auth::user()->partaker->num_cuenta)
             ->where('ciclo_activo', '2020-1')
             ->get();
-            // dd($enroll_programs);
 
-            $data = compact('tramites', 'enroll_programs');  
+            $programs = null;
+
+            if (!count($enroll_programs)) {
+                $programs = DB::table('practicas as p')
+                ->where('semestre_activo', '2020-1')
+                ->where('cupo_actual','>', '0')
+                ->join('supervisores as s', 'p.id_supervisor', 's.id_supervisor')
+                ->join('informacion_practicas as i', 'p.id_practica', 'i.id_practica')
+                ->join('centros as c', 'p.id_centro', 'c.id_centro')
+                ->select('programa', 'periodicidad', 'p.horario', 'p.id_practica', 'c.nombre', 'i.resumen', 's.id_supervisor', 'c.id_centro',
+                    DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name")
+                )->orderBy('programa', 'asc')
+                ->get();
+        
+                $programs = $this->fixNames($programs);
+            }
+
+            $data = compact('enroll_programs', 'programs'); 
+
+        } else {
+            
+            $id_centro = Auth::user()->supervisor->id_centro;
+
+            $data['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, '2020-1');
+            $user_type = Auth::user()->type;
+
+            if ($user_type == 5) { // jefe de centro
+                $supervisors = DB::table('supervisores')
+                ->where('estatus', '=', 'Activa')
+                ->where('id_centro', '=', Auth::user()->supervisor->id_centro)
+                ->orderBy('nombre', 'asc')->select('id_supervisor', 
+                DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
+                $data['supervisors'] = $this->fixNames($supervisors);
+            }
+
+            if($user_type == 6) { // coordinación
+                $stages = Building::all();
+                $data['stages'] = $stages;
+
+                $supervisors = DB::table('supervisores')->where('estatus', '=', 'Activa')
+                ->orderBy('nombre', 'asc')->select('id_supervisor', 
+                DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
+                $data['supervisors'] = $this->fixNames($supervisors);
+            }
         }
-
 
         return view('list', $data);
     }

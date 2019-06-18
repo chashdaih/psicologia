@@ -81,7 +81,7 @@ class EnrollController extends Controller
             'partaker_id' => $partaker_id
         ]);
 
-        return redirect()->route('home')->with('message', "¡Éxito! Registrado al programa");
+        return redirect()->route('home')->with('message', "¡Éxito! pre-registrado al programa");
     }
 
     public function docs(Request $request)
