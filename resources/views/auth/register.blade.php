@@ -36,7 +36,7 @@
                     <div class="card-content">
                         <form class="control" 
                         method="POST" 
-                        action="{{ isset($supervisor) ? route('supervisor.update', $supervisor->id_supervisor) : route('register') }}">
+                        action="{{ isset($supervisor) ? route('supervisor.update', $supervisor->id_supervisor) : route('supervisor.store') }}">
                         {{ csrf_field() }}
                         @if(isset($supervisor)) <input name="_method" type="hidden" value="PUT"> @endif
                         @if(!isset($supervisor))

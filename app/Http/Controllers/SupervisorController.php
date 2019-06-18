@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use auth;
 use App\Building;
 use App\Supervisor;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,9 +45,56 @@ class SupervisorController extends Controller
     // public function create() // se crean en register
     // {
     // }
-    // public function store(Request $request)
-    // {
-    // }
+    public function store(Request $request)
+    {
+        $fields = [
+            'type' => 'required|integer',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|confirmed',
+        ];
+
+        if($request['type'] == 2) {
+            $fields = array_merge($fields,[
+                'nombre' => 'required|string',
+                'ap_paterno' => 'required|string',
+                'ap_materno' => 'required|string',
+                'num_trabajador' => 'required|string',
+                'rfc' => 'required|string',
+                'coordinacion' => 'required|string',
+                'nombramiento' => 'required|string',
+                'id_centro' => 'required|integer',
+                'telefono' => 'required|string',
+                'celular' => 'required|string',
+            ]);
+        }
+
+        $this->validate($request, $fields);
+
+        if ($request['type'] == 2 || $request['type'] == 5 || $request['type'] == 6) {
+            Supervisor::create([
+                'nombre' => $request['nombre'],
+                'ap_paterno' => $request['ap_paterno'],
+                'ap_materno' => $request['ap_materno'],
+                'coordinacion' => $request['coordinacion'],
+                'nombramiento' => $request['nombramiento'],
+                'telefono' => $request['telefono'],
+                'celular' => $request['celular'],
+                'correo' => $request['email'],
+                'num_trabajador' => $request['num_trabajador'],
+                'rfc' => $request['rfc'],
+                'tipo_supervisor' => $request['type'],
+                'id_centro' => $request['id_centro'],
+            ]);
+        }
+
+        User::create([
+            'type' => $request['type'],
+            'email' => $request['email'],
+            'password' => bcrypt($request['password']),
+        ]);
+
+        return redirect()->route('home');
+    }
     // public function show($id) // se podrán ver los datos en edit
     // {
     // }

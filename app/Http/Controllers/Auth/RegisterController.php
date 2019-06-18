@@ -33,7 +33,7 @@ class RegisterController extends Controller
     // protected $redirectTo = '/';
     protected function redirectTo()
     {
-        redirect()->route('home');
+        return redirect()->route('home');
     }
 
     /**
@@ -140,10 +140,12 @@ class RegisterController extends Controller
             ]);
         }
 
-        return User::create([
+        User::create([
             'type' => $data['type'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        return redirect()->route('home');
     }
 }

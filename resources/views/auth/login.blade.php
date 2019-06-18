@@ -26,86 +26,105 @@
       
     <div class="hero-body">
         <div class="container">
-        <div class="columns">
-            <div class="column">
-                <h1 class="title">
-                    Bienvenid@ a los Centros de Formación y Servicios Psicológicos.
-                </h1>
-            </div>
             <login-toggle inline-template>
-                <div class="column">
-                    <h2 class="subtitle has-text-centered" v-if="!students && !supervisors">
-                        Ingresa según tu perfil
-                    </h2>
-                    <div class="tabs is-toggle  is-large is-centered">
-                        <ul>
-                            <li :class="{ 'is-active': students }">
-                                <a @click="showStudents">
-                                    <span>Soy estudiante</span>
-                                </a>
-                            </li>
-                            <li :class="{ 'is-active': supervisors }">
-                                <a @click="showSupervisors">
-                                    <span>Soy supervisor</span>
-                                </a>
-                            </li>
-                        </ul>
+                <div>
+                <h1 class="title has-text-centered" v-if="!students && !supervisors">
+                    Bienvenida y bienvenido a los Centros de Formación y Servicios Psicológicos de la Facultad de Psicología, UNAM.
+                </h1>
+                <p class="subtitle has-text-centered" v-if="!students && !supervisors">
+                    Ingresa según tu perfil
+                </p>
+                <div class="columns">
+                    <div class="column has-text-centered">
+                        <a @click="showStudents" class="button is-large" :class="[students ? 'is-dark' : 'is-light']">Estudiantes</a>
                     </div>
-                    <div v-if="students" class="students">
-                        <p class="subtitle">Bienvenido al sistema.</p>
-                        <p>Al ingresar como estudiante, podrás registrate en Programas de Servicios Psicológicos a través de la Formación Supervisada.</p>
-                        <br>
-                        <form method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
-                            @component('components.text-input', [
-                                'title'=>'Número de cuenta',
-                                'field'=>'email',
-                                'errors'=>$errors,
-                                'type'=> 'text',
-                                'send'=> true
-                                ])@endcomponent
-                            @component('components.text-input', [
-                                'title'=>'Contraseña',
-                                'field'=>'password',
-                                'errors'=>$errors,
-                                'type'=> 'password',
-                                'send'=> true
-                                ])@endcomponent
-                            <div class="field">
-                                <p class="control has-text-centered">
-                                    <button class="button is-dark is-medium">Iniciar sesión</button>
-                                </p>
-                            </div>
-                        </form>
+                    <div class="column has-text-centered">
+                        <a @click="showSupervisors" class="button is-large" :class="[supervisors ? 'is-dark' : 'is-light']" >Supervisores</a>
                     </div>
-                    <div v-if="supervisors" class="supervisors">
-                        <p class="subtitle">Bienvenido al sistema.</p>
-                        <p>Al ingresar como supervisor, podrás registrar y ver tus Programas de Servicios, así como las listas de los estudiantes registrados en tus programas.</p>
-                        <br>
-                                <form method="POST" action="{{ route('login') }}">
-                                {{ csrf_field() }}
-                                    @component('components.text-input', [
-                                        'title'=>'Correo electrónico',
-                                        'field'=>'email',
-                                        'errors'=>$errors,
-                                        'type'=> 'email',
-                                        'send'=> true
-                                        ])@endcomponent
-                                    @component('components.text-input', [
-                                        'title'=>'Contraseña',
-                                        'field'=>'password',
-                                        'errors'=>$errors,
-                                        'type'=> 'password',
-                                        'send'=> true
-                                        ])@endcomponent
-                                    <div class="field">
-                                        <p class="control has-text-centered">
-                                            <button class="button is-dark is-medium">Iniciar sesión</button>
-                                        </p>
-                                    </div>
-                                </form>
-                            </div>
+                </div>
+                {{-- <div class="level">
+                        <!-- Left side -->
+                    <div class="level-left">
+                        <div class="level-item has-text-centered">
+                            <a href="" class="button">Soy estudiante</a>
                         </div>
+                    </div>
+                    <div class="level-right">
+                        <div class="level-item is-centered">
+                            <a href="" class="button">Soy supervisor</a>
+                        </div>
+                    </div>
+                </div> --}}
+                {{-- <div class="tabs is-toggle  is-large is-centered">
+                    <ul>
+                        <li :class="{ 'is-active': students }">
+                            <a @click="showStudents">
+                                <span>Soy estudiante</span>
+                            </a>
+                        </li>
+                        <li :class="{ 'is-active': supervisors }">
+                            <a @click="showSupervisors">
+                                <span>Soy supervisor</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div> --}}
+                <div v-if="students" class="students">
+                    {{-- <p class="subtitle">Bienvenido al sistema.</p> --}}
+                    <p class="is-size-5">Al ingresar como estudiante, podrás registrate en Programas de Servicios Psicológicos a través de la Formación Supervisada.</p>
+                    <br>
+                    <form method="POST" action="{{ route('login') }}">
+                    {{ csrf_field() }}
+                        @component('components.text-input', [
+                            'title'=>'Número de cuenta',
+                            'field'=>'email',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'send'=> true
+                            ])@endcomponent
+                        @component('components.text-input', [
+                            'title'=>'Contraseña',
+                            'field'=>'password',
+                            'errors'=>$errors,
+                            'type'=> 'password',
+                            'send'=> true
+                            ])@endcomponent
+                        <div class="field">
+                            <p class="control has-text-centered">
+                                <button class="button is-dark is-medium">Iniciar sesión</button>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+                <div v-if="supervisors" class="supervisors">
+                    {{-- <p class="subtitle">Bienvenido al sistema.</p> --}}
+                    <p class="is-size-5">Al ingresar como supervisor, podrás registrar y ver tus programas de de servicios psicológicos a través de la formación supervisada, así como las listas de los estudiantes registrados en tus programas.</p>
+                    <br>
+                            <form method="POST" action="{{ route('login') }}">
+                            {{ csrf_field() }}
+                                @component('components.text-input', [
+                                    'title'=>'Correo electrónico',
+                                    'field'=>'email',
+                                    'errors'=>$errors,
+                                    'type'=> 'email',
+                                    'send'=> true
+                                    ])@endcomponent
+                                @component('components.text-input', [
+                                    'title'=>'Contraseña',
+                                    'field'=>'password',
+                                    'errors'=>$errors,
+                                    'type'=> 'password',
+                                    'send'=> true
+                                    ])@endcomponent
+                                <div class="field">
+                                    <p class="control has-text-centered">
+                                        <button class="button is-dark is-medium">Iniciar sesión</button>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    
+                    </div>
                     </login-toggle>
                 </div>
             </div>

@@ -93,14 +93,18 @@ class RpsController extends Controller
         return view($this->base_url.'.index', $this->params);
     }
 
-    public function create()
-    {
-        $buildings = Building::when(Auth::user()->supervisor->id_centro == 10, function($query) {
+    protected function getBuildingIf() {
+        return Building::when(Auth::user()->supervisor->id_centro == 10, function($query) {
             return $query->where('id_centro', '>', 11);
         }, function ($query) {
             return $query->where('id_centro', '<', 12);
         })
         ->get();
+    }
+
+    public function create()
+    {
+        $buildings = $this->getBuildingIf();
         // dd($buildings);
         $this->params['buildings']= $buildings;
 
@@ -211,7 +215,7 @@ class RpsController extends Controller
         }
         $this->params['program'] = $program;
 
-        $buildings = Building::all();
+        $buildings = $this->getBuildingIf(); //Building::all();
         $this->params['buildings']= $buildings;
 
         $supervisors = Supervisor::distinct('correo')
