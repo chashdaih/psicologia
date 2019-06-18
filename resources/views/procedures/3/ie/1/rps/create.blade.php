@@ -227,12 +227,12 @@
                     <date-component
                         label="Fecha de inicio"
                         name="fecha_inicio"
-                        old=@if(old('fecha_inicio')) {{old('fecha_inicio')}} @elseif(isset($car_serv)){{ $car_serv->fecha_inicio->addDays(1)->format('Y-m-d') }} @else {{null}} @endif
+                        old=@if(old('fecha_inicio')) {{old('fecha_inicio')}} @elseif(isset($car_serv)){{ $car_serv->fecha_inicio ? $car_serv->fecha_inicio->addDays(1)->format('Y-m-d') : null }} @else {{null}} @endif
                         ></date-component>
                         <date-component
                             label="Fecha de término"
                             name="fecha_fin"
-                            old=@if(old('fecha_fin')) {{old('fecha_fin')}} @elseif(isset($car_serv)){{ $car_serv->fecha_fin->addDays(1)->format('Y-m-d') }} @else {{null}} @endif
+                            old=@if(old('fecha_fin')) {{old('fecha_fin')}} @elseif(isset($car_serv)){{ $car_serv->fecha_fin ? $car_serv->fecha_fin->addDays(1)->format('Y-m-d') : null }} @else {{null}} @endif
                         ></date-component>
                     {{-- @component('components.text-input', [
                         'title'=>'Fecha de inicio',
