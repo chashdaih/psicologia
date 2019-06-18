@@ -251,11 +251,11 @@
             @endif
             <tr>
                 <td class="left"><p class="p-left">FECHA DE INICIO</p></td>
-                <td class="right"><p>{{ $car->fecha_inicio->formatLocalized('%d de %B %Y') }}</p></td>
+                <td class="right"><p>{{ $car->fecha_inicio ? $car->fecha_inicio->formatLocalized('%d de %B %Y') : '' }}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">FECHA DE TÉRMINO</p></td>
-                <td class="right"><p>{{ $car->fecha_fin->formatLocalized('%d de %B %Y') }}</p></td>
+                <td class="right"><p>{{ $car->fecha_fin ? $car->fecha_fin->formatLocalized('%d de %B %Y') : '' }}</p></td>
             </tr>
             <tr>
                 <td class="left"><p class="p-left">REQUISITOS DE INGRESO AL PROGRAMA</p></td>
