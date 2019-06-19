@@ -78,14 +78,17 @@
             $pdf->page_text($x, $y, $text, $font, $size, $color);
         }
     </script>
-    <div class="header">
+    {{-- <div class="header">
         <img class="unam" src="{{ asset('img/unam.jpg') }}">
         <div class="block" style="text-align: center;">
             <p style="font-size:12pt;">Coordinación de Centros de Formación y Servicios Psicológicos</p>
             <p style="font-size:9pt;">COMPROBANTE DE REGISTRO A PROGRAMA</p>
         </div>
         <img class="psico" src="{{ asset('img/psi.jpg') }}">
-    </div>
+    </div> --}}
+    @component('pdf.header')
+        <p style="font-size:12pt;">COMPROBANTE DE REGISTRO A PROGRAMA</p>
+    @endcomponent
     <div>
         <br>
         <br>
@@ -97,19 +100,24 @@
         <p>A continuación encontrarás la información en relación a la sede en la que deberás de presentarte:</p>
     </div>
     <div style="border: 1px solid black; padding: 25px">
-        <p><span style="font-style: italic">Nombre de la práctica:</span> {{ $programPartaker->program->programa }}</p>
+        <p style="font-style: italic">Nombre de la práctica:</p> 
+        <p style="font-weight: bold;">{{ $programPartaker->program->programa }}</p>
         <p><span style="font-style: italic">Sede:</span> {{ $programPartaker->program->center->nombre }}</p>
         <p><span style="font-style: italic">Dirección:</span> {{ $programPartaker->program->center->direccion }}</p>
         <p><span style="font-style: italic">Supervisor:</span> {{ $programPartaker->program->supervisor->full_name }}</p>
-        <p><span style="font-style: italic">Fecha de inicio:</span> {{ $programPartaker->program->car_ser->fecha_inicio }}</p>
-        <p><span style="font-style: italic">Fecha de finalización:</span> {{ $programPartaker->program->car_ser->fecha_fin }}</p>
+        @if ($programPartaker->program->car_ser->fecha_inicio)
+        <p><span style="font-style: italic">Fecha de inicio:</span> {{ $programPartaker->program->car_ser->fecha_inicio->formatLocalized('%d de %B %Y') }}</p>
+        @endif
+        @if ($programPartaker->program->car_ser->fecha_fin)
+        <p><span style="font-style: italic">Fecha de finalización:</span> {{ $programPartaker->program->car_ser->fecha_fin->formatLocalized('%d de %B %Y') }}</p>
+        @endif
     </div>
     <div>
         <br>
         <br>
         <br>
-        <p>ATENTAMENTE:</p>
-        <p>LA COORDINACIÓN</p>
+        <p style="font-weight: bold">ATENTAMENTE</p>
+        <p>Coordinación de Centros de Formación y Servicios Psicológicos</p>
     </div>
 </body>
 </html>
