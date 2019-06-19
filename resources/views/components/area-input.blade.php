@@ -10,6 +10,7 @@
             v-on:input="clearError"
             ref="{{ $title }}"
             @if(isset($required) && $required) required @endif
+            @if(isset($maxlength))maxlength={{ $maxlength }}@endif
             >{{  old($field, isset($prev)?$prev:null) }}</textarea>
     </div>
     @if ($errors->has($field))

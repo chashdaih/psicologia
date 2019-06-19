@@ -7,7 +7,8 @@
         'field'=>'semana[]',
         'errors'=>$errors,
         'type'=> 'text',
-        'prev' => isset($data)?$data->semana:null
+        'prev' => isset($data)?$data->semana:null,
+        'maxlength' => 250
         ])@endcomponent
 </td>
 <td>

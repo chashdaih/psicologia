@@ -14,6 +14,8 @@
             min=0
             max=255
             step=1
+            @elseif ($type == "text")
+            @if(isset($maxlength))maxlength={{ $maxlength }}@endif
             @endif
             placeholder="{{ $title }}"
             v-on:input="clearError"

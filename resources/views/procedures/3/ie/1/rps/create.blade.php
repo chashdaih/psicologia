@@ -30,7 +30,8 @@
                         'field'=>'programa',
                         'errors'=>$errors,
                         'type'=> 'text',
-                        'prev' => isset($program) ? $program->programa : null
+                        'prev' => isset($program) ? $program->programa : null,
+                        'maxlength' => 250
                         ])@endcomponent
                     @if (Auth::user()->type == 6 || Auth::user()->supervisor->id_centro == 10)
                     @component('components.select', [
@@ -298,42 +299,42 @@
                                     @if(old('gen_l', isset($car_serv)?$car_serv->gen_l:null)) checked @endif value="1" name="gen_l"
                                      > Lunes</label></td>
                                 <td><input value="{{ old('gen_hora_l', isset($car_serv)?$car_serv->gen_hora_l:null) }}"
-                                    name="gen_hora_l" class="input" type="text" placeholder="Horario lunes"></td>
+                                    name="gen_hora_l" class="input" type="text" placeholder="Horario lunes" maxlength=255></td>
                             </tr>
                             <tr>
                                 <td><label class="checkbox"><input type="checkbox"
                                      @if(old('gen_ma', isset($car_serv)?$car_serv->gen_ma:null)) checked @endif value="1" name="gen_ma"
                                      > Martes</label></td>
                                 <td><input value="{{ old('gen_hora_ma', isset($car_serv)?$car_serv->gen_hora_ma:null) }}"
-                                    name="gen_hora_ma" class="input" type="text" placeholder="Horario martes"></td>
+                                    name="gen_hora_ma" class="input" type="text" placeholder="Horario martes" maxlength=255></td>
                             </tr>
                             <tr>
                                 <td><label class="checkbox"><input type="checkbox" 
                                     @if(old('gen_mi', isset($car_serv)?$car_serv->gen_mi:null)) checked @endif value="1" name="gen_mi"
                                     > Miercoles</label></td>
                                 <td><input value="{{ old('gen_hora_mi', isset($car_serv)?$car_serv->gen_hora_mi:null) }}"
-                                    name="gen_hora_mi" class="input" type="text" placeholder="Horario miercoles"></td>
+                                    name="gen_hora_mi" class="input" type="text" placeholder="Horario miercoles" maxlength=255></td>
                             </tr>
                             <tr>
                                 <td><label class="checkbox"><input type="checkbox" 
                                     @if(old('gen_j', isset($car_serv)?$car_serv->gen_j:null)) checked @endif value="1" name="gen_j"
                                     > Jueves</label></td>
                                 <td><input value="{{ old('gen_hora_j', isset($car_serv)?$car_serv->gen_hora_j:null) }}"
-                                    name="gen_hora_j" class="input" type="text" placeholder="Horario jueves"></td>
+                                    name="gen_hora_j" class="input" type="text" placeholder="Horario jueves" maxlength=255></td>
                             </tr>
                             <tr>
                                 <td><label class="checkbox"><input type="checkbox"
                                      @if(old('gen_v', isset($car_serv)?$car_serv->gen_v:null)) checked @endif value="1" name="gen_v"
                                      > Viernes</label></td>
                                 <td><input value="{{ old('gen_hora_v', isset($car_serv)?$car_serv->gen_hora_v:null) }}"
-                                    name="gen_hora_v" class="input" type="text" placeholder="Horario viernes"></td>
+                                    name="gen_hora_v" class="input" type="text" placeholder="Horario viernes" maxlength=255></td>
                             </tr>
                             <tr>
                                 <td><label class="checkbox"><input type="checkbox" 
                                     @if(old('gen_s', isset($car_serv)?$car_serv->gen_s:null)) checked @endif value="1" name="gen_s"
                                     > Sábado</label></td>
                                 <td><input value="{{ old('gen_hora_s', isset($car_serv)?$car_serv->gen_hora_s:null) }}"
-                                    name="gen_hora_s" class="input" type="text" placeholder="Horario sabado"></td>
+                                    name="gen_hora_s" class="input" type="text" placeholder="Horario sabado" maxlength=255></td>
                             </tr>
                         </tbody>
                     </table>
@@ -358,42 +359,42 @@
                                     @if(old('serv_l', isset($car_serv)?$car_serv->serv_l:null)) checked @endif value="1" name="serv_l"
                                     > Lunes</label></td>
                                 <td><input value="{{ old('serv_hora_l', isset($car_serv)?$car_serv->serv_hora_l:null) }}"
-                                    name="serv_hora_l" class="input" type="text" placeholder="Horario lunes"></td>
+                                    name="serv_hora_l" class="input" type="text" placeholder="Horario lunes" maxlength=255></td>
                             </tr>
                             <tr>
                                 <td><label class="checkbox"><input type="checkbox" 
                                     @if(old('serv_ma', isset($car_serv)?$car_serv->serv_ma:null)) checked @endif value="1" name="serv_ma"
                                     > Martes</label></td>
                                 <td><input value="{{ old('serv_hora_ma', isset($car_serv)?$car_serv->serv_hora_ma:null) }}"
-                                    name="serv_hora_ma" class="input" type="text" placeholder="Horario martes"></td>
+                                    name="serv_hora_ma" class="input" type="text" placeholder="Horario martes" maxlength=255></td>
                             </tr>
                             <tr>
                                 <td><label class="checkbox"><input type="checkbox" 
                                     @if(old('serv_mi', isset($car_serv)?$car_serv->serv_mi:null)) checked @endif value="1" name="serv_mi"
                                     > Miercoles</label></td>
                                 <td><input value="{{ old('serv_hola_mi', isset($car_serv)?$car_serv->serv_hola_mi:null) }}"
-                                    name="serv_hora_mi" class="input" type="text" placeholder="Horario miercoles"></td>
+                                    name="serv_hora_mi" class="input" type="text" placeholder="Horario miercoles" maxlength=255></td>
                             </tr>
                             <tr>
                                 <td><label class="checkbox"><input type="checkbox"
                                      @if(old('serv_j', isset($car_serv)?$car_serv->serv_j:null)) checked @endif value="1" name="serv_j"
                                      > Jueves</label></td>
                                 <td><input value="{{ old('serv_hora_j', isset($car_serv)?$car_serv->serv_hora_j:null) }}"
-                                    name="serv_hora_j" class="input" type="text" placeholder="Horario jueves"></td>
+                                    name="serv_hora_j" class="input" type="text" placeholder="Horario jueves" maxlength=255></td>
                             </tr>
                             <tr>
                                 <td><label class="checkbox"><input type="checkbox"
                                      @if(old('serv_v', isset($car_serv)?$car_serv->serv_v:null)) checked @endif value="1" name="serv_v"
                                      > Viernes</label></td>
                                 <td><input value="{{ old('serv_hora_v', isset($car_serv)?$car_serv->serv_hora_v:null) }}"
-                                    name="serv_hora_v" class="input" type="text" placeholder="Horario viernes"></td>
+                                    name="serv_hora_v" class="input" type="text" placeholder="Horario viernes" maxlength=255></td>
                             </tr>
                             <tr>
                                 <td><label class="checkbox"><input type="checkbox" 
                                     @if(old('serv_s', isset($car_serv)?$car_serv->serv_s:null)) checked @endif value="1" name="serv_s"
                                     > Sábado</label></td>
                                 <td><input value="{{ old('serv_hora_s', isset($car_serv)?$car_serv->serv_hora_s:null) }}"
-                                    name="serv_hora_s" class="input" type="text" placeholder="Horario sabado"></td>
+                                    name="serv_hora_s" class="input" type="text" placeholder="Horario sabado" maxlength=255></td>
                             </tr>
                         </tbody>
                     </table>
@@ -439,7 +440,7 @@
                                 <div class="field">
                                     <div class="control">
                                         <input class="input" value="{{ old('otra_problematica', isset($car_serv)?$car_serv->otro_servicio:null) }}"
-                                            type="text" name="otro_servicio" placeholder="Otros"></label>
+                                            type="text" name="otro_servicio" placeholder="Otros" maxlength=255></label>
                                     </div>
                                 </div>
                             </div>
@@ -543,7 +544,7 @@
                                 <div class="field">
                                     <div class="control">
                                         <input class="input" value="{{ old('otro_enfoque', isset($car_serv)?$car_serv->otro_enfoque:null) }}"
-                                        type="text" name="otro_enfoque" placeholder="Otro"></label>
+                                        type="text" name="otro_enfoque" placeholder="Otro" maxlength=255></label>
                                     </div>
                                 </div>
                             </div>
@@ -768,7 +769,7 @@
                             </td>
                             <td>
                                 <input class="input" value="{{ old('ensenanza_otra', isset($car_serv)?$car_serv->ensenanza_otra:null) }}"
-                                type="text" name="ensenanza_otra" placeholder="Otra (descríbala)"></label>
+                                type="text" name="ensenanza_otra" placeholder="Otra (descríbala)" maxlength=255></label>
                             </td>
                         </tr>
                     </table>
@@ -817,7 +818,7 @@
                                 <div class="field">
                                     <div class="control">
                                         <input class="input" value="{{ old('ensenanza_otra', isset($car_serv)?$car_serv->ensenanza_otra:null) }}"
-                                        type="text" name="competencias_otra" placeholder="Otra (descríbala)"></label>
+                                        type="text" name="competencias_otra" placeholder="Otra (descríbala)" maxlength=255></label>
                                     </div>
                                 </div>
                             </div>

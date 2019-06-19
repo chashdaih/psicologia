@@ -10,6 +10,8 @@
             @if ($type == "number")
             min=0
             step=1
+            @elseif ($type == "text")
+            @if(isset($maxlength))maxlength={{ $maxlength }}@endif
             @endif
             placeholder="{{ $title }}"
             v-on:input="clearError"
