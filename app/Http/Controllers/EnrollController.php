@@ -102,11 +102,11 @@ class EnrollController extends Controller
             $doc['seguro_imss'] = 1;
         }
         if ($request->file('carta_comp')) {
-            $request->file("carta_comp")->storeAs($doc->id_tramite, 'carta.pdf');
+            $request->file("carta_comp")->storeAs('public/'.$doc->id_tramite, 'carta.pdf');
             $doc['carta_comp'] = 1;
         }
         if ($request->file('historial_ac')) {
-            $request->file("historial_ac")->storeAs($doc->id_tramite, 'historial.pdf');
+            $request->file("historial_ac")->storeAs('public/'.$doc->id_tramite, 'historial.pdf');
             $doc['historial_ac'] = 1;
         }
 

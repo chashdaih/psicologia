@@ -102,6 +102,7 @@ Route::get('/generateLetter/{program_id}', 'EnrollController@cartaCompromiso')->
 Route::resource('/evaluar', 'EvaluateStudentController');
 
 Route::resource('/supervisor', 'SupervisorController', ['middleware' => 'auth']);
+Route::post('password/change', 'ListController@changePass')->name('pass_up');
 
 Auth::routes();
 

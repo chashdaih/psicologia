@@ -3,7 +3,7 @@
 @section('content')
 <section class="section">
     <div class="container">
-        @include('layouts.breadcrumbs')
+        {{-- @include('layouts.breadcrumbs') --}}
         <h1 class="title">{{ $bread->last()['title'] }}</h1>
         @if ($errors->any())
         <div class="notification is-danger">

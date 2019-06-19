@@ -5,7 +5,6 @@
 </div>
 @endif
 <div class="container has-text-centered">
-    <p>El periodo de registro estará abierto hasta el 31 de junio</p>
     <button class="button"><a href="{{ route('rps.create') }}">Registrar programa (3-IE1-RPS)</a></button>
     <br/>
 </div>

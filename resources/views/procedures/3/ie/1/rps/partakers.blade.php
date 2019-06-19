@@ -38,13 +38,17 @@
                         @endif
                     </td>
                     <td>@if($pp->document->carta_compromiso)
-                        <fai icon="file-code" size="2x" />
+                        <a href="{{ route('carta_compromiso', $pp->document->carta_compromiso) }}">
+                            <fai icon="file-code" size="2x" />
+                        </a>
                         @else
                         <fai icon="times" size="2x" />
                         @endif
                     </td>
                     <td>@if($pp->document->historial_academico)
-                        <fai icon="file-code" size="2x" />
+                        <a href="{{ route('historial_academico', $pp->document->historial_academico) }}">
+                            <fai icon="file-code" size="2x" />
+                        </a>
                         @else
                         <fai icon="times" size="2x" />                        
                         @endif

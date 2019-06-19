@@ -97,7 +97,7 @@ class RpsController extends Controller
         return Building::when(Auth::user()->supervisor->id_centro == 10, function($query) {
             return $query->where('id_centro', '>', 11);
         }, function ($query) {
-            return $query->where('id_centro', '<', 12);
+            return $query->where('id_centro', '<', 12)->whereNotIn('id_centro', [10]);
         })
         ->get();
     }

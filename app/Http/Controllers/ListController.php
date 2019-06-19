@@ -61,6 +61,10 @@ class ListController extends Controller
 
         if (Auth::user()->type == 3) { // participante (estudiante)
 
+            if (password_verify(Auth::user()->email, Auth::user()->password)) {
+                return view('auth.passwords.update');
+            }
+
             $enroll_programs = ProgramPartaker::where('id_participante', Auth::user()->partaker->num_cuenta)
             ->where('ciclo_activo', '2020-1')
             ->get();
@@ -71,6 +75,7 @@ class ListController extends Controller
                 $programs = DB::table('practicas as p')
                 ->where('semestre_activo', '2020-1')
                 ->where('cupo_actual','>', '0')
+                ->where('tipo', 'EXTRACURRICULAR')
                 ->join('supervisores as s', 'p.id_supervisor', 's.id_supervisor')
                 ->join('informacion_practicas as i', 'p.id_practica', 'i.id_practica')
                 ->join('centros as c', 'p.id_centro', 'c.id_centro')
@@ -78,8 +83,6 @@ class ListController extends Controller
                     DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name")
                 )->orderBy('programa', 'asc')
                 ->get();
-        
-                $programs = $this->fixNames($programs);
             }
 
             $data = compact('enroll_programs', 'programs'); 
@@ -112,6 +115,21 @@ class ListController extends Controller
         }
 
         return view('list', $data);
+    }
+
+    public function changePass(Request $request)
+    {
+        $this->validate(request(), [
+            'nueva_contraseña' => 'required|string|min:4',
+            'repetir_contraseña' => 'required_with:password|string|min:4',
+        ]);
+    
+        request()->user()->fill([
+            'password' => bcrypt(request()->input('nueva_contraseña'))
+        ])->save();
+        request()->session()->flash('success', 'Contraseña actualizada exitosamente');
+    
+        return redirect()->route('home');
     }
 
     public function update(Request $request)
