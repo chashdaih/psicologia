@@ -106,6 +106,10 @@
                 <td class="left"><p class="p-left">DIRECCIÓN DEL ESCENARIO</p></td>
                 <td class="right"><p>{{ $doc->center->direccion }}</p></td>
             </tr>
+            <tr>
+                <td class="left"><p class="p-left">TIPO DE PROGRAMA</p></td>
+                <td class="right"><p>{{ $doc->tipo }}</p></td>
+            </tr>
         </table>
     </div>
     <div>
