@@ -81,21 +81,24 @@
             $pdf->page_text(40, $y, $doc_full_code, $font, $size, $color);
         }
     </script>
-    <div class="header">
+    {{-- <div class="header">
         <img class="unam" src="{{ asset('img/unam.jpg') }}">
         <div class="block" style="text-align: center;">
             <p style="font-size:12pt;">Coordinación de Centros de Formación y Servicios Psicológicos</p>
             <p style="font-size:9pt;">CARTA COMPROMISO DEL ESTUDIANTE DE PREGRADO</p>
         </div>
         <img class="psico" src="{{ asset('img/psi.jpg') }}">
-    </div>
-    <div>
+    </div> --}}
+    @component('pdf.header')
+    <p style="font-size:12pt;">CARTA COMPROMISO DEL ESTUDIANTE DE PREGRADO</p>
+    @endcomponent
+    <div style="line-height: 1.5">
         <br>
         <p>Por este medio, yo {{ Auth::user()->partaker->full_name }}, con número de cuenta {{ Auth::user()->partaker->num_cuenta }}, manifiesto mi compromiso con
         la <span style="font-weight: bold">Coordinación de Centros de Formación y Servicios Psicológicos</span> y con el programa 
         <span style="font-weight: bold">{{ $program->programa }}</span>
         para realizar práctica supervisada en la sede <span style="font-weight: bold">{{ $program->center->nombre }}</span> 
-        los {{ $program->car_ser->days() }}, dentro del período de {{ $program->car_ser->fecha_inicio }} a {{ $program->car_ser->fecha_fin }}.</p>
+        los {{ $program->car_ser->days() }}, dentro del período del {{ $program->car_ser->fecha_inicio ? $program->car_ser->fecha_inicio->formatLocalized('%d de %B %Y') : '' }} al {{ $program->car_ser->fecha_fin ? $program->car_ser->fecha_fin->formatLocalized('%d de %B %Y') : '' }}.</p>
         <p>Entiendo que como estudiante de licenciatura estaré participando en la Institución en los horarios acordados con mi supervisor académico.</p>
         <p>Como estudiante tengo <span style="text-decoration: underline">derecho</span> a:</p>
         <ol>
@@ -130,8 +133,8 @@
         <div style="text-align: center">
             <p style="font-weight: bold">ATENTAMENTE</p>
             <p style="font-weight: bold">"POR MI RAZA, HABLARÁ EL ESPÍRITU"</p>
-            <p style="font-weight: bold">CIUDAD UNIVERSITARIA A TODO FECHA</p>
-            <p style="font-weight: bold">VO.BO</p>
+            <p style="font-weight: bold">CIUDAD UNIVERSITARIA A {{ strtoupper (\Carbon\Carbon::now()->formatLocalized('%d de %B %Y')) }}</p>
+            <p style="font-weight: bold">VO.BO.</p>
         </div>
         <div style="text-align: center">
             <p style="font-weight: bold">_______________________________</p>

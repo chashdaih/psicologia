@@ -130,8 +130,6 @@ class EnrollController extends Controller
 
         if ($program->semestre_activo == '2020-1') {
 
-            // dd($program->car_ser->fecha_inicio->format('jS \\of F Y'));
-            
             $pdf->loadView('enroll.carta_compromiso_pre', compact('program'));
             return $pdf->download('carta_compromiso.pdf');
 
