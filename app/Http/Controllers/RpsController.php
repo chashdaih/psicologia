@@ -67,9 +67,13 @@ class RpsController extends Controller
     public function index()
     {
         $id_centro = Auth::user()->supervisor->id_centro;
-
-        $this->params['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, '2020-1');
         $user_type = Auth::user()->type;
+        
+        if ($user_type == 2) {
+            $this->params['records'] = $this->filter(0, Auth::user()->supervisor->id_supervisor, '2020-1');
+        } else {
+            $this->params['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, '2020-1');
+        }
 
         if ($user_type == 5) { // jefe de centro
             $supervisors = DB::table('supervisores')
