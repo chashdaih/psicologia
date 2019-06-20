@@ -23,7 +23,7 @@ export default {
     },
     mounted() {
         if (this.old) {
-            this.date = new Date(this.old);
+            this.date = moment(this.old).toDate();
         }
     },
     methods: {

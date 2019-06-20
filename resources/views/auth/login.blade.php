@@ -42,36 +42,9 @@
                         <a @click="showSupervisors" class="button is-large" :class="[supervisors ? 'is-dark' : 'is-light']" >Supervisores</a>
                     </div>
                 </div>
-                {{-- <div class="level">
-                        <!-- Left side -->
-                    <div class="level-left">
-                        <div class="level-item has-text-centered">
-                            <a href="" class="button">Soy estudiante</a>
-                        </div>
-                    </div>
-                    <div class="level-right">
-                        <div class="level-item is-centered">
-                            <a href="" class="button">Soy supervisor</a>
-                        </div>
-                    </div>
-                </div> --}}
-                {{-- <div class="tabs is-toggle  is-large is-centered">
-                    <ul>
-                        <li :class="{ 'is-active': students }">
-                            <a @click="showStudents">
-                                <span>Soy estudiante</span>
-                            </a>
-                        </li>
-                        <li :class="{ 'is-active': supervisors }">
-                            <a @click="showSupervisors">
-                                <span>Soy supervisor</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div> --}}
                 <div v-if="students" class="students">
-                    {{-- <p class="subtitle">Bienvenido al sistema.</p> --}}
                     <p class="is-size-5">Al ingresar como estudiante, podrás registrate en Programas de Servicios Psicológicos a través de la Formación Supervisada.</p>
+                    <p class="has-text-weight-bold has-text-centered">Si es la primera vez que ingresas, tu contraseña es tu número de cuenta</p>
                     <br>
                     <form method="POST" action="{{ route('login') }}">
                     {{ csrf_field() }}

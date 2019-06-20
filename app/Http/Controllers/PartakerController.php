@@ -10,7 +10,7 @@ class PartakerController extends Controller
 {
     public function index()
     {
-        //
+        return view('partaker.index');
     }
 
     public function create()
@@ -21,18 +21,18 @@ class PartakerController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'telefono' => 'required|string|max:15',
+            'num_cuenta' => 'required|string|max:15|unique:participante',
             'password' => 'required|confirmed|min:4',
             // 'password_confirmation' => 'required_with:password|string|min:4',
-            'correo' => 'required|email',
-            'nombre_part' => 'required|string|max:120',
-            'ap_paterno' => 'required|string|max:120',
-            'ap_materno' => 'required|string|max:120',
-            'f_nac' => 'required|string|max:10',
-            'telefono' => 'required|string|max:14',
-            'sistema' => 'required|string|max:40',
-            'sexo' => 'required|string|max:5',
-            'semestre' => 'required|string|max:50'
+            'correo' => 'nullable|email',
+            'nombre_part' => 'nullable|string|max:120',
+            'ap_paterno' => 'nullable|string|max:120',
+            'ap_materno' => 'nullable|string|max:120',
+            'f_nac' => 'nullable|string|max:10',
+            'telefono' => 'nullable|string|max:14',
+            'sistema' => 'nullable|string|max:40',
+            'sexo' => 'nullable|string|max:5',
+            'semestre' => 'nullable|string|max:50'
         ]);
 
         Partaker::create([
@@ -61,19 +61,32 @@ class PartakerController extends Controller
 
     }
 
-    public function show(Partaker $partaker)
-    {
-        //
-    }
+    // public function show(Partaker $partaker)
+    // {
+    // }
 
     public function edit(Partaker $partaker)
     {
-        //
+        return view('partaker.create', compact('partaker'));
     }
 
     public function update(Request $request, Partaker $partaker)
     {
-        //
+        $this->validate($request, [
+            'correo' => 'nullable|email',
+            'nombre_part' => 'nullable|string|max:120',
+            'ap_paterno' => 'nullable|string|max:120',
+            'ap_materno' => 'nullable|string|max:120',
+            'f_nac' => 'nullable|string|max:10',
+            'telefono' => 'nullable|string|max:14',
+            'sistema' => 'nullable|string|max:40',
+            'sexo' => 'nullable|string|max:5',
+            'semestre' => 'nullable|string|max:50'
+        ]);
+
+        $partaker->update($request->all());
+
+        return redirect()->route('home')->with('success', 'Los datos se han actualizado');
     }
 
     public function destroy(Partaker $partaker)

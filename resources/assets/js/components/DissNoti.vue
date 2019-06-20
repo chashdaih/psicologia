@@ -4,6 +4,7 @@
         <button class="delete" @click="visible=false"></button>
         <slot></slot>
     </div>
+    <br>
 </div>
 </template>
 <script>

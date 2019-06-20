@@ -2,10 +2,13 @@
 
 @section('content')
 <section class="section">
-    @if (session('message'))
-    <div class="notification is-primary">
-        {{ session('message') }}
-    </div>
+    @if (session('success'))
+    {{-- <div class="notification is-primary">
+        {{ session('success') }}
+    </div> --}}
+    <diss-noti color="is-success">
+        {{ session('success') }}
+    </diss-noti>
     @endif
     <div class="container">
         @if(Auth::user()->type != 3)

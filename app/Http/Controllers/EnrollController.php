@@ -53,7 +53,7 @@ class EnrollController extends Controller
         ->first();
 
         if ($registered_programs) {
-            return redirect()->route('insc')->with('message', "No puedes inscribirte a otro programa hasta dentro de algún tiempo");
+            return redirect()->route('insc')->with('success', "No puedes inscribirte a otro programa hasta dentro de algún tiempo");
         }
 
         $rel = ProgramPartaker::create([
@@ -81,7 +81,7 @@ class EnrollController extends Controller
             'partaker_id' => $partaker_id
         ]);
 
-        return redirect()->route('home')->with('message', "¡Éxito! pre-registrado al programa");
+        return redirect()->route('home')->with('success', "¡Éxito! pre-registrado al programa");
     }
 
     public function docs(Request $request)

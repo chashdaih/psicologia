@@ -23,6 +23,7 @@ import ProgramsList from './components/ProgramsList';
 import DissNoti from './components/DissNoti';
 import LpsTable from './components/LpsTable';
 import DateComponent from './components/DateComponent';
+// import PartakersList from './components/PartakersList';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar } from '@fortawesome/free-solid-svg-icons';
@@ -60,7 +61,8 @@ const app = new Vue({
         ProgramsList,
         DissNoti,
         LpsTable,
-        DateComponent
+        DateComponent,
+        // PartakersList
     },
     data: {
         isActive: false

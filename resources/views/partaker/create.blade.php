@@ -35,15 +35,6 @@
                         action="{{ isset($partaker) ? route('partaker.update', $partaker->num_cuenta) : route('partaker.store') }}">
                         {{ csrf_field() }}
                         @if(isset($partaker)) <input name="_method" type="hidden" value="PUT"> @endif
-
-                            @component('components.text-input', [
-                                'title'=>'Correo electrónico',
-                                'field'=>'correo',
-                                'errors'=>$errors,
-                                'type'=> 'email',
-                                'prev' => isset($partaker) ? $partaker->correo : null,
-                                'required' => true
-                                ])@endcomponent
                         @if(!isset($partaker))
                             @component('components.text-input', [
                                 'title'=>'Número de cuenta',
@@ -74,7 +65,6 @@
                                 'errors'=>$errors,
                                 'type'=> 'text',
                                 'prev' => isset($partaker) ? $partaker->nombre_part : null,
-                                'required' => true
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Apellido paterno',
@@ -82,7 +72,6 @@
                                 'errors'=>$errors,
                                 'type'=> 'text',
                                 'prev' => isset($partaker) ? $partaker->ap_paterno : null,
-                                'required' => true
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Apellido materno',
@@ -90,12 +79,11 @@
                                 'errors'=>$errors,
                                 'type'=> 'text',
                                 'prev' => isset($partaker) ? $partaker->ap_materno : null,
-                                'required' => true
                                 ])@endcomponent
                             <date-component
                                 label="Fecha de nacimiento"
                                 name="f_nac"
-                                old=@if(old('f_nac')) {{old('f_nac')}} @elseif(isset($partaker->f_nac)){{ $partaker->f_nac ? $partaker->f_nac->addDays(1)->format('Y-m-d') : null }} @else {{null}} @endif
+                                old=@if(old('f_nac')) {{old('f_nac')}} @elseif(isset($partaker->f_nac)){{ $partaker->f_nac ? $partaker->f_nac : null }} @else {{null}} @endif
                             ></date-component>
                             @component('components.text-input', [
                                 'title'=>'Teléfono',
@@ -103,7 +91,14 @@
                                 'errors'=>$errors,
                                 'type'=> 'text',
                                 'prev' => isset($partaker) ? $partaker->telefono : null,
-                                'required' => true
+                                ])@endcomponent
+
+                            @component('components.text-input', [
+                                'title'=>'Correo electrónico',
+                                'field'=>'correo',
+                                'errors'=>$errors,
+                                'type'=> 'email',
+                                'prev' => isset($partaker) ? $partaker->correo : null,
                                 ])@endcomponent
                             @component('components.text-input', [
                                 'title'=>'Semestre',
@@ -111,7 +106,6 @@
                                 'errors'=>$errors,
                                 'type'=> 'text',
                                 'prev' => isset($partaker) ? $partaker->semestre : null,
-                                'required' => true,
                                 'maxlength' => 50
                                 ])@endcomponent
                             <div class="field">
@@ -140,7 +134,7 @@
                             <div class="field">
                                 <p class="control">
                                     <button class="button is-success">
-                                        @if (isset($supervisor))
+                                        @if (isset($partaker))
                                         Actualizar
                                         @else
                                         Registrar
