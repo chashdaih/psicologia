@@ -103,6 +103,7 @@ Route::resource('/evaluar', 'EvaluateStudentController');
 
 Route::resource('/supervisor', 'SupervisorController', ['middleware' => 'auth']);
 Route::resource('/partaker', 'PartakerController', ['middleware' => 'auth']);
+Route::get('/partaker/search/{searchTerm}', 'PartakerController@search')->name('par_search');
 
 Route::post('password/change', 'ListController@changePass')->name('pass_up');
 

@@ -3,14 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Partaker;
-use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class PartakerController extends Controller
 {
     public function index()
     {
-        return view('partaker.index');
+        $partakers = Partaker::orderBy('nombre_part')->paginate(10);
+
+        return view('partaker.index', compact('partakers'));
+    }
+
+    public function search($searchTerm)
+    {
+        $partakers = DB::table('participante as p')
+            ->select('num_cuenta', DB::raw("CONCAT(p.nombre_part, ' ', p.ap_paterno, ' ', p.ap_materno) AS full_name"))
+            ->where('nombre_part', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('ap_paterno', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('ap_materno', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('num_cuenta', 'LIKE', "%{$searchTerm}%")
+            ->orderBy('num_cuenta')
+            ->limit(6)->get();
+
+        return $this->fixNames($partakers);
+    }
+    
+    protected function fixNames($records)
+    {
+        if($records) {
+            foreach ($records as $record) {
+                $record->full_name = ucwords(mb_strtolower($record->full_name));
+                // $record->full_name = preg_replace('/\s+/', ' ',ucwords(mb_strtolower($record->full_name)));
+            }
+        }
+        return $records;
     }
 
     public function create()

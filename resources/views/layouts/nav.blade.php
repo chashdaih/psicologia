@@ -25,7 +25,7 @@
       @endif
       @if(Auth::user()->type == 6)
       <div class="navbar-item">
-        <a href="{{ route('partaker.create') }}" class="navbar-item">Registrar participante</a>
+        <a href="{{ route('partaker.index') }}" class="navbar-item">Participantes</a>
       </div>
       <div class="navbar-item">
         <a href="{{ route('supervisor.index') }}" class="navbar-item">Supervisores</a>
