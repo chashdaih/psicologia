@@ -30,23 +30,23 @@
                     <td>{{ $pp->partaker->full_name }}</td>
                     <td>{{ $pp->estado }}</td>
                     <td>@if($pp->document->seguro_imss)
-                        <a href="{{ route('seguro', $pp->document->id_tramite) }}">
+                        <a href="{{ route('get_document', [$pp->document->id_tramite, 'seguro']) }}">
                             <fai icon="file-code" size="2x" />
                         </a>
                         @else
                         <fai icon="times" size="2x" />
                         @endif
                     </td>
-                    <td>@if($pp->document->carta_compromiso)
-                        <a href="{{ route('carta_compromiso', $pp->document->carta_compromiso) }}">
+                    <td>@if($pp->document->carta_comp)
+                        <a href="{{ route('get_document', [$pp->document->id_tramite, 'carta']) }}">
                             <fai icon="file-code" size="2x" />
                         </a>
                         @else
                         <fai icon="times" size="2x" />
                         @endif
                     </td>
-                    <td>@if($pp->document->historial_academico)
-                        <a href="{{ route('historial_academico', $pp->document->historial_academico) }}">
+                    <td>@if($pp->document->historial_ac)
+                        <a href="{{ route('get_document', [$pp->document->id_tramite, 'historial']) }}">
                             <fai icon="file-code" size="2x" />
                         </a>
                         @else

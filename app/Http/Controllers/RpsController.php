@@ -520,11 +520,11 @@ class RpsController extends Controller
         return view($this->base_url.'.partakers', $this->params);
     }
 
-    public function seguro($id_tramite)
+    public function document($id_tramite, $doc)
     {
         // dd(storage_path('/'));
         // return response()->download(asset('storage/'.$id_tramite . '/seguro.pdf'));
 
-        return response()->download(public_path() . '/storage/'.$id_tramite . '/seguro.pdf');
+        return response()->download(public_path() . '/storage/' .$id_tramite . '/' . $doc . '.pdf');
     }
 }
