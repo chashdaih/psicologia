@@ -8,6 +8,9 @@ class Partaker extends Model
 {
     protected $table = 'participante';
     protected $primaryKey = 'num_cuenta';
+    public $timestamps = false;
+
+    protected $guarded = [];
 
     public function getFullNameAttribute() {
         return preg_replace('/\s+/', ' ',ucwords(mb_strtolower($this->nombre_part.' '.$this->ap_paterno.' '.$this->ap_materno)));

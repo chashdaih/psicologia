@@ -13,7 +13,7 @@
 
 Route::get('/', 'ListController@index')->name('home');
 Route::get('/partaker/enrollment_proof/{tramit_id}', 'ListController@enrollmentProof')->name('e_proof');
-
+// Route::get('partaker/register', 'ListController@partakerRegisterForm')->name('partaker_form');
 
 Route::get('tramite/{id_tramite}/seguro', 'RpsController@seguro')->name('seguro');
 
@@ -102,6 +102,8 @@ Route::get('/generateLetter/{program_id}', 'EnrollController@cartaCompromiso')->
 Route::resource('/evaluar', 'EvaluateStudentController');
 
 Route::resource('/supervisor', 'SupervisorController', ['middleware' => 'auth']);
+Route::resource('/partaker', 'PartakerController', ['middleware' => 'auth']);
+
 Route::post('password/change', 'ListController@changePass')->name('pass_up');
 
 Auth::routes();

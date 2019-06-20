@@ -23,6 +23,11 @@
           <a href="{{ route('apartar') }}" class="navbar-item">Apartar espacio</a>
         </div>
         @endif
+        @if(Auth::user()->type == 6)
+        <div class="navbar-item">
+          <a href="{{ route('partaker.create') }}" class="navbar-item">Registrar participante</a>
+        </div>
+        @endif
         {{-- <div class="navbar-item">
           <a href="/asignar" class="navbar-item">Referir cita</a>
         </div> --}}
