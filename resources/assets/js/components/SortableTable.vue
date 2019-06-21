@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section>
     <form v-if="stages" action="">
         <b-field label="Filtrar por escenario" horizontal>
           <b-select
@@ -7,7 +7,7 @@
             @input="filter()"
             placeholder="Selecciona un escenario">
             <option value=0>Todos los escenarios</option>
-            <option 
+            <option style="width:50px;"
               v-for="stage in stages"
               :value=stage.id_centro
               :key=stage.id_centro
@@ -144,7 +144,7 @@
         </footer>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

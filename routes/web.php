@@ -102,8 +102,10 @@ Route::get('/generateLetter/{program_id}', 'EnrollController@cartaCompromiso')->
 Route::resource('/evaluar', 'EvaluateStudentController');
 
 Route::resource('/supervisor', 'SupervisorController', ['middleware' => 'auth']);
+// Route::get('/supervisor/filter/{id}', 'SupervisorController@filter', ['middleware' => 'auth'])->name('sup_filter');
+
 Route::resource('/partaker', 'PartakerController', ['middleware' => 'auth']);
-Route::get('/partaker/search/{searchTerm}', 'PartakerController@search')->name('par_search');
+Route::get('/partaker/search/{searchTerm}', 'PartakerController@search', ['middleware' => 'auth'])->name('par_search');
 
 Route::post('password/change', 'ListController@changePass')->name('pass_up');
 

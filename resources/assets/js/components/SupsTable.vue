@@ -7,7 +7,8 @@
                 @input="filter()"
                 placeholder="Selecciona un escenario">
                 <option value=0>Todos los escenarios</option>
-                <option 
+                <option
+                  style="width:0px;"
                     v-for="stage in stages"
                     :value=stage.id_centro
                     :key=stage.id_centro
@@ -25,7 +26,7 @@
                     :open-on-focus=true
                     :data="filteredDataObj"
                     field="full_name"
-                    @select="option => {selected_supervisor = option.id_supervisor; filter();}">
+                    @select="selected">
                     <template slot="header">
                         <a @click="()=> {selected_supervisor=0; filter();}">
                             <span> Todos los supervisores </span>
@@ -60,13 +61,13 @@
           sortable>{{ props.row.estatus }}</b-table-column>
 
         <b-table-column label="Editar" centered>
-          <a :href='url + "/" + props.row.id_practica + "/edit"'>
+          <a :href='url + "/supervisor/" + props.row.id_supervisor + "/edit"'>
               <fai icon="file-code" size="2x" />
           </a>
         </b-table-column>
 
         <b-table-column label="Eliminar" centered>
-          <form :action='url + "/" + props.row.id_practica' method="POST">
+          <form :action='url + "/supervisor/" + props.row.id_supervisor' method="POST">
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="_token" :value="csrf" />
             <button type="submit" class="button is-danger is-outlined">
@@ -87,36 +88,37 @@ export default {
         sups: this.supervisors,
         selected_stage: 0,
         selected_supervisor: 0,
-      isLoading: false,
-      csrf: document.head.querySelector('meta[name="csrf-token"]').content,
-      name: ''
+        isLoading: false,
+        csrf: document.head.querySelector('meta[name="csrf-token"]').content,
+        name: ''
     };
   },
   methods: {
     filter() {
         // this.isLoading = true;
-        // axios.get(this.url + "/filter/" + this.selected_stage + "/" + this.selected_supervisor + "/" + this.selected_sem)
+        // axios.get(this.url + "/supervisor/filter/" + this.selected_stage)
         // .then(response => {
         // this.isLoading = false;
         //   this.sups = response.data
-        // }).catch(function(error) {
+        // }).catch((error) => {
         // this.isLoading = false;
         //   console.log(error);
         //   // TODO alert error
-        // })
+        // });
+        this.sups = this.supervisors.filter(sup => sup.id_centro == this.selected_stage);
+    },
+    selected(option) {
+      window.location.href = this.url + '/supervisor/' + option.id_supervisor + '/edit';
     }
   },
-//   mounted() {
-//       console.log(this.supervisors);
-//   },
   computed: {
       filteredDataObj() {
-        //   return this.supervisors.filter((option) => {
-        //       return option.full_name
-        //           .toString()
-        //           .toLowerCase()
-        //           .indexOf(this.name.toLowerCase()) >= 0
-        //   })
+          return this.supervisors.filter((option) => {
+              return option.full_name
+                  .toString()
+                  .toLowerCase()
+                  .indexOf(this.name.toLowerCase()) >= 0
+          })
       }
   }
 };

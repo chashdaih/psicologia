@@ -33,7 +33,7 @@ class SupervisorController extends Controller
         $supervisors = DB::table('supervisores as s')
             // ->where('estatus', '=', 'Activa')
             ->join('centros as c', 's.id_centro', '=', 'c.id_centro')
-            ->select('s.id_supervisor', 'c.nombre as centro', 's.estatus',
+            ->select('s.id_supervisor', 'c.nombre as centro', 's.estatus', 'c.id_centro',
             DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"))
             ->orderBy('s.nombre', 'asc')
             ->get();
@@ -132,5 +132,10 @@ class SupervisorController extends Controller
     {
         //
     }
+
+    // public function filter($id)
+    // {
+    //     return Supervisor::where('id_centro', $id)->get();
+    // }
 }
  

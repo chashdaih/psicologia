@@ -5,7 +5,6 @@
         <h1 class="title">Participantes registrados al programa</h1>
         <div class="has-text-centered">
             <a href="{{ route('partaker.create') }}" class="button is-info">Registrar nuevo participante</a>
-
         </div>
         <partaker-search url="{{ url('/') }}"></partaker-search>
         <br>
