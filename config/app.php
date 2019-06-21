@@ -164,7 +164,8 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        Laraveles\Spanish\SpanishServiceProvider::class,
+        
         /*
          * Package Service Providers...
          */
