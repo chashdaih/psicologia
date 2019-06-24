@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Notifications\MyResetPassword; 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -19,7 +20,10 @@ class User extends Authenticatable
         'type', 'email', 'password',
     ];
 
-
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new MyResetPassword($token));
+    }
 
     /**
      * The attributes that should be hidden for arrays.
