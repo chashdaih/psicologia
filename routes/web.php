@@ -17,7 +17,8 @@ Route::get('/partaker/enrollment_proof/{tramit_id}', 'ListController@enrollmentP
 
 Route::get('tramite/{id_tramite}/{doc}', 'RpsController@document')->name('get_document');
 
-Route::get('/apartar/{fecha?}', 'CalendarController@index')->name('apartar');
+Route::get('/asignar/{center_id}/{fecha?}', 'CalendarController@index')->name('asignar');
+// ->where('center_id', '^(1|2|3|4|6)$');
 Route::get('/getStudents/{sup_id}', 'CalendarController@getStudents')->name('get_students');
 Route::post('/make-appo', 'CalendarController@makeAppo')->name('make_appo');
 Route::delete('/cancel_appo/{id}', 'CalendarController@cancelAppo')->name('cancel_appo');

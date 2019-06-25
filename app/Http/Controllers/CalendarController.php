@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Appointment;
+use App\Building;
 use App\Supervisor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,22 +16,55 @@ class CalendarController extends Controller
         $this->middleware('auth');
     }
 
-    public function index($fecha = null)
+    public function index($center_id, $fecha = null)
     {
         if (!$fecha) {
             $fecha = date("Y-m-d");
         }
 
-        $sql = "select distinct sala from cita";
-        // $cubicules = ['1', '2', '3', '4', '17', '19', '20', '21', '22', 'C?mara 5-6', 'C?mara 7-8', 'C?mara 9-10', 'C?mara 14-15'];
-        $cubicules = ['1', '2', '3', '4', '17', '19', '20', '21', '22', '23', '24', '25', 'Cámara 5-6', 'Cámara 7-8', 'Cámara 9-10', 'Cámara 14-15'];
-        $schedules = ['8:00:00', '9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00'];
+        $center = Building::where('id_centro', $center_id)->first();
+
+        // $center_id = Auth::user()->supervisor->id_centro;
+        $cubicules = null;
+        $schedules = null;
+
+        switch ($center_id) {
+            case 1: // ayala
+                $cubicules = ['1', '2', '3', '4', '5', '6', '7'];
+                $schedules = ['9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00'];
+                break;
+            
+            case 2: // dávila
+                $cubicules = ['1', '2', '3', '4', '17', '19', '20', '21', '22', '23', '24', '25', 'Cámara 5-6', 'Cámara 7-8', 'Cámara 9-10', 'Cámara 14-15'];
+                $schedules = ['8:00:00', '9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00'];
+                break;
+            
+            case 3: // macgregor
+                $cubicules = ['1', '2', '3', '4', '5', '6', 'Cámara 1', 'Cámara 2', 'Cámara 3', 'Salón de usos múltiples 1', 'Salón de usos múltiples 2', 'Sala de juntas'];
+                $schedules = ['9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00'];
+                break;
+            
+            case 4: // volcanes
+                $cubicules = ['1', '2', '3', '4', '5'];
+                $schedules = ['9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00'];
+                break;
+            
+            case 6: // call
+                $cubicules = ['Línea 1', 'Línea 2', 'Línea 3', 'Línea 4', 'Línea 5', 'Línea 6', 'Línea 7', 'Línea 8', 'Línea 9', 'Línea 10', 'Línea 11', 'Línea 12', 'Línea 13', 'Línea 14', 'Línea 15', 'Línea 16', 'Línea 17', 'Línea 18', 'Línea 19', 'Línea 20', 'Línea 21', 'Línea 22', 'Línea 23', 'Línea 24', 'Línea 25', 'Línea 26', 'Línea 27', 'Línea 28', 'Línea 29', 'Línea 30'];
+                $schedules = ['8:00:00', '9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00'];
+                break;
+            default:// volcanes
+                $cubicules = ['1', '2', '3', '4', '5'];
+                $schedules = ['9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00'];
+                // break;
+        }
 
         $schs = array_fill(0, count($schedules), null);
         $calendarData = array_fill(0, count($cubicules), $schs);
 
         $appointments = DB::table('cita as c')
         ->where('c.fecha', '=', $fecha)
+        ->where('c.id_centro', '=', $center_id)
         ->join('supervisores as s', 'c.id_supervisor', 's.id_supervisor')
         ->select('id_cita', 'hora', 'id_terapeuta', 'sala',
             DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name")
@@ -39,7 +74,7 @@ class CalendarController extends Controller
 
         $supervisors = DB::table('supervisores as s')
         ->where('estatus', 'Activa')
-        ->where('id_centro', 2)
+        ->where('id_centro', $center_id)
         ->select('id_supervisor', DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"))
         ->get();
         $supervisors = $this->fixNames($supervisors);
@@ -50,9 +85,9 @@ class CalendarController extends Controller
             $calendarData[$cubicule][$time] = $appointment; 
         }
 
-        // dd($calendarData);
+        $centers = Building::where('id_centro', '<', 12)->where('id_centro', '!=', 10)->get();
 
-        return view('calendar.index', compact('cubicules', 'schedules', 'calendarData', 'supervisors', 'fecha')); 
+        return view('calendar.index', compact('cubicules', 'schedules', 'calendarData', 'supervisors', 'fecha', 'center', 'centers')); 
 
     }
 

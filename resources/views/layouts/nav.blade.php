@@ -18,9 +18,9 @@
   v-bind:class="{ 'is-active': isActive }">
     <div class="navbar-start">
       {{-- @auth --}}
-      @if(Auth::user()->type == 5)
+      @if(Auth::user()->type != 3)
       <div class="navbar-item">
-        <a href="{{ route('apartar') }}" class="navbar-item">Apartar espacio</a>
+        <a href="{{ route('asignar', ['center_id'=> Auth::user()->supervisor->id_centro]) }}" class="navbar-item">Asignar espacio</a>
       </div>
       @endif
       @if(Auth::user()->type == 6)

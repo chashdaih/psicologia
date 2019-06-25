@@ -166,7 +166,9 @@ export default {
     };
   },
   mounted() {
-    this.$refs.autocomplete.setSelected("Todos los supervisores");
+    if (this.supervisors) {
+      this.$refs.autocomplete.setSelected("Todos los supervisores");
+    }
   },
   methods: {
     filter() {
