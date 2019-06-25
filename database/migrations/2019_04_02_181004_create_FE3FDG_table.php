@@ -16,7 +16,8 @@ class CreateFe3fdgTable extends Migration
         Schema::create('FE3FDG', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->unsignedBigInteger('filler'); // user who made the interview
+            $table->unsignedBigInteger('user_id'); // user who made the interview
+            $table->unsignedBigInteger('program_id');
             // identification
             $table->string('name');
             $table->string('last_name');
@@ -87,10 +88,10 @@ class CreateFe3fdgTable extends Migration
             $table->string('medication_dose')->nullable();
             $table->unsignedTinyInteger('prefer_time');
             // appointment **Is correct here?
-            $table->date('appointment_date')->nullable();
-            $table->time('appointment_time')->nullable();
-            $table->unsignedBigInteger('supervisor')->nullable();
-            $table->unsignedInteger('program');
+            // $table->date('appointment_date')->nullable();
+            // $table->time('appointment_time')->nullable();
+            // $table->unsignedBigInteger('supervisor')->nullable();
+            // $table->unsignedInteger('program');
 
             // $table->foreign('filler')->references('id')->on('users'); // TODO define delete action
             // $table->foreign('supervisor')->references('id')->on('users');

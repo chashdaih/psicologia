@@ -27,11 +27,13 @@ class FE3FDGController extends Controller
         return view('procedures.3.fe.3.fdg.create', compact('programs'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        $attributes = $this->validateForm();
+        // dd($request);
 
-        $fdg = FE3FDG::create($attributes + ['filler' => auth()->id()]);
+        $this->validateForm();
+
+        $fdg = FE3FDG::create($request + ['filler' => auth()->id()]);
 
         return response(200);
     }
@@ -58,7 +60,7 @@ class FE3FDGController extends Controller
 
     protected function validateForm()
     {
-        return request()->validate([
+        return $this->validate(request(), [
             'name' => 'required',
             'last_name' => 'required',
             'mothers_name' => 'required',

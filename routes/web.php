@@ -31,6 +31,7 @@ Route::group(['prefix' => '/procedures/3/', 'middleware' => 'auth'], function() 
         Route::get('/1/rps/excel/{stage}/{sup}/{per}', 'RpsController@rps_excel')->name('rps_excel');
         Route::get('/1/rps/del-row/{type}/{id}', 'RpsController@deleteRow')->name('del_row');
         Route::get('1/rps/{id}/partakers', 'RpsController@partakers');
+        Route::resource('1/rps/{id}/users', 'PatientController');
         Route::resource('/1/rps', 'RpsController');
 
 

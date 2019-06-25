@@ -114,7 +114,13 @@
           </a>
         </b-table-column>
 
-        <b-table-column label="Eliminar" centered>
+        <b-table-column label="Usuarios" centered>
+          <a :href='url + "/" + props.row.id_practica + "/users"'>
+              <fai icon="file-code" size="2x" />
+          </a>
+        </b-table-column>
+
+        <b-table-column  v-if="supervisors" label="Eliminar" centered>
           <form :action='url + "/" + props.row.id_practica' method="POST" :ref=props.row.id_practica>
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="_token" :value="csrf" />
