@@ -2,9 +2,10 @@
 @section('content')
 <section class="section">
     <div class="container">
-        <h1 class="title">Usuarios registrados al programa</h1>
+        <h1 class="title">{{ $program->programa }}</h1>
+        <h2 class="subtitle">Usuarios registrados al programa</h2>
         <div class="has-text-centered">
-            <a href="{{ route('fdg.create') }}" class="button is-info">Registrar persona atendida (3-FE3-FDG)</a>
+            <a href="{{ route('patient.create', ['program_id'=> $program->id_practica]) }}" class="button is-info">Registrar persona atendida (3-FE3-FDG)</a>
         </div>
         {{-- <partaker-search url="{{ url('/') }}"></partaker-search> --}}
         <br>
@@ -13,24 +14,27 @@
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Editar ficha de datos generales </th>
-                    <th>Descargar ficha en pdf</th>
-                    {{-- <th>Eliminar</th> --}}
+                    <th>Procedimientos</th>
+                    @if (Auth::user()->type == 6)
+                    <th>Eliminar</th>
+                    @endif
                 </tr>
             </thead>
             @foreach ($patients as $patient)
             <tr>
                 <td>{{ $patient->full_name }}</td>
                 <td>
-                    <a href="">
+                    <a href="{{ route('fe.index', ['program_id'=> $program->id_practica, 'patient_id'=>$patient->id]) }}">
                         <fai icon="file-code" size="2x" />
                     </a>
                 </td>
+                @if (Auth::user()->type == 6)
                 <td>
                     <a href="">
                         <fai icon="file-code" size="2x" />
                     </a>
                 </td>
+                @endif
             </tr>
             @endforeach
         </table>

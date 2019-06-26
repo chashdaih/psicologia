@@ -17,67 +17,71 @@ Route::get('/partaker/enrollment_proof/{tramit_id}', 'ListController@enrollmentP
 
 Route::get('tramite/{id_tramite}/{doc}', 'RpsController@document')->name('get_document');
 
+Route::resource('/program/{program_id}/patient', 'PatientController');
+Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresController');
+Route::resource('/program/{program_id}/fdg', 'FE3FDGController');
+// Route::resource('/program/{id}/fdg', 'FE3FDGController');
+
 Route::get('/asignar/{center_id}/{fecha?}', 'CalendarController@index')->name('asignar');
 // ->where('center_id', '^(1|2|3|4|6)$');
 Route::get('/getStudents/{sup_id}', 'CalendarController@getStudents')->name('get_students');
 Route::post('/make-appo', 'CalendarController@makeAppo')->name('make_appo');
 Route::delete('/cancel_appo/{id}', 'CalendarController@cancelAppo')->name('cancel_appo');
 Route::group(['prefix' => '/procedures/3/', 'middleware' => 'auth'], function() {
-    Route::get('{procedure?}', 'ProceduresController@index')->name('procedures');
-    Route::get('{procedure}/{number}', 'ProceduresController@doc')->name('procedure');
-    Route::group(['prefix' => 'ie'], function() {
-        Route::get('/1/rps/pdf/{id}', 'RpsController@pdf')->name('rps_pdf');
+    // Route::get('{procedure?}', 'ProceduresController@index')->name('procedures');
+    // Route::get('{procedure}/{number}', 'ProceduresController@doc')->name('procedure');
+    // Route::group(['prefix' => 'ie'], function() {
+    //     Route::get('/1/rps/pdf/{id}', 'RpsController@pdf')->name('rps_pdf');
         Route::get('/1/rps/filter/{stage}/{sup}/{per}', 'RpsController@filter')->name('rps_filter');
-        Route::get('/1/rps/excel/{stage}/{sup}/{per}', 'RpsController@rps_excel')->name('rps_excel');
-        Route::get('/1/rps/del-row/{type}/{id}', 'RpsController@deleteRow')->name('del_row');
-        Route::get('1/rps/{id}/partakers', 'RpsController@partakers');
-        Route::resource('1/rps/{id}/users', 'PatientController');
+    //     Route::get('/1/rps/excel/{stage}/{sup}/{per}', 'RpsController@rps_excel')->name('rps_excel');
+    //     Route::get('/1/rps/del-row/{type}/{id}', 'RpsController@deleteRow')->name('del_row');
+    //     Route::get('1/rps/{id}/partakers', 'RpsController@partakers');
         Route::resource('/1/rps', 'RpsController');
 
 
         Route::get('/2/lps/pdf/{id}', 'LpsController@pdf')->name('lps_pdf');
-        Route::resource('/2/lps', 'LpsController');
-        Route::resource('/3/lpse', 'LpsController');
-        Route::get('/4/cr_ss/download/{uri}', 'Ie4naController@download')->name('cr_ss_download');
-        Route::resource('/4/cr_ss', 'Ie4naController');
-        Route::resource('/5/o_ep', 'Ie5naController');
-    });
-    Route::group(['prefix' => 'fe'], function() {
-        Route::get('/1/ecpr/pdf/{id}', 'EcprController@pdf')->name('ecpr_pdf');
-        Route::resource('/1/ecpr', 'EcprController');
+    //     Route::resource('/2/lps', 'LpsController');
+    //     Route::resource('/3/lpse', 'LpsController');
+    //     Route::get('/4/cr_ss/download/{uri}', 'Ie4naController@download')->name('cr_ss_download');
+    //     Route::resource('/4/cr_ss', 'Ie4naController');
+    //     Route::resource('/5/o_ep', 'Ie5naController');
+    // });
+    // Route::group(['prefix' => 'fe'], function() {
+    //     Route::get('/1/ecpr/pdf/{id}', 'EcprController@pdf')->name('ecpr_pdf');
+    //     Route::resource('/1/ecpr', 'EcprController');
 
-        Route::get('/1/ecpo/pdf/{id}', 'EcpoController@pdf')->name('ecpo_pdf');
-        Route::resource('/1/ecpo', 'EcpoController');
+    //     Route::get('/1/ecpo/pdf/{id}', 'EcpoController@pdf')->name('ecpo_pdf');
+    //     Route::resource('/1/ecpo', 'EcpoController');
 
-        Route::get('/2/e_d/download/{file_name}', 'Fe2Controller@download')->name('e_d_download');
-        Route::resource('/2/e_d', 'Fe2Controller');
+    //     Route::get('/2/e_d/download/{file_name}', 'Fe2Controller@download')->name('e_d_download');
+    //     Route::resource('/2/e_d', 'Fe2Controller');
 
-        Route::resource('/3/fdg', 'FE3FDGController'); // TODO homologate urls
-        Route::resource('/3/cdr', 'Fe3cdrController');
+    //     // Route::resource('/3/fdg', 'FE3FDGController'); // TODO homologate urls
+    //     Route::resource('/3/cdr', 'Fe3cdrController');
 
-        Route::get('/4/ps/pdf/{id}', 'PsController@pdf')->name('ps_pdf');
-        Route::resource('/4/ps', 'PsController');
+    //     Route::get('/4/ps/pdf/{id}', 'PsController@pdf')->name('ps_pdf');
+    //     Route::resource('/4/ps', 'PsController');
         
-        Route::get('/5/re/pdf/{id}', 'ReController@pdf')->name('re_pdf');
-        Route::resource('/5/re', 'ReController');
+    //     Route::get('/5/re/pdf/{id}', 'ReController@pdf')->name('re_pdf');
+    //     Route::resource('/5/re', 'ReController');
 
-        Route::get('/6/rs/pdf/{id}', 'RsController@pdf')->name('rs_pdf');
-        Route::resource('/6/rs', 'RsController');
+    //     Route::get('/6/rs/pdf/{id}', 'RsController@pdf')->name('rs_pdf');
+    //     Route::resource('/6/rs', 'RsController');
 
-        Route::resource('/7/rs', 'RsController');
+    //     Route::resource('/7/rs', 'RsController');
 
-        Route::get('/8/he/pdf/{id}', 'HeController@pdf')->name('he_pdf');
-        Route::resource('/8/he', 'HeController');
+    //     Route::get('/8/he/pdf/{id}', 'HeController@pdf')->name('he_pdf');
+    //     Route::resource('/8/he', 'HeController');
 
-        Route::get('/8/cssp/pdf/{id}', 'CsspController@pdf')->name('cssp_pdf');
-        Route::resource('/8/cssp', 'CsspController');
-    });
-    Route::group(['prefix' => 'ee'], function() {
-        Route::get('/1/es/pdf/{id}', 'EsController@pdf')->name('es_pdf');
-        Route::resource('/1/es', 'EsController');
-        Route::get('/2/na/download/{file_name}', 'Ee2naController@download')->name('na_download');
-        Route::resource('/2/na', 'Ee2naController');
-    });
+    //     Route::get('/8/cssp/pdf/{id}', 'CsspController@pdf')->name('cssp_pdf');
+    //     Route::resource('/8/cssp', 'CsspController');
+    // });
+    // Route::group(['prefix' => 'ee'], function() {
+    //     Route::get('/1/es/pdf/{id}', 'EsController@pdf')->name('es_pdf');
+    //     Route::resource('/1/es', 'EsController');
+    //     Route::get('/2/na/download/{file_name}', 'Ee2naController@download')->name('na_download');
+    //     Route::resource('/2/na', 'Ee2naController');
+    // });
 
 });
 
@@ -88,10 +92,10 @@ Route::group(['prefix' => '/procedures/3/', 'middleware' => 'auth'], function() 
 // Route::resource('/FE3FDG', 'FE3FDGController');
 // Route::resource('/fe3cdr', 'Fe3cdrController');
 
-Route::get('/pdf/fe3/fdg/{id}', 'DynamicPDFController@fe3fdg')->name('fdg');
-Route::get('/html/fe3/fdg/{id}', 'DynamicPDFController@fe3fdg_html')->name('fdg_html');
-Route::get('/pdf/fe3/cdr/{id}', 'DynamicPDFController@fe3cdr')->name('cdr');
-Route::get('/html/fe3/cdr/{id}', 'DynamicPDFController@fe3cdr_html')->name('cdr_html');
+// Route::get('/pdf/fe3/fdg/{id}', 'DynamicPDFController@fe3fdg')->name('fdg');
+// Route::get('/html/fe3/fdg/{id}', 'DynamicPDFController@fe3fdg_html')->name('fdg_html');
+// Route::get('/pdf/fe3/cdr/{id}', 'DynamicPDFController@fe3cdr')->name('cdr');
+// Route::get('/html/fe3/cdr/{id}', 'DynamicPDFController@fe3cdr_html')->name('cdr_html');
 
 Route::post('/asignar', 'ListController@update');
 
@@ -117,7 +121,7 @@ Route::get('refresh-csrf', function(){
     return csrf_token();
 });
 
-Route::resource('/cub_type', 'CubTypeController');
+// Route::resource('/cub_type', 'CubTypeController');
 
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('config:clear');

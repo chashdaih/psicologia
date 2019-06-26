@@ -86,3 +86,17 @@
     </div>
   </div>
 </nav>
+@if ($errors->any())
+<diss-noti>
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</diss-noti>
+@endif
+@if (session('status'))
+<diss-noti color="is-success">
+    {{ session('status') }}
+</diss-noti>
+@endif

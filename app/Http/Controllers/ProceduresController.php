@@ -13,23 +13,27 @@ class ProceduresController extends Controller
         $this->middleware('auth');
     }
 
-    public function index($procedure = null)
+    public function index($program_id, $patient_id)
     {
-        if ($procedure == null) 
-        {
-            $mBread = new Bread();
-            $bread = collect($mBread->bread_array);
-            return view('procedures.index', compact('bread'));
-        }
+        // if ($procedure == null) 
+        // {
+        //     $mBread = new Bread();
+        //     $bread = collect($mBread->bread_array);
+        //     return view('procedures.index', compact('bread'));
+        // }
 
-        $mBread = new Bread($procedure);
-        $bread = collect($mBread->bread_array);
+        // $mBread = new Bread($procedure);
+        // $bread = collect($mBread->bread_array);
         
-        $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/processes.json');
-        $process = json_decode($json, true)[$procedure];
+        // $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/processes.json');
+        // $process = json_decode($json, true)[$procedure];
 
-        return view('procedures.3.index', compact('process', 'bread'));
+        // return view('procedures.3.index', compact('process', 'bread'));
+        $tabs=['FE3 - Primer contacto', 'FE4 - Admisión', 'FE5 - Evaluación', 'FE6 - Orientación/Consejo breve', 'FE7 - Intervención', 'FE8 - Egreso'];
+        return view('procedures.3.fe.index', compact('program_id', 'patient_id', 'tabs'));
     }
+
+
 
     public function doc($procedure, $number)
     {

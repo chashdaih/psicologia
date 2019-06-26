@@ -3,19 +3,12 @@
 @section('content')
 <section class="section">
     <div class="container">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
-            <ul>
-                <li><a href="{{ route('procedures') }}">Procedimientos</a></li>
-                <li><a href="{{ route('fdg.index') }}" aria-current="page">Ficha de datos generales</a></li>
-                <li class="is-active"><a href="#" aria-current="page">Registrar ficha de datos generales</a></li>
-            </ul>
-        </nav>
         <h1 class="title"> Registrar ficha de datos generales</h1>
         <p class="subtitle">Agregue los datos de la persona que requiere el servicio</p>
         {{-- <f-d-g-form url="{{ route('fdg.store') }}" :programs="{{ $programs }}"></f-d-g-form> --}}
         {{-- <f-d-g-form inline-template> --}}
             <div>
-                <form action="{{ route('fdg.store') }}" method="POST">
+                <form action="{{ route('fdg.store', ['id'=> $program_id]) }}" method="POST">
                         {{ csrf_field() }}
                     @component('components.text-input', [
                         'title'=>'Nombre(s)',
@@ -67,6 +60,18 @@
                                 <option value="2">Unión libre</option>
                                 <option value="3">Viudo</option>
                                 <option value="4">Separado</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Persona que solicita el servicio</label>
+                        <div class="control">
+                            <div class="select">
+                            <select name="person_requesting">
+                            @foreach (['La persona', 'Padres o tutores', 'Otro familiar', 'Otro'] as $key=>$value)
+                                <option value="{{$key}}">{{$value}}</option>
+                            @endforeach
                             </select>
                             </div>
                         </div>
@@ -142,7 +147,7 @@
                         <label class="label">Escolaridad</label>
                         <div class="control">
                             <div class="select">
-                            <select name="scolarship">
+                            <select name="scholarship">
                                 <option value="0">No cuenta con escolaridad</option>
                                 <option value="1">Preescolar</option>
                                 <option value="2">Primaria</option>
@@ -261,6 +266,13 @@
                         'errors'=>$errors,
                         'type'=> 'text',
                         'prev'=> isset($fdg) ? $fdg->consultation_cause : null
+                    ])@endcomponent
+                    @component('components.text-input', [
+                        'title'=>'¿Desde cuándo le pasa esto?',
+                        'field'=>'problem_since',
+                        'errors'=>$errors,
+                        'type'=> 'text',
+                        'prev'=> isset($fdg) ? $fdg->problem_since : null
                     ])@endcomponent
                     <div class="field">
                         <label class="label">Clasificación del motivo de consulta según la guía mhGAP</label>

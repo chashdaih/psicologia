@@ -2,14 +2,14 @@
 
 @section('content')
 <section class="section">
-    @if (session('success'))
-    {{-- <div class="notification is-primary">
+    {{-- @if (session('success'))
+    <div class="notification is-primary">
         {{ session('success') }}
-    </div> --}}
+    </div>
     <diss-noti color="is-success">
         {{ session('success') }}
     </diss-noti>
-    @endif
+    @endif --}}
     <div class="container">
         @if(Auth::user()->type != 3)
         @include('home.supervisors')

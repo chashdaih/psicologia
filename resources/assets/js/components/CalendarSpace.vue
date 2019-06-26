@@ -1,6 +1,6 @@
 <template>
-    <div @click="showModal" v-bind:class="{red: taken}">
-        <template v-if="appointment" style="background-color:red">
+    <div @click="showModal" v-bind:class="{gray: taken}">
+        <template v-if="appointment" style="background-color:#BEBEBE">
             <b class="is-size-7">Sup:</b>
             <p class="is-size-7">{{appointment.full_name}}</p>
         </template>
@@ -47,7 +47,7 @@ div {
     padding-top: 5%;
     padding-left: 10%;
 }
-.red {
-    background-color: red;
+.gray {
+    background-color: #BEBEBE;
 }
 </style>

@@ -21,21 +21,23 @@ class FE3FDGController extends Controller
         return view('procedures.3.FE.3.FDG.index', compact('records'));
     }
 
-    public function create()
+    public function create($id)
     {
-        $programs = Building::all();
-        return view('procedures.3.fe.3.fdg.create', compact('programs'));
+        $program_id = $id;
+        return view('procedures.3.fe.3.fdg.create', compact('program_id'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
-        // dd($request);
 
         $this->validateForm();
 
-        $fdg = FE3FDG::create($request + ['filler' => auth()->id()]);
+        // dd($request);
 
-        return response(200);
+        $fdg = FE3FDG::create(collect($request)->toArray() + ['user_id' => auth()->id(), 'program_id' => $id]);
+
+        // return response(200);
+        return redirect()->route('patient.index', ['id' => $id])->with('success', 'Usuario registrado exitosamente');
     }
 
     public function show(FE3FDG $fe3fdg)
@@ -43,9 +45,11 @@ class FE3FDGController extends Controller
         //
     }
 
-    public function edit(FE3FDG $fe3fdg)
+    public function edit($id, $fdg)
     {
-        //
+        $program_id = $id;
+        $fdg = FE3FDG::where('id', $fdg)->first();
+        return view('procedures.3.fe.3.fdg.create', compact('program_id', 'fdg'));
     }
 
     public function update(FE3FDG $fe3fdg)
@@ -132,7 +136,7 @@ class FE3FDGController extends Controller
             'appointment_date' => 'nullable|date',
             'appointment_time' => 'nullable',
             'supervisor' => 'nullable|numeric',
-            'program' => 'required|numeric'
+            // 'program' => 'required|numeric'
         ]);
     }
 }

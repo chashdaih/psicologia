@@ -26,11 +26,11 @@
       
     <div class="hero-body">
         <div class="container">
-            @if (session('status'))
+            {{-- @if (session('status'))
             <diss-noti color="is-success">
                 {{ session('status') }}
             </diss-noti>
-            @endif
+            @endif --}}
             <form method="POST" action="{{ route('password.email') }}">
                 {{ csrf_field() }}
                 @component('components.text-input', [

@@ -134,7 +134,7 @@ import { eventBus } from '../app.js';
 import Swal from 'sweetalert2';
 
 export default {
-    props:['supervisors', 'url', 'fecha', 'sendUrl'],
+    props:['supervisors', 'url', 'fecha', 'sendUrl', 'center_id'],
     data() {
         return {
             isActive: false,
@@ -196,7 +196,7 @@ export default {
                 tipo_espacio: this.data.room.includes("mara") ? 2 : 1,
                 asistencia: 0,
                 id_paciente: 0,
-                id_centro: 2, // TODO use user center
+                id_centro: this.center_id, // TODO use user center
                 fecha: this.fecha,
                 hora: this.data.time,
                 sala: this.data.room,

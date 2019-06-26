@@ -4,7 +4,6 @@
     <br/>
 </div>
 <div ><br></div>
-{{-- <p>{{ $supervisors }}</p> --}}
 <sortable-table
     url="{{ route("rps.index") }}"
     lps="{{ route('lps_pdf', 0) }}"
@@ -13,4 +12,5 @@
     @if(isset($supervisors)):supervisors="{{ $supervisors }}"@endif
     :supervisor={{ Auth::user()->supervisor->id_supervisor }}
     :stage={{ Auth::user()->supervisor->id_centro }}
+    base_url={{URL::to('/')}}
     ></sortable-table>

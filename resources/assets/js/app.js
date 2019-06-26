@@ -24,6 +24,7 @@ import DissNoti from './components/DissNoti';
 import LpsTable from './components/LpsTable';
 import DateComponent from './components/DateComponent';
 import PartakerSearch from './components/PartakerSearch';
+import ProcToggle from './components/ProcToggle';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar } from '@fortawesome/free-solid-svg-icons';
@@ -63,6 +64,7 @@ const app = new Vue({
         LpsTable,
         DateComponent,
         PartakerSearch,
+        ProcToggle
     },
     data: {
         isActive: false

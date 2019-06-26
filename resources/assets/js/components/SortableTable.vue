@@ -25,7 +25,7 @@
                 :open-on-focus=true
                 :data="filteredDataObj"
                 field="full_name"
-                @select="option => {selected_supervisor = option.id_supervisor; filter();}"
+                @select="selected"
                 @focus="clearName"
                 ref="autocomplete"
                 >
@@ -115,7 +115,7 @@
         </b-table-column>
 
         <b-table-column label="Usuarios" centered>
-          <a :href='url + "/" + props.row.id_practica + "/users"'>
+          <a :href='base_url + "/program/" + props.row.id_practica + "/patient"' >
               <fai icon="file-code" size="2x" />
           </a>
         </b-table-column>
@@ -155,7 +155,7 @@
 
 <script>
 export default {
-    props:['records', 'url', 'stages', 'supervisors', 'stage', 'supervisor', 'lps'],
+    props:['records', 'url', 'stages', 'supervisors', 'stage', 'supervisor', 'lps', 'base_url'],
   data() {
     return {
       recs: this.records,
@@ -177,13 +177,24 @@ export default {
     }
   },
   methods: {
+    selected(option) {
+      if (!option) {
+        return;
+      }
+      if (option=="Todos los supervisores") {
+        this.selected_supervisor = 0;
+      } else {
+        this.selected_supervisor = option.id_supervisor;
+      }
+      this.filter();
+    },
     filter() {
         this.isLoading = true;
         axios.get(this.url + "/filter/" + this.selected_stage + "/" + this.selected_supervisor + "/" + this.selected_sem)
         .then(response => {
         this.isLoading = false;
           this.recs = response.data
-        }).catch(function(error) {
+        }).catch(error => {
         this.isLoading = false;
           console.log(error);
           // TODO alert error

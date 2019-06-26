@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Building;
+use App\Program;
 use App\FE3FDG;
 use Illuminate\Http\Request;
 
@@ -15,9 +16,10 @@ class PatientController extends Controller
      */
     public function index($id)
     {
+        $program = Program::where('id_practica', $id)->first();
         $patients = FE3FDG::where('program_id', $id)->get();
 
-        return view('patients.index', compact('patients'));
+        return view('patients.index', compact('patients', 'program'));
     }
 
     /**
@@ -25,10 +27,12 @@ class PatientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    
+    public function create($id)
     {
-        $programs = Building::all();
-        return view('procedures.3.fe.3.fdg.create', compact('programs'));
+
+        $program_id = $id;
+        return view('procedures.3.fe.3.fdg.create', compact('program_id'));
     }
 
     /**

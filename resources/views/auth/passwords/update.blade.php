@@ -5,7 +5,7 @@
     <div class="container">
         <h1 class="title">Por razones de seguridad, es necesario que cambies tu contraseña</h1>
         <h2 class="subtitle">Por favor, guarda tu nueva contraseña en un lugar seguro</h2>
-        @if ($errors->any())
+        {{-- @if ($errors->any())
         <diss-noti>
             <ul>
                 @foreach ($errors->all() as $error)
@@ -13,7 +13,7 @@
                 @endforeach
             </ul>
         </diss-noti>
-        @endif
+        @endif --}}
         <div class="card">
             <form action="{{ route('pass_up') }}" method="POST">
             {{ csrf_field() }}

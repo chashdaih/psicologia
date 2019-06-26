@@ -51,7 +51,7 @@
             </tbody>
         </table>
                 
-        <calendar-modal v-on:open-modal="isActive = true" :supervisors="{{ json_encode($supervisors) }}" url="{{ route('get_students', 0) }}" fecha="{{ $fecha }}" send-url="{{ route('make_appo') }}"></calendar-modal>
+        <calendar-modal v-on:open-modal="isActive = true" center_id="{{ $center->id_centro }}" :supervisors="{{ json_encode($supervisors) }}" url="{{ route('get_students', 0) }}" fecha="{{ $fecha }}" send-url="{{ route('make_appo') }}"></calendar-modal>
         <cal-cancel-modal v-on:open-modal="isActive = true" url="{{ route('cancel_appo', 0) }}"></cal-cancel-modal>
         @else
         <p>No hay supervisores registrados</p>
