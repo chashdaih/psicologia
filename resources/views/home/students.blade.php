@@ -3,7 +3,33 @@
         @if ($enr->document && $enr->document->seguro_imss && $enr->document->carta_comp && $enr->document->historial_ac)
         <h1 class="title">{{ $enr->program->programa }}</h1>
         <p class="subtitle">¡Has completado la inscripción!</p>
-        <a href="{{ route('e_proof', $enr->document->id_tramite) }}" class="button is-large is-info">Descargar comprobante de inscripción</a>
+        <a href="{{ route('e_proof', $enr->document->id_tramite) }}" class="button is-medium is-info">Descargar comprobante de inscripción</a>
+        <br>
+        <br>
+        <table class="table is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Nombre del programa</th>
+                    <th>Datos del programa</th>
+                    <th>Personas por atender</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{$enr->program->programa}}</td>
+                    <td>
+                        <a href="{{route('rps_pdf', $enr->program->id_practica)}}">
+                            <fai icon="file-pdf" size="2x" />
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ route('patient.index', $enr->program->id_practica) }}" >
+                            <fai icon="file-code" size="2x" />
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         @else
         <h1 class="title">{{ $enr->program->programa }}</h1>
         <p class="subtitle">Estás pre-registrado al programa</p>

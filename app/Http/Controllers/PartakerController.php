@@ -25,10 +25,12 @@ class PartakerController extends Controller
             ->orWhere('ap_paterno', 'LIKE', "%{$searchTerm}%")
             ->orWhere('ap_materno', 'LIKE', "%{$searchTerm}%")
             ->orWhere('num_cuenta', 'LIKE', "%{$searchTerm}%")
-            ->orderBy('num_cuenta')
-            ->limit(6)->get();
+            ->orderBy('nombre_part')->get();
+            // ->limit(100)->get();
 
-        return $this->fixNames($partakers);
+            return $partakers;
+
+        // return $this->fixNames($partakers);
     }
     
     protected function fixNames($records)

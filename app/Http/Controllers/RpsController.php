@@ -207,7 +207,7 @@ class RpsController extends Controller
 
         // Auth::user()->notify(new ProgramRegistered($program_id));
 
-        return redirect()->route($this->doc_code.'.index');
+        return redirect()->route('home')->with('success', 'El programa se registró exitosamente');//route($this->doc_code.'.index');
     }
 
     public function edit($id)
@@ -360,7 +360,7 @@ class RpsController extends Controller
             }
         }
 
-        return redirect()->route($this->doc_code.'.index');
+        return redirect()->route('home')->with('success', 'El programa se actualizó exitosamente');//route($this->doc_code.'.index');
     }
     
 

@@ -100,3 +100,8 @@
     {{ session('status') }}
 </diss-noti>
 @endif
+@if (session('success'))
+<diss-noti color="is-success">
+    {{ session('success') }}
+</diss-noti>
+@endif

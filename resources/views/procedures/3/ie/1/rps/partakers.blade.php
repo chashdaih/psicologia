@@ -3,11 +3,11 @@
 @section('content')
 <section class="section">
     {{-- @include('layouts.breadcrumbs') --}}
-    @if(session('success'))
+    {{-- @if(session('success'))
     <div class="notification is-primary">
         {{ session('success') }}
     </div>
-    @endif
+    @endif --}}
     @if(count($pps))
     <h1 class="title">Alumnos inscritos al programa "{{ $pps[0]->program->programa}}"</h1>
     <table class="table">

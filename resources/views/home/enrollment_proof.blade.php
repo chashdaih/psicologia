@@ -90,10 +90,11 @@
         <p style="font-size:12pt;">COMPROBANTE DE REGISTRO A PROGRAMA</p>
     @endcomponent
     <div>
-        <br>
-        <br>
-        <p>Estimado(a) alumno(a) {{ Auth::user()->partaker->full_name }}</p>
-        <p style="font-weight: bold">PRESENTE</p>
+        @if(Auth::user()->partaker->sexo == "F")
+        <p>Estimada alumna {{ Auth::user()->partaker->full_name }}</p>
+        @else
+        <p>Estimado alumno {{ Auth::user()->partaker->full_name }}</p>
+        @endif
     </div>
     <div>
         <p>Su incripción ha sido exitosa.</p>
@@ -111,10 +112,27 @@
         @if ($programPartaker->program->car_ser->fecha_fin)
         <p><span style="font-style: italic">Fecha de finalización:</span> {{ $programPartaker->program->car_ser->fecha_fin->formatLocalized('%d de %B %Y') }}</p>
         @endif
+        <p style="font-style: italic">Horario:</p>
+        @if($programPartaker->program->car_ser->gen_l)
+        <p>Lunes, {{$programPartaker->program->car_ser->gen_hora_l}}</p>
+        @endif
+        @if($programPartaker->program->car_ser->gen_ma)
+        <p>Martes, {{$programPartaker->program->car_ser->gen_hora_ma}}</p>
+        @endif
+        @if($programPartaker->program->car_ser->gen_mi)
+        <p>Miercoles, {{$programPartaker->program->car_ser->gen_hora_mi}}</p>
+        @endif
+        @if($programPartaker->program->car_ser->gen_j)
+        <p>Jueves, {{$programPartaker->program->car_ser->gen_hora_j}}</p>
+        @endif
+        @if($programPartaker->program->car_ser->gen_v)
+        <p>Viernes, {{$programPartaker->program->car_ser->gen_hora_v}}</p>
+        @endif
+        @if($programPartaker->program->car_ser->gen_s)
+        <p>Sábado, {{$programPartaker->program->car_ser->gen_hora_s}}</p>
+        @endif
     </div>
     <div>
-        <br>
-        <br>
         <br>
         <p style="font-weight: bold">ATENTAMENTE</p>
         <p>Coordinación de Centros de Formación y Servicios Psicológicos</p>

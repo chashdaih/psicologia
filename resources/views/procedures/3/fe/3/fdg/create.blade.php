@@ -16,7 +16,8 @@
                         'errors'=>$errors,
                         'type'=> 'text',
                         'prev' => isset($fdg) ? $fdg->name : null,
-                        'maxlength' => 255
+                        'maxlength' => 255,
+                        'required' => true
                     ])@endcomponent
                     @component('components.text-input', [
                         'title'=>'Apellido paterno',
@@ -24,7 +25,8 @@
                         'errors'=>$errors,
                         'type'=> 'text',
                         'prev' => isset($fdg) ? $fdg->last_name : null,
-                        'maxlength' => 255
+                        'maxlength' => 255,
+                        'required' => true
                     ])@endcomponent
                     @component('components.text-input', [
                         'title'=>'Apellido materno',
@@ -32,9 +34,18 @@
                         'errors'=>$errors,
                         'type'=> 'text',
                         'prev' => isset($fdg) ? $fdg->mothers_name : null,
-                        'maxlength' => 255
+                        'maxlength' => 255,
+                        'required' => true
                     ])@endcomponent
-                    <div class="field">
+                    @component('components.array-sel',[
+                        'title'=>'Sexo',
+                        'field'=>'gender',
+                        'options'=>['Mujer', 'Hombre'],
+                        'errors'=>$errors,
+                        'prev'=>isset($fdg)?$fdg->gender:null
+                    ])
+                    @endcomponent
+                    {{-- <div class="field">
                         <label class="label">Sexo</label>
                         <div class="control">
                             <div class="select">
@@ -44,11 +55,18 @@
                             </select>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <date-component
                         label="Fecha de nacimiento"
                         name="birthdate"
-                        old=@if(old('birthdate')) {{old('birthdate')}} @elseif(isset($fdg)){{ $fdg->birthdate ? $fdg->birthdate->format('Y-m-d') : null }} @else {{null}} @endif
+                        @if($errors->has("birthdate"))
+                        error='{{$errors->first("birthdate")}}'
+                        @endif
+                        @if(old('birthdate'))
+                        old={{old('birthdate')}}
+                        @elseif(isset($fdg))
+                        old={{ $fdg->birthdate ? $fdg->birthdate->format('Y-m-d') : null }}
+                        @endif
                     ></date-component>
                     <div class="field">
                         <label class="label">Estado civil</label>

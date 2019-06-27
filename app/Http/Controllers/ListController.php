@@ -104,7 +104,7 @@ class ListController extends Controller
             }
 
             if($user_type == 6) { // coordinación
-                $stages = Building::all();
+                $stages = Building::whereNotIn('id_centro', [10])->get();
                 $data['stages'] = $stages;
 
                 $supervisors = DB::table('supervisores')->where('estatus', '=', 'Activa')
@@ -149,7 +149,7 @@ class ListController extends Controller
         $pdf->getDomPDF()->set_option("enable_php", true);
             
         $pdf->loadView('home.enrollment_proof', compact('programPartaker'));
-        return $pdf->download('comprobante_registro.pdf');
+        return $pdf->stream('comprobante_registro.pdf', array("Attachment" => 0));
 
     }
 
