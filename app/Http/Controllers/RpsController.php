@@ -155,13 +155,13 @@ class RpsController extends Controller
                 'serv_hora_mi', 'serv_j', 'serv_hora_j', 'serv_v', 'serv_hora_v', 'serv_s', 'serv_hora_s',
                 'pacientes_semana', 'minimo_pacientes_semestre', 'primer_contacto', 'admision', 'evaluacion', 'orientacion',
                 'intervencion', 'egreso', 'otro_servicio', 'depresion', 'duelo', 'psicosis', 'epilepsia', 'demencia', 'emocionales_niños',
-                'emocionales_ad', 'desarrollo_niños', 'conductuales_niños', 'conductuales_ad', 'autolesion', 'ansiedad',
-                'estres', 'sexualidad', 'violencia', 'sustancias', 'p_intervencion', 'enfoque_servicio', 'otro_enfoque',
+                'emocionales_ad', 'desarrollo_niños', 'desarrollo_ad', 'conductuales_niños', 'conductuales_ad', 'autolesion', 'ansiedad',
+                'estres', 'sexualidad', 'violencia', 'sustancias', 'p_intervencion', 'otra_problematica', 'enfoque_servicio', 'otro_enfoque',
                 'individual', 'grupal', 'colaborativa', 'indirecta', 'directa', 'supervision_otra', 'observacion',
                 'juego_roles', 'modelamiento', 'moldeamiento', 'cascada', 'auto_supervision', 'equipo_reflexivo',
                 'con_colegas', 'analisis_caso', 'ensenanza_otra', 'fundamentales', 'entrevista', 'c_evaluacion',
-                'impresion_diagnostica', 'implementacion_intervenciones', 'elaboracion_documentos', 'competencias_otra',
-                'formativa', 'integrativa', 'contextual', 'holistica', 'plural', 'reflexiva', 'program_id'
+                'impresion_diagnostica', 'implementacion_intervenciones', 'integracion_expediente', 'elaboracion_documentos',
+                'competencias_otra', 'formativa', 'integrativa', 'contextual', 'holistica', 'plural', 'reflexiva', 'program_id'
             ]))->filter(function($value) {
                 return null !== $value;
             })->toArray()
@@ -278,13 +278,13 @@ class RpsController extends Controller
             'serv_hora_mi', 'serv_j', 'serv_hora_j', 'serv_v', 'serv_hora_v', 'serv_s', 'serv_hora_s',
             'pacientes_semana', 'minimo_pacientes_semestre', 'primer_contacto', 'admision', 'evaluacion', 'orientacion',
             'intervencion', 'egreso', 'otro_servicio', 'depresion', 'duelo', 'psicosis', 'epilepsia', 'demencia', 'emocionales_niños',
-            'emocionales_ad', 'desarrollo_niños', 'conductuales_niños', 'conductuales_ad', 'autolesion', 'ansiedad',
-            'estres', 'sexualidad', 'violencia', 'sustancias', 'p_intervencion', 'enfoque_servicio', 'otro_enfoque',
+            'emocionales_ad', 'desarrollo_niños', 'desarrollo_ad', 'conductuales_niños', 'conductuales_ad', 'autolesion', 'ansiedad',
+            'estres', 'sexualidad', 'violencia', 'sustancias', 'p_intervencion', 'otra_problematica', 'enfoque_servicio', 'otro_enfoque',
             'individual', 'grupal', 'colaborativa', 'indirecta', 'directa', 'supervision_otra', 'observacion',
             'juego_roles', 'modelamiento', 'moldeamiento', 'cascada', 'auto_supervision', 'equipo_reflexivo',
             'con_colegas', 'analisis_caso', 'ensenanza_otra', 'fundamentales', 'entrevista', 'c_evaluacion',
-            'impresion_diagnostica', 'implementacion_intervenciones', 'elaboracion_documentos', 'competencias_otra',
-            'formativa', 'integrativa', 'contextual', 'holistica', 'plural', 'reflexiva'
+            'impresion_diagnostica', 'implementacion_intervenciones', 'integracion_expediente', 'elaboracion_documentos',
+            'competencias_otra', 'formativa', 'integrativa', 'contextual', 'holistica', 'plural', 'reflexiva', 'program_id'
         ]))->filter(function($value) {
             return null !== $value;
         })->toArray();

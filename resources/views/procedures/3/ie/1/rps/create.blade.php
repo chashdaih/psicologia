@@ -194,17 +194,21 @@
                         @endif
                         </div>
                     </text-input>
-                    <related-input inline-template>
+                    <related-input inline-template
+                    @if(old('pre_pos', isset($car_serv)?$car_serv->pre_pos:null) == '1')
+                    :old-value="1"
+                    @endif
+                    >
                         <div>
                             <label class="label">El programa va dirigido a pregrado / posgrado</label>
                             <div class="control">
                                 <div class="select">
                                     <select v-model="selected" name="pre_pos"> 
-                                        <option value=0
-                                        @if(old('pre_pos', isset($car_serv)?$car_serv->pre_pos:null) == 0) selected="selected" @endif
-                                        >Pregrado</option>
+                                        <option value=0>Pregrado</option>
                                         <option value=1
-                                        @if(old('pre_pos', isset($car_serv)?$car_serv->pre_pos:null) == 1) selected="selected" @endif
+                                        @if(old('pre_pos', isset($car_serv)?$car_serv->pre_pos:null) == '1')
+                                        selected="selected"
+                                        @endif
                                         >Posgrado</option>
                                     </select>
                                 </div>
@@ -372,7 +376,7 @@
                                 <td><label class="checkbox"><input type="checkbox" 
                                     @if(old('serv_mi', isset($car_serv)?$car_serv->serv_mi:null)) checked @endif value="1" name="serv_mi"
                                     > Miercoles</label></td>
-                                <td><input value="{{ old('serv_hola_mi', isset($car_serv)?$car_serv->serv_hola_mi:null) }}"
+                                <td><input value="{{ old('serv_hola_mi', isset($car_serv)?$car_serv->serv_hora_mi:null) }}"
                                     name="serv_hora_mi" class="input" type="text" placeholder="Horario miercoles" maxlength=255></td>
                             </tr>
                             <tr>
@@ -479,7 +483,13 @@
                             <label class="checkbox"><input type="checkbox" @if(old('desarrollo_niños', isset($car_serv)?$car_serv->desarrollo_niños:null)) checked @endif value="1" name="desarrollo_niños"> Trastornos del desarrollo niños</label>
                         </div>
                         <div class="control">
-                            <label class="checkbox"><input type="checkbox" @if(old('desarrollo_ad', isset($car_serv)?$car_serv->desarrollo_ad:null)) checked @endif value="1" name="desarrollo_ad"> Trastornos del desarrollo adolescentes</label>
+                            <label class="checkbox">
+                                <input type="checkbox" 
+                                @if(old('desarrollo_ad', isset($car_serv)?$car_serv->desarrollo_ad:null)) 
+                                checked 
+                                @endif 
+                                value="1" 
+                                name="desarrollo_ad"> Trastornos del desarrollo adolescentes</label>
                         </div>
                         <div class="control">
                             <label class="checkbox"><input type="checkbox" @if(old('autolesion', isset($car_serv)?$car_serv->autolesion:null)) checked @endif value="1" name="autolesion"> Autolesión / suicidio</label>
