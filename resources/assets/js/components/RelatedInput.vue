@@ -1,9 +1,10 @@
 <script>
 import TextInput from './TextInput';
+import SupsAuto from './SupsAuto';
 
 export default {
     components: {
-        TextInput
+        TextInput,SupsAuto
     },
     props: {
         oldValue: { default: 0 }

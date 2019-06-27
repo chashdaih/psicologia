@@ -80,7 +80,7 @@
           label="Periodo" 
           sortable>{{ props.row.semestre_activo }}</b-table-column>
 
-        <b-table-column v-if="stages"
+        <b-table-column
           field="centro" 
           label="Centro" 
           sortable>{{ props.row.centro }}</b-table-column>

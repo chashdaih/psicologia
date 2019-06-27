@@ -106,15 +106,26 @@ class RpsController extends Controller
         ->get();
     }
 
+    protected function getFormatedSupervisors()
+    {
+        $supervisors = DB::table('supervisores')->where('estatus', '=', 'Activa')
+            ->orderBy('nombre', 'asc')->select('id_supervisor', 
+            DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))
+            ->get();
+        
+        return $this->fixNames($supervisors);
+    }
+
     public function create()
     {
         $buildings = $this->getBuildingIf();
         // dd($buildings);
         $this->params['buildings']= $buildings;
 
-        $supervisors = Supervisor::distinct('correo')
-        ->where('id_centro', Auth::user()->supervisor->id_centro)->orderBy('nombre', 'asc')->get();
-        $this->params['supervisors'] =  $supervisors;
+        // $supervisors = DB::table('supervisores')->where('estatus', '=', 'Activa')
+        //     ->orderBy('nombre', 'asc')->select('id_supervisor', 
+        //     DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
+        $this->params['supervisors'] = $this->getFormatedSupervisors();//$this->fixNames($supervisors);
 
         $this->params['user_id'] = $this->user_id;
 
@@ -222,9 +233,9 @@ class RpsController extends Controller
         $buildings = $this->getBuildingIf(); //Building::all();
         $this->params['buildings']= $buildings;
 
-        $supervisors = Supervisor::distinct('correo')
-        ->where('id_centro', Auth::user()->supervisor->id_centro)->orderBy('nombre', 'asc')->get();
-        $this->params['supervisors'] =  $supervisors;
+        // $supervisors = Supervisor::distinct('correo')
+        // ->where('id_centro', Auth::user()->supervisor->id_centro)->orderBy('nombre', 'asc')->get();
+        $this->params['supervisors'] =  $this->getFormatedSupervisors();//$supervisors;
         // dd($supervisors);
 
         $inf_prac = ProgramData::where('id_practica', $id)->first();
@@ -256,15 +267,17 @@ class RpsController extends Controller
             collect($request->only($this->programFields))
                 ->filter(function($value) {
                     return null !== $value;
-                })->toArray()
+                })
+                ->toArray()
         );
 
         $programData = collect($request->only(['resumen', 'justificacion', 'objetivo_g', 
         'objetivo_es', 'cont_tematico', 'requisitos',
-        'referencias', 'estra_ev_imp', 'asig_emp'])
-        )->filter(function($value) {
+        'referencias', 'estra_ev_imp', 'asig_emp']))
+        ->filter(function($value) {
             return null !== $value;
-        })->toArray();
+        })
+        ->toArray();
 
         if (count($programData)) {
             ProgramData::where('id_practica', $id)->update($programData);
@@ -285,13 +298,22 @@ class RpsController extends Controller
             'con_colegas', 'analisis_caso', 'ensenanza_otra', 'fundamentales', 'entrevista', 'c_evaluacion',
             'impresion_diagnostica', 'implementacion_intervenciones', 'integracion_expediente', 'elaboracion_documentos',
             'competencias_otra', 'formativa', 'integrativa', 'contextual', 'holistica', 'plural', 'reflexiva', 'program_id'
-        ]))->filter(function($value) {
+        ]))
+        ->filter(function($value, $key) {
             return null !== $value;
-        })->toArray();
+        })
+        ->toArray();
 
-        // $carSer['program_id'] = $id;
-
-        // dd($carSer);
+        foreach (['gen_hora_l','gen_hora_ma', 'gen_hora_mi', 'gen_hora_j', 'gen_hora_v', 'gen_hora_s', 'serv_hora_l', 'serv_hora_ma', 'serv_hora_mi', 'serv_hora_j', 'serv_hora_v', 'serv_hora_s', ] as $value) {
+            if(!array_key_exists($value, $carSer)) {
+                $carSer[$value] = null;
+            }
+        }
+        foreach (['gen_l', 'gen_ma', 'gen_mi', 'gen_j', 'gen_v', 'gen_s', 'serv_l', 'serv_ma', 'serv_mi', 'serv_j', 'serv_v', 'serv_s'] as $value) {
+            if(!array_key_exists($value, $carSer)) {
+                $carSer[$value] = 0;
+            }
+        }
 
         if (count($carSer)){
             CaracteristicasServicio::where('program_id', $id)->update($carSer);

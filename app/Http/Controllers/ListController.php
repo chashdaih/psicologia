@@ -30,7 +30,8 @@ class ListController extends Controller
     
     public function filter($stage, $sup, $per) // webservice
     {
-        if(Auth::user()->supervisor->id_centro == 10) {
+        // if(Auth::user()->supervisor->id_centro == 10) {
+        if(Auth::user()->type == 2) {
             $stage = 0;
         }
 
@@ -91,7 +92,7 @@ class ListController extends Controller
             
             $id_centro = Auth::user()->supervisor->id_centro;
 
-            $data['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, '2020-1');
+            $data['records'] = $this->filter(0, Auth::user()->supervisor->id_supervisor, '2020-1');
             $user_type = Auth::user()->type;
 
             if ($user_type == 5) { // jefe de centro

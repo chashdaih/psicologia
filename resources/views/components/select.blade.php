@@ -5,7 +5,11 @@
     <label class="label">{{ $title }}</label>
     <div class="control">
         <div class="select">
-            <select name="{{ $field }}">
+            <select name="{{ $field }}"
+            @if(isset($disabled) && $disabled)
+            disabled="disabled"
+            @endif
+            >
                 @foreach ($options as $option)
                 <option value="{{ $option->primary_key }}"
                     @if(old($field, isset($prev)?$prev:null))

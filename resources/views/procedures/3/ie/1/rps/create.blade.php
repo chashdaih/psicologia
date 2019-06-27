@@ -5,7 +5,14 @@
     <div class="container">
         {{-- @include('layouts.breadcrumbs') --}}
         <h1 class="title">{{ $bread->last()['title'] }}</h1>
-        @if ($errors->any())
+        @if(!isset($program))
+        <div class="notification is-info">
+            <p>Solo el campo 'Nombre del programa' es requerido para poder guardar.</p>
+            <p>Si lo deseas, puedes llenar una parte ahora y regresar a editarlo después.</p>
+            <p>*El programa no se ofertará hasta que se llene el campo 'No. máximo de alumnos'*</p>
+        </div>
+        @endif
+        {{-- @if ($errors->any())
         <div class="notification is-danger">
             <p>El formulario contiene errores:</p>
             <ul>
@@ -14,7 +21,7 @@
                 @endforeach
             </ul>
         </div>
-        @endif
+        @endif --}}
         <form method="POST" 
         action="{{ isset($program) ? route($doc_code.'.update', [$program->id_practica]) : route($doc_code.'.store') }}"
         >
@@ -33,18 +40,18 @@
                         'prev' => isset($program) ? $program->programa : null,
                         'maxlength' => 250
                         ])@endcomponent
-                    @if (Auth::user()->type == 6 || Auth::user()->supervisor->id_centro == 10)
+                    {{-- @if (Auth::user()->type == 6 || Auth::user()->supervisor->id_centro == 10) --}}
                     @component('components.select', [
                         'title'=>'Centro al cual pertenece el programa',
                         'field'=>'id_centro',
                         'errors'=>$errors,
                         'options'=> $buildings,
                         'prev' => isset($program) ? $program->id_centro : null,
-                        'id' => Auth::user()->supervisor->id_centro
+                        'id' => old('id_centro', Auth::user()->supervisor->id_centro)
                         ])@endcomponent
-                    @else
+                    {{-- @else
                     <input name="id_centro" type="hidden" value={{  Auth::user()->supervisor->id_centro }}>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
             <br>
@@ -53,18 +60,29 @@
                     <p class="card-header-title is-centered">SUPERVISORES</p>
                 </header>
                 <div class="card-content">
-                    @if(Auth::user()->type != 2)
-                    @component('components.select', [
+                    {{-- @if(Auth::user()->type != 2) --}}
+
+                    {{-- @component('components.select', [
                         'title'=>'Supervisor académico',
                         'field'=>'id_supervisor',
                         'errors'=>$errors,
                         'options'=> $supervisors,
                         'prev' => isset($program) ? $program->id_supervisor : null,
-                        'id' => $user_id
-                        ])@endcomponent
-                    @else
+                        'id' => $user_id,
+                        'disabled' => Auth::user()->type == 2 ? true : false
+                        ])@endcomponent --}}
+
+                    <sups-auto field="id_supervisor"
+                        :sups="{{$supervisors}}"
+                        :user="{{old('id_supervisor', isset($program)?$program->id_supervisor:Auth::user()->supervisor->id_supervisor)}}"
+                        @if(Auth::user()->type == "2")
+                        dis=true
+                        @endif
+                    ></sups-auto>
+
+                    {{-- @else
                     <input name="id_supervisor" type="hidden" value={{  Auth::user()->supervisor->id_supervisor }}>
-                    @endif
+                    @endif --}}
                     <label class="label">Supervisor in situ</label>
                     <add-row inline-template
                     @if(isset($sups))

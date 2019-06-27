@@ -64,7 +64,7 @@
                     ])@endcomponent
             </span>
             <span v-show="!selected">
-                <div class="control">
+                {{-- <div class="control">
                     <div class="select">
                         <select name="reg_sup_id[]">
                             @foreach ($supervisors as $option)
@@ -82,7 +82,15 @@
                             @endforeach
                         </select>
                     </div>
-                </div>
+                </div> --}}
+                <sups-auto field="reg_sup_id[]"
+                    :sups="{{$supervisors}}"
+                    @if(isset($data))
+                    :user="{{$data->reg_sup_id}}"
+                    @else
+                    :user="{{$user_id}}"
+                    @endif
+                ></sups-auto>
             </span>
         </div>
     </related-input>
