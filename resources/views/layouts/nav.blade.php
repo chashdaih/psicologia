@@ -18,11 +18,17 @@
   v-bind:class="{ 'is-active': isActive }">
     <div class="navbar-start">
       {{-- @auth --}}
-      @if(Auth::user()->type != 3)
+      {{-- @if(Auth::user()->type != 3) --}}
       <div class="navbar-item">
+        @if(Auth::user()->type == 3 )
+        @if(count(Auth::user()->partaker->programs))
+        <a href="{{ route('asignar', ['center_id'=> Auth::user()->partaker->programs[0]->id_centro]) }}" class="navbar-item">Asignar espacio</a>
+        @endif
+        @else
         <a href="{{ route('asignar', ['center_id'=> Auth::user()->supervisor->id_centro]) }}" class="navbar-item">Asignar espacio</a>
+        @endif
       </div>
-      @endif
+      {{-- @endif --}}
       @if(Auth::user()->type == 6)
       <div class="navbar-item">
         <a href="{{ route('partaker.index') }}" class="navbar-item">Participantes</a>

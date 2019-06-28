@@ -30,7 +30,7 @@ class CalendarController extends Controller
 
         switch ($center_id) {
             case 1: // ayala
-                $cubicules = ['1', '2', '3', '4', '5', '6', '7'];
+                $cubicules = ['1', '2', '3', '4', '5', '6', '7', '8'];
                 $schedules = ['9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00'];
                 break;
             
@@ -53,6 +53,7 @@ class CalendarController extends Controller
                 $cubicules = ['Línea 1', 'Línea 2', 'Línea 3', 'Línea 4', 'Línea 5', 'Línea 6', 'Línea 7', 'Línea 8', 'Línea 9', 'Línea 10', 'Línea 11', 'Línea 12', 'Línea 13', 'Línea 14', 'Línea 15', 'Línea 16', 'Línea 17', 'Línea 18', 'Línea 19', 'Línea 20', 'Línea 21', 'Línea 22', 'Línea 23', 'Línea 24', 'Línea 25', 'Línea 26', 'Línea 27', 'Línea 28', 'Línea 29', 'Línea 30'];
                 $schedules = ['8:00:00', '9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00'];
                 break;
+            case 8: // derecho
             default:// volcanes
                 $cubicules = ['1', '2', '3', '4', '5'];
                 $schedules = ['9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00'];
