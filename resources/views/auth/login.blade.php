@@ -50,7 +50,7 @@
                     {{ csrf_field() }}
                         @component('components.text-input', [
                             'title'=>'Número de cuenta',
-                            'field'=>'email',
+                            'field'=>'num_cuenta',
                             'errors'=>$errors,
                             'type'=> 'text',
                             'send'=> true
@@ -68,6 +68,12 @@
                             </p>
                         </div>
                     </form>
+                    <br><br>
+                    <div class="field">
+                        <p class="control has-text-centered">
+                            <a href="{{ route('password.request') }}">Olvidé mi contraseña</a>
+                        </p>
+                    </div>
                 </div>
                 <div v-if="supervisors" class="supervisors">
                     {{-- <p class="subtitle">Bienvenido al sistema.</p> --}}

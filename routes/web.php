@@ -129,3 +129,27 @@ Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('config:cache');
     return 'DONE'; //Return anything
 });
+
+use App\User;
+use App\Partaker;
+
+// Route::get('/update_users', function() {
+//     $users = User::where('type', 3)->get();
+//     foreach ($users as $key => $user) {
+//         if (strpos($user->email, '@') === false) {
+//             $partaker = Partaker::where('num_cuenta', (int)$user->email)->first();
+//             if ($partaker && $partaker->correo != null) {
+//                 $input = array('email' => $partaker->correo);
+//                 $rules = array('email' => 'required|unique:users');
+//                 $validator = Validator::make($input, $rules);
+
+//                 if ($validator->passes()) {
+//                     $user->email = $partaker->correo;
+//                     $user->save();
+//                 }
+
+//             }
+//         }
+//     }
+//     dd($users);
+// });

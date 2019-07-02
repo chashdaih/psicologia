@@ -405,7 +405,7 @@ class RpsController extends Controller
         // TODO: ajax
         // return 200;
 
-        return redirect()->route($this->doc_code.'.index')->with('success', 'Programa borrado exitosamente');
+        return redirect()->route('home');//route($this->doc_code.'.index')->with('success', 'Programa borrado exitosamente');
 
     }
 

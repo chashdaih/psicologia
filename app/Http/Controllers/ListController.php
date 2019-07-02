@@ -62,7 +62,7 @@ class ListController extends Controller
 
         if (Auth::user()->type == 3) { // participante (estudiante)
 
-            if (password_verify(Auth::user()->email, Auth::user()->password)) {
+            if (password_verify(Auth::user()->partaker->num_cuenta, Auth::user()->password)) {
                 return view('auth.passwords.update');
             }
 

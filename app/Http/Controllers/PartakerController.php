@@ -55,7 +55,7 @@ class PartakerController extends Controller
             'num_cuenta' => 'required|string|max:15|unique:participante',
             'password' => 'required|confirmed|min:4',
             // 'password_confirmation' => 'required_with:password|string|min:4',
-            'correo' => 'nullable|email',
+            'correo' => 'required|email',
             'nombre_part' => 'nullable|string|max:120',
             'ap_paterno' => 'nullable|string|max:120',
             'ap_materno' => 'nullable|string|max:120',
@@ -84,7 +84,7 @@ class PartakerController extends Controller
 
         User::create([
             'type' => 3,
-            'email' => $request['num_cuenta'],
+            'email' => $request['correo'],
             'password' => bcrypt($request['password']),
         ]);
 

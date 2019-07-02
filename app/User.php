@@ -41,6 +41,6 @@ class User extends Authenticatable
 
     public function partaker()
     {
-        return $this->belongsTo('App\Partaker', 'email', 'num_cuenta');
+        return $this->belongsTo('App\Partaker', 'email', 'correo');
     }
 }
