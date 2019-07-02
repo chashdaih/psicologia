@@ -25,6 +25,7 @@
         "buefy": "^0.7.7",
         "bulma": "^0.7.5",
         "cross-env": "^5.2.0",
+        "fs": "0.0.1-security",
         "lodash": "^4.17.11",
         "moment": "^2.24.0",
         "sweetalert2": "^8.11.7",

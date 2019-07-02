@@ -221,6 +221,64 @@ class RpsController extends Controller
         return redirect()->route('home')->with('success', 'El programa se registró exitosamente');//route($this->doc_code.'.index');
     }
 
+    public function cloneProgram()
+    {
+        $id = request()->id_practica;
+
+        if ($id) {
+            $ogProgram = Program::where('id_practica', $id)->first();
+            if ($ogProgram == null) {
+                return 404;
+            }
+            $cloneProgram = $ogProgram->replicate();
+            $cloneProgram->programa = $ogProgram->programa.' - Duplicado';
+            $cloneProgram->save();
+
+            $ogProgramData = ProgramData::where('id_practica', $id)->first();
+            $cloneProgramData = $ogProgramData->replicate();
+            $cloneProgramData->id_practica = $cloneProgram->id_practica;
+            $cloneProgramData->save();
+
+            $ogCarSer = CaracteristicasServicio::where('program_id', $id)->first();
+            $cloneCarSer = $ogCarSer->replicate();
+            $cloneCarSer->program_id = $cloneProgram->id_practica;
+            $cloneCarSer->save();
+
+            $sups = SupInSitu::where('program_id', $id)->get();
+            foreach ($sups as $sup) {
+                $cloneSup = $sup->replicate();
+                $cloneSup->program_id = $cloneProgram->id_practica;
+                $cloneSup->save();
+            }
+
+            $acts = ProgramaSemana::where('program_id', $id)->get();
+            foreach ($acts as $sup) {
+                $cloneSup = $sup->replicate();
+                $cloneSup->program_id = $cloneProgram->id_practica;
+                $cloneSup->save();
+            }
+
+            $crits = CriteriosAcr::where('program_id', $id)->get();
+            foreach ($crits as $sup) {
+                $cloneSup = $sup->replicate();
+                $cloneSup->program_id = $cloneProgram->id_practica;
+                $cloneSup->save();
+            }
+
+            return response()->json([
+                'id_practica' => $cloneProgram->id_practica,
+                'programa' => $cloneProgram->programa,
+                'semestre_activo' => $cloneProgram->semestre_activo,
+                'centro' => $cloneProgram->center->nombre,
+                'tipo' => $cloneProgram->tipo,
+                'full_name' => $cloneProgram->supervisor->full_name
+            ]);
+
+        } else {
+            return 400;
+        }
+    }
+
     public function edit($id)
     {
 

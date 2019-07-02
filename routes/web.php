@@ -115,6 +115,9 @@ Route::get('/partaker/search/{searchTerm}', 'PartakerController@search', ['middl
 
 Route::post('password/change', 'ListController@changePass')->name('pass_up');
 
+Route::post('/clone_program', 'RpsController@cloneProgram');
+
+
 Auth::routes();
 
 Route::get('refresh-csrf', function(){

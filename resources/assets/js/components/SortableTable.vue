@@ -96,6 +96,12 @@
           </a>
         </b-table-column>
 
+        <b-table-column label="Duplicar programa" centered>
+          <a @click="showCloneModal(props.row.id_practica)">
+              <fai icon="file-code" size="2x" />
+          </a>
+        </b-table-column>
+
         <b-table-column label="Descargar programa en pdf" centered>
           <a :href='url + "/pdf/" + props.row.id_practica'>
               <fai icon="file-pdf" size="2x" />
@@ -133,6 +139,7 @@
     </b-table>
 
     <p v-else>No hay registros con los filtros especificados</p>
+
     <div class="modal" v-bind:class="{'is-active': isActive}">
       <div class="modal-background" @click="closeModal"></div>
       <div class="modal-card">
@@ -150,10 +157,30 @@
         </footer>
       </div>
     </div>
+    
+    <div class="modal" v-bind:class="{'is-active': isCloneModalVisible}">
+      <div class="modal-background" @click="closeModal"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Duplicar programa</p>
+          <button class="delete" aria-label="close" @click="closeModal"></button>
+        </header>
+        <section class="modal-card-body">
+          <p class="has-text-weight-semibold">¿Desea duplicar el programa?</p>
+          <p>{{rowId? recs.find(e=> e.id_practica==rowId).programa: null}}</p>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success" @click="cloneProgram()">Duplicar programa</button>
+          <button class="button" @click="closeModal">Cancelar</button>
+        </footer>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+import { mkdir } from 'fs';
 export default {
     props:['records', 'url', 'stages', 'supervisors', 'stage', 'supervisor', 'lps', 'base_url'],
   data() {
@@ -168,7 +195,8 @@ export default {
       sups: this.supervisors,
       name: '',
       isActive: false,
-      rowId: null
+      rowId: null,
+      isCloneModalVisible: false
     };
   },
   mounted() {
@@ -207,9 +235,12 @@ export default {
     deleteRow() {
       // TODO ajax 
       this.$refs[this.rowId].submit();
+      this.rowId = null;
     },
     closeModal() {
       this.isActive = false;
+      this.isCloneModalVisible = false;
+      this.rowId = null;
     },
     allSups() {
       this.selected_supervisor=0;
@@ -218,6 +249,37 @@ export default {
     },
     clearName() {
       this.name = '';
+    },
+    showCloneModal(id) {
+      this.rowId = id;
+      this.isCloneModalVisible =  true;
+    },
+    cloneProgram() {
+      const cloneUrl = this.base_url + "/clone_program";
+      const data =  { id_practica: this.rowId };
+      console.log(cloneUrl);
+      axios.post(cloneUrl, data)
+      .then((res)=>{
+        console.log(res.data);
+        const newProgram = res.data;
+        this.recs.unshift(newProgram);
+          Swal.fire({
+              title: "Éxito",
+              type: "success",
+              text: "El programa se duplicó correctamente",
+              confirmButtonText: "Aceptar",
+              onClose: () => this.closeModal()
+          });
+      })
+      .catch(error=>{
+          Swal.fire({
+              title: "Ocurrió un error",
+              text: error,
+              type: "error",
+              confirmButtonText: "Aceptar",
+              onClose: () => this.closeModal()
+          });
+      });
     }
   },
   computed: {
