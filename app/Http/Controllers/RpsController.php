@@ -367,7 +367,14 @@ class RpsController extends Controller
                 $carSer[$value] = null;
             }
         }
-        foreach (['gen_l', 'gen_ma', 'gen_mi', 'gen_j', 'gen_v', 'gen_s', 'serv_l', 'serv_ma', 'serv_mi', 'serv_j', 'serv_v', 'serv_s'] as $value) {
+        foreach (['gen_l', 'gen_ma', 'gen_mi', 'gen_j', 'gen_v', 'gen_s', 'serv_l', 'serv_ma', 'serv_mi', 'serv_j', 'serv_v', 'serv_s',
+        'primer_contacto', 'admision', 'evaluacion', 'orientacion','intervencion', 'egreso',
+        'depresion', 'duelo', 'psicosis', 'epilepsia', 'demencia', 'emocionales_niños','emocionales_ad', 'desarrollo_niños', 'desarrollo_ad', 'conductuales_niños', 'conductuales_ad', 'autolesion', 'ansiedad', 'estres', 'sexualidad', 'violencia', 'sustancias', 'p_intervencion',
+        'individual', 'grupal', 'colaborativa', 'indirecta', 'directa',
+        'observacion', 'juego_roles', 'modelamiento', 'moldeamiento', 'cascada', 'auto_supervision', 'equipo_reflexivo', 'con_colegas', 'analisis_caso',
+        'fundamentales', 'entrevista', 'c_evaluacion', 'impresion_diagnostica', 'implementacion_intervenciones', 'integracion_expediente', 'elaboracion_documentos',
+        'formativa', 'integrativa', 'contextual', 'holistica', 'plural', 'reflexiva', 
+        ] as $value) {
             if(!array_key_exists($value, $carSer)) {
                 $carSer[$value] = 0;
             }
@@ -487,7 +494,7 @@ class RpsController extends Controller
         $this->preparePdf($id);
 
         $pdf->loadView($this->base_url.'.show', $this->params);
-        return $pdf->download($this->doc_code.'.pdf');
+        return $pdf->stream($this->doc_code.'.pdf');
     }
 
     protected function preparePdf($id)
@@ -549,6 +556,23 @@ class RpsController extends Controller
         ->get();
 
         return $this->fixNames($records);
+    }
+
+    protected function getInSituPrograms($reg_sup_id, $per)
+    {
+        $records = DB::table('sup_in_situs as sup')
+        ->join('practicas as p', 'sup.program_id', '=', 'p.id_practica')
+        ->join('centros as c', 'p.id_centro', '=', 'c.id_centro')
+        ->join('supervisores as s', 'p.id_supervisor', '=', 's.id_supervisor')
+        ->where('sup.reg_sup_id', $reg_sup_id)
+        ->where('p.semestre_activo', $per)
+        ->select('p.id_practica', 'p.programa', 'p.semestre_activo', 'c.nombre as centro', 'p.tipo',
+            DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"))
+            ->orderBy('p.semestre_activo', 'desc')
+        ->get();
+
+        dd($records);
+
     }
 
     public function rps_excel($stage, $sup, $per)

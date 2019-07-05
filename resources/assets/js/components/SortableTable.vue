@@ -92,13 +92,13 @@
 
         <b-table-column label="Editar programa" centered>
           <a :href='url + "/" + props.row.id_practica + "/edit"'>
-              <fai icon="file-code" size="2x" />
+              <fai icon="edit" size="2x" />
           </a>
         </b-table-column>
 
         <b-table-column label="Duplicar programa" centered>
           <a @click="showCloneModal(props.row.id_practica)">
-              <fai icon="file-code" size="2x" />
+              <fai icon="clone" size="2x" />
           </a>
         </b-table-column>
 
@@ -108,21 +108,21 @@
           </a>
         </b-table-column>
 
-        <b-table-column label="Ver alumnos inscritos" centered>
+        <b-table-column label="Participantes" centered>
           <a :href='url + "/" + props.row.id_practica + "/partakers"'>
-              <fai icon="file-code" size="2x" />
+              <fai icon="chalkboard-teacher" size="2x" />
           </a>
         </b-table-column>
 
-        <b-table-column label="Descargar lista de estudiantes inscritos en pdf (3-IE2-LPS)" centered>
+        <!-- <b-table-column label="Descargar lista de estudiantes inscritos en pdf (3-IE2-LPS)" centered>
           <a :href='lps + props.row.id_practica'>
               <fai icon="file-code" size="2x" />
           </a>
-        </b-table-column>
+        </b-table-column> -->
 
         <b-table-column label="Usuarios" centered>
           <a :href='base_url + "/program/" + props.row.id_practica + "/patient"' >
-              <fai icon="file-code" size="2x" />
+              <fai icon="user-friends" size="2x" />
           </a>
         </b-table-column>
 

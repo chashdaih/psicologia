@@ -102,9 +102,7 @@ class ListController extends Controller
                 ->orderBy('nombre', 'asc')->select('id_supervisor', 
                 DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
                 $data['supervisors'] = $this->fixNames($supervisors);
-            }
-
-            if($user_type == 6) { // coordinación
+            } else if ($user_type == 6) { // coordinación
                 $stages = Building::whereNotIn('id_centro', [10])->get();
                 $data['stages'] = $stages;
 
@@ -112,10 +110,30 @@ class ListController extends Controller
                 ->orderBy('nombre', 'asc')->select('id_supervisor', 
                 DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
                 $data['supervisors'] = $this->fixNames($supervisors);
+            } else {
+                $data['insitu'] = $this->getInSituPrograms(Auth::user()->supervisor->id_supervisor, "2020-1");
             }
         }
 
         return view('list', $data);
+    }
+
+    protected function getInSituPrograms($reg_sup_id, $per)
+    {
+        $records = DB::table('sup_in_situs as sup')
+        ->join('practicas as p', 'sup.program_id', '=', 'p.id_practica')
+        ->join('centros as c', 'p.id_centro', '=', 'c.id_centro')
+        ->join('supervisores as s', 'p.id_supervisor', '=', 's.id_supervisor')
+        ->where('sup.reg_sup_id', $reg_sup_id)
+        ->where('p.semestre_activo', $per)
+        ->where('p.id_supervisor', '!=', Auth::user()->supervisor->id_supervisor)
+        ->select('p.id_practica', 'p.programa', 'p.semestre_activo', 'c.nombre as centro', 'p.tipo',
+            DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"))
+            ->orderBy('p.semestre_activo', 'desc')
+        ->get();
+
+        return $this->fixNames($records);
+
     }
 
     public function changePass(Request $request)

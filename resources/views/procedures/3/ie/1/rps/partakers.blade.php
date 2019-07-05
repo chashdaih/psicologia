@@ -10,6 +10,10 @@
     @endif --}}
     @if(count($pps))
     <h1 class="title">Alumnos inscritos al programa "{{ $pps[0]->program->programa}}"</h1>
+    <div>
+        <a href="{{ route('lps_pdf', $pps[0]->program->id_practica) }}" class="button is-info">Descargar lista de estudiantes inscritos en pdf (3-IE2-LPS)</a>
+    </div>
+    <br>
     <table class="table">
         <thead>
             <tr>
