@@ -26,6 +26,11 @@
       
     <div class="hero-body">
         <div class="container">
+            @if (session('num_cuenta'))
+            <diss-noti>
+                <p>{{session('num_cuenta')}}</p>
+            </diss-noti>
+            @endif
             <login-toggle inline-template>
                 <div>
                 <h1 class="title has-text-centered" v-if="!students && !supervisors">
