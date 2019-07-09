@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Bread;
+// use App\Bread;
+use App\CaracteristicasServicio;
+use App\Program;
+use App\FE3FDG;
 
 use Illuminate\Http\Request;
 
@@ -29,8 +32,11 @@ class ProceduresController extends Controller
         // $process = json_decode($json, true)[$procedure];
 
         // return view('procedures.3.index', compact('process', 'bread'));
-        $tabs=['FE3 - Primer contacto', 'FE4 - Admisión', 'FE5 - Evaluación', 'FE6 - Orientación/Consejo breve', 'FE7 - Intervención', 'FE8 - Egreso'];
-        return view('procedures.3.fe.index', compact('program_id', 'patient_id', 'tabs'));
+        $program = Program::where('id_practica', $program_id)->first();
+        // dd($program);
+        $car_ser = CaracteristicasServicio::where('program_id', $program_id)->first();
+        $patient = FE3FDG::where('id', $patient_id)->first();
+        return view('procedures.3.fe.index', compact('program', 'patient', 'car_ser'));
     }
 
 

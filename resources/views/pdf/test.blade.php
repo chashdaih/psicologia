@@ -342,11 +342,11 @@
             @endif
             <p><span class="bold">Horario de preferencia</span> {{ $fdg->prefer_time }}</p>
             @endif
-            <p class="bold">Nombre de quien realizó el primer contacto:</p>
+            {{-- <p class="bold">Nombre de quien realizó el primer contacto:</p>
             <p>{{ $fdg->user->name }}</p>
-            <p><span class="bold">Centro/Programa en el que será atendido</span> {{ $fdg->assigned_program->nombre }}</p>
+            <p><span class="bold">Centro/Programa en el que será atendido</span> {{ $fdg->assigned_program->nombre }}</p> --}}
         </div>
-        @if ($fdg->appointment_date)
+        {{-- @if ($fdg->appointment_date)
         <div class="section appointment">
             <h3 class="bold">Cita</h3>
             <div>
@@ -355,7 +355,7 @@
                 <p>Supervisor responsable: {{ $fdg->super_user_name }}</p>
             </div>
         </div>
-        @endif
+        @endif --}}
     </div>
 </body>
 </html>

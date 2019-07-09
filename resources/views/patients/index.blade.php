@@ -14,7 +14,7 @@
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Procedimientos</th>
+                    <th>Ir a lista de procedimientos</th>
                     @if (Auth::user()->type == 6)
                     <th>Eliminar</th>
                     @endif
@@ -25,7 +25,7 @@
                 <td>{{ $patient->full_name }}</td>
                 <td>
                     <a href="{{ route('fe.index', ['program_id'=> $program->id_practica, 'patient_id'=>$patient->id]) }}">
-                        <fai icon="file-code" size="2x" />
+                        <fai icon="arrow-circle-right" size="2x" />
                     </a>
                 </td>
                 @if (Auth::user()->type == 6)

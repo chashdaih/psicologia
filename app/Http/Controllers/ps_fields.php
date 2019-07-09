@@ -1,39 +1,26 @@
 <?php
 return [
-    'file_number' => [
-        'title' => 'No. Expediente',
-        'type' => 'text',
-    ],
-    'patient_id' => [
-        'title' => 'Paciente',
-        'type' => 'select',
-    ],
     'created_at' => [
-        'title' => 'Fecha',
-        'type' => 'date'
+        'title' => 'Fecha en que se llenó el documento',
+        'type' => 'date',
     ],
-    'center_id' => [
-        'title' => 'Centro',
-        'type' => 'select',
-    ],
-    'program_id' => [
-        'title' => 'Programa',
-        'type' => 'select',
-    ],
-    'student_id' => [
-        'title' => 'Estudiante',
-        'type' => 'select',
-    ],
-    'intervention_type' => [
+    'tipo_de_intervencion' => [
         'title' => 'Tipo de intervención',
         'type' => 'select',
+        'options' => ['Orientación/Consejo', 'Evaluación', 'Taller', 'Intervención breve', 'Psicoterapia', 'Intervención Psicoeducativa']
     ],
-    'service_modality' => [
+    'modelo_psicoterapia' => [
+        'title' => 'Si el tipo de intervención es  psicoterapia, ¿cuál es el modelo?',
+        'type' => 'text'
+    ],
+    'modalidad_de_servicio' => [
         'title' => 'Modalidad de servicio',
         'type' => 'select',
+        'options' => ['Individual', 'Pareja', 'Familiar', 'A padres o cuidadores', 'Grupal']
     ],
-    'intervention_suggestions' => [
+    'sugerencias_de_intervencion' => [
         'title' => 'Sugerencias de intervención de servicio',
         'type' => 'area',
+        'required' => true
     ],
 ];

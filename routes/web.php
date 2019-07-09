@@ -19,7 +19,11 @@ Route::get('tramite/{id_tramite}/{doc}', 'RpsController@document')->name('get_do
 
 Route::resource('/program/{program_id}/patient', 'PatientController');
 Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresController');
-Route::resource('/program/{program_id}/fdg', 'FE3FDGController');
+Route::resource('/program/{program_id}/fe/fdg', 'FE3FDGController');
+Route::group(['prefix' => '/program/{program}/patient/{patient}/fe', 'middleware' => 'auth'], function() {
+    Route::resource('/cdr', 'Fe3cdrController');
+    Route::resource('/ps', 'PsController');
+});
 // Route::resource('/program/{id}/fdg', 'FE3FDGController');
 
 Route::get('/asignar/{center_id}/{fecha?}', 'CalendarController@index')->name('asignar');
@@ -90,9 +94,8 @@ Route::group(['prefix' => '/procedures/3/', 'middleware' => 'auth'], function() 
 
 
 // Route::resource('/FE3FDG', 'FE3FDGController');
-// Route::resource('/fe3cdr', 'Fe3cdrController');
 
-// Route::get('/pdf/fe3/fdg/{id}', 'DynamicPDFController@fe3fdg')->name('fdg');
+Route::get('/pdf/fe3/fdg/{id}', 'DynamicPDFController@fe3fdg')->name('fdg_pdf');
 // Route::get('/html/fe3/fdg/{id}', 'DynamicPDFController@fe3fdg_html')->name('fdg_html');
 // Route::get('/pdf/fe3/cdr/{id}', 'DynamicPDFController@fe3cdr')->name('cdr');
 // Route::get('/html/fe3/cdr/{id}', 'DynamicPDFController@fe3cdr_html')->name('cdr_html');

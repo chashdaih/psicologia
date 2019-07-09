@@ -298,7 +298,7 @@ class DynamicPDFController extends Controller
         $pdf->getDomPDF()->set_option("enable_php", true);
         $fdg = $this->getFdg($id);
         $pdf->loadView('pdf.test', compact('fdg'));
-        return $pdf->download('invoice.pdf');
+        return $pdf->stream('invoice.pdf');
     }
 
     public function fe3fdg_html($id)
@@ -334,18 +334,31 @@ class DynamicPDFController extends Controller
 
     protected function getFdg($id) {
         $fdg = FE3FDG::where('id', $id)->first();
+        // dd($fdg);
         $fdg->marital_status = $this->marital_status[$fdg->marital_status];
-        $fdg->position = $this->position[$fdg->position];
+        if ($fdg->position) {
+            $fdg->position = $this->position[$fdg->position];
+        }
         $fdg->person_requesting = $this->person_requesting[$fdg->person_requesting];
-        $fdg->relationship_1 = $this->relationship[$fdg->relationship_1];
-        $fdg->studies_level_1 = $this->studies_level[$fdg->studies_level_1];
-        $fdg->relationship_2 = $this->relationship[$fdg->relationship_2];
-        $fdg->studies_level_2 = $this->studies_level[$fdg->studies_level_2];
+        if ($fdg->relationship_1) {
+            $fdg->relationship_1 = $this->relationship[$fdg->relationship_1];
+        }
+        if ($fdg->studies_level_1) {
+            $fdg->studies_level_1 = $this->studies_level[$fdg->studies_level_1];
+        }
+        if ($fdg->relationship_2) {
+            $fdg->relationship_2 = $this->relationship[$fdg->relationship_2];
+        }
+        if ($fdg->studies_level_2) {
+            $fdg->studies_level_2 = $this->studies_level[$fdg->studies_level_2];
+        }
         $fdg->scholarship = $this->studies_level[$fdg->scholarship];
         $fdg->house_is = $this->house_is[$fdg->house_is];
         $fdg->service_type = $this->service_type[$fdg->service_type];
         $fdg->mhGAP_cause_classification = $this->mhGAP_cause_classification[$fdg->mhGAP_cause_classification];
-        $fdg->type_previous_treatment = $this->type_previous_treatment[$fdg->type_previous_treatment];
+        if ($fdg->type_previous_treatment) {
+            $fdg->type_previous_treatment = $this->type_previous_treatment[$fdg->type_previous_treatment];
+        }
         $fdg->refer = $this->refer[$fdg->refer];
         $fdg->prefer_time = $this->prefer_time[$fdg->prefer_time];
         return $fdg;

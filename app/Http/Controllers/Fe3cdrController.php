@@ -4,20 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Building;
 use App\Fe3cdr;
-// use App\FE3FDG;
-use App\Patient;
+use App\FE3FDG;
+use App\Program;
 use App\Http\Requests\StoreFe3cdr;
 use Illuminate\Http\Request;
 
 class Fe3cdrController extends Controller
 {
-    public function index()
-    {
-        $records = Fe3cdr::all();
-        return view('procedures.3.fe.3.cdr.index', compact('records'));
-    }
+    // public function index()
+    // {
+    //     $records = Fe3cdr::all();
+    //     return view('procedures.3.fe.3.cdr.index', compact('records'));
+    // }
 
-    public function create()
+    public function create(Program $program, FE3FDG $patient)
     {
         $sections = json_encode([[
                 'title' => 'dep',
@@ -66,9 +66,9 @@ class Fe3cdrController extends Controller
             ]
         ]);
         // $fdgs = FE3FDG::select('id','curp', 'name', 'last_name', 'mothers_name')->get();
-        $fdgs = Patient::all();
+        $fdgs = FE3FDG::all();
         $programs = Building::all();
-        return view('procedures.3.fe.3.cdr.create', compact('sections', 'fdgs', 'programs'));
+        return view('procedures.3.fe.3.cdr.create', compact('sections', 'fdgs', 'programs', 'program', 'patient'));
     }
 
     public function store(Request $request)

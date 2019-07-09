@@ -53,6 +53,7 @@ class RegisterController extends Controller
         //         'password' => bcrypt(1234),
         //     ]);
         // }
+        // dd("done");
 
         // $students = Partaker::distinct('num_cuenta')->pluck('num_cuenta');
         // // dd($students);
@@ -74,7 +75,7 @@ class RegisterController extends Controller
         // dd("done");
 
         // dd(new User(['type' =>3, 'email'=>413004381, 'password' =>bcrypt(413004381)]));
-        // dd(bcrypt(73403100));
+        // dd(bcrypt(315135662));
     }
 
     /**

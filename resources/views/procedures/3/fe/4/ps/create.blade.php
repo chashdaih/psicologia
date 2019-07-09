@@ -5,46 +5,71 @@
     <div class="container">
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
-            @foreach ($bread as $url => $option)
-                <li  @if ($loop->last) class="is-active" @endif><a href="#">{{ $option }}</a></li>
-            @endforeach
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Programa</a></li>
+                <li><a href="#">Paciente</a></li>
+                <li class="is-active"><a href="#">Plan de servicios</a></li>
             </ul>
         </nav>
-        <h1 class="title">{{ $bread->last() }}</h1>
+        <h1 class="title">Plan de servicios</h1>
 
-        <ecpr-form inline-template :fields={{ $values }} url={{ route($code.'.store') }}>
-            <form @submit.prevent="onSubmit">
-            @foreach ($fields as $title => $field)
-            <div class="field">
+        {{-- <ecpr-form inline-template :fields={{ $values }} url="{{ route('ps.store',  ['program'=>$program->id_practica, 'patient'=>$patient->id]) }}"> --}}
+        <form action="{{ route('ps.store',  ['program'=>$program->id_practica, 'patient'=>$patient->id]) }}"  method="POST">
+            {{ csrf_field() }}
+            @foreach ($fields as $field_name => $field)
+                @if ($field['type'] == "text")
+                @component('components.text-input', [
+                    'title'=>$field['title'],
+                    'field'=>$field_name,
+                    'errors'=>$errors,
+                    'type'=> 'text',
+                    'prev' => old($field_name, $process_model->$field_name),
+                    'maxlength' => 250
+                    ])@endcomponent
+                @elseif($field['type'] == "date")
+                <date-component
+                    label="{{ $field['title'] }}"
+                    name="{{$field_name}}"
+                    old="{{old($field_name, $process_model->$field_name)}}"
+                    ></date-component>
+                @elseif($field['type'] == "select")
                 <label class="label">{{ $field['title'] }}</label>
                 <div class="control">
-                @switch($field['type'])
-                @case("text")
-                    <input class="input" type="text" v-model="form.{{ $title }}" placeholder="{{ $field['title'] }}">
-                    @break
-                @case("date")
-                <div class="field">
-                    <input class="input" type="date" v-model="form.{{ $title }}">
-                    @break
-                @case("select")
                     <div class="select">
-                        <select v-model="form.{{ $title }}">
-                            <option value="0" disabled>Seleccione una opción</option>
-                            @foreach ($field['options'] as $option)
-                            <option :value="{{ $option->id }}">{{ $option->name }}</option>
+                        <select name="{{ $field_name }}">
+                            @foreach ($field['options'] as $key=>$value)
+                            <option value="{{ $key }}"
+                            @if($key == old($field_name, $process_model->$field_name)) selected="selected" @endif
+                            >{{ $value }}</option>
                             @endforeach
                         </select>
                     </div>
-                    @break
-                @case("area")
-                    <textarea v-model="form.{{ $title }}" class="textarea" placeholder="{{ $field['title'] }}"></textarea>
-                @endswitch
                 </div>
-            </div>
+                @elseif($field['type'] == "area")
+                <text-input class="field" inline-template
+                    {{ $errors->has($field_name) ? ":error=true" : '' }}
+                    title="{{ $field['title'] }}">
+                    <div>
+                    <label class="label">{{ $field['title'] }}</label>
+                    <div class="control">
+                        <textarea name="{{ $field_name }}"
+                            class="textarea{{ $errors->has($field_name)? ' is-danger':'' }}"
+                            placeholder="{{ $field['title'] }}"
+                            v-on:input="clearError"
+                            ref="{{ $field['title'] }}"
+                            @if(isset($field['required']) && $field['required']) required @endif
+                            >{{ old($field_name, $process_model->$field_name) }}</textarea>
+                    </div>
+                    @if ($errors->has($field_name))
+                    <p v-if="hasError" class="help is-danger">{{ $errors->first($field_name) }}</p>
+                    @endif
+                    </div>
+                </text-input>
+                @endif
             @endforeach
             <button class="button" type="submit">Registrar</button>
-            </form>
-        </ecpr-form>
+        </form>
+        {{-- </ecpr-form> --}}
     </div>
 </section>
 @endsection
