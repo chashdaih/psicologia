@@ -3,12 +3,22 @@
 @section('content')
 <section class="section">
     <div class="container">
-        <h1 class="title"> Registrar ficha de datos generales</h1>
+        @if (isset($fdg))
+        <h1 class="title">{{$fdg->full_name}}</h1>
+        <p class="subtitle">Editar ficha de datos generales</p>
+        @else
+        <h1 class="title">Registrar ficha de datos generales</h1>
         <p class="subtitle">Agregue los datos de la persona que requiere el servicio</p>
-        {{-- <f-d-g-form url="{{ route('fdg.store') }}" :programs="{{ $programs }}"></f-d-g-form> --}}
-        {{-- <f-d-g-form inline-template> --}}
+        @endif
             <div>
-                <form action="{{ route('fdg.store', ['id'=> $program_id]) }}" method="POST">
+                <form 
+                @if(isset($fdg))
+                action="{{ route('patient.update', ['program_id'=> $program_id, 'patient' => $fdg->id]) }}" 
+                @else
+                action="{{ route('patient.store', ['id'=> $program_id]) }}" 
+                @endif
+                method="POST">
+                @if(isset($fdg)) <input name="_method" type="hidden" value="PUT"> @endif
                         {{ csrf_field() }}
                     @component('components.text-input', [
                         'title'=>'Nombre(s)',
@@ -363,12 +373,11 @@
                     </div>
                     <div class="field">
                         <div class="control">
-                            <button class="button is-info">Registrar</button>
+                            <button class="button is-info">@if($fdg) Editar @else Registrar @endif</button>
                         </div>
                     </div>
                 </form>
             </div>
-        {{-- </f-d-g-form> --}}
     </div>
 </section>
 @endsection

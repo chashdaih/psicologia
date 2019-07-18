@@ -17,12 +17,27 @@ Route::get('/partaker/enrollment_proof/{tramit_id}', 'ListController@enrollmentP
 
 Route::get('tramite/{id_tramite}/{doc}', 'RpsController@document')->name('get_document');
 
-Route::resource('/program/{program_id}/patient', 'PatientController');
+Route::resource('/program/{program_id}/patient', 'FE3FDGController');
 Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresController');
-Route::resource('/program/{program_id}/fe/fdg', 'FE3FDGController');
-Route::group(['prefix' => '/program/{program}/patient/{patient}/fe', 'middleware' => 'auth'], function() {
+Route::group(['prefix' => '/program/{program}/patient/{patient}/fe', 'middleware' => 'auth', [
+    'only' => [ 'index' ]
+]], function() {
     Route::resource('/cdr', 'Fe3cdrController');
+    Route::get('/cdr/{cdr}/pdf/', 'Fe3cdrController@pdf')->name('cdr_pdf');
     Route::resource('/ps', 'PsController');
+    Route::get('/ps/{ps}/pdf/', 'PsController@pdf')->name('ps_pdf');
+    Route::resource('/re', 'ReController');
+    Route::get('/re/{re}/pdf/', 'ReController@pdf')->name('re_pdf');
+    
+    Route::resource('/rs/breve', 'RsController');
+    Route::get('/rs/breve/{rs}/pdf/', 'RsController@pdf')->name('breve_pdf');
+    Route::resource('/rs/intervencion', 'RsController');
+    Route::get('/rs/intervencion/{rs}/pdf/', 'RsController@pdf')->name('intervencion_pdf');
+
+    Route::resource('/he', 'HeController');
+    Route::get('/he/{he}/pdf/', 'HeController@pdf')->name('he_pdf');
+    Route::resource('/cssp', 'CsspController');
+    Route::get('/cssp/{cssp}/pdf/', 'CsspController@pdf')->name('cssp_pdf');
 });
 // Route::resource('/program/{id}/fdg', 'FE3FDGController');
 
@@ -136,8 +151,8 @@ Route::get('/clear-cache', function() {
     return 'DONE'; //Return anything
 });
 
-use App\User;
-use App\Partaker;
+// use App\User;
+// use App\Partaker;
 
 // Route::get('/update_users', function() {
 //     $users = User::where('type', 3)->get();

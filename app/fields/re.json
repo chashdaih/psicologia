@@ -1,25 +1,10 @@
 {
-    "created_at": {
-        "title": "Fecha",
-        "type": "date"
-    },
-    "patient_id": {
-        "title": "Paciente",
-        "type": "select"
-    },
-    "building_id": {
-        "title": "Centro",
-        "type": "select"
-    },
-    "program_id": {
-        "title": "Programa",
-        "type": "select"
-    },
-    "refer_needed": {
+    "referencia_necesaria": {
         "title": "¿Fue necesario hacer referencia?",
-        "type": "boolean"
+        "type": "select",
+        "options": ["No", "Si"]
     },
-    "refer_place": {
+    "lugar_de_referencia": {
         "title": "Lugar de referencia",
         "type": "text",
         "nullable": true

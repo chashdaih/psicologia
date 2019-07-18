@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 // use App\Bread;
 use App\CaracteristicasServicio;
-use App\Program;
+use App\Cssp;
+use App\Fe3cdr;
 use App\FE3FDG;
+use App\He;
+use App\Ps;
+use App\Program;
+use App\Re;
 
 use Illuminate\Http\Request;
 
@@ -36,10 +41,38 @@ class ProceduresController extends Controller
         // dd($program);
         $car_ser = CaracteristicasServicio::where('program_id', $program_id)->first();
         $patient = FE3FDG::where('id', $patient_id)->first();
-        return view('procedures.3.fe.index', compact('program', 'patient', 'car_ser'));
+
+        $migajas = [route('home') => 'Inicio', route('patient.index', ['program_id' => $program_id]) => $program->programa, '#' => $patient->full_name];
+
+        $data = compact('program', 'patient', 'car_ser', 'migajas');
+
+        $cdr = Fe3cdr::where('program_id', $program_id)->where('patient_id', $patient_id)->first();
+        if ($cdr) {
+            $data['cdr'] = $cdr;
+        }
+
+        $ps = Ps::where('FE3FDG_id', $patient_id)->where('program_id', $program_id)->first();
+        if ($ps) {
+            $data['ps'] = $ps;
+        }
+
+        $re = Re::where('program_id', $program_id)->where('patient_id', $patient_id)->first();
+        if($re) {
+            $data['re'] = $re;
+        }
+
+        $he = He::where('program_id', $program_id)->where('patient_id', $patient_id)->first();
+        if($he) {
+            $data['he'] = $he;  
+        }
+
+        $cssp = Cssp::where('program_id', $program_id)->where('patient_id', $patient_id)->first();
+        if($cssp) {
+            $data['cssp'] = $cssp;  
+        }
+
+        return view('procedures.3.fe.index', $data);
     }
-
-
 
     public function doc($procedure, $number)
     {

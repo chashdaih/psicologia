@@ -1,4 +1,4 @@
-<h1 class="title">Programas</h1>
+<h1 class="title">Mis programas</h1>
 <div class="container has-text-centered">
     <a class="button is-info" href="{{ route('rps.create') }}">Registrar programa (3-IE1-RPS)</a>
     <br/>

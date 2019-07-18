@@ -8,15 +8,15 @@
                 <li><a href="#">Inicio</a></li>
                 <li><a href="#">Programa</a></li>
                 <li><a href="#">Paciente</a></li>
-                <li class="is-active"><a href="#">Plan de servicios</a></li>
+                <li class="is-active"><a href="#">Hoja de egreso</a></li>
             </ul>
         </nav>
-        <h1 class="title">Plan de servicios</h1>
+        <h1 class="title">Hoja de egreso</h1>
         <form
         @if($process_model->id)
-        action="{{ route('ps.update',  ['program'=>$program->id_practica, 'patient'=>$patient->id, 'id'=>$process_model->id]) }}"
+        action="{{ route('he.update',  ['program'=>$program->id_practica, 'patient'=>$patient->id, 'id'=>$process_model->id]) }}"
         @else
-        action="{{ route('ps.store',  ['program'=>$program->id_practica, 'patient'=>$patient->id]) }}"
+        action="{{ route('he.store',  ['program'=>$program->id_practica, 'patient'=>$patient->id]) }}"
         @endif
         method="POST">
         @if($process_model->id) <input name="_method" type="hidden" value="PUT"> @endif
@@ -72,6 +72,7 @@
                 </text-input>
                 @endif
             @endforeach
+            <br>
             <button class="button is-info" type="submit">@if($process_model->id) Actualizar @else Registrar @endif </button>
         </form>
     </div>

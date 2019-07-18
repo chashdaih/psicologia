@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 // use App\Patient;
 use App\Building;
 use App\FE3FDG;
+use App\Program;
 use Illuminate\Http\Request;
 
 class FE3FDGController extends Controller
@@ -14,17 +15,22 @@ class FE3FDGController extends Controller
         $this->middleware('auth');
     }
 
-    public function index()
+    public function index($id)
     {
-        // $patients = Patient::all();
-        $records = FE3FDG::all();
-        return view('procedures.3.FE.3.FDG.index', compact('records'));
-    }
+        $program = Program::where('id_practica', $id)->first();
+        $patients = FE3FDG::where('program_id', $id)->get();
+        $migajas = [route('home') => 'Inicio', '#' => $program->programa];
 
+        return view('patients.index', compact('patients', 'program', 'migajas'));
+    }
+    
     public function create($id)
     {
+
         $program_id = $id;
-        return view('procedures.3.fe.3.fdg.create', compact('program_id'));
+        $program = Program::where('id_practica', $id)->first();
+        $migajas = [route('home') => 'Inicio', route('patient.index', ['program_id' => $program_id]) => $program->programa, '#' => 'Nueva ficha de datos generales'];
+        return view('procedures.3.fe.3.fdg.create', compact('program_id', 'migajas'));
     }
 
     public function store(Request $request, $id)
@@ -32,29 +38,32 @@ class FE3FDGController extends Controller
 
         $this->validateForm();
 
-        // dd($request);
-
         $fdg = FE3FDG::create(collect($request)->toArray() + ['user_id' => auth()->id(), 'program_id' => $id]);
 
-        // return response(200);
         return redirect()->route('patient.index', ['id' => $id])->with('success', 'Usuario registrado exitosamente');
     }
 
-    public function show(FE3FDG $fe3fdg)
-    {
-        //
-    }
+    // public function show(FE3FDG $fe3fdg)
+    // {
+    //     //
+    // }
 
     public function edit($id, $fdg)
     {
         $program_id = $id;
+        $program = Program::where('id_practica', $id)->first();
         $fdg = FE3FDG::where('id', $fdg)->first();
-        return view('procedures.3.fe.3.fdg.create', compact('program_id', 'fdg'));
+        $migajas = [route('home') => 'Inicio', route('patient.index', ['program_id' => $program_id]) => $program->programa, '#' => $fdg->full_name];
+        return view('procedures.3.fe.3.fdg.create', compact('program_id', 'fdg', 'migajas'));
     }
 
-    public function update(FE3FDG $fe3fdg)
+    public function update($program_id, $id, Request $request)
     {
-        //
+        $this->validateForm();
+        $values = collect($request->except(['_token', '_method']))->toArray();
+        FE3FDG::where('id', $id)->update($values);
+        return redirect()->route('fe.index', ['program_id'=>$program_id, 'patient_id'=>$id])->with('success', 'Resultados de evaluación actualizados exitosamente');
+        
     }
 
     public function destroy(FE3FDG $fe3fdg)

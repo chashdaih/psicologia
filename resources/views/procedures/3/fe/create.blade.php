@@ -3,8 +3,8 @@
 @section('content')
 <section class="section">
     <div class="container">
-        @include('layouts.breadcrumbs')
-        <h1 class="title">{{ $bread->last()['title'] }}</h1>
+        {{-- @include('layouts.breadcrumbs')
+        <h1 class="title">{{ $bread->last()['title'] }}</h1> --}}
 
         {{-- <ecpr-form inline-template :fields={{ $values }} url={{ route($code.'.store') }}> --}}
         <form method="POST" action="{{ route($code.'.store') }}" >

@@ -80,39 +80,13 @@ class PsController extends Controller
     public function create(Program $program, FE3FDG $patient)
     {
         $process_model = new Ps();
-        // $patients = FE3FDG::select('id', DB::raw("CONCAT(name, ' ', last_name, ' ', mothers_name) AS name"))->get(); // TODO where supervisor or student match somewhere...
-        // $buildings = Building::select('id_centro as id', 'nombre as name')->get();
-        // $programs = Program::select('id_practica as id', 'programa as name')->where('id_supervisor', 1)->get();
-        // $students = Student::select('id_usuario as id', DB::raw("CONCAT(nombre_t, ' ', ap_paterno_t, ' ', ap_materno_t) AS name"))->where('Sistema', 'Escolarizado')->get(); // TODO get supervisor's students
         
         $fields = include('ps_fields.php');
-        // $fields['patient_id']['options'] = $patients;
-        // $fields['center_id']['options'] = $buildings;
-        // $fields['program_id']['options'] = $programs;
-        // $fields['student_id']['options'] = $students;
-        // $fields['intervention_type']['options'] = $this->interventions;
-        // $fields['service_modality']['options'] = $this->service_modality;
-
-        // $bread = collect([
-        //     'Procedimientos',
-        //     'Servicios psicológicos a través de la Formación Supervisada del Estudiante',
-        //     'Admisión de las personas atendidas',
-        //     'Plan de servicios'
-        // ]);
-        // $code = 'ps';
-
-        // return view('procedures.3.fe.4.ps.create', compact('bread', 'fields', 'values', 'code'));
         return view('procedures.3.fe.4.ps.create', compact('fields', 'process_model', 'program', 'patient'));
     }
 
     public function store(Program $program, FE3FDG $patient, Request $request)
     {
-        // foreach ($request->except('_token', 'other_intervention') as $data => $value) {
-        //     $valids[$data] = "required";
-        // }
-        // $validated = $request->validate($valids);
-        // Ps::create($validated);
-        // return response(200);
         $this->validate($request, [
             'created_at' => 'required|date',
             'tipo_de_intervencion' => 'required|integer|min:0|max:255',
@@ -134,34 +108,47 @@ class PsController extends Controller
         return view('procedures.3.fe.4.ps.show', compact('doc'));
     }
 
-    public function pdf($id)
+    public function pdf(Program $program, FE3FDG $patient, $ps)
     {
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
 
-        $doc = $this->getFormatedPs($id);
+        $doc = $this->getFormatedPs($ps);
 
         $pdf->loadView('procedures.3.fe.4.ps.show', compact('doc'));
-        return $pdf->download('ps_'.$doc->student->nombre_t.'.pdf');
+        return $pdf->stream('plan_de_servicio.pdf');
     }
     
     protected function getFormatedPs($id)
     {
         $ps = Ps::where('id', $id)->first();
-        $ps->intervention_type = $this->interventions[$ps->intervention_type]->name;
-        $ps->service_modality = $this->service_modality[$ps->service_modality]->name;
+        $fields = include('ps_fields.php');
+        $ps->tipo_de_intervencion = $fields['tipo_de_intervencion']['options'][$ps->tipo_de_intervencion];
+        $ps->modalidad_de_servicio = $fields['modalidad_de_servicio']['options'][$ps->modalidad_de_servicio];
         return $ps;
     }
 
 
-    public function edit(Ps $ps)
+    public function edit(Program $program, FE3FDG $patient, $id)
     {
-        //
+        $process_model = Ps::where('id', $id)->first();
+        $fields = include('ps_fields.php');
+        return view('procedures.3.fe.4.ps.create', compact('fields', 'process_model', 'program', 'patient'));
+        
     }
 
-    public function update(Request $request, Ps $ps)
+    public function update(Program $program, FE3FDG $patient, Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'created_at' => 'required|date',
+            'tipo_de_intervencion' => 'required|integer|min:0|max:255',
+            'modelo_psicoterapia' => 'nullable|string|max:255',
+            'modalidad_de_servicio' => 'required|integer|min:0|max:255',
+            'sugerencias_de_intervencion' => 'required|string'
+        ]);
+        $fields = collect($request->except(['_method', '_token']))->toArray();
+        Ps::where('id', $id)->update($fields);
+        return redirect()->route('fe.index', ['program_id'=>$program->id_practica, 'patient_id'=>$patient->id])->with('success', 'Plan de servicios actualizado exitosamente');
     }
 
     public function destroy(Ps $ps)

@@ -3,24 +3,9 @@
         "title": "Fecha",
         "type": "date"
     },
-    "patient_id": {
-        "title": "Paciente",
-        "type": "select"
-    },
-    "building_id": {
-        "title": "Centro",
-        "type": "select"
-    },
-    "program_id": {
-        "title": "Programa",
-        "type": "select"
-    },
-    "student_id": {
-        "title": "Estudiante",
-        "type": "select"
-    },
     "egress_type": {
         "title": "Tipo de egreso",
-        "type": "select"
+        "type": "select",
+        "options": ["Alta/Cierre", "Interrupción del tratamiento por mejoría", "Interrupción del tratamiento sin mejoría", "Alta con referencia", "Primer contacto sin asistencia"]
     }
 }

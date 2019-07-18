@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Bread;
+use Auth;
+// use App\Bread;
 use App\Cssp;
 use App\FE3FDG;
 use App\Option;
+use App\Program;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -46,24 +48,26 @@ class CsspController extends Controller
         ];
     }
 
-    public function index()
-    {
-        $doc_code = $this->doc_code;
-        $mBread = new Bread('fe', 'fe8', $doc_code);
-        $bread = collect($mBread->bread_array);
-        $records = Cssp::all(); //TODO pagination
-        $target = "paciente";
-        return view('procedures.3.fe.list', compact('records', 'bread', 'doc_code','target'));
-    }
+    // public function index()
+    // {
+    //     $doc_code = $this->doc_code;
+    //     $mBread = new Bread('fe', 'fe8', $doc_code);
+    //     $bread = collect($mBread->bread_array);
+    //     $records = Cssp::all(); //TODO pagination
+    //     $target = "paciente";
+    //     return view('procedures.3.fe.list', compact('records', 'bread', 'doc_code','target'));
+    // }
 
-    public function create()
+    public function create(Program $program, FE3FDG $patient)
     {
         $fields = $this->getFields();
-        $values = new Cssp();
-        $code = $this->doc_code;
-        $mBread = new Bread('fe', 'fe8', $code);
-        $bread = collect($mBread->bread_array);
-        return view('procedures.3.fe.create', compact('bread', 'fields', 'values', 'code'));
+        $process_model = new Cssp();
+        // $code = $this->doc_code;
+        // $mBread = new Bread('fe', 'fe8', $code);
+        // $bread = collect($mBread->bread_array);
+        // return view('procedures.3.fe.create', compact('bread', 'fields', 'values', 'code'));
+        $data = compact('fields', 'process_model', 'program', 'patient');
+        return view('procedures.3.fe.8.cssp.create', $data);
     }
 
     protected function getFields()
@@ -71,23 +75,40 @@ class CsspController extends Controller
         $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.$this->doc_code.'.json');
         $fields = json_decode($json, true);
 
-        $patients = FE3FDG::select('id', DB::raw("CONCAT(name, ' ', last_name, ' ', mothers_name) AS name"))->get(); // TODO where supervisor or student match somewhere...
+        // $patients = FE3FDG::select('id', DB::raw("CONCAT(name, ' ', last_name, ' ', mothers_name) AS name"))->get(); // TODO where supervisor or student match somewhere...
         
-        $fields['patient_id']['options'] = $patients;
-        $fields['q1']['options'] = $this->excelent;
-        $fields['q2']['options'] = $this->definitely;
-        $fields['q3']['options'] = $this->definitely;
-        $fields['q4']['options'] = $this->helped;
-        $fields['q5']['options'] = $this->satisfied;
+        // $fields['patient_id']['options'] = $patients;
+        // $fields['q1']['options'] = $this->excelent;
+        // $fields['q2']['options'] = $this->definitely;
+        // $fields['q3']['options'] = $this->definitely;
+        // $fields['q4']['options'] = $this->helped;
+        // $fields['q5']['options'] = $this->satisfied;
 
         return $fields;
     }
 
-    public function store(Request $request)
+    public function store(Program $program, FE3FDG $patient, Request $request)
     {
-        $validated = $this->validateDoc($request);
-        Cssp::create($validated);
-        return response(200);
+        // $validated = $this->validateDoc($request);
+        // Cssp::create($validated);
+        // return response(200);
+
+        $this->validate($request, [
+            'created_at' => 'required|date',
+            'q1' => 'required|integer|min:0|max:3',
+            'q2' => 'required|integer|min:0|max:3',
+            'q3' => 'required|integer|min:0|max:3',
+            'q4' => 'required|integer|min:0|max:3',
+            'q5' => 'required|integer|min:0|max:3',
+            'o1' => 'nullable|string',
+            'o2' => 'nullable|string' 
+        ]);
+        $fields = collect($request->except(['_token', '_method']))->toArray();
+        $fields['user_id'] = Auth::user()->id;
+        $fields['patient_id'] = $patient->id;
+        $fields['program_id'] = $program->id_practica;
+        Cssp::create($fields);
+        return redirect()->route('fe.index', ['program_id'=>$program->id_practica, 'patient_id'=>$patient->id])->with('success', 'Cuestionario de satisfacción con el servicio psicológico registrado exitosamente');
     }
 
     protected function validateDoc($request)
@@ -104,7 +125,7 @@ class CsspController extends Controller
         return view('procedures.3.fe.8.cssp.show', compact('doc'));
     }
 
-    public function pdf($id)
+    public function pdf(Program $program, FE3FDG $patient, $id)
     {
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
@@ -112,7 +133,7 @@ class CsspController extends Controller
         $doc = $this->getFormattedDoc($id);
 
         $pdf->loadView('procedures.3.fe.8.cssp.show', compact('doc'));
-        return $pdf->download('cssp_'.$doc->patient->full_name.'.pdf');
+        return $pdf->stream('cssp.pdf');
     }
 
     protected function getFormattedDoc($id)
@@ -128,14 +149,29 @@ class CsspController extends Controller
         return $doc;
     }
 
-    public function edit(Cssp $cssp)
+    public function edit(Program $program, FE3FDG $patient, $id)
     {
-        //
+        $process_model = Cssp::where('id', $id)->first();
+        $fields = $this->getFields();
+        $data = compact('fields', 'process_model', 'program', 'patient');
+        return view('procedures.3.fe.8.cssp.create', $data);
     }
 
-    public function update(Request $request, Cssp $cssp)
+    public function update(Program $program, FE3FDG $patient, Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'created_at' => 'required|date',
+            'q1' => 'required|integer|min:0|max:3',
+            'q2' => 'required|integer|min:0|max:3',
+            'q3' => 'required|integer|min:0|max:3',
+            'q4' => 'required|integer|min:0|max:3',
+            'q5' => 'required|integer|min:0|max:3',
+            'o1' => 'nullable|string',
+            'o2' => 'nullable|string' 
+        ]);
+        $values = collect($request->except(['_token', '_method']))->toArray();
+        Cssp::where('id', $id)->update($values);
+        return redirect()->route('fe.index', ['program_id'=>$program->id_practica, 'patient_id'=>$patient->id])->with('success', 'Cuestionario de satisfacción actualizado exitosamente');
     }
 
     public function destroy(Cssp $cssp)

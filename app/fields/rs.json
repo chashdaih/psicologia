@@ -3,10 +3,6 @@
         "title": "Fecha",
         "type": "date"
     },
-    "patient_id": {
-        "title": "Paciente",
-        "type": "select"
-    },
     "session_number":{
         "title": "Número de sesión",
         "type": "number"

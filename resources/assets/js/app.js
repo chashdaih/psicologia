@@ -9,6 +9,7 @@ import CalCancelModal from './components/CalCancelModal';
 import CalendarSpace from './components/CalendarSpace';
 import FDGForm from './components/FDGForm';
 import CdrForm from './components/CdrForm';
+import CdrSection from './components/CdrSection';
 import Test from './components/Test';
 import EcprForm from './components/EcprForm';
 import CollapsibleCard from './components/CollapsibleCard';
@@ -26,6 +27,7 @@ import DateComponent from './components/DateComponent';
 import PartakerSearch from './components/PartakerSearch';
 import ProcToggle from './components/ProcToggle';
 import SupsAuto from './components/SupsAuto';
+import TableRs from './components/TableRs';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
@@ -50,6 +52,7 @@ const app = new Vue({
         CalDateSel,
         FDGForm,
         CdrForm,
+        CdrSection,
         Test,
         EcprForm,
         CollapsibleCard,
@@ -66,7 +69,8 @@ const app = new Vue({
         DateComponent,
         PartakerSearch,
         ProcToggle,
-        SupsAuto
+        SupsAuto,
+        TableRs
     },
     data: {
         isActive: false

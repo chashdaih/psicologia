@@ -17,11 +17,13 @@ class CreateFe3cdrsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             // identification
+            // $table->unsignedTinyInteger('center');
+            // $table->string('program');
+            // $table->unsignedTinyInteger('student');
+            // $table->unsignedTinyInteger('supervisor');
+            $table->unsignedBigInteger('program_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('patient_id');
-            $table->unsignedTinyInteger('center');
-            $table->string('program');
-            $table->unsignedTinyInteger('student');
-            $table->unsignedTinyInteger('supervisor');
             // DEP
             $table->unsignedTinyInteger('dep0');
             $table->unsignedTinyInteger('dep1');

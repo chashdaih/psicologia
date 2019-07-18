@@ -1,20 +1,20 @@
 <template>
     <div>
-        <p class="title">{{ section.title }}</p>
-        <table class="table">
+        <!-- <p class="title">{{ section.title }}</p> -->
+        <table class="table is-fullwidth is-hoverable is-striped">
             <thead>
                 <th>{{ section.time }}</th>
                 <th v-for="(j, i) in 11" :key="j">{{i}}</th>
             </thead>
             <tbody>
                 <tr v-for="(question, index) in section.questions" :key="index">
-                    <td>{{ question }}</td>
+                    <td style="width:60%">{{ question }}</td>
                     <td v-for="(j, i) in 11" :key="j">
                         <input  type="radio" 
                                 :value="i"
                                 :name="section.title + index"
                                 v-model="fields[section.title + index]"
-                                @change="$emit('update-field', $event.target.name, $event.target.value)">
+                                >
                     </td>
                 </tr>
             </tbody>

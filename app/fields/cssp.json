@@ -1,35 +1,32 @@
 {
-    "file_number": {
-        "title": "No. expediente",
-        "type": "text"
-    },
     "created_at": {
         "title": "Fecha",
         "type": "date"
     },
-    "patient_id": {
-        "title": "Paciente",
-        "type": "select"
-    },
     "q1":{
         "title": "¿Cómo evaluaría la calidad de los servicios que ha recibido?",
-        "type": "select"
+        "type": "select",
+        "options": ["Excelente", "Buena", "Regular", "Mala"]
     },
     "q2":{
         "title": "¿Le fue de utilidad el servicio recibido?",
-        "type": "select"
+        "type": "select",
+        "options": ["Sí, definitivamente", "Sí, en general", "Muy poco", "Definitivamente no"]
     },
     "q3":{
         "title": "¿Recomendaría neustros servicios de atención psicológica?",
-        "type": "select"
+        "type": "select",
+        "options": ["Sí, definitivamente", "Sí, en general", "Muy poco", "Definitivamente no"]
     },
     "q4":{
         "title": "¿Los servicios que ha recibido le han ayudado a enfrentarse mejor a sus problemas?",
-        "type": "select"
+        "type": "select",
+        "options": ["Sí, me ayudaron mucho", "Sí, me ayudaron algo", "No me ayudaron", "Definitivamente no me ayudaron"]
     },
     "q5":{
         "title": "En general, ¿qué tan satisfecho/a está usted con los servicios que ha recibido?",
-        "type": "select"
+        "type": "select",
+        "options": ["Muy satisfecho/a", "Moderadamente satisfecho/a", "Algo insatisfecho/a", "Muy insatisfecho"]
     },
     "o1": {
         "title": "Lo que más me gustó de la atención que recibí fue:",

@@ -17,8 +17,9 @@ class CreateRsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->unsignedInteger('patient_id');
-            $table->unsignedInteger('supervisor_id');
-            $table->unsignedInteger('student_id')->nullable();
+            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('program_id');
+            $table->boolean('intervencion');
             $table->unsignedTinyInteger('session_number');
             $table->boolean('exist');
         });

@@ -5,8 +5,8 @@
             <th style="width: 40%;">Procedimiento</th>
             <th>Siglas</th>
             <th>Registrar/Editar</th>
-            <th>Descargar</th>
-            <th>Subir documento</th>
+            <th>Ver pdf</th>
+            {{-- <th>Subir documento</th> --}}
             <th>Eliminar</th>
         </tr>
     </thead>

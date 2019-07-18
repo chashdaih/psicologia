@@ -8,17 +8,19 @@
                 <li><a href="#">Inicio</a></li>
                 <li><a href="#">Programa</a></li>
                 <li><a href="#">Paciente</a></li>
-                <li class="is-active"><a href="#">Plan de servicios</a></li>
+                <li class="is-active"><a href="#">Resultados de evaluación</a></li>
             </ul>
         </nav>
-        <h1 class="title">Plan de servicios</h1>
+        <h1 class="title">Resultados de evaluación</h1>
         <form
         @if($process_model->id)
-        action="{{ route('ps.update',  ['program'=>$program->id_practica, 'patient'=>$patient->id, 'id'=>$process_model->id]) }}"
+        action="{{ $isIntervention ? route('intervencion.update',  ['program'=>$program->id_practica, 'patient'=>$patient->id, 'id'=>$process_model->id]) : route('breve.update',  ['program'=>$program->id_practica, 'patient'=>$patient->id, 'id'=>$process_model->id]) }}"
         @else
-        action="{{ route('ps.store',  ['program'=>$program->id_practica, 'patient'=>$patient->id]) }}"
+        action="{{ $isIntervention ? route('intervencion.store',  ['program'=>$program->id_practica, 'patient'=>$patient->id]) : route('breve.store',  ['program'=>$program->id_practica, 'patient'=>$patient->id]) }}"
         @endif
-        method="POST">
+        method="POST"
+        enctype="multipart/form-data"
+        >
         @if($process_model->id) <input name="_method" type="hidden" value="PUT"> @endif
             {{ csrf_field() }}
             @foreach ($fields as $field_name => $field)
@@ -30,6 +32,14 @@
                     'type'=> 'text',
                     'prev' => old($field_name, $process_model->$field_name),
                     'maxlength' => 250
+                    ])@endcomponent
+                @elseif ($field['type'] == "number")
+                @component('components.text-input', [
+                    'title'=>$field['title'],
+                    'field'=>$field_name,
+                    'errors'=>$errors,
+                    'type'=> 'number',
+                    'prev' => old($field_name, $process_model->$field_name),
                     ])@endcomponent
                 @elseif($field['type'] == "date")
                 <date-component
@@ -72,7 +82,11 @@
                 </text-input>
                 @endif
             @endforeach
-            <button class="button is-info" type="submit">@if($process_model->id) Actualizar @else Registrar @endif </button>
+            <small-file
+                name="file"
+                serv_error="{{ $errors->has('file') ? $errors->first('file') : '' }}"
+                ></small-file>
+            <button class="button is-info" type="submit">@if($process_model->id) Actualizar @else Registrar @endif resumen de sesión </button>
         </form>
     </div>
 </section>

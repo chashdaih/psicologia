@@ -4,9 +4,14 @@
 <section class="section">
     <h1 style="text-align:center;">Cuestionario de satisfacción con el servicio psicológico</h1>
     <div style="text-align:right;">
-        <p><span style="font-weight:bold;">No. expediente: </span>{{ $doc->file_number }}</p>
-        <p><span style="font-weight:bold;">No. de cuenta/Trabajador/CURP: </span>{{ $doc->patient->curp }}</p>
+        <p><span style="font-weight:bold;">No. expediente: </span>{{ $doc->id }}</p>
         <p><span style="font-weight:bold;">Fecha: </span>{{ $doc->created_at->format('d/m/Y') }}</p>
+    </div>
+    <div>
+        <p><span style="font-weight:bold;">Nombre del usuario: </span>{{ $doc->patient->full_name }}</p>
+        <p><span style="font-weight:bold;">Nombre del programa: </span>{{ $doc->program->programa }}</p>
+        <p><span style="font-weight:bold;">Supervisor del programa: </span>{{ $doc->program->supervisor->full_name }}</p>
+        <p><span style="font-weight:bold;">Documento registrado por: </span>{{ $doc->user_id == 3 ? $doc->user->partaker->full_name : $doc->user->supervisor->full_name }}</p>
     </div>
     <br/>
     <div>

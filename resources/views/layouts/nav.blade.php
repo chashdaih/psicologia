@@ -111,3 +111,14 @@
     {{ session('success') }}
 </diss-noti>
 @endif
+@if(isset($migajas))
+<section class="section">
+  <nav class="breadcrumb" aria-label="breadcrumbs">
+    <ul>
+      @foreach ($migajas as $key => $miga)
+      <li @if($loop->last) class="is-active" @endif><a href="{{$key}}" >{{$miga}}</a></li>
+      @endforeach
+    </ul>
+</section>
+</nav>
+@endif

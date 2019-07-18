@@ -2,63 +2,78 @@
 
 namespace App\Http\Controllers;
 
-use App\Bread;
+use Auth;
+// use App\Bread;
 use App\FE3FDG;
+use App\Program;
 use App\Rs as Doc;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class RsController extends Controller
 {
-    protected $process = 'fe';
-    protected $number = '7';
-    protected $doc_code = 'rs';
+    protected $isIntervention = false;
 
-    public function index()
+    public function __construct()
     {
-        $doc_code = $this->doc_code;
-        $mBread = new Bread($this->process, $this->process.$this->number, $doc_code);
-        $bread = collect($mBread->bread_array);
-        $records = Doc::all(); //TODO where supervisor / student = auth, pagination
-        return view('procedures.3.fe.7.rs.index', compact('records', 'bread'));
+        if (strpos(Request::capture()->path(), 'breve') === false) {
+            $this->isIntervention = true;
+        } 
     }
 
-    public function create()
+    public function index(Program $program, FE3FDG $patient)
+    {
+
+        $isIntervention = $this->isIntervention;
+
+        $records = Doc::where('program_id', $program->id_practica)->where('patient_id', $patient->id)->where('intervencion', $isIntervention)->get();
+        $data = compact('program', 'patient', 'isIntervention', 'records');
+        return view('procedures.3.fe.7.rs.index', $data);
+    }
+
+    public function create(Program $program, FE3FDG $patient)
     {
         $fields = $this->getFields();
-        $values = new Doc();
-        $code = $this->doc_code;
-        $mBread = new Bread($this->process, $this->process.$this->number, $code);
-        $bread = collect($mBread->bread_array);
-        return view('procedures.3.fe.create', compact('bread', 'fields', 'values', 'code'));
+        $process_model = new Doc();
+        $isIntervention = $this->isIntervention;
+        $data = compact('program', 'patient', 'fields', 'process_model', 'isIntervention');
+        return view('procedures.3.fe.7.rs.create', $data);
     }
 
-    protected function getFields()
+    public function store(Program $program, FE3FDG $patient, Request $request)
     {
-        $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.$this->doc_code.'.json');
-        $fields = json_decode($json, true);
-
-        $patients = FE3FDG::select('id', DB::raw("CONCAT(name, ' ', last_name, ' ', mothers_name) AS name"))->get(); // TODO where supervisor or student match somewhere...
+        $this->validate($request, [
+            'created_at' => 'required|date',
+            'session_number' => 'required|integer|min:0|max:255|unique:rs,session_number',
+            'file' => 'required|mimes:pdf|max:14000'
+        ]);
         
-        $fields['patient_id']['options'] = $patients;
+        $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
 
-        return $fields;
-    }
-
-    public function store(Request $request)
-    {
-        $validated = $this->validateDoc($request);
-        Doc::create($validated);
-        return response(200);
-    }
-
-    protected function validateDoc($request)
-    {
-        foreach ($request->except('_token', 'student_id') as $data => $value) {
-            $valids[$data] = "required";
+        $file_folder = 'public/program/'.$program->id_practica.'/patient/'.$patient->id;
+        if ($this->isIntervention) {
+            $file_folder = $file_folder.'/intervention';
+        } else {
+            $file_folder = $file_folder.'/breve';
         }
-        return $request->validate($valids);
+        $file_name = $fields['session_number'].'.pdf';
+        $request->file("file")->storeAs($file_folder, $file_name);
+        
+        $fields['user_id'] = Auth::user()->id;
+        $fields['patient_id'] = $patient->id;
+        $fields['program_id'] = $program->id_practica;
+        $fields['intervencion'] = $this->isIntervention;
+        $fields['exist'] = true;
+        Doc::create($fields);
+
+        $route = 'breve.index';
+        if ($this->isIntervention) {
+            $route = 'intervencion.index';
+        }
+
+        return redirect()->route($route, compact('program', 'patient'))->with('success', 'Resumen de sesión registrado exitosamente');
     }
 
     public function show(Rs $rs)
@@ -76,9 +91,40 @@ class RsController extends Controller
         //
     }
 
-    public function destroy(Rs $rs)
+    public function destroy(Program $program, FE3FDG $patient, $id)
     {
-        //
+        $deletedRows = Doc::where('intervencion', $this->isIntervention)->where('session_number', $id)->delete();
+        // TODO error?
+
+        $file_folder = 'public/program/'.$program->id_practica.'/patient/'.$patient->id;
+        if ($this->isIntervention) {
+            $file_folder = $file_folder.'/intervention/';
+        } else {
+            $file_folder = $file_folder.'/breve/';
+        }
+        $file_name = $id.'.pdf';
+
+        Storage::delete($file_folder.$file_name);
+        return 200;
+    }
+
+    public function pdf(Program $program, FE3FDG $patient, $id)
+    {
+        $file_folder = public_path().'/storage/program/'.$program->id_practica.'/patient/'.$patient->id;
+        if ($this->isIntervention) {
+            $file_folder = $file_folder.'/intervention/';
+        } else {
+            $file_folder = $file_folder.'/breve/';
+        }
+        $file_name = $id.'.pdf';
+        return response()->file($file_folder.$file_name);
+    }
+    
+    protected function getFields()
+    {
+        $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.'rs.json');
+        $fields = json_decode($json, true);
+        return $fields;
     }
 
     protected function dirname_r($path, $count=1){
@@ -87,5 +133,13 @@ class RsController extends Controller
         } else {
            return dirname($path);
         }
+    }
+
+    protected function validateDoc($request)
+    {
+        foreach ($request->except('_token', 'student_id') as $data => $value) {
+            $valids[$data] = "required";
+        }
+        return $request->validate($valids);
     }
 }

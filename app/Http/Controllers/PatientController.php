@@ -18,8 +18,9 @@ class PatientController extends Controller
     {
         $program = Program::where('id_practica', $id)->first();
         $patients = FE3FDG::where('program_id', $id)->get();
+        $migajas = [route('home') => 'Inicio', '#' => $program->programa];
 
-        return view('patients.index', compact('patients', 'program'));
+        return view('patients.index', compact('patients', 'program', 'migajas'));
     }
 
     /**
@@ -32,62 +33,8 @@ class PatientController extends Controller
     {
 
         $program_id = $id;
-        return view('procedures.3.fe.3.fdg.create', compact('program_id'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $program = Program::where('id_practica', $id)->first();
+        $migajas = [route('home') => 'Inicio', route('patient.index', ['program_id' => $program_id]) => $program->programa, '#' => 'Nueva ficha de datos generales'];
+        return view('procedures.3.fe.3.fdg.create', compact('program_id', 'migajas'));
     }
 }
