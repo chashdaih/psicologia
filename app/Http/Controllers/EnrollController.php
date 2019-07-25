@@ -10,6 +10,7 @@ use App\ProgramData;
 use App\ProgramPartaker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EnrollController extends Controller
 {
@@ -82,6 +83,25 @@ class EnrollController extends Controller
         ]);
 
         return redirect()->route('home')->with('success', "¡Éxito! pre-registrado al programa");
+    }
+
+    public function disenroll(ProgramPartaker $enr)
+    {
+        $program = Program::where('id_practica', $enr->id_practica)->first();
+        if ($program->cupo_actual < $program->cupo) {
+            $program['cupo_actual'] = $program['cupo_actual'] + 1;
+            $program->save();
+        }
+
+        Document::where('id_tramite', $enr->id_tramite)->delete();
+
+        EvaluateStudent::where('program_id', $enr->id_practica)->where('partaker_id', $enr->id_participante)->delete();
+
+        Storage::deleteDirectory('public/'.$enr->id_tramite);
+
+        $enr->delete();
+
+        return redirect()->route('home')->with('success', "¡Éxito! Pre-registro de baja del programa");
     }
 
     public function docs(Request $request)

@@ -101,6 +101,14 @@
                 <button class="button is-success is-large" type="submit">Enviar Documentos</button>
                 </div>
             </form>
+            <div>
+                <p class="is-italic">¿Te pre-registraste a este programa por error?</p>
+                <form action="{{route('insc.disenroll', $enr)}}" method="POST">
+                    {!! method_field('delete') !!}
+                    {!! csrf_field() !!}
+                    <button class="button is-outlined is-danger">Dar de baja</button>
+                </form>
+            </div>
             @endif
         @endforeach
         </div>

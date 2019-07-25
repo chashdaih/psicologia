@@ -122,6 +122,7 @@ Route::get('/inscribirse/{id}', 'EnrollController@detail')->name('insc.det');
 Route::post('/inscribirse/{id}', 'EnrollController@enroll')->name('insc.enroll');
 Route::post('/save_enroll_docs', 'EnrollController@docs')->name('insc.docs');
 Route::get('/generateLetter/{program_id}', 'EnrollController@cartaCompromiso')->name('insc.carta');
+Route::delete('/disenroll/{enr}', 'EnrollController@disenroll')->name('insc.disenroll');
 
 Route::resource('/evaluar', 'EvaluateStudentController');
 
