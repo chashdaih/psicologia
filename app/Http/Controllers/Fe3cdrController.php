@@ -187,6 +187,6 @@ class Fe3cdrController extends Controller
         $sections = collect($this->sections);
         $sus = collect($this->sus);
         $pdf->loadView('pdf.cdr', compact('cdr', 'sections', 'sus'));
-        return $pdf->download('invoice.pdf');
+        return $pdf->stream('invoice.pdf');
     }
 }

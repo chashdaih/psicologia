@@ -109,7 +109,7 @@
         </b-table-column>
 
         <b-table-column label="Participantes" centered>
-          <a :href='url + "/" + props.row.id_practica + "/partakers"'>
+          <a :href='base_url + "/program/" + props.row.id_practica + "/partakers"'>
               <fai icon="chalkboard-teacher" size="2x" />
           </a>
         </b-table-column>

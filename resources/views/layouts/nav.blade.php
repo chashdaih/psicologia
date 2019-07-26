@@ -111,6 +111,11 @@
     {{ session('success') }}
 </diss-noti>
 @endif
+@if (session('fail'))
+<diss-noti>
+    {{ session('fail') }}
+</diss-noti>
+@endif
 @if(isset($migajas))
 <section class="section">
   <nav class="breadcrumb" aria-label="breadcrumbs">

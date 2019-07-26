@@ -25,11 +25,13 @@ class RsController extends Controller
 
     public function index(Program $program, FE3FDG $patient)
     {
+        $migajas = [route('home') => 'Inicio', route('patient.index', ['program_id' => $program->id_practica]) => $program->programa, route('fe.index', ['program_id' => $program->id_practica, 'patient_id' => $patient->id]) => $patient->full_name, '#' => 'Registro de sesión'];
+
 
         $isIntervention = $this->isIntervention;
 
         $records = Doc::where('program_id', $program->id_practica)->where('patient_id', $patient->id)->where('intervencion', $isIntervention)->get();
-        $data = compact('program', 'patient', 'isIntervention', 'records');
+        $data = compact('program', 'patient', 'isIntervention', 'records', 'migajas');
         return view('procedures.3.fe.7.rs.index', $data);
     }
 

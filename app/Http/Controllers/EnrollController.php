@@ -49,12 +49,27 @@ class EnrollController extends Controller
     {
         $partaker_id = Auth::user()->partaker->num_cuenta;
 
+        $this->baseEnroll($partaker_id, $id);
+
+        return redirect()->route('home')->with('success', "¡Éxito! pre-registrado al programa");
+    }
+
+    public function enrolledBySup($program, Request $request)
+    {
+        $this->baseEnroll($request->partaker_id, $program);
+
+        return 200;
+    }
+
+    protected function baseEnroll($partaker_id, $id)
+    {
+
         $registered_programs = ProgramPartaker::where('id_participante', $partaker_id)
         ->where('ciclo_activo', '2020-1')
         ->first();
 
         if ($registered_programs) {
-            return redirect()->route('insc')->with('success', "No puedes inscribirte a otro programa hasta dentro de algún tiempo");
+            return redirect()->route('insc')->with('fail', "Hasta el periodo de altas y bajas, solo se permite un programa por participante");
         }
 
         $rel = ProgramPartaker::create([
@@ -82,7 +97,6 @@ class EnrollController extends Controller
             'partaker_id' => $partaker_id
         ]);
 
-        return redirect()->route('home')->with('success', "¡Éxito! pre-registrado al programa");
     }
 
     public function disenroll(ProgramPartaker $enr)

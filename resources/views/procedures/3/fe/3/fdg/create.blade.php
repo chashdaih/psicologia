@@ -373,7 +373,7 @@
                     </div>
                     <div class="field">
                         <div class="control">
-                            <button class="button is-info">@if($fdg) Editar @else Registrar @endif</button>
+                            <button class="button is-info">@if(isset($fdg)) Editar @else Registrar @endif</button>
                         </div>
                     </div>
                 </form>

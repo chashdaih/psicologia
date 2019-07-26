@@ -3,6 +3,8 @@
 @section('content')
 <section class="section">
     <div class="container">
+        <h1 class="title">{{ $patient->full_name }}</h1>
+        <h2 class="subtitle">{{ $program->programa }}</h2>
         {{-- @include('layouts.breadcrumbs') --}}
         {{-- <h1 class="title">{{ $bread->last()['title'] }}</h1> --}}
         <div class="container">

@@ -12,6 +12,10 @@
     <h1 class="title">Alumnos inscritos al programa "{{ $pps[0]->program->programa}}"</h1>
     <div>
         <a href="{{ route('lps_pdf', $pps[0]->program->id_practica) }}" class="button is-info">Descargar lista de estudiantes inscritos en pdf (3-IE2-LPS)</a>
+        <div>
+            <br>
+            <register-partaker url="{{URL::to('/')}}" :program="{{json_encode($pps[0]->program)}}"></register-partaker>
+        </div>
     </div>
     <br>
     <table class="table">
@@ -26,6 +30,7 @@
                 <th>Segunda evaluación</th>
                 <th>Tercera evaluación</th>
                 <th>Satisfacción</th>
+                {{-- TODO: dar de baja participantes --}}
             </tr>
         </thead>
         <tbody>
@@ -65,6 +70,10 @@
     @else
     <p class="title">{{ $program->programa }}</p>
     <p class="subtitle">Aún no hay alumnos inscritos al programa.</p>
+    <div>
+        <br>
+        <register-partaker url="{{URL::to('/')}}" :program="{{json_encode($program)}}"></register-partaker>
+    </div>
     @endif
 </section>
 @endsection

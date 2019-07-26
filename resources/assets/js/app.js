@@ -28,6 +28,7 @@ import PartakerSearch from './components/PartakerSearch';
 import ProcToggle from './components/ProcToggle';
 import SupsAuto from './components/SupsAuto';
 import TableRs from './components/TableRs';
+import RegisterPartaker from './components/RegisterPartaker';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
@@ -70,7 +71,8 @@ const app = new Vue({
         PartakerSearch,
         ProcToggle,
         SupsAuto,
-        TableRs
+        TableRs,
+        RegisterPartaker
     },
     data: {
         isActive: false

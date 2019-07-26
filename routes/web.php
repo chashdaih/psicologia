@@ -18,6 +18,7 @@ Route::get('/partaker/enrollment_proof/{tramit_id}', 'ListController@enrollmentP
 Route::get('tramite/{id_tramite}/{doc}', 'RpsController@document')->name('get_document');
 
 Route::resource('/program/{program_id}/patient', 'FE3FDGController');
+Route::get('program/{id}/partakers', 'RpsController@partakers')->name('users_list');
 Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresController');
 Route::group(['prefix' => '/program/{program}/patient/{patient}/fe', 'middleware' => 'auth', [
     'only' => [ 'index' ]
@@ -54,7 +55,7 @@ Route::group(['prefix' => '/procedures/3/', 'middleware' => 'auth'], function() 
         Route::get('/1/rps/filter/{stage}/{sup}/{per}', 'RpsController@filter')->name('rps_filter');
         Route::get('/1/rps/excel/{stage}/{sup}/{per}', 'RpsController@rps_excel')->name('rps_excel');
         Route::get('/1/rps/del-row/{type}/{id}', 'RpsController@deleteRow')->name('del_row');
-        Route::get('1/rps/{id}/partakers', 'RpsController@partakers')->name('users_list');
+        // Route::get('1/rps/{id}/partakers', 'RpsController@partakers')->name('users_list');
         Route::resource('/1/rps', 'RpsController');
 
 
@@ -135,6 +136,8 @@ Route::get('/partaker/search/{searchTerm}', 'PartakerController@search', ['middl
 Route::post('password/change', 'ListController@changePass')->name('pass_up');
 
 Route::post('/clone_program', 'RpsController@cloneProgram');
+
+Route::post('/program/{program}/partakers/register', 'EnrollController@enrolledBySup'); // no tiene nombre por que es para vue
 
 
 Auth::routes();

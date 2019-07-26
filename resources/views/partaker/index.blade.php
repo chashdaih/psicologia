@@ -23,7 +23,7 @@
                 <td>{{ $partaker->num_cuenta }}</td>
                 <td>
                     <a href="{{ route('partaker.edit', $partaker->num_cuenta) }}">
-                        <fai icon="file-code" size="2x" />
+                        <fai icon="edit" size="2x" />
                     </a>
                 </td>
                 {{-- <td>
