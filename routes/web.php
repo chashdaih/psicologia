@@ -23,24 +23,35 @@ Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresCont
 Route::group(['prefix' => '/program/{program}/patient/{patient}/fe', 'middleware' => 'auth', [
     'only' => [ 'index' ]
 ]], function() {
-    Route::resource('/cdr', 'Fe3cdrController');
-    Route::get('/cdr/{cdr}/pdf/', 'Fe3cdrController@pdf')->name('cdr_pdf');
-    Route::resource('/ps', 'PsController');
-    Route::get('/ps/{ps}/pdf/', 'PsController@pdf')->name('ps_pdf');
-    Route::resource('/re', 'ReController');
-    Route::get('/re/{re}/pdf/', 'ReController@pdf')->name('re_pdf');
+    // Route::resource('/cdr', 'Fe3cdrController');
+    // Route::get('/cdr/{cdr}/pdf/', 'Fe3cdrController@pdf')->name('cdr_pdf');
+    // Route::resource('/ps', 'PsController');
+    // Route::get('/ps/{ps}/pdf/', 'PsController@pdf')->name('ps_pdf');
+    // Route::resource('/re', 'ReController');
+    // Route::get('/re/{re}/pdf/', 'ReController@pdf')->name('re_pdf');
     
-    Route::resource('/rs/breve', 'RsController');
-    Route::get('/rs/breve/{rs}/pdf/', 'RsController@pdf')->name('breve_pdf');
-    Route::resource('/rs/intervencion', 'RsController');
-    Route::get('/rs/intervencion/{rs}/pdf/', 'RsController@pdf')->name('intervencion_pdf');
+    // Route::resource('/rs/breve', 'RsController');
+    // Route::get('/rs/breve/{rs}/pdf/', 'RsController@pdf')->name('breve_pdf');
+    // Route::resource('/rs/intervencion', 'RsController');
+    // Route::get('/rs/intervencion/{rs}/pdf/', 'RsController@pdf')->name('intervencion_pdf');
 
-    Route::resource('/he', 'HeController');
-    Route::get('/he/{he}/pdf/', 'HeController@pdf')->name('he_pdf');
-    Route::resource('/cssp', 'CsspController');
-    Route::get('/cssp/{cssp}/pdf/', 'CsspController@pdf')->name('cssp_pdf');
+    // Route::resource('/he', 'HeController');
+    // Route::get('/he/{he}/pdf/', 'HeController@pdf')->name('he_pdf');
+    // Route::resource('/cssp', 'CsspController');
+    // Route::get('/cssp/{cssp}/pdf/', 'CsspController@pdf')->name('cssp_pdf');
 });
 // Route::resource('/program/{id}/fdg', 'FE3FDGController');
+
+Route::resource('/usuario', 'UsuarioController');
+Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], function() {
+    Route::resource('cdr', 'Fe3cdrController');
+    Route::resource('ps', 'PsController');
+    Route::resource('re', 'ReController');
+    Route::resource('breve', 'RsController');
+    Route::resource('intervencion', 'RsController');
+    Route::resource('he', 'HeController');
+    Route::resource('cssp', 'CsspController');
+});
 
 Route::get('/asignar/{center_id}/{fecha?}', 'CalendarController@index')->name('asignar');
 // ->where('center_id', '^(1|2|3|4|6)$');
@@ -139,6 +150,8 @@ Route::post('/clone_program', 'RpsController@cloneProgram');
 
 Route::post('/program/{program}/partakers/register', 'EnrollController@enrolledBySup'); // no tiene nombre por que es para vue
 
+Route::get('/filtrar_por_etapa/{center_id}/{supervisor_id}/{etapa}', 'UsuarioController@filterByEtapa');
+Route::post('asignar_por_etapa', 'UsuarioController@assign');
 
 Auth::routes();
 

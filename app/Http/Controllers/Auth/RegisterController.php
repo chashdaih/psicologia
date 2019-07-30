@@ -75,7 +75,7 @@ class RegisterController extends Controller
         // dd("done");
 
         // dd(new User(['type' =>3, 'email'=>413004381, 'password' =>bcrypt(413004381)]));
-        dd(bcrypt(416050631));
+        // dd(bcrypt(314262420));
     }
 
     /**

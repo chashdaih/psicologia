@@ -17,8 +17,6 @@
   <div id="navbarBasicExample" class="navbar-menu"
   v-bind:class="{ 'is-active': isActive }">
     <div class="navbar-start">
-      {{-- @auth --}}
-      {{-- @if(Auth::user()->type != 3) --}}
       <div class="navbar-item">
         @if(Auth::user()->type == 3 )
         @if(count(Auth::user()->partaker->programs))
@@ -28,7 +26,9 @@
         <a href="{{ route('asignar', ['center_id'=> Auth::user()->supervisor->id_centro]) }}" class="navbar-item">Asignar espacio</a>
         @endif
       </div>
-      {{-- @endif --}}
+      <div class="navbar-item">
+        <a href="{{route('usuario.index')}}" class="navbar-item">Usuarios</a>
+      </div>
       @if(Auth::user()->type == 6)
       <div class="navbar-item">
         <a href="{{ route('partaker.index') }}" class="navbar-item">Participantes</a>
@@ -37,32 +37,6 @@
         <a href="{{ route('supervisor.index') }}" class="navbar-item">Supervisores</a>
       </div>
       @endif
-      {{-- <div class="navbar-item">
-        <a href="/asignar" class="navbar-item">Referir cita</a>
-      </div> --}}
-      {{-- <div class="navbar-item has-dropdown is-hoverable" >
-        <a href="{{ route('procedures') }}" class="navbar-link is-arrowless">Procesos</a>
-        <div class="navbar-dropdown" style="background-color: white;">
-          <a href="#" class="navbar-item">Elaboración y seguimiento de planeación estratégica y operativa</a>
-          <a href="{{ route('procedures', 'ie') }}" class="navbar-item">Ingreso del estudiante</a>
-          <a href="{{ route('procedures', 'fe') }}" class="navbar-item">Servicios psicológicos a través de la Formación Supervisada del Estudiante</a>
-          <a href="{{ route('procedures', 'ee') }}" class="navbar-item">Egreso del estudiante</a>
-          <a href="#" class="navbar-item">Gestión de recursos humanos, materiales y financieros</a>
-        </div>
-      </div> --}}
-      {{-- @if (Auth::user()->type == 3)
-      <div class="navbar-item">
-        <a href="{{ route('insc') }}" class="navbar-item">Inscribirse a programa</a>
-      </div>
-      @else
-      <div class="navbar-item">
-        <a href="{{ route('evaluar.index') }}" class="navbar-item">Evaluar estudiante</a>
-      </div>
-      <div class="navbar-item">
-        <a href="{{ route('cub_type.index') }}" class="navbar-item">Registrar tipo de cubículo</a>
-      </div>
-      @endif --}}
-      {{-- @endauth --}}
     </div>
 
     <div class="navbar-end">

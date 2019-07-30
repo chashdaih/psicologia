@@ -32,8 +32,14 @@ class FE3FDG extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'filler');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function center()
+    {
+        return $this->belongsTo('App\Building', 'center_id', 'id_centro');
+    }
+
     public function super_user()
     {
         return $this->belongsTo(User::class, 'supervisor');

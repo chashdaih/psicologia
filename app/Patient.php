@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model
 {
-    protected $table = 'paciente';
-    protected $primaryKey = 'id_paciente';
+    protected $guarded = [];
 
-    public function getFullNameAttribute() {
-        return $this->nombre.' '.$this->a_paterno.' '.$this->a_materno;
+    public function fdg()
+    {
+        return $this->belongsTo('App\FE3FDG', 'fdg_id', 'id');
     }
+
 }

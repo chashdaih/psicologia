@@ -29,6 +29,7 @@ import ProcToggle from './components/ProcToggle';
 import SupsAuto from './components/SupsAuto';
 import TableRs from './components/TableRs';
 import RegisterPartaker from './components/RegisterPartaker';
+import AssignProgram from './components/AssignProgram';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
@@ -72,7 +73,8 @@ const app = new Vue({
         ProcToggle,
         SupsAuto,
         TableRs,
-        RegisterPartaker
+        RegisterPartaker,
+        AssignProgram
     },
     data: {
         isActive: false

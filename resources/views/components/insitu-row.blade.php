@@ -85,7 +85,7 @@
                 </div> --}}
                 <sups-auto field="reg_sup_id[]"
                     :sups="{{$supervisors}}"
-                    @if(isset($data))
+                    @if(isset($data) && $data->reg_sup_id)
                     :user="{{$data->reg_sup_id}}"
                     @else
                     :user="{{$user_id}}"

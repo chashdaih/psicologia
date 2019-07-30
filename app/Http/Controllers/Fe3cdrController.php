@@ -6,17 +6,21 @@ use Auth;
 use App\Building;
 use App\Fe3cdr;
 use App\FE3FDG;
+use App\Patient;
 use App\Program;
 use App\Http\Requests\StoreFe3cdr;
 use Illuminate\Http\Request;
 
 class Fe3cdrController extends Controller
 {
-    // public function index()
-    // {
-    //     $records = Fe3cdr::all();
-    //     return view('procedures.3.fe.3.cdr.index', compact('records'));
-    // }
+    public function index($patient_id)
+    {
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'CDR'];
+        $cdr = Fe3cdr::where('patient_id', $patient_id)->first();
+        return view('usuario.cdr.index', compact('migajas', 'cdr', 'patient_id'));
+    }
+
+
     protected $sections = //json_encode(
         [[
             'title' => 'dep',
@@ -110,51 +114,52 @@ class Fe3cdrController extends Controller
         ]
     ];
 
-    public function create(Program $program, FE3FDG $patient)
+    public function create($patient_id)
     {
-        // $fdgs = FE3FDG::select('id','curp', 'name', 'last_name', 'mothers_name')->get();
-        // $fdgs = FE3FDG::all();
-        // $programs = Building::all();
-        // $data = compact('sections', 'fdgs', 'programs', 'program', 'patient');
-
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('cdr.index', $patient_id) => 'CDR', '#'=> 'Nuevo CDR'];
         $process_model = new Fe3cdr();
         $sections = $this->sections;
-        $data = compact('sections', 'process_model', 'program', 'patient');
-        // dd($data);
-        return view('procedures.3.fe.3.cdr.create', $data);
+        $data = compact('sections', 'process_model', 'patient_id', 'migajas');
+        return view('usuario.cdr.create', $data);
     }
 
-    public function store(Program $program, FE3FDG $patient, Request $request)
+    public function store($patient_id, Request $request)
     {
         foreach ($request->except(['_token', '_method']) as $data => $value) {
             $valids[$data] = "required|integer|min:0|max:10";
         }
           
         $this->validate($request, $valids);
-
-        // dd($request);
+        
         $values = collect($request->except(['_token', '_method']))->toArray();
-        $values['program_id'] = $program->id_practica;
+        $values['program_id'] = 0;
         $values['user_id'] = Auth::user()->id;
-        $values['patient_id'] = $patient->id;
-        Fe3cdr::create($values);
-        // return response(200);
-        return redirect()->route('fe.index', ['program_id'=>$program->id_practica, 'patient_id'=>$patient->id])->with('success', 'Cuestionario registrado exitosamente');
+        $values['patient_id'] = $patient_id;
+        $cdr = Fe3cdr::create($values);
+
+        Patient::where('id', $patient_id)->update(['cdr_id' => $cdr->id]);
+        
+        return redirect()->route('cdr.index', $patient_id)->with('success', 'CDR registrado exitosamente');
     }
 
-    public function show(Fe3cdr $fe3cdr)
+    public function show($patient_id, Fe3cdr $cdr)
     {
-        //
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        // $cdr = Fe3cdr::where('id', $id)->first();
+        $sections = collect($this->sections);
+        $sus = collect($this->sus);
+        $pdf->loadView('pdf.cdr', compact('cdr', 'sections', 'sus'));
+        return $pdf->stream('invoice.pdf');
     }
 
-    public function edit(Program $program, FE3FDG $patient, $id)
+    public function edit($patient_id, Fe3cdr $cdr)
     {
-        $process_model = Fe3cdr::where('id', $id)->first();
-        // dd($process_model->dep0);
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('cdr.index', $patient_id) => 'CDR', '#'=> 'Editar CDR'];
+        $process_model = $cdr;
         $sections = $this->sections;
-        $data = compact('sections', 'process_model', 'program', 'patient');
-        // dd($data);
-        return view('procedures.3.fe.3.cdr.create', $data);
+        $data = compact('sections', 'process_model', 'patient_id', 'migajas');
+        return view('usuario.cdr.create', $data);
     }
 
     public function update(Program $program, FE3FDG $patient, Request $request, $id)
@@ -179,14 +184,14 @@ class Fe3cdrController extends Controller
         //
     }
     
-    public function pdf(Program $program, FE3FDG $patient, $id)
-    {
-        $pdf = \App::make('dompdf.wrapper');
-        $pdf->getDomPDF()->set_option("enable_php", true);
-        $cdr = Fe3cdr::where('id', $id)->first();
-        $sections = collect($this->sections);
-        $sus = collect($this->sus);
-        $pdf->loadView('pdf.cdr', compact('cdr', 'sections', 'sus'));
-        return $pdf->stream('invoice.pdf');
-    }
+    // public function pdf(Program $program, FE3FDG $patient, $id)
+    // {
+    //     $pdf = \App::make('dompdf.wrapper');
+    //     $pdf->getDomPDF()->set_option("enable_php", true);
+    //     $cdr = Fe3cdr::where('id', $id)->first();
+    //     $sections = collect($this->sections);
+    //     $sus = collect($this->sus);
+    //     $pdf->loadView('pdf.cdr', compact('cdr', 'sections', 'sus'));
+    //     return $pdf->stream('invoice.pdf');
+    // }
 }

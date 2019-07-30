@@ -16,8 +16,10 @@ class CreateFe3fdgTable extends Migration
         Schema::create('FE3FDG', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->unsignedBigInteger('user_id'); // user who made the interview
-            $table->unsignedBigInteger('program_id');
+            $table->unsignedBigInteger('user_id'); // account who made the interview
+            $table->string('other_filler')->nullable();
+            $table->unsignedTinyInteger('center_id'); // where was registered
+            //$table->unsignedBigInteger('program_id');
             // identification
             $table->string('name');
             $table->string('last_name');
