@@ -27,8 +27,7 @@
             los horarios y periodos estipulados por la institución.</li></ul>
     </p>
     <p>
-        Hacemos de su conocimiento que los estudiantes cuentan con un periodo de altas y bajas de las
-        materias/prácticas en la semana del <strong>TODO</strong>, por lo que posterior a ese periodo,
+        Hacemos de su conocimiento que los estudiantes cuentan con un periodo de altas y bajas, por lo que posterior a ese periodo,
         le haremos llegar un nuevo listado de estudiantes inscritos si fuera el caso.
     </p>
     </div>
@@ -41,12 +40,14 @@
                 <td>Correo</td>
             </tr>
             @foreach ($program->partakers as $student)
+            @if($student->estatus == 'Inscrito')
             <tr>
                 <td>{{ $student->num_cuenta }}</td>
                 <td>{{ $student->full_name }}</td>
-                <td>{{ $student->phone }}</td>
-                <td>{{ $student->email }}</td>
+                <td>{{ $student->telefono }}</td>
+                <td>{{ $student->correo }}</td>
             </tr>
+            @endif
             @endforeach
         </table>
     </div>
