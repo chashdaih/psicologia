@@ -7,24 +7,25 @@ use App\Building;
 use App\FE3FDG;
 use App\Patient;
 use App\Program;
+use App\ProgramPartaker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class UsuarioController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
-        // Esto es para la asignación de usuarios
         $data = [];
-        if (Auth::user()->type > 4) {
-            $data['paraCdr'] = Patient::where('cdr_program_id', 0)->get();
-            $data['paraPs'] = Patient::where('cdr_id', '!=', 0)->where('ps_program_id', 0)->get();
-            $data['paraRe'] = Patient::where('ps_id', '!=', 0)->where('cdr_program_id', 0)->get();
-            $data['paraRs6'] = Patient::where('re_id', '!=', 0)->where('ps_program_id', 0)->get();
-            $data['paraRs7'] = Patient::where('rs6_id', '!=', 0)->where('re_program_id', 0)->get();
-            $data['paraHe'] = Patient::where('rs7_id', '!=', 0)->where('rs6_program_id', 0)->get();
-            $data['paraCssp'] = Patient::where('he_id', '!=', 0)->where('rs7_program_id', 0)->get();
+        if (Auth::user()->type > 4) { // jefe de centro y coordinación
+
+            // Esto es para la asignación de usuarios
+            $data['porAsignar'] = Patient::where('cdr_id', '!=', 0)->where('ps_program_id', 0)->get();
 
             $data['centers'] = Building::all();
     
@@ -32,10 +33,65 @@ class UsuarioController extends Controller
             ->orderBy('nombre', 'asc')->select('id_supervisor', 'id_centro',
             DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
             $data['supervisors'] = $this->fixNames($supervisors);
-        }
 
         // Esto es para los usuarios ya asignados
-        $data['asignados'] = Patient::all();
+            if (Auth::user()->type == 5) { // jefe de centro
+                $data['asignados'] = DB::table('patients')
+                ->where('ps_program_id', '!=', 0)
+                ->join('practicas as p', 'patients.ps_program_id', 'p.id_practica')
+                ->where('p.semestre_activo', '2020-1')
+                ->where('p.id_centro', Auth::user()->supervisor->center->id_centro)
+                ->get();
+
+                
+                $data['porCdr'] = Patient::where('fdg_id', '!=', 0)
+                    ->where('cdr_id', 0)
+                    ->join('fe3fdg as fdg', 'patients.fdg_id', 'fdg.id')
+                    ->where('fdg.center_id', Auth::user()->supervisor->id_centro)
+                    ->get();
+
+            } else {
+                $data['asignados'] = Patient::where('ps_program_id', '!=', 0)->get();
+                $data['porCdr'] = Patient::where('cdr_id', 0)->get();
+            }
+        } else { // supervisores y alumnos
+
+            $misPracticas = [];
+            if (Auth::user()->type == 2) { // supervisor
+                $programs = Program::where('semestre_activo', config('globales.semestre_activo'))
+                ->where('id_supervisor', Auth::user()->supervisor->id_supervisor)
+                ->pluck('id_practica')
+                ->toArray();
+
+                $inSitu = DB::table('sup_in_situs as sup')
+                ->where('reg_sup_id', Auth::user()->supervisor->id_supervisor)
+                ->join('practicas as p', 'sup.program_id', '=', 'p.id_practica')
+                ->where('p.semestre_activo', config('globales.semestre_activo'))
+                ->whereNotIn('p.id_practica', $programs)
+                ->pluck('p.id_practica')
+                ->toArray();
+
+                $misPracticas = array_merge($programs, $inSitu);
+
+            } else { // partaker
+                $misPracticas = ProgramPartaker::where('id_participante', Auth::user()->partaker->num_cuenta)
+                    ->where('ciclo_activo', config('globales.semestre_activo'))
+                    ->pluck('id_practica')->toArray();
+            }
+
+            $data['asignados'] = Patient::where('ps_program_id', '!=', 0)
+            ->join('practicas as p', 'patients.ps_program_id', 'p.id_practica')
+            ->where('p.semestre_activo', '2020-1')
+            ->whereIn('p.id_practica', $misPracticas)
+            ->get();
+
+            $data['porCdr'] =Patient::where('fdg_id', '!=', 0)
+                    ->where('cdr_id', 0)
+                    ->join('fe3fdg as fdg', 'patients.fdg_id', 'fdg.id')
+                    ->where('fdg.user_id', Auth::user()->id)
+                    ->get();
+
+        }
 
         return view('usuario.index', $data);
     }
@@ -61,35 +117,36 @@ class UsuarioController extends Controller
 
     public function assign(Request $request) // WS
     {
-        $etapa = $request->etapa;
+        // $etapa = $request->etapa;
         $user_id = $request->user_id;
         $program_id = $request->program_id;
-        $code = null;
-        switch ($etapa) {
-            case 'primer_contacto':
-                $code = 'cdr_program_id';
-                break;
-            case 'admision':
-                $code = 'ps_program_id';
-                break;
-            case 'evaluacion':
-                $code = 're_program_id';
-                break;
-            case 'orientacion':
-                $code = 'rs6_program_id';
-                break;
-            case 'intervencion':
-                $code = 'rs7_program_id';
-                break;
-            case 'egreso':
-                $code = 'he_program_id';
-                break;
-        }
-        if($code) {
-            return Patient::where('id', $user_id)->update([$code => $program_id]);
-        } else {
-            return 404;
-        }
+        // $code = null;
+        // switch ($etapa) {
+        //     case 'primer_contacto':
+        //         $code = 'cdr_program_id';
+        //         break;
+        //     case 'admision':
+        //         $code = 'ps_program_id';
+        //         break;
+        //     case 'evaluacion':
+        //         $code = 're_program_id';
+        //         break;
+        //     case 'orientacion':
+        //         $code = 'rs6_program_id';
+        //         break;
+        //     case 'intervencion':
+        //         $code = 'rs7_program_id';
+        //         break;
+        //     case 'egreso':
+        //         $code = 'he_program_id';
+        //         break;
+        // }
+        // if($code) {
+        //     return Patient::where('id', $user_id)->update([$code => $program_id]);
+        // } else {
+        //     return 404;
+        // }
+        return Patient::where('id', $user_id)->update(['ps_program_id' => $program_id, 're_program_id' => $program_id, 'rs6_program_id'=>$program_id, 'rs7_program_id'=>$program_id, 'he_program_id'=>$program_id, 'cssp_program_id'=>$program_id]);
     }
 
 
@@ -103,6 +160,7 @@ class UsuarioController extends Controller
 
     public function store(Request $request)
     {
+        // dd($request);
         $this->validateForm();
         $parameters = collect($request)->toArray() + ['user_id' => auth()->id()];
         $fdg = FE3FDG::create($parameters);
@@ -143,6 +201,25 @@ class UsuarioController extends Controller
     {
         //
     }
+
+    public function subirDocumento(Request $request)
+    {
+        $this->validate($request, [
+            'tipo_documento' => 'required|string',
+            'patient_id' => 'required|numeric|min:1',
+            'document' => 'required|mimes:pdf|max:14000',
+        ]);
+        $request->file("document")->storeAs('public/patients/'.$request->patient_id, $request->tipo_documento.'.pdf');
+
+        return redirect()->route($request->tipo_documento.'.index', $request->patient_id)->with('success', 'Documento subido exitosamente');
+    }
+
+    public function bajarDocumento($patient_id, $clave)
+    {
+        return response()->download(public_path() . '/storage/patients/'.$patient_id.'/'.$clave.'.pdf');
+    }
+
+
     protected function validateForm()
     {
         return $this->validate(request(), [
@@ -189,7 +266,7 @@ class UsuarioController extends Controller
             'scholarship' => 'required',
             'studied_years' => 'required',
             'has_work' => 'required',
-            'has_salary' => 'required',
+            'has_salary' => 'nullable',
             'work_description' => 'nullable',
             'household_members' => 'required',
             'monthly_family_income' => 'required',
@@ -200,7 +277,7 @@ class UsuarioController extends Controller
             'service_type' => 'required|numeric',
             'service_modality' => 'required|numeric',
             'consultation_cause' => 'required',
-            'mhGAP_cause_classification' => 'required|numeric',
+            'mhGAP_cause_classification' => 'nullable|numeric',
             'problem_since' => 'required',
             'has_recived_previous_treatment' => 'required|boolean',
             'number_times_treatment' => 'nullable|numeric',
@@ -258,7 +335,7 @@ class UsuarioController extends Controller
         $fdg->scholarship = $this->studies_level[$fdg->scholarship];
         $fdg->house_is = $this->house_is[$fdg->house_is];
         $fdg->service_type = $this->service_type[$fdg->service_type];
-        $fdg->mhGAP_cause_classification = $this->mhGAP_cause_classification[$fdg->mhGAP_cause_classification];
+        // $fdg->mhGAP_cause_classification = $this->mhGAP_cause_classification[$fdg->mhGAP_cause_classification];
         if ($fdg->type_previous_treatment) {
             $fdg->type_previous_treatment = $this->type_previous_treatment[$fdg->type_previous_treatment];
         }

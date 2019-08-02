@@ -1,4 +1,13 @@
 {
+    "file_number": {
+        "title": "No. expediente",
+        "type": "text",
+        "nullable": false
+    },
+    "created_at" : {
+        "title" : "Fecha en que se llenó el documento",
+        "type" : "date"
+    },
     "referencia_necesaria": {
         "title": "¿Fue necesario hacer referencia?",
         "type": "select",

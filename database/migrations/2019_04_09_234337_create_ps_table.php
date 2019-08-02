@@ -16,9 +16,8 @@ class CreatePsTable extends Migration
         Schema::create('ps', function (Blueprint $table) {
             $table->bigIncrements('id'); // No. expediente
             $table->timestamps();
-            $table->unsignedBigInteger('user_id'); 
-            $table->unsignedBigInteger('FE3FDG_id'); // patient
-            $table->unsignedBigInteger('program_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('file_number');
 
             $table->unsignedTinyInteger('tipo_de_intervencion');
             $table->string('modelo_psicoterapia')->nullable();

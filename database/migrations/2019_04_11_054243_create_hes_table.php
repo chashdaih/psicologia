@@ -16,9 +16,8 @@ class CreateHesTable extends Migration
         Schema::create('hes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->unsignedInteger('program_id');
-            $table->unsignedInteger('patient_id');
             $table->unsignedInteger('user_id');
+            $table->string('file_number');
             $table->unsignedTinyInteger('egress_type');
         });
     }

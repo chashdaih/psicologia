@@ -7,7 +7,7 @@ import CalendarModal from './components/CalendarModal';
 import CalDateSel from './components/CalDateSel';
 import CalCancelModal from './components/CalCancelModal';
 import CalendarSpace from './components/CalendarSpace';
-import FDGForm from './components/FDGForm';
+// import FDGForm from './components/FDGForm';
 import CdrForm from './components/CdrForm';
 import CdrSection from './components/CdrSection';
 import Test from './components/Test';
@@ -30,10 +30,12 @@ import SupsAuto from './components/SupsAuto';
 import TableRs from './components/TableRs';
 import RegisterPartaker from './components/RegisterPartaker';
 import AssignProgram from './components/AssignProgram';
+import FdgNew from './components/FdgNew';
+import UsuarioColl from './components/UsuarioColl';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle);
+import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload } from '@fortawesome/free-solid-svg-icons';
+library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export const eventBus = new Vue();
@@ -52,7 +54,7 @@ const app = new Vue({
         CalCancelModal,
         CalendarSpace,
         CalDateSel,
-        FDGForm,
+        // FDGForm,
         CdrForm,
         CdrSection,
         Test,
@@ -74,7 +76,9 @@ const app = new Vue({
         SupsAuto,
         TableRs,
         RegisterPartaker,
-        AssignProgram
+        AssignProgram,
+        FdgNew,
+        UsuarioColl
     },
     data: {
         isActive: false

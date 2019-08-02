@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use App\Appointment;
 use App\Building;
 use App\Partaker;
 use App\ProgramPartaker;
-use App\Appointment;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 

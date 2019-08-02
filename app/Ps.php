@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ps extends Model
 {
     // protected $guarded = ['id', 'updated_at'];
-    protected $fillable = ['created_at', 'user_id', 'FE3FDG_id', 'program_id', 'tipo_de_intervencion', 'modelo_psicoterapia', 'modalidad_de_servicio', 'sugerencias_de_intervencion'];
+    protected $fillable = ['created_at', 'user_id', 'FE3FDG_id', 'program_id', 'tipo_de_intervencion', 'modelo_psicoterapia', 'modalidad_de_servicio', 'sugerencias_de_intervencion', 'file_number'];
     protected $dates = ['created_at'];
 
 

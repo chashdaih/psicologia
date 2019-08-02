@@ -120,11 +120,11 @@
           </a>
         </b-table-column> -->
 
-        <b-table-column label="Usuarios" centered>
+        <!-- <b-table-column label="Usuarios" centered>
           <a :href='base_url + "/program/" + props.row.id_practica + "/patient"' >
               <fai icon="user-friends" size="2x" />
           </a>
-        </b-table-column>
+        </b-table-column> -->
 
         <b-table-column  v-if="supervisors" label="Eliminar" centered>
           <form :action='url + "/" + props.row.id_practica' method="POST" :ref=props.row.id_practica>

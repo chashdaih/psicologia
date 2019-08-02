@@ -42,7 +42,8 @@ export default {
         cleanError() {
             this.errorMessage = null;
             this.inputColor = null;
-        }
+            this.$emit('date-change', this.date);
+        },
     }
 }
 </script>

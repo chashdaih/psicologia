@@ -40,11 +40,11 @@
                         <fai icon="file-pdf" size="2x" />
                     </a>
                 </td>
-                <td>
+                {{-- <td>
                     <a href="{{ route('users_list',['id' => $in->id_practica]) }}">
                         <fai icon="chalkboard-teacher" size="2x" />
                     </a>
-                </td>
+                </td> --}}
                 <td>
                     <a href="{{ route('patient.index', $in->id_practica) }}">
                         <fai icon="user-friends" size="2x" />

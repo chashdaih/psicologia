@@ -10,6 +10,9 @@
         <h1 class="title">Registrar ficha de datos generales</h1>
         <p class="subtitle">Agregue los datos de la persona que requiere el servicio</p>
         @endif
+        <fdg-new inline-template
+        v-on:mounted="console.log('mounted')"
+        >
             <div>
                 <form 
                 @if(isset($fdg))
@@ -36,7 +39,7 @@
                     </div>
                     @if(Auth::user()->type != 3)
                     @component('components.text-input', [
-                        'title' => 'Si no estás registrado en el sistema, escribre tu nombre (opcional)',
+                        'title' => 'Nombre de quien hizo la entrevista *OPCIONAL* (Solo si no está dado de alta en el sistema)',
                         'field' => 'other_filler',
                         'errors' => $errors,
                         'type' => 'text',
@@ -44,6 +47,36 @@
                         'maxlength' => 255,
                     ])@endcomponent
                     @endif
+                    @component('components.text-input', [
+                        'title'=>'No. expediente',
+                        'field'=>'file_number',
+                        'errors'=>$errors,
+                        'type'=> 'text',
+                        'prev' => old('file_number', isset($fdg) ? $fdg->file_number : null),
+                        'maxlength' => 255,
+                        'required' => true
+                    ])@endcomponent
+                    @component('components.text-input', [
+                        'title'=>'CURP/No.Cuenta/No.Trabajador',
+                        'field'=>'curp',
+                        'errors'=>$errors,
+                        'type'=> 'text',
+                        'prev' => isset($fdg) ? $fdg->curp : null,
+                        'maxlength' => 255
+                    ])@endcomponent
+                    <date-component
+                        label="Fecha de llenado"
+                        name="created_at"
+                        @if($errors->has("created_at"))
+                        error='{{$errors->first("created_at")}}'
+                        @endif
+                        @if(old('created_at'))
+                        old={{old('created_at')}}
+                        @elseif(isset($fdg))
+                        old={{ $fdg->created_at ? $fdg->created_at->format('Y-m-d') : null }}
+                        @endif
+                    ></date-component>
+                    <h2 class="subtitle">Identificación de la persona que requiere el servicio</h2>
                     @component('components.text-input', [
                         'title'=>'Nombre(s)',
                         'field'=>'name',
@@ -79,17 +112,6 @@
                         'prev'=>isset($fdg)?$fdg->gender:null
                     ])
                     @endcomponent
-                    {{-- <div class="field">
-                        <label class="label">Sexo</label>
-                        <div class="control">
-                            <div class="select">
-                            <select name="gender">
-                                <option value="0">Mujer</option>
-                                <option value="1">Hombre</option>
-                            </select>
-                            </div>
-                        </div>
-                    </div> --}}
                     <date-component
                         label="Fecha de nacimiento"
                         name="birthdate"
@@ -101,52 +123,202 @@
                         @elseif(isset($fdg))
                         old={{ $fdg->birthdate ? $fdg->birthdate->format('Y-m-d') : null }}
                         @endif
+                        v-on:date-change="checkIfOver18"
                     ></date-component>
-                    <div class="field">
-                        <label class="label">Estado civil</label>
-                        <div class="control">
-                            <div class="select">
-                            <select name="marital_status">
-                                <option value="0">Soltero</option>
-                                <option value="1">Casado</option>
-                                <option value="2">Unión libre</option>
-                                <option value="3">Viudo</option>
-                                <option value="4">Separado</option>
-                            </select>
-                            </div>
-                        </div>
+                    <div v-if="age != null">
+                        <p><span class="has-text-weight-semibold">Edad: </span>@{{age}} años</p>
+                        <br>
                     </div>
-                    <div class="field">
-                        <label class="label">Persona que solicita el servicio</label>
-                        <div class="control">
-                            <div class="select">
-                            <select name="person_requesting">
-                            @foreach (['La persona', 'Padres o tutores', 'Otro familiar', 'Otro'] as $key=>$value)
-                                <option value="{{$key}}">{{$value}}</option>
-                            @endforeach
-                            </select>
-                            </div>
-                        </div>
-                    </div>
-                    @component('components.text-input', [
-                        'title'=>'CURP/No.Cuenta/No.Trabajador',
-                        'field'=>'curp',
+                    
+                    @component('components.array-sel',[
+                        'title'=>'Estado civil',
+                        'field'=>'marital_status',
+                        'options'=>['Soltero', 'Casado', 'Unión libre', 'Viudo', 'Separado', 'Licenciatura', 'Posgrado'],
                         'errors'=>$errors,
-                        'type'=> 'text',
-                        'prev' => isset($fdg) ? $fdg->curp : null,
-                        'maxlength' => 255
+                        'prev'=>isset($fdg)?$fdg->marital_status:null
                     ])@endcomponent
-                    <div class="field">
+                    <div class="field"> 
                         <label class="label">Es comunidad UNAM</label>
                         <div class="control">
                             <div class="select">
-                            <select name="is_unam">
+                            <select name="is_unam" v-model="is_unam" >
                                 <option value="0">No</option>
                                 <option value="1">Si</option>
                             </select>
                             </div>
                         </div>
                     </div>
+                    {{-- Es comunidad unam --}}
+                    <div v-if="is_unam">
+                        @component('components.text-input', [
+                            'title'=>'Entidad académica de procedencia',
+                            'field'=>'academic_entity',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'prev' => isset($fdg) ? $fdg->academic_entity : null,
+                            'maxlength' => 255,
+                            'required' => false
+                        ])@endcomponent
+                        @component('components.array-sel',[
+                            'title'=>'Eres:',
+                            'field'=>'position',
+                            'options'=>['Estudiante', 'Académico', 'Administrativo'],
+                            'errors'=>$errors,
+                            'prev'=>isset($fdg)?$fdg->position:null
+                        ])@endcomponent
+                        @component('components.text-input', [
+                            'title'=>'Carrera que estudias',
+                            'field'=>'career',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'prev' => isset($fdg) ? $fdg->career : null,
+                            'maxlength' => 255,
+                            'required' => false
+                        ])@endcomponent
+                        @component('components.text-input', [
+                            'title'=>'Semestre que cursas',
+                            'field'=>'semester',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'prev' => isset($fdg) ? $fdg->semester : null,
+                            'maxlength' => 255,
+                            'required' => false
+                        ])@endcomponent
+                    </div>
+                    {{-- termina comunidad unam --}}
+                    <div class="field"> 
+                            <label class="label">Persona que solicita el servicio</label>
+                            <div class="control">
+                                <div class="select">
+                                <select name="person_requesting" v-model="requester" >
+                                    <option value="0">La persona</option>
+                                    <option value="1">Padres o tutores</option>
+                                    <option value="2">Otro familiar</option>
+                                    <option value="3">Otro</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="requester">
+                            @component('components.text-input', [
+                                'title'=>'Nombre de quien solicita el servicio',
+                                'field'=>'name_requester',
+                                'errors'=>$errors,
+                                'type'=> 'text',
+                                'prev' => isset($fdg) ? $fdg->name_requester : null,
+                                'maxlength' => 255,
+                                'required' => false
+                            ])@endcomponent
+                        </div>
+                    <!-- Tutors -->
+                    <div v-if="is_under_18">
+                        <br>
+                        <p class="title is-6">**La atención es para un menor de edad. Por favor, anote los datos de los padres o tutores**</p>
+                        @component('components.text-input', [
+                            'title'=>'Nombre del padre, madre o tutor',
+                            'field'=>'tutor_name_1',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'prev' => isset($fdg) ? $fdg->tutor_name_1 : null,
+                            'maxlength' => 255,
+                            'required' => false
+                        ])@endcomponent
+                        @component('components.array-sel',[
+                            'title'=>'Parentesco',
+                            'field'=>'relationship_1',
+                            'options'=>['Madre', 'Padre', 'Tutor'],
+                            'errors'=>$errors,
+                            'prev'=>isset($fdg)?$fdg->relationship_1:null
+                        ])@endcomponent
+                        <date-component
+                            label="Fecha de nacimiento del tutor"
+                            name="tutor_birthdate_1"
+                            @if($errors->has("tutor_birthdate_1"))
+                            error='{{$errors->first("tutor_birthdate_1")}}'
+                            @endif
+                            @if(old('tutor_birthdate_1'))
+                            old={{old('tutor_birthdate_1')}}
+                            @elseif(isset($fdg))
+                            old={{ $fdg->tutor_birthdate_1 ? $fdg->tutor_birthdate_1->format('Y-m-d') : null }}
+                            @endif
+                        ></date-component>
+                        @component('components.array-sel',[
+                            'title'=>'Nivel máximo de estudios',
+                            'field'=>'studies_level_1',
+                            'options'=>['No cuenta con escolaridad', 'Preescolar', 'Primaria', 'Secundaria', 'Preparatoria', 'Licenciatura', 'Posgrado'],
+                            'errors'=>$errors,
+                            'prev'=>isset($fdg)?$fdg->relationship_1:null
+                        ])@endcomponent
+                        @component('components.text-input', [
+                            'title'=>'Ocupación',
+                            'field'=>'occupation_1',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'prev' => isset($fdg) ? $fdg->occupation_1 : null,
+                            'maxlength' => 255,
+                            'required' => false
+                        ])@endcomponent
+                        <div class="field" >
+                            <div class="control">
+                                <button v-if="second_tutor === false" class="button is-centered is-warning" @click.prevent="showSecondTutor">
+                                    Añadir segundo tutor
+                                </button>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div v-if="second_tutor">
+                        @component('components.text-input', [
+                            'title'=>'Nombre del segundo padre, madre o tutor',
+                            'field'=>'tutor_name_2',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'prev' => isset($fdg) ? $fdg->tutor_name_2 : null,
+                            'maxlength' => 255,
+                            'required' => false
+                        ])@endcomponent
+                        @component('components.array-sel',[
+                            'title'=>'Parentesco',
+                            'field'=>'relationship_2',
+                            'options'=>['Madre', 'Padre', 'Tutor'],
+                            'errors'=>$errors,
+                            'prev'=>isset($fdg)?$fdg->relationship_2:null
+                        ])@endcomponent
+                        <date-component
+                            label="Fecha de nacimiento del tutor"
+                            name="tutor_birthdate_2"
+                            @if($errors->has("tutor_birthdate_2"))
+                            error='{{$errors->first("tutor_birthdate_2")}}'
+                            @endif
+                            @if(old('tutor_birthdate_2'))
+                            old={{old('tutor_birthdate_2')}}
+                            @elseif(isset($fdg))
+                            old={{ $fdg->tutor_birthdate_2 ? $fdg->tutor_birthdate_2->format('Y-m-d') : null }}
+                            @endif
+                        ></date-component>
+                        @component('components.array-sel',[
+                            'title'=>'Nivel máximo de estudios',
+                            'field'=>'studies_level_2',
+                            'options'=>['No cuenta con escolaridad', 'Preescolar', 'Primaria', 'Secundaria', 'Preparatoria', 'Licenciatura', 'Posgrado'],
+                            'errors'=>$errors,
+                            'prev'=>isset($fdg)?$fdg->studies_level_2:null
+                        ])@endcomponent
+                        @component('components.text-input', [
+                            'title'=>'Ocupación',
+                            'field'=>'occupation_2',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'prev' => isset($fdg) ? $fdg->occupation_2 : null,
+                            'maxlength' => 255,
+                            'required' => false
+                        ])@endcomponent
+                        <br>
+                    </div>
+
+                    {{-- termina segundo tutor --}}
+
+                    {{-- empieza dirección --}}
+                    <h2 class="subtitle">Dirección de la persona que requiere el servicio</h2>
                     @component('components.text-input', [
                         'title'=>'Calle',
                         'field'=>'street_name',
@@ -156,11 +328,19 @@
                         'maxlength' => 255
                     ])@endcomponent
                     @component('components.text-input', [
-                        'title'=>'Número',
+                        'title'=>'Número exterior',
                         'field'=>'external_number',
                         'errors'=>$errors,
                         'type'=> 'text',
                         'prev' => isset($fdg) ? $fdg->external_number : null,
+                        'maxlength' => 255
+                    ])@endcomponent
+                    @component('components.text-input', [
+                        'title'=>'Número interior',
+                        'field'=>'internal_number',
+                        'errors'=>$errors,
+                        'type'=> 'text',
+                        'prev' => isset($fdg) ? $fdg->internal_number : null,
                         'maxlength' => 255
                     ])@endcomponent
                     @component('components.text-input', [
@@ -180,7 +360,7 @@
                         'maxlength' => 255
                     ])@endcomponent
                     @component('components.text-input', [
-                        'title'=>'Municipio',
+                        'title'=>'Delegación / Municipio',
                         'field'=>'municipality',
                         'errors'=>$errors,
                         'type'=> 'text',
@@ -188,13 +368,46 @@
                         'maxlength' => 255
                     ])@endcomponent
                     @component('components.text-input', [
-                        'title'=>'Estado',
+                        'title'=>'Entidad Federativa',
                         'field'=>'state',
                         'errors'=>$errors,
                         'type'=> 'text',
                         'prev' => isset($fdg) ? $fdg->state : null,
                         'maxlength' => 255
                     ])@endcomponent
+                    @component('components.text-input', [
+                        'title'=>'Teléfono de casa',
+                        'field'=>'house_phone',
+                        'errors'=>$errors,
+                        'type'=> 'text',
+                        'prev' => isset($fdg) ? $fdg->house_phone : null,
+                        'maxlength' => 255
+                    ])@endcomponent
+                    @component('components.text-input', [
+                        'title'=>'Teléfono celular',
+                        'field'=>'cell_phone',
+                        'errors'=>$errors,
+                        'type'=> 'text',
+                        'prev' => isset($fdg) ? $fdg->cell_phone : null,
+                        'maxlength' => 255
+                    ])@endcomponent
+                    @component('components.text-input', [
+                        'title'=>'Teléfono de trabajo',
+                        'field'=>'work_phone',
+                        'errors'=>$errors,
+                        'type'=> 'text',
+                        'prev' => isset($fdg) ? $fdg->work_phone : null,
+                        'maxlength' => 255
+                    ])@endcomponent
+                    @component('components.text-input', [
+                        'title'=>'Ext.',
+                        'field'=>'work_phone_ext',
+                        'errors'=>$errors,
+                        'type'=> 'text',
+                        'prev' => isset($fdg) ? $fdg->work_phone_ext : null,
+                        'maxlength' => 255
+                    ])@endcomponent
+                    <h2 class="subtitle">Escolaridad de la persona que requiere el servicio</h2>
                     <div class="field">
                         <label class="label">Escolaridad</label>
                         <div class="control">
@@ -223,34 +436,53 @@
                             </div>
                         </div>
                     </div>
+                    <h2 class="subtitle">Situación laboral de la persona que requiere el servicio</h2>
                     <div class="field">
                         <label class="label">¿Trabaja actualmente?</label>
                         <div class="control">
                             <div class="select">
-                            <select name="has_work">
-                                <option value="0">No</option>
-                                <option value="1">Si</option>
+                            <select name="has_work" v-model="has_work">
+                                <option value=0>No</option>
+                                <option value=1>Si</option>
                             </select>
                             </div>
                         </div>
                     </div>
-                    <div class="field">
-                        <label class="label">¿Recibe remuneración económica por su trabajo?</label>
-                        <div class="control">
-                            <div class="select">
-                            <select name="has_salary">
-                                <option value="0">No</option>
-                                <option value="1">Si</option>
-                            </select>
+                    <template v-if="has_work == '0'">
+                        @component('components.text-input', [
+                            'title'=>'Si no tiene trabajo, ¿de quién depende?',
+                            'field'=>'who_depends_on',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'prev' => isset($fdg) ? $fdg->who_depends_on : null,
+                            'maxlength' => 255
+                        ])@endcomponent
+                    </template>
+                    <template v-else>
+                        <div class="field">
+                            <label class="label">¿Recibe remuneración económica por su trabajo?</label>
+                            <div class="control">
+                                <div class="select">
+                                <select name="has_salary">
+                                    <option value="0">No</option>
+                                    <option value="1">Si</option>
+                                </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    @component('components.text-input', [
-                        'title'=>'Número de integrantes del hogar',
+                        <div class="field">
+                            <label class="label">Descripción de su trabajo</label>
+                            <div class="control">
+                                <input value="{{old('work_description', isset($fdg) ? $fdg->work_description : null)}}" type="text" class="input" maxlength="255" placeholder="Descripción de su trabajo" name="work_description">
+                            </div>
+                        </div>
+                    </template>
+                    @component('components.array-sel', [
+                        'title'=>'Número de integrantes del hogar (contando la persona que requiere el servicio)',
                         'field'=>'household_members',
+                        'options'=> [1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>'7 o más' ],
                         'errors'=>$errors,
-                        'type'=> 'number',
-                        'prev'=> isset($fdg) ? $fdg->household_members : null
+                        'prev'=>isset($fdg)?$fdg->household_members:null
                     ])@endcomponent
                     @component('components.text-input', [
                         'title'=>'Ingreso familiar mensual',
@@ -259,59 +491,62 @@
                         'type'=> 'text',
                         'prev'=> isset($fdg) ? $fdg->monthly_family_income : null
                     ])@endcomponent
-                    @component('components.text-input', [
+                    @component('components.array-sel', [
                         'title'=>'Número de personas que aportan a este ingreso (contando la persona que requiere el servicio)',
                         'field'=>'number_people_contributing',
+                        'options'=> [1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>'7 o más' ],
                         'errors'=>$errors,
-                        'type'=> 'number',
-                        'prev'=> isset($fdg) ? $fdg->number_people_contributing : null
+                        'prev'=>isset($fdg)?$fdg->number_people_contributing:null
                     ])@endcomponent
-                    @component('components.text-input', [
+                    @component('components.array-sel', [
                         'title'=>'Número de personas que dependen de este ingreso (contando la persona que requiere el servicio)',
                         'field'=>'number_people_depending',
+                        'options'=> [1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>'7 o más' ],
                         'errors'=>$errors,
-                        'type'=> 'number',
-                        'prev'=> isset($fdg) ? $fdg->number_people_depending : null
+                        'prev'=>isset($fdg)?$fdg->number_people_depending:null
                     ])@endcomponent
                     <div class="field">
                         <label class="label">Su casa es:</label>
                         <div class="control">
                             <div class="select">
-                            <select name="house_is">
-                                <option value="0">Otra</option>
-                                <option value="1">Propia</option>
-                                <option value="2">Propia, pero la está pagando</option>
-                                <option value="3">Rentada</option>
-                                <option value="4">Prestada</option>
-                                <option value="5">Intenstada o en litigio</option>
+                            <select name="house_is" v-model="house_is">
+                                    @foreach (['Propia', 'Propia, pero la está pagando', 'Rentada', 'Prestada', 'Intestada o en litigio', 'Otra'] as $key=>$value)
+                                    <option value="{{ $key }}"
+                                        @if(old('house_is', isset($prev)?$prev:null))
+                                            @if ($key == old('house_is', isset($fdg)?$fdg->house_is:null) )
+                                            selected="selected"
+                                            @endif
+                                        @endif
+                                        >{{ $value }}</option>
+                                    @endforeach
                             </select>
                             </div>
                         </div>
                     </div>
-                    <div class="field">
-                        <label class="label">Servicio solicitado</label>
-                        <div class="control">
-                            <div class="select">
-                            <select name="service_type">
-                            @foreach (['Orientación/Consejo breve', 'Evaluación', 'Intervención'] as $key=>$value)
-                                <option value="{{$key}}">{{$value}}</option>
-                            @endforeach
-                            </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Modalidad de servicio que solicita</label>
-                        <div class="control">
-                            <div class="select">
-                            <select name="service_modality">
-                            @foreach (['Individual/Grupal', 'Familiar/Pareja'] as $key=>$value)
-                                <option value="{{$key}}">{{$value}}</option>
-                            @endforeach
-                            </select>
-                            </div>
-                        </div>
-                    </div>
+                    <template v-if="house_is==5">
+                        @component('components.text-input', [
+                            'title'=>'Otra:',
+                            'field'=>'house_other',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'prev'=> isset($fdg) ? $fdg->house_other : null
+                        ])@endcomponent
+                    </template>
+                    <h2 class="subtitle">Sobre el servicio</h2>
+                    @component('components.array-sel', [
+                        'title'=>'Tipo de servicio',
+                        'field'=>'service_type',
+                        'options'=> ['Orientación/Consejo breve', 'Evaluación', 'Taller', 'Intervención'],
+                        'errors'=>$errors,
+                        'prev'=>isset($fdg)?$fdg->service_type:null
+                    ])@endcomponent
+                    @component('components.array-sel', [
+                        'title'=>'Modalidad de servicio que solicita',
+                        'field'=>'service_modality',
+                        'options'=> ['Individual/Grupal', 'Familiar/Pareja'],
+                        'errors'=>$errors,
+                        'prev'=>isset($fdg)?$fdg->service_modality:null
+                    ])@endcomponent
                     @component('components.text-input', [
                         'title'=>'Motivo de consulta (Describa de forma detallada lo que le pasa y qué espera de la atención que se le puede brindar en este Centro/Programa)',
                         'field'=>'consultation_cause',
@@ -326,7 +561,7 @@
                         'type'=> 'text',
                         'prev'=> isset($fdg) ? $fdg->problem_since : null
                     ])@endcomponent
-                    <div class="field">
+                    {{-- <div class="field">
                         <label class="label">Clasificación del motivo de consulta según la guía mhGAP</label>
                         <div class="control">
                             <div class="select">
@@ -337,52 +572,157 @@
                             </select>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="field">
                         <label class="label">¿Ha recibido anteriormente tratamiento para dar solución a esta situación?</label>
                         <div class="control">
                             <div class="select">
-                            <select name="has_recived_previous_treatment">
+                            <select name="has_recived_previous_treatment" v-model="previous_treatment">
                                 <option value="0">No</option>
                                 <option value="1">Si</option>
                             </select>
                             </div>
                         </div>
                     </div>
+                    <template v-if="previous_treatment != '0'">
+                        @component('components.array-sel', [
+                            'title'=>'Número de veces que ha sido atendido para esta situación:',
+                            'field'=>'number_times_treatment',
+                            'options'=> [1=>1, 2=>2, 3=>3, 4=>4, 5=>5, 6=>6, 7=>'7 o más' ],
+                            'errors'=>$errors,
+                            'prev'=>isset($fdg)?$fdg->number_times_treatment:null
+                        ])@endcomponent
+                        <div class="field">
+                            <label class="label">Tipo de atención que ha recibido:</label>
+                            <div class="control">
+                                <div class="select">
+                                <select name="has_recived_previous_treatment" v-model="has_recived_previous_treatment">
+                                        @foreach (['Psicológica', 'Psiquiátrica', 'Médica', 'Neurológica', 'Otro'] as $key=>$value)
+                                        <option value="{{ $key }}"
+                                            @if(old('has_recived_previous_treatment', isset($prev)?$prev:null))
+                                                @if ($key == old('has_recived_previous_treatment', isset($fdg)?$fdg->has_recived_previous_treatment:null) )
+                                                selected="selected"
+                                                @endif
+                                            @endif
+                                            >{{ $value }}</option>
+                                        @endforeach
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <template v-if="has_recived_previous_treatment=='4'">
+                            @component('components.text-input', [
+                                'title'=>'Otro tipo de atención:',
+                                'field'=>'other_previous_treatment',
+                                'errors'=>$errors,
+                                'type'=> 'text',
+                                'prev'=> old('other_previous_treatment', isset($fdg) ? $fdg->other_previous_treatment : null)
+                            ])@endcomponent
+                        </template>
+                    </template>
                     <div class="field">
                         <label class="label">¿Viene referido de otra institución?</label>
                         <div class="control">
                             <div class="select">
-                            <select name="refer">
-                            @foreach (['No', 'Escuela', 'Trabajo', 'Hospital/Instituto', 'Dpto. de Psiquiatría y Salud Mental (Fac. Medicina)'] as $key=>$value)
-                                <option value="{{$key}}">{{$value}}</option>
+                            <select name="refer" v-model="refer">
+                            @foreach (['No', 'Escuela', 'Trabajo', 'Hospital/Instituto', 'Dpto. de Psiquiatría y Salud Mental (Fac. Medicina)', 'Otra'] as $key=>$value)
+                            <option value="{{ $key }}"
+                                @if(old('refer', isset($prev)?$prev:null))
+                                    @if ($key == old('refer', isset($fdg)?$fdg->refer:null) )
+                                    selected="selected"
+                                    @endif
+                                @endif
+                                >{{ $value }}</option>
                             @endforeach
                             </select>
                             </div>
                         </div>
                     </div>
+                    <template v-if="refer =='1' || refer=='2' || refer=='3'">
+                        @component('components.text-input', [
+                            'title'=>'¿Cuál?',
+                            'field'=>'refer_where',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'prev'=> old('refer_where', isset($fdg) ? $fdg->refer_where : null)
+                        ])@endcomponent
+                    </template>
+                    <template v-if="refer=='5'">
+                        @component('components.text-input', [
+                            'title'=>'Otra: ',
+                            'field'=>'refer_other',
+                            'errors'=>$errors,
+                            'type'=> 'text',
+                            'prev'=> old('refer_other', isset($fdg) ? $fdg->refer_other : null)
+                        ])@endcomponent
+                    </template>
                     <div class="field">
                         <label class="label">¿Ha recibido atención en otros Centros y/o Programas de la facultad para su motivo de consulta?</label>
                         <div class="control">
                             <div class="select">
-                            <select name="unam_previous_treatment">
+                            <select name="unam_previous_treatment" v-model="unam_prev">
                                 <option value="0">No</option>
                                 <option value="1">Si</option>
                             </select>
                             </div>
                         </div>
                     </div>
+                    <template v-if="unam_prev != '0'">
+                        <div class="field">
+                            <label class="label">Centro / Programa</label>
+                            <div class="control">
+                                <div class="select">
+                                <select name="unam_previous_treatment_program">
+                                    @foreach ($centers as $center)
+                                    <option value="{{$center->id_centro}}"
+                                        @if(old('unam_previous_treatment_program')&& old('unam_previous_treatment_program') == $center->id_centro) selected="selected" @elseif(isset($fdg) && $fdg->unam_previous_treatment_program == $center->id_centro) selected="selected" @endif
+                                        >{{$center->nombre}}</option>
+                                    @endforeach
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
                     <div class="field">
                         <label class="label">¿Tiene algún problema de salud?</label>
                         <div class="control">
                             <div class="select">
-                            <select name="has_health_issue">
+                            <select name="has_health_issue" v-model="has_health_issue">
                                 <option value="0">No</option>
                                 <option value="1">Si</option>
                             </select>
                             </div>
                         </div>
                     </div>
+                    <template v-if="has_health_issue != '0'">
+                        <div class="field">
+                            <label class="label">¿Toma medicamentos?</label>
+                            <div class="control">
+                                <div class="select">
+                                <select name="takes_medication" v-model="takes_medication">
+                                    <option value="0">No</option>
+                                    <option value="1">Si</option>
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <template v-if="takes_medication != '0'">
+                            @component('components.text-input', [
+                                'title'=>'¿Cuáles',
+                                'field'=>'medication',
+                                'errors'=>$errors,
+                                'type'=> 'text',
+                                'prev'=> old('medication', isset($fdg) ? $fdg->medication : null)
+                            ])@endcomponent
+                            @component('components.text-input', [
+                                'title'=>'Dosis: ',
+                                'field'=>'medication_dose',
+                                'errors'=>$errors,
+                                'type'=> 'text',
+                                'prev'=> old('medication_dose', isset($fdg) ? $fdg->medication_dose : null)
+                            ])@endcomponent
+                        </template>
+                    </template>
                     <div class="field">
                         <label class="label">Horario de preferencia</label>
                         <div class="control">
@@ -402,6 +742,7 @@
                     </div>
                 </form>
             </div>
+        </fdg-new>
     </div>
 </section>
 @endsection

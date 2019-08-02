@@ -18,6 +18,7 @@ class CreateFe3fdgTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('user_id'); // account who made the interview
             $table->string('other_filler')->nullable();
+            $table->string('file_number');
             $table->unsignedTinyInteger('center_id'); // where was registered
             //$table->unsignedBigInteger('program_id');
             // identification
@@ -63,23 +64,28 @@ class CreateFe3fdgTable extends Migration
             $table->unsignedTinyInteger('scholarship');
             $table->unsignedTinyInteger('studied_years');
             $table->boolean('has_work');
-            $table->boolean('has_salary');
+            $table->string('who_depends_on')->nullable();
+            $table->boolean('has_salary')->nullable();
             $table->string('work_description')->nullable();
             $table->unsignedTinyInteger('household_members');
             $table->string('monthly_family_income');
             $table->unsignedTinyInteger('number_people_contributing');
             $table->unsignedTinyInteger('number_people_depending');
             $table->unsignedTinyInteger('house_is');
+            $table->string('house_other')->nullable();
             // about the service
             $table->unsignedTinyInteger('service_type');
             $table->unsignedTinyInteger('service_modality');
             $table->string('consultation_cause');
-            $table->unsignedTinyInteger('mhGAP_cause_classification');
+            $table->unsignedTinyInteger('mhGAP_cause_classification')->nullable();
             $table->string('problem_since');
             $table->boolean('has_recived_previous_treatment');
             $table->unsignedTinyInteger('number_times_treatment')->nullable();
             $table->unsignedTinyInteger('type_previous_treatment')->nullable();
+            $table->string('other_previous_treatment')->nullable();
             $table->unsignedTinyInteger('refer');
+            $table->string('refer_where')->nullable();
+            $table->string('refer_other')->nullable();
             $table->string('refer_problem')->nullable();
             $table->boolean('unam_previous_treatment');
             $table->unsignedInteger('unam_previous_treatment_program')->nullable();

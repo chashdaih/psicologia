@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Building;
-use App\Bread;
 use App\FE3FDG;
 use App\He;
 use App\Option;
-use App\Program;
-use App\Student;
+use App\Patient;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -29,117 +27,72 @@ class HeController extends Controller
         ];
     }
 
-    // public function index()
-    // {
-    //     $doc_code = 'he';
-    //     $mBread = new Bread('fe', 'fe8', $doc_code);
-    //     $bread = collect($mBread->bread_array);
-    //     $records = He::all(); //TODO pagination
-    //     $target = "paciente";
-    //     return view('procedures.3.fe.list', compact('records', 'bread', 'doc_code','target'));
-    // }
-
-    public function create(Program $program, FE3FDG $patient)
+    public function index($patient_id)
     {
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'HE'];
+
+        $patient = Patient::where('id', $patient_id)->first();
+        $he = He::where('id', $patient->he_id)->first();
+
+        return view('usuario.he.index', compact('patient_id', 'migajas', 'he'));
+
+    }
+
+    public function create($patient_id)
+    {
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('he.index', $patient_id) => 'HE', "#"=>"Registrar HE"];
+
         $fields = $this->getFields();
         $process_model = new He();
-        // $values = new He();
-        // $code = 'he';
-        // $mBread = new Bread('fe', 'fe8', $code);
-        // $bread = collect($mBread->bread_array);
-        // return view('procedures.3.fe.8.he.create', compact('bread', 'fields', 'values', 'code'));
-        $data = compact('program', 'patient', 'fields', 'process_model');
-        return view('procedures.3.fe.8.he.create', $data);
+        $data = compact('patient_id', 'fields', 'process_model', 'migajas');
+        return view('usuario.he.create', $data);
     }
 
-    protected function getFields()
+    public function store($patient_id, Request $request)
     {
-        $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/he.json');
-        $fields = json_decode($json, true);
-
-        // $patients = FE3FDG::select('id', DB::raw("CONCAT(name, ' ', last_name, ' ', mothers_name) AS name"))->get(); // TODO where supervisor or student match somewhere...
-        // $buildings = Building::select('id_centro as id', 'nombre as name')->get();
-        // $programs = Program::select('id_practica as id', 'programa as name')->where('id_supervisor', 1)->get();
-        // $students = Student::select('id_usuario as id', DB::raw("CONCAT(nombre_t, ' ', ap_paterno_t, ' ', ap_materno_t) AS name"))->where('Sistema', 'Escolarizado')->get(); // TODO get supervisor's students
-        
-        // $fields['patient_id']['options'] = $patients;
-        // $fields['building_id']['options'] = $buildings;
-        // $fields['program_id']['options'] = $programs;
-        // $fields['student_id']['options'] = $students;
-        // $fields['egress_type']['options'] = $this->egress_type;
-
-        return $fields;
-    }
-
-    public function store(Program $program, FE3FDG $patient, Request $request)
-    {
-        // $validated = $this->validateHe($request);
-        // He::create($validated);
-        // return response(200);
-
         $this->validate($request, [
+            'file_number' => 'required|string',
             'created_at' => 'required|date',
             'egress_type' => 'required|integer|min:0|max:5'
         ]);
         $fields = collect($request->except(['_token', '_method']))->toArray();
         $fields['user_id'] = Auth::user()->id;
-        $fields['patient_id'] = $patient->id;
-        $fields['program_id'] = $program->id_practica;
-        He::create($fields);
-        return redirect()->route('fe.index', ['program_id'=>$program->id_practica, 'patient_id'=>$patient->id])->with('success', 'Hoja de egreso registrada exitosamente');
-
+        $he = He::create($fields);
+        Patient::where('id', $patient_id)->update(['he_id'=>$he->id]);
+        return redirect()->route('he.index', $patient_id)->with('success', 'Hoja de egreso registrada exitosamente');
     }
 
-    // protected function validateHe($request)
-    // {
-    //     foreach ($request->except('_token') as $data => $value) {
-    //         $valids[$data] = "required";
-    //     }
-    //     return $request->validate($valids);
-    // }
-
-    // public function show($id)
-    // {
-    //     $doc = $this->getFormattedHe($id);
-    //     return view('procedures.3.fe.8.he.show', compact('doc'));
-    // }
-
-    public function pdf(Program $program, FE3FDG $patient, $id)
+    public function show($patient_id, $he)
     {
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
 
-        $doc = $this->getFormattedHe($id);
+        $doc = $this->getFormattedHe($he);
 
-        $pdf->loadView('procedures.3.fe.8.he.show', compact('doc'));
+        $pdf->loadView('usuario.he.show', compact('doc'));
         return $pdf->stream('he.pdf');
+
     }
 
-    protected function getFormattedHe($id)
+    public function edit($patient_id, $he)
     {
-        $doc = He::where('id', $id)->first();
-        // dd($doc);
-        $doc['egress_type'] = $this->egress_type[$doc['egress_type']]->name;
-        return $doc;
-    }
-
-    public function edit(Program $program, FE3FDG $patient, $id)
-    {
-        $process_model = He::where('id', $id)->first();
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('he.index', $patient_id) => 'HE', "#"=>"Registrar HE"];
+        $process_model = He::where('id', $he)->first();
         $fields = $this->getFields();
-        $data = compact('fields', 'process_model', 'program', 'patient');
-        return view('procedures.3.fe.8.he.create', $data);
+        $data = compact('fields', 'process_model', 'patient_id', 'migajas');
+        return view('usuario.he.create', $data);
     }
 
-    public function update(Program $program, FE3FDG $patient, Request $request, $id)
+    public function update($patient_id, Request $request, $he)
     {
         $this->validate($request, [
+            'file_number' => 'required|string',
             'created_at' => 'required|date',
             'egress_type' => 'required|integer|min:0|max:5'
         ]);
         $values = collect($request->except(['_token', '_method']))->toArray();
-        He::where('id', $id)->update($values);
-        return redirect()->route('fe.index', ['program_id'=>$program->id_practica, 'patient_id'=>$patient->id])->with('success', 'Hoja de egreso actualizada exitosamente');
+        He::where('id', $he)->update($values);
+        return redirect()->route('he.index', $patient_id)->with('success', 'Hoja de egreso actualizada exitosamente');
     }
 
     public function destroy(He $he)
@@ -153,5 +106,32 @@ class HeController extends Controller
         } else {
            return dirname($path);
         }
+    }
+
+    protected function getFields()
+    {
+        $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/he.json');
+        $fields = json_decode($json, true);
+
+        return $fields;
+    }
+
+    // public function pdf(Program $program, FE3FDG $patient, $id)
+    // {
+    //     $pdf = \App::make('dompdf.wrapper');
+    //     $pdf->getDomPDF()->set_option("enable_php", true);
+
+    //     $doc = $this->getFormattedHe($id);
+
+    //     $pdf->loadView('procedures.3.fe.8.he.show', compact('doc'));
+    //     return $pdf->stream('he.pdf');
+    // }
+
+    protected function getFormattedHe($id)
+    {
+        $doc = He::where('id', $id)->first();
+        // dd($doc);
+        $doc['egress_type'] = $this->egress_type[$doc['egress_type']]->name;
+        return $doc;
     }
 }

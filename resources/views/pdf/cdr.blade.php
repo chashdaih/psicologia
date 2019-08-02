@@ -111,7 +111,7 @@
             @endfor
         </table>
         @endfor --}}
-        <h3>SUS</h3>
+        {{-- <h3>SUS</h3>
         @for ($i = 0; $i < count($sus['sections']); $i++)
         <h4>{{ $sus['sections'][$i]['title'] }}</h4>
         <table class="bool">
@@ -119,12 +119,12 @@
             <tr>
                 <td>{{ $sus['fields'][$j] }}</td>
                 <td>{{ $sus['5opt'][0] }}</td>
-                {{-- <td>{{ $sus[$sus['sections'][$i]['type']][$cdr[$sus['sections'][$i]['code'].$j]] }}</td> --}}
+                <td>{{ $sus[$sus['sections'][$i]['type']][$cdr[$sus['sections'][$i]['code'].$j]] }}</td>
             </tr>
             @endfor
         </table>
         <p>{{ $sus['sections'][$i]['obs'] }}</p>
-        @endfor
+        @endfor --}}
 
     </div>
 </body>

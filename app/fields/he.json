@@ -1,6 +1,11 @@
 {
+    "file_number": {
+        "title": "No. expediente",
+        "type": "text",
+        "nullable": false
+    },
     "created_at": {
-        "title": "Fecha",
+        "title": "Fecha de llenado",
         "type": "date"
     },
     "egress_type": {
