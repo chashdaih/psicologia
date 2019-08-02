@@ -35,16 +35,24 @@ class RsController extends Controller
         return view('usuario.rs.index', $data);
     }
 
-    public function create(Program $program, FE3FDG $patient)
+    public function create($patient_id)
     {
+        $path = '';
+        if($this->isIntervention) {
+            $path = 'intervencion';
+        } else {
+            $path = 'breve';
+        }
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route($path.'.index', $patient_id) => 'Resumen de sesión', '#'=>'Registrar resumen de sesión'];
+
         $fields = $this->getFields();
         $process_model = new Doc();
         $isIntervention = $this->isIntervention;
-        $data = compact('program', 'patient', 'fields', 'process_model', 'isIntervention');
-        return view('procedures.3.fe.7.rs.create', $data);
+        $data = compact('patient_id', 'fields', 'process_model', 'isIntervention', 'migajas');
+        return view('usuario.rs.create', $data);
     }
 
-    public function store(Program $program, FE3FDG $patient, Request $request)
+    public function store($patient_id, Request $request)
     {
         $this->validate($request, [
             'created_at' => 'required|date',
@@ -54,7 +62,7 @@ class RsController extends Controller
         
         $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
 
-        $file_folder = 'public/program/'.$program->id_practica.'/patient/'.$patient->id;
+        $file_folder = 'public/patients/'.$patient_id;
         if ($this->isIntervention) {
             $file_folder = $file_folder.'/intervention';
         } else {
@@ -64,8 +72,8 @@ class RsController extends Controller
         $request->file("file")->storeAs($file_folder, $file_name);
         
         $fields['user_id'] = Auth::user()->id;
-        $fields['patient_id'] = $patient->id;
-        $fields['program_id'] = $program->id_practica;
+        $fields['patient_id'] = $patient_id;
+        $fields['program_id'] = 0;
         $fields['intervencion'] = $this->isIntervention;
         $fields['exist'] = true;
         Doc::create($fields);
@@ -75,7 +83,7 @@ class RsController extends Controller
             $route = 'intervencion.index';
         }
 
-        return redirect()->route($route, compact('program', 'patient'))->with('success', 'Resumen de sesión registrado exitosamente');
+        return redirect()->route($route, $patient_id)->with('success', 'Resumen de sesión registrado exitosamente');
     }
 
     public function show(Rs $rs)
