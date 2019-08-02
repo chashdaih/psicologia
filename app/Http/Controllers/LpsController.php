@@ -45,7 +45,7 @@ class LpsController extends Controller
         
         $id_centro = Auth::user()->supervisor->id_centro;
 
-        $this->params['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, '2020-1');
+        $this->params['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
         $user_type = Auth::user()->type;
 
         if ($user_type == 5) { // jefe de centro

@@ -188,8 +188,8 @@ export default {
       recs: this.records,
       selected_stage: this.stage,
       selected_supervisor: this.supervisor,
-      semestres: ['2020-1', '2019-2', '2019-1', '2018-2', '2018-1', '2017-2'],
-      selected_sem: '2020-1',
+      semestres: ['2020-1', '2019-2', '2019-1', '2018-2', '2018-1', '2017-2'], // TODO hacer un array global de todos los periodos
+      selected_sem: '2020-1', // TODO prop semestre activo
       isLoading: false,
       csrf: document.head.querySelector('meta[name="csrf-token"]').content,
       sups: this.supervisors,

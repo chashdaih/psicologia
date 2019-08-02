@@ -39,7 +39,7 @@ class UsuarioController extends Controller
                 $data['asignados'] = DB::table('patients')
                 ->where('ps_program_id', '!=', 0)
                 ->join('practicas as p', 'patients.ps_program_id', 'p.id_practica')
-                ->where('p.semestre_activo', '2020-1')
+                ->where('p.semestre_activo', config('globales.semestre_activo'))
                 ->where('p.id_centro', Auth::user()->supervisor->center->id_centro)
                 ->get();
 
@@ -81,7 +81,7 @@ class UsuarioController extends Controller
 
             $data['asignados'] = Patient::where('ps_program_id', '!=', 0)
             ->join('practicas as p', 'patients.ps_program_id', 'p.id_practica')
-            ->where('p.semestre_activo', '2020-1')
+            ->where('p.semestre_activo', config('globales.semestre_activo'))
             ->whereIn('p.id_practica', $misPracticas)
             ->get();
 
@@ -106,7 +106,7 @@ class UsuarioController extends Controller
         ->when($supervisor_id > 0, function ($query) use ($supervisor_id) {
             return $query->where('p.id_supervisor', '=', $supervisor_id);
         })
-        ->where('semestre_activo', '2020-1')
+        ->where('semestre_activo', config('globales.semestre_activo'))
         ->join('caracteristicas_servicios as c', 'p.id_practica', '=', 'c.program_id')
         ->select('p.id_practica', 'p.programa')
         ->where('c.'.$etapa, 1)

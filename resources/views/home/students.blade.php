@@ -118,7 +118,7 @@
 <p class="subtitle">El periodo de inscripción es del 17 al 2 de agosto</p>
 {{-- <a href="{{ route('insc') }}">Ver oferta de programas</a> --}}
 <br><br>
-<h1 class="title">Programas disponibles para el semestre 2020-1</h1>
+<h1 class="title">Programas disponibles para el semestre {{config('globales.semestre_activo')}} </h1>
 <programs-list 
     :programs="{{ json_encode($programs) }}"
     pdf-url="{{ route('rps_pdf', 0) }}"

@@ -70,9 +70,9 @@ class RpsController extends Controller
         $user_type = Auth::user()->type;
         
         if ($user_type == 2) {
-            $this->params['records'] = $this->filter(0, Auth::user()->supervisor->id_supervisor, '2020-1');
+            $this->params['records'] = $this->filter(0, Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
         } else {
-            $this->params['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, '2020-1');
+            $this->params['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
         }
 
         if ($user_type == 5) { // jefe de centro
@@ -283,7 +283,7 @@ class RpsController extends Controller
     {
 
         $program = Program::where('id_practica', $id)->first();
-        if ($program->semestre_activo != '2020-1') {
+        if ($program->semestre_activo != '2020-1') { // TODO filtrar por string comienza con 20
             return redirect('http://test.psicologiaunam.com/intranet/modificar_programa.php?id='.$id);
         }
         $this->params['program'] = $program;
@@ -484,7 +484,7 @@ class RpsController extends Controller
     public function pdf($id)
     {
         $program = Program::where('id_practica', $id)->first();
-        if ($program->semestre_activo != '2020-1') {
+        if ($program->semestre_activo != '2020-1') { // TODO filtrar bien
             return redirect('http://test.psicologiaunam.com/intranet/imprimir_programa_practicas.php?id='.$id);
         }
 

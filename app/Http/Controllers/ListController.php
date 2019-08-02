@@ -68,14 +68,14 @@ class ListController extends Controller
             }
 
             $enroll_programs = ProgramPartaker::where('id_participante', Auth::user()->partaker->num_cuenta)
-            ->where('ciclo_activo', '2020-1')
+            ->where('ciclo_activo', config('globales.semestre_activo'))
             ->get();
 
             $programs = null;
 
             if (!count($enroll_programs)) {
                 $programs = DB::table('practicas as p')
-                ->where('semestre_activo', '2020-1')
+                ->where('semestre_activo', config('globales.semestre_activo'))
                 ->where('cupo_actual','>', '0')
                 ->where('tipo', 'EXTRACURRICULAR')
                 ->join('supervisores as s', 'p.id_supervisor', 's.id_supervisor')
@@ -93,7 +93,7 @@ class ListController extends Controller
             
             $id_centro = Auth::user()->supervisor->id_centro;
 
-            $data['records'] = $this->filter(0, Auth::user()->supervisor->id_supervisor, '2020-1');
+            $data['records'] = $this->filter(0, Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
             $user_type = Auth::user()->type;
 
             if ($user_type == 5) { // jefe de centro
@@ -112,7 +112,7 @@ class ListController extends Controller
                 DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
                 $data['supervisors'] = $this->fixNames($supervisors);
             } else {
-                $data['insitu'] = $this->getInSituPrograms(Auth::user()->supervisor->id_supervisor, "2020-1");
+                $data['insitu'] = $this->getInSituPrograms(Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
             }
         }
 

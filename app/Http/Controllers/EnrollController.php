@@ -22,7 +22,7 @@ class EnrollController extends Controller
     public function index()
     {
         $programs = DB::table('practicas as p')
-        ->where('semestre_activo', '2020-1')
+        ->where('semestre_activo', config('globales.semestre_activo'))
         ->where('cupo_actual','>', '0')
         ->join('supervisores as s', 'p.id_supervisor', 's.id_supervisor')
         ->join('informacion_practicas as i', 'p.id_practica', 'i.id_practica')
@@ -65,7 +65,7 @@ class EnrollController extends Controller
     {
 
         $registered_programs = ProgramPartaker::where('id_participante', $partaker_id)
-        ->where('ciclo_activo', '2020-1')
+        ->where('ciclo_activo', config('globales.semestre_activo'))
         ->first();
 
         if ($registered_programs) {
@@ -75,7 +75,7 @@ class EnrollController extends Controller
         $rel = ProgramPartaker::create([
             'id_participante' => $partaker_id,
             'id_practica' => $id,
-            'ciclo_activo' => '2020-1',
+            'ciclo_activo' => config('globales.semestre_activo'), // TODO enviar ciclo activo?
             'estado' => 'Necesita Documentacion'
         ]);
 
@@ -162,7 +162,7 @@ class EnrollController extends Controller
 
         $program = Program::where('id_practica', $program_id)->first();
 
-        if ($program->semestre_activo == '2020-1') {
+        if ($program->semestre_activo == config('globales.semestre_activo')) {
 
             $pdf->loadView('enroll.carta_compromiso_pre', compact('program'));
             return $pdf->download('carta_compromiso.pdf');
