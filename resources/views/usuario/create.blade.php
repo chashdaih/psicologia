@@ -407,6 +407,14 @@
                         'prev' => isset($fdg) ? $fdg->work_phone_ext : null,
                         'maxlength' => 255
                     ])@endcomponent
+                    @component('components.text-input', [
+                        'title'=>'Correo electrónico',
+                        'field'=>'email',
+                        'errors'=>$errors,
+                        'type'=> 'email',
+                        'prev' => isset($fdg) ? $fdg->email : null,
+                        'maxlength' => 255
+                    ])@endcomponent
                     <h2 class="subtitle">Escolaridad de la persona que requiere el servicio</h2>
                     <div class="field">
                         <label class="label">Escolaridad</label>
@@ -547,7 +555,7 @@
                         'errors'=>$errors,
                         'prev'=>isset($fdg)?$fdg->service_modality:null
                     ])@endcomponent
-                    @component('components.text-input', [
+                    @component('components.area-input', [
                         'title'=>'Motivo de consulta (Describa de forma detallada lo que le pasa y qué espera de la atención que se le puede brindar en este Centro/Programa)',
                         'field'=>'consultation_cause',
                         'errors'=>$errors,

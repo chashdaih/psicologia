@@ -16,6 +16,8 @@
             step=1
             @elseif ($type == "text")
             @if(isset($maxlength))maxlength={{ $maxlength }}@endif
+            @elseif($type == "email")
+            maxlength=255
             @endif
             placeholder="{{ $title }}"
             v-on:input="clearError"
