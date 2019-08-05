@@ -52,13 +52,16 @@ class Fe3cdrController extends Controller
     {
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
-        // $cdr = Fe3cdr::where('id', $id)->first();
+        $doc = Patient::where('id', $patient_id)->first();
+        $process_model = $cdr;
+        // $cdr = Fe3cdr::where('id', $cdr)->first();
         // $sections = collect($this->sections);
         $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.'crp.json');
         $sections = json_decode($json, true);
         // $sus = collect($this->sus);
-        $pdf->loadView('pdf.cdr', compact('cdr', 'sections'));
-        return $pdf->stream('invoice.pdf');
+        $full_code="3 - FE3 - CDR";
+        $pdf->loadView('usuario.cdr.show', compact('process_model', 'sections', 'doc', 'full_code'));
+        return $pdf->stream('cdr.pdf');
     }
 
     public function edit($patient_id, Fe3cdr $cdr)

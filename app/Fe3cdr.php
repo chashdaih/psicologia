@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Fe3cdr extends Model
 {
     protected $guarded = [];
+    protected $dates = ['created_at'];
 
     
     public function patient()
