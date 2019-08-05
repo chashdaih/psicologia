@@ -2,12 +2,12 @@
 
 @section('content')
 <section class="section">
-    <h1 style="text-align:center;">Lista de estudiantes inscritos a los programas de servicios psicológicos a través de la formación supervisada</h1>
+    <h2 style="text-align:center;">Lista de estudiantes inscritos a los programas de servicios psicológicos a través de la formación supervisada</h2>
     <div>
-        <h2>Programa {{ $program->tipo }}</h2>
+        <h3>Programa: {{ $program->programa }}</h3>
     </div>
     <div>
-        <h2>PRESENTE</h2>
+        <h3>PRESENTE</h3>
     <p>
         Por medio de la presente le envío un cordial saludo y aprovecho la oportunidad 
         de enviarle la relación de los alumnos inscritos en su programa de servicios 
@@ -30,32 +30,35 @@
         Hacemos de su conocimiento que los estudiantes cuentan con un periodo de altas y bajas, por lo que posterior a ese periodo,
         le haremos llegar un nuevo listado de estudiantes inscritos si fuera el caso.
     </p>
+    <br>
     </div>
     <div>
-        <table>
-            <tr class="t-header">
-                <td>No. de cuenta</td>
-                <td>Nombre</td>
-                <td>Teléfono</td>
-                <td>Correo</td>
-            </tr>
-            @foreach ($program->partakers as $student)
-            @if($student->estatus == 'Inscrito')
+        <table style="width:100%">
+            <thead>
+                <tr class="t-header">
+                    <th>No. de cuenta</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Correo</th>
+                </tr>
+            </thead>
+            @foreach ($programPartakers as $student)
             <tr>
-                <td>{{ $student->num_cuenta }}</td>
-                <td>{{ $student->full_name }}</td>
-                <td>{{ $student->telefono }}</td>
-                <td>{{ $student->correo }}</td>
+                <td>{{ $student->partaker->num_cuenta }}</td>
+                <td>{{ $student->partaker->full_name }}</td>
+                <td>{{ $student->partaker->telefono }}</td>
+                <td>{{ $student->partaker->correo }}</td>
             </tr>
-            @endif
             @endforeach
         </table>
+        <br>
     </div>
     <div>
         <p>
             Sin más por el momento, me es grato reiterar a usted las seguridades de mi más distinguida
             consideración académica.
         </p>
+        <br>
     </div>
     <div class="firma">
         <p>ATENTAMENTE</p>

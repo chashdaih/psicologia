@@ -7,6 +7,7 @@ use App\Bread;
 use App\Building;
 use App\Lps;
 use App\Program;
+use App\ProgramPartaker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -84,10 +85,15 @@ class LpsController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
 
-        $this->params['program'] = Program::where('id_practica', $id)->first();
+        $program = Program::where('id_practica', $id)->first();
+        $this->params['program'] = $program;
+
+        $programPartakers = ProgramPartaker::where('id_practica', $id)->where('estado', 'Inscrito')->get();
+        $this->params['programPartakers'] = $programPartakers;
+        
 
         $pdf->loadView($this->base_url.'.show', $this->params);
-        return $pdf->download('rps.pdf');
+        return $pdf->stream('listaEstudiantesInscritos.pdf');
     }
 
     public function filter($stage, $sup, $per) // webservice
