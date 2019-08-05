@@ -45,6 +45,19 @@
             width: 50%;
             font-size: 20px;
         }
+        .bordered-table {
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+        .bordered-table  td {
+            border: 1px solid black;
+        }
+        .bordered-table  th {
+            border: 1px solid black;
+        }
+        .bordered-table tr {
+            text-align: center;
+        }
 
     </style>
 </head>

@@ -60,8 +60,42 @@ class Fe3cdrController extends Controller
         $sections = json_decode($json, true);
         // $sus = collect($this->sus);
         $full_code="3 - FE3 - CDR";
-        $pdf->loadView('usuario.cdr.show', compact('process_model', 'sections', 'doc', 'full_code'));
+
+        $results = $this->calculateResults($cdr);
+
+        $sustancias = ['Tabaco', 'Alcohol', 'Cannabis', 'Cocaína', 'Anfetaminas', 'Inhalantes', 'Sedantes', 'Alucinógenos', 'Opiáceos', 'Otras drogas'];
+
+        $pdf->loadView('usuario.cdr.show', compact('process_model', 'sections', 'doc', 'full_code', 'results', 'sustancias'));
         return $pdf->stream('cdr.pdf');
+    }
+
+    protected function calculateResults(Fe3cdr $cdr)
+    {
+        $res1 = [];
+        $res2 = [];
+        $res3 = [];
+        $values = [110, 80, 50, 50, 40, 40, 30, 50, 250, 70, 40, 70, 60, 70, 70, 60];
+        $part1 = [array('dep'=> [1,11]), array('man' => [1,8]), array('psi' => [1,5]), array('epi' => [1,5]), array('dem' => [1,4]), array('tde'=>[1, 4]), array('tde'=>[5, 7]), array('tde'=>[8,12]), array('tc'=>[1,18]), array('te'=>[1,7]), array('te'=>[8,11]), array('te'=>[12,18]), array('sui'=>[1,5]), array('ans'=>[1,7]), array('sex'=>[1,4]), array('vio'=>[1,6])];
+        foreach ($part1 as $key => $section) {
+            foreach ($section as $code => $range) {
+                $sum = 0;
+                for ($i=$range[0]; $i <= end($range) ; $i++) { 
+                   $sum = $sum + $cdr->{$code.$i};
+                }
+                array_push($res1, $sum);
+                array_push($res2, round(($sum*100)/$values[$key]));
+            }
+        }
+
+        $index2 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+        foreach ($index2 as $letter) {
+            $sum = 0;
+            for ($i=2; $i < 8; $i++) {
+                $sum = $sum + $cdr->{'sus'.$i.$letter};
+            }
+            array_push($res3, $sum);
+        }
+        return [$res1, $res2, $res3];
     }
 
     public function edit($patient_id, Fe3cdr $cdr)

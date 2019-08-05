@@ -100,9 +100,9 @@
         </div>
         @endforeach
     </div>
-    {{-- <div>
+    <div style="page-break-before: always;">
         <h2>Resultados</h2>
-        <table style="width:90%">
+        <table style="width:100%" class="bordered-table">
             <thead>
                 <tr>
                     <th></th>
@@ -123,33 +123,65 @@
             <tbody>
                 <tr>
                     <th>Puntaje máximo (PM)</th>
-                    <td>110</td>
-                    <td>80</td>
-                    <td>50</td>
-                    <td>50</td>
-                    <td>40</td>
-                    <td>40 (>5)</td>
-                    <td>30 (6-12)</td>
-                    <td>50 (13-18)</td>
-                    <td>250</td>
-                    <td>70 (>5)</td>
-                    <td>40 (6-12)</td>
-                    <td>70 (13-18)</td>
-                    <td>60</td>
-                    <td>70</td>
-                    <td>70</td>
-                    <td>60</td>
+                    <th>110</th>
+                    <th>80</th>
+                    <th>50</th>
+                    <th>50</th>
+                    <th>40</th>
+                    <th>40</th>
+                    <th>30 </th>
+                    <th>50</th>
+                    <th>250</th>
+                    <th>70</th>
+                    <th>40 </th>
+                    <th>70</th>
+                    <th>60</th>
+                    <th>70</th>
+                    <th>70</th>
+                    <th>60</th>
                 </tr>
                 <tr>
                     <th>Puntaje obtenido (PO)</th>
-                    @foreach ($sections as $section)
-                        @if ($section['title'] != "TRASTORNOS POR CONSUMO DE SUSTANCIAS")
-                            <td></td>
-                        @endif
+                    @foreach ($results[0] as $res)
+                    <td>{{$res}}</td>
+                    @endforeach
+                </tr>
+                <tr>
+                    <th>Porcentaje</th>
+                    @foreach ($results[1] as $res)
+                    <td>{{$res}}</td>
                     @endforeach
                 </tr>
             </tbody>
         </table>
-    </div> --}}
+        <br>
+        <table class="bordered-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Registre la puntuación para sustancia específica</th>
+                    <th>
+                        <p>Sin intervención</p>
+                        <p>(Consejo breve)</p>
+                    </th>
+                    <th>
+                        <p>Intervención breve</p>
+                    </th>
+                    <th><p>Tratamiento más intensivo</p></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($sustancias as $key => $sustancia)
+                <tr>
+                    <th>{{$sustancia}}</th>
+                    <td>{{$results[2][$key]}}</td>
+                    <td>(0 - 3)</td>
+                    <td>(4 - 26)</td>
+                    <td>(27+)</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </section>
 @endsection
