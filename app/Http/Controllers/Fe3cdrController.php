@@ -66,27 +66,20 @@ class Fe3cdrController extends Controller
         $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('cdr.index', $patient_id) => 'CDR', '#'=> 'Editar CDR'];
 
         $process_model = $cdr;
-        // $sections = $this->sections;
         $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.'crp.json');
         $sections = json_decode($json, true);
         $data = compact('sections', 'process_model', 'patient_id', 'migajas');
         return view('usuario.cdr.create', $data);
     }
 
-    public function update(Program $program, FE3FDG $patient, Request $request, $id)
+    public function update($patient_id, Request $request, $id)
     {
-        foreach ($request->except(['_token', '_method']) as $data => $value) {
-            $valids[$data] = "required|integer|min:0|max:10";
-        }
-          
-        $this->validate($request, $valids);
-
-        // dd($request);
+        $this->validateCdr();
         $values = collect($request->except(['_token', '_method']))->toArray();
         $values['user_id'] = Auth::user()->id;
         Fe3cdr::where('id', $id)->update($values);
         // return response(200);
-        return redirect()->route('fe.index', ['program_id'=>$program->id_practica, 'patient_id'=>$patient->id])->with('success', 'Cuestionario actualizado exitosamente');
+        return redirect()->route('cdr.index', $patient_id)->with('success', 'Cuestionario actualizado exitosamente');
 
     }
 

@@ -319,7 +319,7 @@
         ]
     },
     {
-        "title":"SUSTANCIAS",
+        "title":"TRASTORNOS POR CONSUMO DE SUSTANCIAS",
         "subsection":[
             {
                 "subtitle":"1. A lo largo de la vida, ¿cuál de las siguientes sustancias ha consumido alguna vez (sólo las que consumió sin receta médica)?",
@@ -328,42 +328,50 @@
             },
             {
                 "subtitle":"2. En los últimos tres meses, ¿con qué frecuencia has consumido las sustancias que mencionó (primera droga, segunda droga, etc.)?",
-                "scale":"[0,2,3,4,6]",
+                "scale":[0,2,3,4,6],
+                "scale_text":"0 = nunca, 2 = Una o dos veces por semana, 3 = Mensualmente, 4 = Semanalmente, 6 = Diario o casi diario",
                 "code":"sus2"
             },
             {
                 "subtitle":"3. En los últimos tres meses, ¿con qué frecuencia has tenido un fuerte deseo o ansias de consumir (primera droga, segunda droga, etc.)?",
-                "scale":"[0,3,4,5,6]",
+                "scale":[0,3,4,5,6],
+                "scale_text":"0 = nunca, 3 = Una o dos veces por semana, 4 = Mensualmente, 5 = Semanalmente, 6 = Diario o casi diario",
                 "code":"sus3"
             },
             {
                 "subtitle":"4. En los últimos tres meses, ¿con qué frecuencia el consumo de (primera droga, segunda droga, etc.) te ha causado problemas de salud, sociales, legales o económicos?",
-                "scale":"[0,4,5,6,7]",
+                "scale":[0,4,5,6,7],
+                "scale_text":"0 = nunca, 4 = Una o dos veces por semana, 5 = Mensualmente, 6 = Semanalmente, 7 = Diario o casi diario",
                 "code":"sus4"
             },
             {
                 "subtitle":"5. En los últimos tres meses, ¿con qué frecuencia dejó de hacer lo que habitualmente se esperaba de ti por el consumo de (primera droga, segunda droga, etc.)?",
-                "scale":"[0,5,6,7,8]",
+                "scale":[0,5,6,7,8],
+                "scale_text":"0 = nunca, 5 = Una o dos veces por semana, 6 = Mensualmente, 7 = Semanalmente, 8 = Diario o casi diario",
                 "code":"sus5"
             },
             {
                 "subtitle":"6. ¿Un amigo, un familiar o alguien más alguna vez ha mostrado preocupación por tus hábitos de consumo de (primera droga, segunda droga, etc.)?",
-                "scale":"[0,6,3]",
+                "scale":[0,3,6],
+                "scale_text":"0 = nunca, 3 = Sí, pero no en los últimos 3 meses, 6 = Sí, en los últimos 3 meses",
                 "code":"sus6"
             },
             {
                 "subtitle":"7. ¿Has intentado alguna vez reducir o eliminar el consumo de (primera droga, segunda droga, etc.) y no lo has logrado?",
-                "scale":"[0,6,3]",
+                "scale":[0,3, 6],
+                "scale_text":"0 = nunca, 3 = Sí, pero no en los últimos 3 meses, 6 = Sí, en los últimos 3 meses",
                 "code":"sus7"
             },
             {
                 "subtitle":"8. ¿Alguna vez has consumido alguna droga por vía inyectada?",
-                "scale":"boolean",
+                "scale":"other",
+                "options": ["No", "Si"],
                 "code": "sus80"
             },
             {
                 "subtitle":"9. Frecuencia con la que te inyectas:",
-                "scale":["4 días mes, más 4 días mes"],
+                "scale":"other",
+                "options":["4 días al mes", "más de 4 días al mes"],
                 "code":"sus81"
             }
         ],

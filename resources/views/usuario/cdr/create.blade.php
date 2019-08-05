@@ -48,7 +48,74 @@
             @foreach ($sections as $section)
             <h2 class="subtitle">{{$section['title']}}</h2>
             <table class="table is-fullwidth is-hoverable is-striped">
-                @if($section['title']=="SUSTANCIAS")
+                @if($section['title']=="TRASTORNOS POR CONSUMO DE SUSTANCIAS")
+                @foreach ($section['subsection'] as $subsection)
+                <thead>
+                    <tr>
+                        <th>{{$subsection['subtitle']}}</th>
+                        <th>Respuesta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if ($subsection['scale'] == "boolean")
+                        @foreach ($section['questions'] as $question)
+                        <tr>
+                            <td>{{$question}}</td>
+                            <td>
+                                <div class="select">
+                                    <select name="{{$subsection['code'].strtok($question, '.')}}" >
+                                        <option value="0">NO</option>
+                                        <option value="1"
+                                        @if( old( $subsection['code'].strtok($question, '.'), isset($process_model) ? $process_model->{$subsection['code'].strtok($question, '.')} : 0 ) == "1" )
+                                        selected
+                                        @endif
+                                        >SI</option>
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    @elseif($subsection['scale'] == "other")
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div class="select">
+                                <select name="{{$subsection['code']}}" >
+                                    <option value="0">{{$subsection['options'][0]}}</option>
+                                    <option value="1"
+                                    @if( old( $subsection['code'].strtok($question, '.'), isset($process_model) ? $process_model->{$subsection['code']} : 0  ) == "1" )
+                                    selected
+                                    @endif
+                                    >{{$subsection['options'][1]}}</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    @else
+                    @if (array_key_exists('scale_text', $subsection))
+                    <tr>
+                        <td><p class="is-italic">{{$subsection['scale_text']}}</p></td>
+                        <td></td>
+                    </tr>
+                    @endif
+                    @foreach ($section['questions'] as $question)
+                    <tr>
+                        <td>{{$question}}</td>
+                        <td>
+                            <div class="field">
+                                <div class="control">
+                                    <input type="number" min="{{$subsection['scale'][0]}}" max="{{end($subsection['scale'])}}" class="input" placeholder={{json_encode($subsection['scale'])}}
+                                    name="{{$subsection['code'].strtok($question, '.')}}"
+                                    value="{{old($subsection['code'].strtok($question, '.'), isset($process_model) ? $process_model->{$subsection['code'].strtok($question, '.')} : 0)}}"
+                                    >
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                    @endif
+                </tbody>
+                @endforeach
                 @else
                 @if(array_key_exists('medical', $section))
                 <thead>
@@ -65,7 +132,11 @@
                                 <div class="select">
                                     <select name="{{$section['code'].strtok($question, '.')}}" >
                                         <option value="0">NO</option>
-                                        <option value="1">SI</option>
+                                        <option value="1"
+                                        @if( old( $section['code'].strtok($question, '.'), isset($process_model) ? $process_model->{$section['code'].strtok($question, '.')} : 0  ) == "1" )
+                                        selected
+                                        @endif
+                                        >SI</option>
                                     </select>
                                 </div>
                             </td>
@@ -92,7 +163,7 @@
                                 <div class="control">
                                     <input type="number" min="0" max="10" class="input" placeholder="0 - 10" 
                                     name="{{$section['code'].strtok($question, '.')}}"
-                                    value="{{old($section['code'].strtok($question, '.'), 0)}}"
+                                    value="{{old($section['code'].strtok($question, '.'), isset($process_model) ? $process_model->{$section['code'].strtok($question, '.')} : 0)}}"
                                     >
                                 </div>
                             </div>
@@ -108,7 +179,11 @@
                             <div class="select">
                                 <select name="{{$section['code'].strtok($question, '.')}}" >
                                     <option value="0">NO</option>
-                                    <option value="1">SI</option>
+                                    <option value="1"
+                                    @if( old( $section['code'].strtok($question, '.'),  isset($process_model) ? $process_model->{$section['code'].strtok($question, '.')} : 0) == "1" )
+                                    selected
+                                    @endif
+                                   >SI</option>
                                 </select>
                             </div>
                         </td>
