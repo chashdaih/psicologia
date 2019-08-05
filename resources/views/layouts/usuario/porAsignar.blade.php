@@ -1,10 +1,10 @@
-<h1 class="title">Usuarios sin programa asignado @if(Auth::user()->type == 5) de {{ Auth::user()->supervisor->center->nombre }} @endif</h1>
-<h2 class="subtitle">Usuarios que requiren asignación para servicio</h2>
+<h1 class="title">Personas atendidas sin programa asignado @if(Auth::user()->type == 5) de {{ Auth::user()->supervisor->center->nombre }} @endif</h1>
+<h2 class="subtitle">Personas atendidas que requiren asignación para servicio</h2>
 @if(count($porAsignar))
     <table class="table is-fullwidth">
         <thead>
             <tr>
-                <th>Nombre del usuario</th>
+                <th>Nombre de la persona atendida</th>
                 <th>Registrado por</th>
                 @if(Auth::user()->type == 6) 
                 <th>Registrado en centro</th>
@@ -44,7 +44,7 @@
         </tbody>
     </table>
 @else
-<p class="is-italic">No hay usuarios que requieran de asignación.</p>
+<p class="is-italic">No hay personas atendidas que requieran de asignación.</p>
 <br>
 <br>
 @endif

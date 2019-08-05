@@ -74,10 +74,8 @@
                         </div>
                     </form>
                     <br><br>
-                    <div class="field">
-                        <p class="control has-text-centered">
-                            <a href="{{ route('password.request') }}">Olvidé mi contraseña</a>
-                        </p>
+                    <div class="has-text-centered">
+                            <a class="button is-medium" href="{{ route('password.request') }}">Olvidé mi contraseña / Problemas para acceder</a>
                     </div>
                 </div>
                 <div v-if="supervisors" class="supervisors">

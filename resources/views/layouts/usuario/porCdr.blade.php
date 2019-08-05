@@ -4,7 +4,7 @@
 <table class="table is-fullwidth">
     <thead>
         <tr>
-            <th>Nombre del usuario</th>
+            <th>Nombre de la persona atendida</th>
             <th>Editar ficha de datos generales</th>
             <th>Descargar ficha de datos generales</th>
             @if(Auth::user()->type > 4)
