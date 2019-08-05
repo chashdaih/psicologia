@@ -580,17 +580,21 @@ class RpsController extends Controller
     {
         Excel::create('Listado', function($excel) use ($stage, $sup, $per) {
             $records = $this->filter($stage, $sup, $per);
+
+            
             $excel->sheet('Hoja 1', function($sheet) use ($records) {
                 $row = 2;
                 $sheet->row(1, ['Total de programas: '.count($records)]);
-                $sheet->row($row, [null, 'Programa', 'Centro', 'Curricular / Extracurricular', 'Nombre del supervisor']);
+                $sheet->row($row, [null, 'Programa', 'Centro', 'Curricular / Extracurricular', 'Nombre del supervisor', 'Número de participantes']);
                 foreach ($records as $rec) {
+                    $inscritos = ProgramPartaker::where('id_practica', $rec->id_practica)->where('estado', 'Inscrito')->count();
                     $sheet->row(++$row, [
                         null,
                         $rec->programa,
                         $rec->centro,
                         $rec->tipo,
-                        $rec->full_name
+                        $rec->full_name,
+                        $inscritos
                     ]);
                 }
             });
@@ -616,9 +620,12 @@ class RpsController extends Controller
 
     public function partakers($id)
     {
+
+        
         $program = Program::where('id_practica', $id)->first();
         $this->params['program'] = $program;
-
+        $migajas = [route('home')=>'Inicio', '#'=>$program->programa];
+        $this->params['migajas'] = $migajas;
         $pps = ProgramPartaker::where('id_practica', $id)->get();
         $this->params['pps'] = $pps;
 

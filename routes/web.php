@@ -1,16 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', 'ListController@index')->name('home');
 Route::get('/partaker/enrollment_proof/{tramit_id}', 'ListController@enrollmentProof')->name('e_proof');
 // Route::get('partaker/register', 'ListController@partakerRegisterForm')->name('partaker_form');
@@ -20,27 +9,6 @@ Route::get('tramite/{id_tramite}/{doc}', 'RpsController@document')->name('get_do
 Route::resource('/program/{program_id}/patient', 'FE3FDGController');
 Route::get('program/{id}/partakers', 'RpsController@partakers')->name('users_list');
 Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresController');
-Route::group(['prefix' => '/program/{program}/patient/{patient}/fe', 'middleware' => 'auth', [
-    'only' => [ 'index' ]
-]], function() {
-    // Route::resource('/cdr', 'Fe3cdrController');
-    // Route::get('/cdr/{cdr}/pdf/', 'Fe3cdrController@pdf')->name('cdr_pdf');
-    // Route::resource('/ps', 'PsController');
-    // Route::get('/ps/{ps}/pdf/', 'PsController@pdf')->name('ps_pdf');
-    // Route::resource('/re', 'ReController');
-    // Route::get('/re/{re}/pdf/', 'ReController@pdf')->name('re_pdf');
-    
-    // Route::resource('/rs/breve', 'RsController');
-    // Route::get('/rs/breve/{rs}/pdf/', 'RsController@pdf')->name('breve_pdf');
-    // Route::resource('/rs/intervencion', 'RsController');
-    // Route::get('/rs/intervencion/{rs}/pdf/', 'RsController@pdf')->name('intervencion_pdf');
-
-    // Route::resource('/he', 'HeController');
-    // Route::get('/he/{he}/pdf/', 'HeController@pdf')->name('he_pdf');
-    // Route::resource('/cssp', 'CsspController');
-    // Route::get('/cssp/{cssp}/pdf/', 'CsspController@pdf')->name('cssp_pdf');
-});
-// Route::resource('/program/{id}/fdg', 'FE3FDGController');
 
 Route::resource('/usuario', 'UsuarioController');
 Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], function() {
@@ -57,7 +25,6 @@ Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], funct
 });
 
 Route::get('/asignar/{center_id}/{fecha?}', 'CalendarController@index')->name('asignar');
-// ->where('center_id', '^(1|2|3|4|6)$');
 Route::get('/getStudents/{sup_id}', 'CalendarController@getStudents')->name('get_students');
 Route::post('/make-appo', 'CalendarController@makeAppo')->name('make_appo');
 Route::delete('/cancel_appo/{id}', 'CalendarController@cancelAppo')->name('cancel_appo');
