@@ -50,7 +50,7 @@ class UsuarioController extends Controller
                     ->where('fdg.center_id', Auth::user()->supervisor->id_centro)
                     ->get();
 
-            } else {
+            } else { // coordinación
                 $data['asignados'] = Patient::where('ps_program_id', '!=', 0)->get();
                 $data['porCdr'] = Patient::where('cdr_id', 0)->get();
             }
@@ -90,8 +90,7 @@ class UsuarioController extends Controller
                     ->join('fe3fdg as fdg', 'patients.fdg_id', 'fdg.id')
                     ->where('fdg.user_id', Auth::user()->id)
                     ->get();
-
-        }
+            }
 
         return view('usuario.index', $data);
     }
@@ -173,8 +172,9 @@ class UsuarioController extends Controller
     {
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
-        $fdg = $this->formatFdg($id);
-        $pdf->loadView('usuario.show', compact('fdg'));
+        $doc = $this->formatFdg($id);+
+        $full_code = "3-FE3-FDG";
+        $pdf->loadView('usuario.show', compact('doc', 'full_code'));
         return $pdf->stream('fdg.pdf');
     }
 
@@ -334,6 +334,7 @@ class UsuarioController extends Controller
         $fdg->scholarship = $this->studies_level[$fdg->scholarship];
         $fdg->house_is = $this->house_is[$fdg->house_is];
         $fdg->service_type = $this->service_type[$fdg->service_type];
+        $fdg->service_modality = $this->service_modality[$fdg->service_modality];
         // $fdg->mhGAP_cause_classification = $this->mhGAP_cause_classification[$fdg->mhGAP_cause_classification];
         if ($fdg->type_previous_treatment) {
             $fdg->type_previous_treatment = $this->type_previous_treatment[$fdg->type_previous_treatment];

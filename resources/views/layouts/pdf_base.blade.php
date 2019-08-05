@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>ECPR</title>
+    <title>@if(isset($full_code)){{$full_code}}@endif</title>
     <style>
         @page {
             margin: 100px 25px;
@@ -29,10 +29,13 @@
         .my-blue { color: rgb(104, 178, 255); }
         footer {
             position: fixed; 
-            bottom: -60px; 
+            bottom: -100px; 
             left: 0px; 
             right: 0px;
-            height: 50px; 
+            height: 50px;
+        }
+        footer p {
+            font-size: 0.8em;
         }
         p {
             margin: 0
@@ -55,7 +58,7 @@
 
     <footer class="my-blue">
         <p>ESTE DOCUMENTO FORMA PARTE DEL SISTEMA DE GESTIÓN DE CALIDAD</p>
-        <p>3-FE1-ECPR</p>
+        @if(isset($full_code))<p>{{$full_code}}</p>@endif
     </footer>
     <script type="text/php">
         if (isset($pdf)) {
