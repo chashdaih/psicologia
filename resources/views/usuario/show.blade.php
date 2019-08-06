@@ -113,7 +113,15 @@
         <br>
     </div>
     <div>
-        <p><span style="font-weight:bold;">Nombre de quien realizó el primer contacto: </span> {{ $doc->other_filler != null ? $doc->other_filler : $doc->user->type == 3 ? $doc->user->partaker->full_name : $doc->user->supervisor->full_name }}</p>
+        <p><span style="font-weight:bold;">Nombre de quien realizó el primer contacto: </span>
+            @if ($doc->other_filler != null)
+            {{ $doc->other_filler }}
+            @elseif($doc->user->type == 3)
+            {{ $doc->user->partaker->full_name }}
+            @else 
+            {{ $doc->user->supervisor->full_name }}
+            @endif
+        </p>
         <p><span style="font-weight:bold;">Centro donde se realizó el primer contacto: </span> {{ $doc->center->nombre }}</p>
 
     </div>
