@@ -58,6 +58,25 @@
                                 'type'=> 'password',
                                 'required' => true
                                 ])@endcomponent
+                        @else
+                        <div class="field">
+                            <label class="label">Número de cuenta</label>
+                            <div class="control">
+                              <input class="input" type="text" disabled value="{{$partaker->num_cuenta}}">
+                            </div>
+                          </div>
+                          @component('components.text-input', [
+                              'title'=>'Nueva Contraseña',
+                              'field'=>'password',
+                              'errors'=>$errors,
+                              'type'=> 'password'
+                              ])@endcomponent
+                          @component('components.text-input', [
+                              'title'=>'Confirmar nueva contraseña',
+                              'field'=>'password_confirmation',
+                              'errors'=>$errors,
+                              'type'=> 'password'
+                              ])@endcomponent
                         @endif
                             @component('components.text-input', [
                                 'title'=>'Nombre',

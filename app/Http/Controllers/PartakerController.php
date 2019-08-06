@@ -46,7 +46,8 @@ class PartakerController extends Controller
 
     public function create()
     {
-        return view('partaker.create');
+        $migajas = [route('home')=>'Inicio', route('partaker.index')=>'Participantes', '#'=>'Registrar participante'];
+        return view('partaker.create', compact('migajas'));
     }
 
     public function store(Request $request)
@@ -54,7 +55,6 @@ class PartakerController extends Controller
         $this->validate($request, [
             'num_cuenta' => 'required|string|max:15|unique:participante',
             'password' => 'required|confirmed|min:4',
-            // 'password_confirmation' => 'required_with:password|string|min:4',
             'correo' => 'required|email',
             'nombre_part' => 'nullable|string|max:120',
             'ap_paterno' => 'nullable|string|max:120',
@@ -98,13 +98,16 @@ class PartakerController extends Controller
 
     public function edit(Partaker $partaker)
     {
-        return view('partaker.create', compact('partaker'));
+        $migajas = [route('home')=>'Inicio', route('partaker.index')=>'Participantes', '#'=>'Editar participante'];
+
+        return view('partaker.create', compact('partaker', 'migajas'));
     }
 
     public function update(Request $request, Partaker $partaker)
     {
         $this->validate($request, [
-            'correo' => 'nullable|email',
+            'correo' => 'required|email',
+            'password' => 'nullable|confirmed|min:4',
             'nombre_part' => 'nullable|string|max:120',
             'ap_paterno' => 'nullable|string|max:120',
             'ap_materno' => 'nullable|string|max:120',
@@ -115,9 +118,30 @@ class PartakerController extends Controller
             'semestre' => 'nullable|string|max:50'
         ]);
 
-        $partaker->update($request->all());
+        // $fields = collect($request->except(['_token', '_method', 'correo', 'password']))->toArray();
 
-        return redirect()->route('home')->with('success', 'Los datos se han actualizado');
+        $partaker->update($request->except(['_token', '_method', 'correo', 'password', 'password_confirmation']));
+
+        $user = User::where('email', $request['correo'])->first();
+
+        if ($user) {
+            $user->email = $request['correo'];
+            if($request['password'] != null) {
+               $user->password = bcrypt($request['password']);
+            }
+            $user->save();
+        } else {
+            $this->validate($request, [
+                'password' => 'required|confirmed|min:4',
+            ]);
+            User::create([
+                'type' => 3,
+                'email' => $request['correo'],
+                'password' => bcrypt($request['password']),
+            ]);
+        }
+
+        return redirect()->route('partaker.edit', $partaker)->with('success', 'Los datos se han actualizado');
     }
 
     public function destroy(Partaker $partaker)
