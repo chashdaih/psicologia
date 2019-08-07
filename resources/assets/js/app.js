@@ -32,10 +32,11 @@ import RegisterPartaker from './components/RegisterPartaker';
 import AssignProgram from './components/AssignProgram';
 import FdgNew from './components/FdgNew';
 import UsuarioColl from './components/UsuarioColl';
+import UsuarioDisenroll from './components/UsuarioDisenroll';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload } from '@fortawesome/free-solid-svg-icons';
-library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload);
+import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export const eventBus = new Vue();
@@ -78,7 +79,8 @@ const app = new Vue({
         RegisterPartaker,
         AssignProgram,
         FdgNew,
-        UsuarioColl
+        UsuarioColl,
+        UsuarioDisenroll
     },
     data: {
         isActive: false

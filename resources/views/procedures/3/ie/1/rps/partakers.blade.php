@@ -31,6 +31,7 @@
                 <th>Tercera evaluación</th>
                 <th>Satisfacción</th>
                 {{-- TODO: dar de baja participantes --}}
+                <th>Dar de baja</th>
             </tr>
         </thead>
         <tbody>
@@ -61,6 +62,17 @@
                         @else
                         <fai icon="times" size="2x" />                        
                         @endif
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <usuario-disenroll
+                        url="{{route('insc.disenroll', $pp->id_tramite)}}"
+                        program="{{$pp->program->programa}}"
+                        partaker="{{$pp->partaker->full_name}}"
+                        >{!! csrf_field() !!}</usuario-disenroll>
                     </td>
                 </tr>
        

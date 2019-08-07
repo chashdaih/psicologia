@@ -115,7 +115,7 @@ class EnrollController extends Controller
 
         $enr->delete();
 
-        return redirect()->route('home')->with('success', "¡Éxito! Pre-registro de baja del programa");
+        return redirect()->back()->with('success', "¡Éxito! Dado de baja del programa");
     }
 
     public function docs(Request $request)

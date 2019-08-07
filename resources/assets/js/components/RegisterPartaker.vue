@@ -42,9 +42,6 @@ export default {
             isFetching: false
         }
     },
-    mounted() {
-        console.log(this.program);
-    },
     methods: {
         getAsyncData: debounce(function (term) {
             if (!term.length) {
