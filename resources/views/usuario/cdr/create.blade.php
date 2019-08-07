@@ -30,8 +30,7 @@
             'errors'=>$errors,
             'type'=> 'text',
             'prev' => old('file_number', isset($process_model) ? $process_model->file_number : null),
-            'maxlength' => 255,
-            'required' => true
+            'maxlength' => 255
         ])@endcomponent
         <date-component
             label="Fecha de llenado"
@@ -81,12 +80,15 @@
                         <td>
                             <div class="select">
                                 <select name="{{$subsection['code']}}" >
-                                    <option value="0">{{$subsection['options'][0]}}</option>
+                                    @foreach ($subsection['options'] as $key=>$item)
+                                    <option value="{{$key}}"  @if(old($subsection['code'].strtok($question, '.'), $process_model->{$subsection['code']})==$key) selected @endif>{{$item}}</option>
+                                    @endforeach
+                                    {{-- <option value="0">{{$subsection['options'][0]}}</option>
                                     <option value="1"
                                     @if( old( $subsection['code'].strtok($question, '.'), isset($process_model) ? $process_model->{$subsection['code']} : 0  ) == "1" )
                                     selected
                                     @endif
-                                    >{{$subsection['options'][1]}}</option>
+                                    >{{$subsection['options'][1]}}</option> --}}
                                 </select>
                             </div>
                         </td>

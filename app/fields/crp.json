@@ -252,10 +252,12 @@
                 "ten": [
                     "1. Pensamientos de hacerme daño",
                     "2. Planes de hacerme daño",
-                    "3. Me he causado algún daño físico",
-                    "4. Pensamientos de quitarme la vida",
-                    "5. Planes de quitarme la vida",
-                    "6. Actos para quitarme la vida"
+                    "3. Pensamientos de quitarme la vida",
+                    "4. Planes de quitarme la vida"
+                ],
+                "boolean":[
+                    "5. Me he causado algún daño físico con la intención de lastimarme",
+                    "6. He intentado quitarme la vida"
                 ]
             }
         ]
@@ -371,7 +373,7 @@
             {
                 "subtitle":"9. Frecuencia con la que te inyectas:",
                 "scale":"other",
-                "options":["4 días al mes", "más de 4 días al mes"],
+                "options":["Nunca", "4 días al mes", "más de 4 días al mes"],
                 "code":"sus81"
             }
         ],

@@ -54,7 +54,6 @@
                         'type'=> 'text',
                         'prev' => old('file_number', isset($fdg) ? $fdg->file_number : null),
                         'maxlength' => 255,
-                        'required' => true
                     ])@endcomponent
                     @component('components.text-input', [
                         'title'=>'CURP/No.Cuenta/No.Trabajador',
