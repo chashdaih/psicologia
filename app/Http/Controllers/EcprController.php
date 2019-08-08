@@ -3,66 +3,59 @@
 namespace App\Http\Controllers;
 
 use App\Ecpr;
-// use App\Student;
+use App\EvaluateStudent;
 use App\Partaker;
+use App\Program;
 use Illuminate\Http\Request;
 
 class EcprController extends Controller
 {
-    public function index()
-    {
-        $records = Ecpr::all(); // TODO pagination
-        $doc_name = "Evaluación de competencias del estudiante de pregrado";
-        return view('procedures.3.fe.1.ecpr.index', compact('records', 'doc_name'));
-    }
 
-    public function create()
+    public function create($program_id, $partaker_id)
     {
-        $students = Partaker::all();//Student::where('Sistema', 'Escolarizado')->get();
-        // dd($students);
+        $program = Program::where('id_practica', $program_id)->first();
+        $migajas = [route('home')=>'Inicio', route('users_list', $program_id) => $program->programa, '#'=>'Registrar Cuestionario ECPR'];
         $sections = collect(include('ecpr.php'));
         $ecpr = new Ecpr();
-        $ecpr['active_sem'] = "2019-2"; // TODO set this value using the global variable
-        $ecpr['supervisor'] = 1; // TODO set this with auth user
-        return view('procedures.3.fe.1.ecpr.create', compact('sections', 'ecpr', 'students'));
+        return view('partaker.ecpr.create', compact('sections', 'ecpr', 'program_id', 'partaker_id', 'migajas'));
     }
 
-    public function store(Request $request)
+    public function store($program_id, $partaker_id, Request $request)
     {
-        foreach ($request->except('_token') as $data => $value) {
-            $valids[$data] = "required";
-        }
-        $validated = $request->validate($valids);
-        // dd($validated);
-        Ecpr::create($validated);
-        return response(200);
+        $this->validateEcpr();
+        $e_p = 'e'.$request->evaluation_phase;
+        $ecpr = Ecpr::create($request->except('_token'));
+
+        EvaluateStudent::where('partaker_id', $partaker_id)->where('program_id', $program_id)->update([$e_p=>$ecpr->id]);
+        
+
+        return redirect()->route('users_list', $program_id)->with('success', 'Evaluación registrada correctamente');
     }
 
-    public function show($id)
-    {
-        $doc = $this->getFormatedEcpr($id);
-        $sections = collect(include('ecpr.php'));
-        return view('procedures.3.fe.1.ecpr.show', compact('doc', 'sections'));
-    }
-
-    public function pdf($id)
+    public function show($program_id, $partaker_id, $ecpr)
     {
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
 
-        $doc = $this->getFormatedEcpr($id);
+        $doc = $this->getFormatedEcpr($ecpr);
         $sections = collect(include('ecpr.php'));
 
-        $pdf->loadView('procedures.3.fe.1.ecpr.show', compact('doc', 'sections'));
-        return $pdf->download('ecpr_'.$doc->its_student->nombre_t.'.pdf');
+        $full_code = '3 - FE1 - ECPR';
+
+        $partaker = Partaker::where('num_cuenta', $partaker_id)->first();
+        $program = Program::where('id_practica', $program_id)->first();
+
+        $pdf->loadView('partaker.ecpr.show', compact('doc', 'sections', 'full_code', 'partaker', 'program'));
+        return $pdf->stream('ecpr.pdf');
     }
+
 
     protected function getFormatedEcpr($id)
     {
         $evaluation_phase = ['Inicial', 'Intermedia', 'Final'];
 
         $ecpr = Ecpr::where('id', $id)->first();
-        $ecpr['evaluation_phase'] = $evaluation_phase[$ecpr->evaluation_phase];
+        $ecpr['evaluation_phase'] = $evaluation_phase[$ecpr->evaluation_phase - 1];
         return $ecpr;
     }
 
@@ -79,5 +72,15 @@ class EcprController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    protected function validateEcpr()
+    {
+        $this->validate(request(), [
+            'created_at'=> 'required|date',
+            'semester'=> 'required|integer|min:5|max:8',
+            'evaluation_phase'=>'required|integer|min:1|max:3',
+            'q11'=>'required|integer|min:0|max:6' // TODO: validar el resto de las preguntas
+        ]);
     }
 }

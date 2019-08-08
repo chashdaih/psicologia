@@ -27,4 +27,9 @@ class ProgramPartaker extends Model
     {
         return $this->belongsTo('App\Partaker', 'id_participante', 'num_cuenta');
     }
+
+    public function evaluate_student()
+    {
+        return $this->belongsTo('App\EvaluateStudent', 'id_participante', 'partaker_id')->where('program_id', $this->id_practica);
+    }
 }

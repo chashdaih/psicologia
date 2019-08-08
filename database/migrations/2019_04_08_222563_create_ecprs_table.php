@@ -16,11 +16,8 @@ class CreateEcprsTable extends Migration
         Schema::create('ecprs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->string('active_sem', 12);
-            $table->string('student', 12);
             $table->unsignedTinyInteger('semester');
             $table->unsignedTinyInteger('evaluation_phase');
-            $table->unsignedInteger('supervisor');
             $table->unsignedTinyInteger('q11');
             $table->unsignedTinyInteger('q12');
             $table->unsignedTinyInteger('q13');
@@ -66,9 +63,6 @@ class CreateEcprsTable extends Migration
             $table->unsignedTinyInteger('q71');
             $table->unsignedTinyInteger('q72');
             $table->unsignedTinyInteger('q73');
-
-            // $table->foreign('student')->references('id_usuario')->on('terapeuta');
-            // $table->foreign('supervisor')->references('id_supervisor')->on('supervisores');
         });
     }
 

@@ -10,7 +10,6 @@ class Ecpr extends Model
     protected $dates = ['created_at'];
 
     protected $attributes = [
-        'student' => 0,
         'semester' => 5,
         'evaluation_phase' => 0,
         'q11' => 0,

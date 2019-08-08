@@ -8,6 +8,7 @@ Route::get('tramite/{id_tramite}/{doc}', 'RpsController@document')->name('get_do
 
 Route::resource('/program/{program_id}/patient', 'FE3FDGController');
 Route::get('program/{id}/partakers', 'RpsController@partakers')->name('users_list');
+Route::resource('program/{program_id}/partakers/{partaker_id}/ecpr', 'EcprController', ['middleware' => 'auth']);
 Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresController');
 
 Route::resource('/usuario', 'UsuarioController');

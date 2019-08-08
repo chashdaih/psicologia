@@ -1,8 +1,7 @@
 <nav id="app-nav" class="navbar has-shadow" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" href="{{ route('home') }}">
-      <img src="{{ asset('/img/t3.png') }}" alt="">
-      <p>Inicio</p>
+     <img src="{{ asset('/img/t3.png') }}" alt="Inicio">
     </a>
 
     <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample" 
@@ -17,6 +16,9 @@
   <div id="navbarBasicExample" class="navbar-menu"
   v-bind:class="{ 'is-active': isActive }">
     <div class="navbar-start">
+      <div class="navbar-item">
+        <a href="{{route('home')}}" class="navbar-item">Programas</a>
+      </div>
       <div class="navbar-item">
         @if(Auth::user()->type == 3 )
         @if(count(Auth::user()->partaker->programs))

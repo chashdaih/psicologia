@@ -620,14 +620,15 @@ class RpsController extends Controller
 
     public function partakers($id)
     {
-
-        
         $program = Program::where('id_practica', $id)->first();
         $this->params['program'] = $program;
+
         $migajas = [route('home')=>'Inicio', '#'=>$program->programa];
         $this->params['migajas'] = $migajas;
+
         $pps = ProgramPartaker::where('id_practica', $id)->get();
         $this->params['pps'] = $pps;
+
 
         return view($this->base_url.'.partakers', $this->params);
     }

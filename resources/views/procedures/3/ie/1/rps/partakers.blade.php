@@ -63,9 +63,27 @@
                         <fai icon="times" size="2x" />                        
                         @endif
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>
+                        @if ($pp->evaluate_student->e1)
+                            <a href="{{route('ecpr.edit', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Editar</a> / <a href="{{route('ecpr.show', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Pdf</a>
+                        @else
+                            <a href="{{route('ecpr.create', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante])}}">Registrar</a>
+                        @endif
+                    </td>
+                    <td>
+                        @if ($pp->evaluate_student->e2)
+                        <a href="{{route('ecpr.edit', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Editar</a> / <a href="{{route('ecpr.show', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Pdf</a>
+                        @else
+                            <a href="{{route('ecpr.create', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante])}}">Registrar</a>
+                        @endif
+                    </td>
+                    <td>
+                        @if ($pp->evaluate_student->e3)
+                        <a href="{{route('ecpr.edit', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Editar</a> / <a href="{{route('ecpr.show', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Pdf</a>
+                        @else
+                            <a href="{{route('ecpr.create', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante])}}">Registrar</a>
+                        @endif
+                    </td>
                     <td></td>
                     <td>
                         <usuario-disenroll

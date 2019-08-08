@@ -11,7 +11,6 @@
                 <tr>
                     <th>Nombre del programa</th>
                     <th>Datos del programa</th>
-                    <th>Personas por atender</th>
                 </tr>
             </thead>
             <tbody>
@@ -20,11 +19,6 @@
                     <td>
                         <a href="{{route('rps_pdf', $enr->program->id_practica)}}">
                             <fai icon="file-pdf" size="2x" />
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{{ route('patient.index', $enr->program->id_practica) }}" >
-                            <fai icon="file-code" size="2x" />
                         </a>
                     </td>
                 </tr>
