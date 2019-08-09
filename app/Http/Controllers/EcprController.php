@@ -28,7 +28,6 @@ class EcprController extends Controller
 
         EvaluateStudent::where('partaker_id', $partaker_id)->where('program_id', $program_id)->update([$e_p=>$ecpr->id]);
         
-
         return redirect()->route('users_list', $program_id)->with('success', 'Evaluación registrada correctamente');
     }
 
@@ -59,14 +58,21 @@ class EcprController extends Controller
         return $ecpr;
     }
 
-    public function edit($id)
+    public function edit($program_id, $partaker_id, $ecpr)
     {
-        //
+        $program = Program::where('id_practica', $program_id)->first();
+        $migajas = [route('home')=>'Inicio', route('users_list', $program_id) => $program->programa, '#'=>'Editar cuestionario ECPR'];
+        $sections = collect(include('ecpr.php'));
+        $ecpr = Ecpr::where('id', $ecpr)->first();
+        return view('partaker.ecpr.create', compact('sections', 'ecpr', 'program_id', 'partaker_id', 'migajas'));
     }
 
-    public function update(Request $request, $id)
+    public function update($program_id, $partaker_id, Request $request, $ecpr)
     {
-        //
+        $this->validateEcpr();
+        Ecpr::where('id', $ecpr)->update($request->except('_token', '_method'));
+        
+        return redirect()->route('users_list', $program_id)->with('success', 'Evaluación actualizada correctamente');
     }
 
     public function destroy($id)

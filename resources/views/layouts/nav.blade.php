@@ -29,7 +29,7 @@
         @endif
       </div>
       <div class="navbar-item">
-        <a href="{{route('usuario.index')}}" class="navbar-item">Atendidas</a>
+        <a href="{{route('usuario.index')}}" class="navbar-item">Personas atendidas</a>
       </div>
       @if(Auth::user()->type == 6)
       <div class="navbar-item">

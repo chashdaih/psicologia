@@ -4,8 +4,15 @@
 <section class="section">
     <div class="container">
         <h1 class="title">Evaluación de competencias del estudiante de pregrado</h1>
-        <form action="{{route('ecpr.store', ['program_id'=>$program_id, 'partaker_id'=>$partaker_id])}}" method="POST">
-                {{ csrf_field() }}
+        <form
+        @if($ecpr->id)
+        action="{{route('ecpr.update', ['program_id'=>$program_id, 'partaker_id'=>$partaker_id, 'ecpr'=>$ecpr->id])}}" 
+        @else
+        action="{{route('ecpr.store', ['program_id'=>$program_id, 'partaker_id'=>$partaker_id])}}" 
+        @endif
+        method="POST">
+            {{ csrf_field() }}
+            @if($ecpr->id) <input name="_method" type="hidden" value="PUT"> @endif
             <date-component
                 label="Fecha en que se llenó el documento"
                 name="created_at"
@@ -58,7 +65,7 @@
                 </tbody>
             </table>
             @endforeach
-            <button class="button is-info is-medium" type="submit">Registrar</button>
+            <button class="button is-info is-medium" type="submit">@if($ecpr->id) Actualizar @else Registrar @endif</button>
         </form>
     </div>
 </section>
