@@ -30,7 +30,9 @@
                             <select name="center_id">
                                 @foreach ($centers as $center)
                                 <option value="{{$center->id_centro}}"
-                                    @if(old('center_id')&& old('center_id') == $center->id_centro) selected="selected" @elseif(isset($fdg) && $fdg->center_id == $center->id_centro) selected="selected" @endif
+                                    @if ( old('center_id', isset($fdg)?$fdg->center_id:$preferedCenter) == $center->id_centro )
+                                    selected="selected"
+                                    @endif
                                     >{{$center->nombre}}</option>
                                 @endforeach
                             </select>

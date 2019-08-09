@@ -9,6 +9,8 @@ use App\FE3FDG;
 use App\Patient;
 use App\Program;
 use App\ProgramPartaker;
+use App\Supervisor;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -25,7 +27,6 @@ class UsuarioController extends Controller
         $data = [];
         if (Auth::user()->type > 4) { // jefe de centro y coordinación
 
-            // Esto es para la asignación de usuarios
             $data['porAsignar'] = Patient::where('cdr_id', '!=', 0)->where('ps_program_id', 0)->get();
 
             $data['centers'] = Building::all();
@@ -35,22 +36,20 @@ class UsuarioController extends Controller
             DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
             $data['supervisors'] = $this->fixNames($supervisors);
 
-        // Esto es para los usuarios ya asignados
             if (Auth::user()->type == 5) { // jefe de centro
-                $data['asignados'] = DB::table('patients')
-                ->where('ps_program_id', '!=', 0)
-                ->join('practicas as p', 'patients.ps_program_id', 'p.id_practica')
-                ->where('p.semestre_activo', config('globales.semestre_activo'))
-                ->where('p.id_centro', Auth::user()->supervisor->center->id_centro)
-                ->get();
+
+                $data['asignados'] = Patient::where('ps_program_id', '!=', 0)
+                ->whereHas('program', function($query){
+                    $query->where('semestre_activo', config('globales.semestre_activo'))
+                    ->where('id_centro', Auth::user()->supervisor->center->id_centro);
+                })->get();
 
                 
                 $data['porCdr'] = Patient::where('fdg_id', '!=', 0)
                     ->where('cdr_id', 0)
-                    ->join('fe3fdg as fdg', 'patients.fdg_id', 'fdg.id')
-                    ->where('fdg.center_id', Auth::user()->supervisor->id_centro)
-                    ->get();
-
+                    ->whereHas('fdg', function($q) {
+                        $q->where('center_id', Auth::user()->supervisor->id_centro);
+                    })->get();
             } else { // coordinación
                 $data['asignados'] = Patient::where('ps_program_id', '!=', 0)->get();
                 $data['porCdr'] = Patient::where('cdr_id', 0)->get();
@@ -58,6 +57,7 @@ class UsuarioController extends Controller
         } else { // supervisores y alumnos
 
             $misPracticas = [];
+            
             if (Auth::user()->type == 2) { // supervisor
                 $programs = Program::where('semestre_activo', config('globales.semestre_activo'))
                 ->where('id_supervisor', Auth::user()->supervisor->id_supervisor)
@@ -81,80 +81,36 @@ class UsuarioController extends Controller
             }
 
             $data['asignados'] = Patient::where('ps_program_id', '!=', 0)
-            ->join('practicas as p', 'patients.ps_program_id', 'p.id_practica')
-            ->where('p.semestre_activo', config('globales.semestre_activo'))
-            ->whereIn('p.id_practica', $misPracticas)
-            ->get();
+            ->whereHas('program', function($query) use ($misPracticas) {
+                $query->where('semestre_activo', config('globales.semestre_activo'))
+                ->where('id_practica', $misPracticas);
+            })->get();
 
-            $data['porCdr'] =Patient::where('fdg_id', '!=', 0)
-                    ->where('cdr_id', 0)
-                    ->join('fe3fdg as fdg', 'patients.fdg_id', 'fdg.id')
-                    ->where('fdg.user_id', Auth::user()->id)
-                    ->get();
-            }
+            $data['porCdr'] = Patient::where('fdg_id', '!=', 0)
+            ->where('cdr_id', 0)
+            ->whereHas('fdg', function($q) {
+                $q->where('user_id', Auth::user()->id);
+            })->get();
+        }
 
         return view('usuario.index', $data);
     }
 
-    public function filterByEtapa($center_id, $supervisor_id, $etapa) // WS
-    {
-
-        $records = DB::table('practicas as p')
-        ->when($center_id > 0, function ($query) use ($center_id) {
-            return $query->where('p.id_centro', '=', $center_id);
-        })
-        ->when($supervisor_id > 0, function ($query) use ($supervisor_id) {
-            return $query->where('p.id_supervisor', '=', $supervisor_id);
-        })
-        ->where('semestre_activo', config('globales.semestre_activo'))
-        ->join('caracteristicas_servicios as c', 'p.id_practica', '=', 'c.program_id')
-        ->select('p.id_practica', 'p.programa')
-        ->where('c.'.$etapa, 1)
-        ->orderBy('p.semestre_activo', 'desc')
-        ->get();
-        return $records;
-    }
-
-    public function assign(Request $request) // WS
-    {
-        // $etapa = $request->etapa;
-        $user_id = $request->user_id;
-        $program_id = $request->program_id;
-        // $code = null;
-        // switch ($etapa) {
-        //     case 'primer_contacto':
-        //         $code = 'cdr_program_id';
-        //         break;
-        //     case 'admision':
-        //         $code = 'ps_program_id';
-        //         break;
-        //     case 'evaluacion':
-        //         $code = 're_program_id';
-        //         break;
-        //     case 'orientacion':
-        //         $code = 'rs6_program_id';
-        //         break;
-        //     case 'intervencion':
-        //         $code = 'rs7_program_id';
-        //         break;
-        //     case 'egreso':
-        //         $code = 'he_program_id';
-        //         break;
-        // }
-        // if($code) {
-        //     return Patient::where('id', $user_id)->update([$code => $program_id]);
-        // } else {
-        //     return 404;
-        // }
-        return Patient::where('id', $user_id)->update(['ps_program_id' => $program_id, 're_program_id' => $program_id, 'rs6_program_id'=>$program_id, 'rs7_program_id'=>$program_id, 'he_program_id'=>$program_id, 'cssp_program_id'=>$program_id]);
-    }
-
-
     public function create()
     {
         $centers = Building::all();
+        $preferedCenter = null;
+        if (Auth::user()->type == 3) { // participante
+            $partaker_id = Auth::user()->partaker->num_cuenta;
+            $partPrograms = ProgramPartaker::where('id_participante', $partaker_id)->where('ciclo_activo', config('globales.semestre_activo'))->first();
+            if ($partPrograms) {
+                $preferedCenter = $partPrograms->program->id_centro;
+            }
+        } else {
+            $preferedCenter = Auth::user()->supervisor->id_centro;
+        }
         $migajas = [route('home') => 'Inicio', '#' => 'Nueva ficha de datos generales'];
-        return view('usuario.create', compact('migajas', 'centers'));
+        return view('usuario.create', compact('migajas', 'centers', 'preferedCenter'));
     }
 
 
@@ -201,6 +157,59 @@ class UsuarioController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function filterByEtapa($center_id, $supervisor_id, $etapa) // WS
+    {
+
+        $records = DB::table('practicas as p')
+        ->when($center_id > 0, function ($query) use ($center_id) {
+            return $query->where('p.id_centro', '=', $center_id);
+        })
+        ->when($supervisor_id > 0, function ($query) use ($supervisor_id) {
+            return $query->where('p.id_supervisor', '=', $supervisor_id);
+        })
+        ->where('semestre_activo', config('globales.semestre_activo'))
+        ->join('caracteristicas_servicios as c', 'p.id_practica', '=', 'c.program_id')
+        ->select('p.id_practica', 'p.programa')
+        ->where('c.'.$etapa, 1)
+        ->orderBy('p.semestre_activo', 'desc')
+        ->get();
+        return $records;
+    }
+    
+    public function assign(Request $request) // WS
+    {
+        // $etapa = $request->etapa;
+        $user_id = $request->user_id;
+        $program_id = $request->program_id;
+        // $code = null;
+        // switch ($etapa) {
+        //     case 'primer_contacto':
+        //         $code = 'cdr_program_id';
+        //         break;
+        //     case 'admision':
+        //         $code = 'ps_program_id';
+        //         break;
+        //     case 'evaluacion':
+        //         $code = 're_program_id';
+        //         break;
+        //     case 'orientacion':
+        //         $code = 'rs6_program_id';
+        //         break;
+        //     case 'intervencion':
+        //         $code = 'rs7_program_id';
+        //         break;
+        //     case 'egreso':
+        //         $code = 'he_program_id';
+        //         break;
+        // }
+        // if($code) {
+        //     return Patient::where('id', $user_id)->update([$code => $program_id]);
+        // } else {
+        //     return 404;
+        // }
+        return Patient::where('id', $user_id)->update(['ps_program_id' => $program_id, 're_program_id' => $program_id, 'rs6_program_id'=>$program_id, 'rs7_program_id'=>$program_id, 'he_program_id'=>$program_id, 'cssp_program_id'=>$program_id]);
     }
 
     public function subirDocumento(Request $request)
@@ -283,7 +292,7 @@ class UsuarioController extends Controller
         return $this->validate(request(), [
             'center_id' => 'required|integer|min:1|max:255',
             'other_filler' => 'nullable|string|max:255',
-            'file_number' => 'required|string|max:255',
+            'file_number' => 'nullable|string|max:255',
             'created_at' => 'required|date',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
