@@ -11,6 +11,9 @@
             v-model="date"
             :date-formatter="formatter"
             @input="cleanError"
+            :min-date="minDate"
+            :max-date="maxDate"
+            :years-range="[-120, 120]"
             >
         </b-datepicker>
     </b-field>
@@ -21,10 +24,13 @@ import moment from 'moment';
 export default {
     props:['label', 'name', 'old', 'error'],
     data(){
+        const today = new Date();
         return{
             date:null,
             inputColor:null,
-            errorMessage:this.error
+            errorMessage:this.error,
+            minDate: new Date(today.getFullYear()-120, today.getMonth(), today.getDate()),
+            maxDate: today
         }
     },
     mounted() {
