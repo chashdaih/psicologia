@@ -9,7 +9,8 @@
                 @if(Auth::user()->type == 6) 
                 <th>Registrado en centro</th>
                 @endif
-                <th>FDG</th>
+                <th colspan="2" style="text-align: center">FDG</th>
+                <th colspan="2" style="text-align: center">CDR</th>
                 <th>Asignar a programa</th>
             </tr>
         </thead>
@@ -29,7 +30,10 @@
                 @if(Auth::user()->type == 6)
                 <td>{{$usuario->fdg->center->nombre}}</td>
                 @endif
-                <td><a href="{{route('usuario.show', $usuario->fdg->id)}}">Ver pdf</a></td>
+                <td><a href="{{route('usuario.edit', $usuario->fdg->id)}}"><span><fai icon="edit" size="2x" /></span></a></td>
+                <td><a href="{{route('usuario.show', $usuario->fdg->id)}}"><span><fai icon="file-pdf" size="2x" /></span></a></td>
+                <td><a href="{{route('cdr.edit', ['patient_id'=>$usuario->id, 'cdr'=>$usuario->cdr_id])}}"><span><fai icon="edit" size="2x" /></span></a></td>
+                <td><a href="{{route('cdr.show', ['patient_id'=>$usuario->id, 'cdr'=>$usuario->cdr_id])}}"><span><fai icon="file-pdf" size="2x" /></span></a></td>
                 <td>
                     <assign-program
                         :stages="{{json_encode($centers)}}"

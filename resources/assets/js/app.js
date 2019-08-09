@@ -35,8 +35,8 @@ import UsuarioColl from './components/UsuarioColl';
 import UsuarioDisenroll from './components/UsuarioDisenroll';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt);
+import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt, faFileExcel } from '@fortawesome/free-solid-svg-icons';
+library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt, faFileExcel);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export const eventBus = new Vue();

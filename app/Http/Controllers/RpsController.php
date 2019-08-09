@@ -580,7 +580,6 @@ class RpsController extends Controller
     {
         Excel::create('Listado', function($excel) use ($stage, $sup, $per) {
             $records = $this->filter($stage, $sup, $per);
-
             
             $excel->sheet('Hoja 1', function($sheet) use ($records) {
                 $row = 2;

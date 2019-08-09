@@ -30,7 +30,7 @@ export default {
             inputColor:null,
             errorMessage:this.error,
             minDate: new Date(today.getFullYear()-120, today.getMonth(), today.getDate()),
-            maxDate: today
+            maxDate: new Date(today.getFullYear()+2, today.getMonth(), today.getDate())
         }
     },
     mounted() {

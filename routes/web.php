@@ -12,6 +12,7 @@ Route::resource('program/{program_id}/partakers/{partaker_id}/ecpr', 'EcprContro
 Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresController');
 
 Route::resource('/usuario', 'UsuarioController');
+Route::get('excel/programs', 'UsuarioController@programsExcel')->name('programs_excel');
 Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], function() {
     Route::resource('cdr', 'Fe3cdrController');
     Route::resource('ps', 'PsController');

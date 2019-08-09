@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Excel;
 use App\Building;
 use App\FE3FDG;
 use App\Patient;
@@ -172,7 +173,7 @@ class UsuarioController extends Controller
     {
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
-        $doc = $this->formatFdg($id);+
+        $doc = $this->formatFdg($id);
         $full_code = "3-FE3-FDG";
         $pdf->loadView('usuario.show', compact('doc', 'full_code'));
         return $pdf->stream('fdg.pdf');
@@ -218,7 +219,64 @@ class UsuarioController extends Controller
     {
         return response()->download(public_path() . '/storage/patients/'.$patient_id.'/'.$clave.'.pdf');
     }
+    
+    public function programsExcel() // Esta función solo es para jefes / coordinación
+    {
+        $stage = Auth::user()->type == 5 ? Auth::user()->supervisor->center->id_centro : 0;
 
+        Excel::create('Listado', function($excel) use ($stage) {
+            $programs = Program::where('semestre_activo', config('globales.semestre_activo'))
+                ->when($stage > 0, function ($query) use ($stage) {
+                    return $query->where('id_centro', '=', $stage);
+                })->orderBy('id_centro', 'asc')->orderBy('programa')->get();
+            
+            $excel->sheet('Hoja 1', function($sheet) use ($programs) {
+                $row = 1;
+                $encabezado = ['Programa', 'Centro', 'Dirección', 'Tipo', 'Nombre del supervisor', 'Adscripción', 'Nombramiento', 'Correo', 'Objetivo general', 'Tipo de servicio', 'Problemática atendida', 'Enfoque del servicio'];
+                $servicios = ['primer_contacto'=>'Primer contacto', 'admision'=> 'Admisión', 'evaluacion'=>'Evaluación', 'orientacion'=>'Orientación', 'intervencion'=>'Intervención', 'egreso'=>'Egreso'];
+                $problematicas = ['depresion'=>'Depresión', 'duelo'=>'Duelo', 'psicosis'=>'Psicosis', 'demencia'=>'Demencia', 'emocionales_niños'=>'Trastornos emocionales niños', 'emocionales_ad'=>'Trastornos emocionales adolescentes', 'desarrollo_niños'=>'Trastornos del desarrollo niños', 'desarrollo_ad'=>'Trastornos del desarrollo adolescentes', 'conductuales_niños'=>'Trastornos conductuales niños', 'conductuales_ad'=>'Trastornos conductuales adolescentes', 'autolesion'=>'Autolesión / suicidio', 'ansiedad'=>'Ansiedad', 'estres'=>'Estrés', 'sexualidad'=>'Sexualidad', 'violencia'=>'Violencia', 'sustancias'=>'Trastornos por el consumo de sustancias', 'p_intervencion'=>'Intervención psicoeducativa'];
+                $enfoqueServicio = ['Cognitivo-conductual', 'Conductual', 'Cognitivo', 'Sistémico', 'Psicodinámico', 'Humanista', 'Gestalt', 'Constructivista', 'Otro'];
+                 
+
+                $sheet->row($row, $encabezado);
+                foreach ($programs as $program) {
+                    $objetivo = $program->program_data?$program->program_data->objetivo_g:null;
+                    $enfSer = $probAt = $servAt = null;
+                    if ($program->car_ser) {
+                        $servAt = $this->formatStringArray($program, $servicios);
+                        $probAt = $this->formatStringArray($program, $problematicas);
+                        $enfSer = $enfoqueServicio[$program->car_ser->enfoque_servicio];
+                    }
+                    $sheet->row(++$row, [
+                        $program->programa,
+                        $program->center->nombre,
+                        $program->center->direccion,
+                        $program->tipo,
+                        $program->supervisor->full_name,
+                        $program->supervisor->coordinacion,
+                        $program->supervisor->nombramiento,
+                        $program->supervisor->correo,
+                        $objetivo,
+                        $servAt,
+                        $probAt,
+                        $enfSer
+                    ]);
+                }
+            });
+        })->download('xlsx');
+    }
+
+    protected function formatStringArray($program, $fields)
+    {
+        $text = "";
+        foreach ($fields as $key => $value) {
+            $text .= $program->car_ser->{$key} ? $value.", ":"";
+        }
+        if ($text != "") {
+            $text = substr($text, 0, -2);
+        } 
+        return $text;
+    }
 
     protected function validateForm()
     {
