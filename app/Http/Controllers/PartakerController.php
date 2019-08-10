@@ -120,7 +120,7 @@ class PartakerController extends Controller
 
         // $fields = collect($request->except(['_token', '_method', 'correo', 'password']))->toArray();
 
-        $partaker->update($request->except(['_token', '_method', 'correo', 'password', 'password_confirmation']));
+        $partaker->update($request->except(['_token', '_method', 'password', 'password_confirmation']));
 
         $user = User::where('email', $request['correo'])->first();
 
