@@ -68,8 +68,8 @@ class EnrollController extends Controller
         ->where('ciclo_activo', config('globales.semestre_activo'))
         ->first();
 
-        if ($registered_programs) {
-            return redirect()->route('insc')->with('fail', "Hasta el periodo de altas y bajas, solo se permite un programa por participante");
+        if (count($registered_programs) > 2) {
+            return redirect()->route('insc')->with('fail', "Solo se permiten dos programas por participante");
         }
 
         $rel = ProgramPartaker::create([

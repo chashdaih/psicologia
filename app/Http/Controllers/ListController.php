@@ -18,45 +18,6 @@ class ListController extends Controller
         $this->middleware('auth');
     }
 
-    protected function fixNames($records)
-    {
-        if($records) {
-            foreach ($records as $record) {
-                $record->full_name = ucwords(mb_strtolower($record->full_name));
-                // $record->full_name = preg_replace('/\s+/', ' ',ucwords(mb_strtolower($record->full_name)));
-            }
-        }
-        return $records;
-    }
-    
-    public function filter($stage, $sup, $per) // webservice
-    {
-        // if(Auth::user()->supervisor->id_centro == 10) {
-        if(Auth::user()->type == 2) {
-            $stage = 0;
-        }
-
-        $records = DB::table('practicas as p')
-        ->when($stage > 0, function ($query) use ($stage) {
-            return $query->where('p.id_centro', '=', $stage);
-        })
-        ->when($sup > 0, function ($query) use ($sup) {
-            return $query->where('p.id_supervisor', '=', $sup);
-        })
-        ->when($per != 0, function ($query) use ($per) {
-            // dd($per);
-            return $query->where('p.semestre_activo', '=', $per);
-        })
-        ->join('centros as c', 'p.id_centro', '=', 'c.id_centro')
-        ->join('supervisores as s', 'p.id_supervisor', '=', 's.id_supervisor')
-        ->select('p.id_practica', 'p.programa', 'p.semestre_activo', 'c.nombre as centro', 'p.tipo',
-            DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"))
-            ->orderBy('p.semestre_activo', 'desc')
-        ->get();
-
-        return $this->fixNames($records);
-    }
-
     public function index()
     {
         $data = [];
@@ -73,7 +34,7 @@ class ListController extends Controller
 
             $programs = null;
 
-            if (!count($enroll_programs)) {
+            if (count($enroll_programs)<2) {
                 $programs = DB::table('practicas as p')
                 ->where('semestre_activo', config('globales.semestre_activo'))
                 ->where('cupo_actual','>', '0')
@@ -87,7 +48,9 @@ class ListController extends Controller
                 ->get();
             }
 
-            $data = compact('enroll_programs', 'programs'); 
+            $todaysDate = date_create();
+
+            $data = compact('enroll_programs', 'programs', 'todaysDate'); 
 
         } else {
             
@@ -171,6 +134,45 @@ class ListController extends Controller
         $pdf->loadView('home.enrollment_proof', compact('programPartaker'));
         return $pdf->stream('comprobante_registro.pdf', array("Attachment" => 0));
 
+    }
+
+    protected function fixNames($records)
+    {
+        if($records) {
+            foreach ($records as $record) {
+                $record->full_name = ucwords(mb_strtolower($record->full_name));
+                // $record->full_name = preg_replace('/\s+/', ' ',ucwords(mb_strtolower($record->full_name)));
+            }
+        }
+        return $records;
+    }
+    
+    public function filter($stage, $sup, $per) // webservice
+    {
+        // if(Auth::user()->supervisor->id_centro == 10) {
+        if(Auth::user()->type == 2) {
+            $stage = 0;
+        }
+
+        $records = DB::table('practicas as p')
+        ->when($stage > 0, function ($query) use ($stage) {
+            return $query->where('p.id_centro', '=', $stage);
+        })
+        ->when($sup > 0, function ($query) use ($sup) {
+            return $query->where('p.id_supervisor', '=', $sup);
+        })
+        ->when($per != 0, function ($query) use ($per) {
+            // dd($per);
+            return $query->where('p.semestre_activo', '=', $per);
+        })
+        ->join('centros as c', 'p.id_centro', '=', 'c.id_centro')
+        ->join('supervisores as s', 'p.id_supervisor', '=', 's.id_supervisor')
+        ->select('p.id_practica', 'p.programa', 'p.semestre_activo', 'c.nombre as centro', 'p.tipo',
+            DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"))
+            ->orderBy('p.semestre_activo', 'desc')
+        ->get();
+
+        return $this->fixNames($records);
     }
 
 
