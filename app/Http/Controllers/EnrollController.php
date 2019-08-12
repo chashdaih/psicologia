@@ -129,7 +129,7 @@ class EnrollController extends Controller
             'historial_ac' => 'nullable|mimes:pdf|max:14000'
         ]);
 
-        $doc = Document::where('id_tramite', $request['id_tramite'])->first();
+        $doc = Document::firstOrNew(['id_participante'=>$partaker_id, 'id_tramite' => $request['id_tramite']]); 
 
         if ($request->file('seguro_imss')) {
             $request->file("seguro_imss")->storeAs('public/'.$doc->id_tramite, 'seguro.pdf');
