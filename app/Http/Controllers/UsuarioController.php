@@ -83,8 +83,9 @@ class UsuarioController extends Controller
             $data['asignados'] = Patient::where('ps_program_id', '!=', 0)
             ->whereHas('program', function($query) use ($misPracticas) {
                 $query->where('semestre_activo', config('globales.semestre_activo'))
-                ->where('id_practica', $misPracticas);
-            })->get();
+                ->whereIn('id_practica', $misPracticas);
+            })
+            ->get();
 
             $data['porCdr'] = Patient::where('fdg_id', '!=', 0)
             ->where('cdr_id', 0)

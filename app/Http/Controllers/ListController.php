@@ -103,12 +103,11 @@ class ListController extends Controller
     public function changePass(Request $request)
     {
         $this->validate(request(), [
-            'nueva_contraseña' => 'required|string|min:4',
-            'repetir_contraseña' => 'required_with:password|string|min:4',
+            'password' => 'required|confirmed|string|min:4',
         ]);
     
         request()->user()->fill([
-            'password' => bcrypt(request()->input('nueva_contraseña'))
+            'password' => bcrypt(request()->input('password'))
         ])->save();
         request()->session()->flash('success', 'Contraseña actualizada exitosamente');
     

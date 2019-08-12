@@ -20,7 +20,7 @@
                 <div class="card-content has-text-centered">
                     @component('components.text-input', [
                         'title'=>'Nueva contraseña',
-                        'field'=>'nueva_contraseña',
+                        'field'=>'password',
                         'errors'=>$errors,
                         'type'=> 'password',
                         'send'=> true,
@@ -28,7 +28,7 @@
                     ])@endcomponent
                     @component('components.text-input', [
                         'title'=>'Repetir nueva contraseña',
-                        'field'=>'repetir_contraseña',
+                        'field'=>'password_confirmation',
                         'errors'=>$errors,
                         'type'=> 'password',
                         'send'=> true,
