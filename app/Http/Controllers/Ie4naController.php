@@ -64,7 +64,7 @@ class Ie4naController extends Controller
         return request()->validate([
             "program_id" => "required",
             "partaker_id" => "required",
-            "upload_file" => "required|mimes:pdf|max:14000"
+            "upload_file" => "required|mimes:jpeg,bmp,png,gif,svg,pdf|max:14000"
         ]);
     }
 

@@ -2,7 +2,7 @@
     <div class="field">
         <div class="file is-boxed has-name" :class="error != '' ? 'is-danger' : 'is-success'">
             <label class="file-label">
-                <input class="file-input" type="file" name="upload_file" accept="application/pdf" @change="onChange" required>
+                <input class="file-input" type="file" name="upload_file" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" @change="onChange" required>
                 <span class="file-cta">
                     <span class="file-icon">
                     <fai icon="upload" />

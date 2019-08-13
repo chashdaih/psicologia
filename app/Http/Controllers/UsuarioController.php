@@ -218,7 +218,7 @@ class UsuarioController extends Controller
         $this->validate($request, [
             'tipo_documento' => 'required|string',
             'patient_id' => 'required|numeric|min:1',
-            'document' => 'required|mimes:pdf|max:14000',
+            'document' => 'required|mimes:jpeg,bmp,png,gif,svg,pdf|max:14000',
         ]);
         $request->file("document")->storeAs('public/patients/'.$request->patient_id, $request->tipo_documento.'.pdf');
 

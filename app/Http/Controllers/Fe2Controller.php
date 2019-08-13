@@ -69,7 +69,7 @@ class Fe2Controller extends Controller
             "program_id" => "required",
             "partaker_id" => "required",
             "evaluation_stage" => "required",
-            "upload_file" => "required|mimes:pdf|max:14000"
+            "upload_file" => "required|mimes:jpeg,bmp,png,gif,svg,pdf|max:14000"
         ]);
     }
 

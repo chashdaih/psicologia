@@ -50,7 +50,7 @@
                     <input type="hidden" value="{{$patient_id}}" name="patient_id">
                     <div class="file is-success is-large is-centered">
                         <label class="file-label">
-                            <input class="file-input" accept="application/pdf" type="file" name="document" onchange="this.form.submit()">
+                            <input class="file-input" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" type="file" name="document" onchange="this.form.submit()">
                             <span class="file-cta">
                             <span class="file-icon">
                                 <fai icon="upload" />
