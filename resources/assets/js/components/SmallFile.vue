@@ -2,7 +2,7 @@
     <div class="field">
         <div class="file is-small is-boxed has-name is-centered" :class="error != '' ? 'is-danger' : color_class">
             <label class="file-label">
-                <input class="file-input" :disabled="disable" type="file" :name="name" accept="application/pdf" @change="onChange">
+                <input class="file-input" :disabled="disable" type="file" :name="name" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" @change="onChange">
                 <span class="file-cta">
                     <span class="file-icon">
                     <fai icon="upload" />

@@ -11,6 +11,7 @@ use App\Rs as Doc;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class RsController extends Controller
 {
@@ -54,10 +55,18 @@ class RsController extends Controller
 
     public function store($patient_id, Request $request)
     {
+        $isIntervention = $this->isIntervention;
         $this->validate($request, [
             'created_at' => 'required|date',
-            'session_number' => 'required|integer|min:0|max:255|unique:rs,session_number',
-            'file' => 'required|mimes:pdf|max:14000'
+            'session_number' => [
+                'required',
+                'min:0',
+                'max:255',
+                Rule::unique('rs')->where(function($query) use ($patient_id, $isIntervention) {
+                    return $query->where('patient_id', $patient_id)->where('intervencion', $isIntervention);
+                })
+            ],
+            'file' => 'required|mimes:jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
         
         $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
