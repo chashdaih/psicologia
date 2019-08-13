@@ -39,7 +39,7 @@
                 <tr>
                     <td>{{ $pp->partaker->full_name }}</td>
                     <td>{{ $pp->estado }}</td>
-                    <td>@if($pp->document->seguro_imss)
+                    <td>@if($pp->document && $pp->document->seguro_imss)
                         <a href="{{ route('get_document', [$pp->document->id_tramite, 'seguro']) }}">
                             <fai icon="file-code" size="2x" />
                         </a>
@@ -47,7 +47,7 @@
                         <fai icon="times" size="2x" />
                         @endif
                     </td>
-                    <td>@if($pp->document->carta_comp)
+                    <td>@if($pp->document && $pp->document->carta_comp)
                         <a href="{{ route('get_document', [$pp->document->id_tramite, 'carta']) }}">
                             <fai icon="file-code" size="2x" />
                         </a>
@@ -55,7 +55,7 @@
                         <fai icon="times" size="2x" />
                         @endif
                     </td>
-                    <td>@if($pp->document->historial_ac)
+                    <td>@if($pp->document && $pp->document->historial_ac)
                         <a href="{{ route('get_document', [$pp->document->id_tramite, 'historial']) }}">
                             <fai icon="file-code" size="2x" />
                         </a>
@@ -64,21 +64,21 @@
                         @endif
                     </td>
                     <td>
-                        @if ($pp->evaluate_student->e1)
+                        @if ($pp->evaluate_student && $pp->evaluate_student->e1)
                             <a href="{{route('ecpr.edit', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Editar</a> / <a href="{{route('ecpr.show', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Pdf</a>
                         @else
                             <a href="{{route('ecpr.create', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante])}}">Registrar</a>
                         @endif
                     </td>
                     <td>
-                        @if ($pp->evaluate_student->e2)
+                        @if ($pp->evaluate_student && $pp->evaluate_student->e2)
                         <a href="{{route('ecpr.edit', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Editar</a> / <a href="{{route('ecpr.show', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Pdf</a>
                         @else
                             <a href="{{route('ecpr.create', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante])}}">Registrar</a>
                         @endif
                     </td>
                     <td>
-                        @if ($pp->evaluate_student->e3)
+                        @if ($pp->evaluate_student && $pp->evaluate_student->e3)
                         <a href="{{route('ecpr.edit', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Editar</a> / <a href="{{route('ecpr.show', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Pdf</a>
                         @else
                             <a href="{{route('ecpr.create', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante])}}">Registrar</a>
