@@ -320,15 +320,24 @@ class RpsController extends Controller
 
     public function update(StoreProgramData $request, $id)
     {
-        $request['cupo_actual'] = $request['cupo'];
+        $program =  Program::where('id_practica', $id)->first();
+        $old_cupo = $program->cupo;
+        $old_actual = $program->cupo_actual;
+        $new_cupo = $request['cupo'];
+        $dif_cupo = $new_cupo - $old_cupo;
+        $request['cupo_actual'] = $old_actual + $dif_cupo;
+
+        $this->validateProgram($request);
         
-        Program::where('id_practica', $id)->update(
+        $program->fill(
             collect($request->only($this->programFields))
                 ->filter(function($value) {
                     return null !== $value;
                 })
                 ->toArray()
         );
+
+        $program->save();
 
         $programData = collect($request->only(['resumen', 'justificacion', 'objetivo_g', 
         'objetivo_es', 'cont_tematico', 'requisitos',
@@ -480,6 +489,18 @@ class RpsController extends Controller
         $this->preparePdf($id);
 
         return view($this->base_url.'.show', $this->params);
+    }
+
+    public function validateProgram($request)
+    {
+        $this->validate($request, [
+            'cupo'=> 'nullable|integer|min:0',
+            'cupo_actual'=> 'nullable|integer|min:0',
+            'id_supervisor'=> 'required|integer|min:0',
+            'periodicidad'=> 'required|integer|min:1|max:4',
+            'programa'=> 'nullable',
+            'tipo'=> 'nullable'
+        ]);
     }
 
     public function pdf($id)
