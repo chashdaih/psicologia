@@ -164,7 +164,12 @@ class EnrollController extends Controller
 
         if ($program->semestre_activo == config('globales.semestre_activo')) {
 
-            $pdf->loadView('enroll.carta_compromiso_pre', compact('program'));
+            if($program->car_ser->pre_pos) { // posgrado
+                $pdf->loadView('enroll.carta_compromiso_pos', compact('program'));
+            } else { // pregrado
+                $pdf->loadView('enroll.carta_compromiso_pre', compact('program'));
+            }
+
             return $pdf->download('carta_compromiso.pdf');
 
         }

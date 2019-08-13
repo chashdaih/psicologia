@@ -5,7 +5,7 @@
     <title>@if(isset($full_code)){{$full_code}}@endif</title>
     <style>
         @page {
-            margin: 100px 25px;
+            margin: 100px 50px;
         }
         @font-face {
             font-family: Arial, Helvetica, sans-serif;
