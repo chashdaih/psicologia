@@ -584,16 +584,25 @@ class RpsController extends Controller
             $excel->sheet('Hoja 1', function($sheet) use ($records) {
                 $row = 2;
                 $sheet->row(1, ['Total de programas: '.count($records)]);
-                $sheet->row($row, [null, 'Programa', 'Centro', 'Curricular / Extracurricular', 'Nombre del supervisor', 'Número de participantes']);
+                $sheet->row($row, [null, 'Programa', 'Centro', 'Curricular / Extracurricular', 'Nombre del supervisor', 'Número de participantes', 'Participantes SUA', 'Participantes escolarizados', ]);
                 foreach ($records as $rec) {
-                    $inscritos = ProgramPartaker::where('id_practica', $rec->id_practica)->where('estado', 'Inscrito')->count();
+                    $pp = ProgramPartaker::where('id_practica', $rec->id_practica)->where('estado', 'Inscrito')->get();
+                    $inscritos = count($pp);
+                    $sua = 0;
+                    foreach ($pp as $p) {
+                        if($p->partaker->sistema == 'SUA') {
+                            $sua++;
+                        }
+                    }
                     $sheet->row(++$row, [
                         null,
                         $rec->programa,
                         $rec->centro,
                         $rec->tipo,
                         $rec->full_name,
-                        $inscritos
+                        $inscritos,
+                        $sua,
+                        $inscritos - $sua
                     ]);
                 }
             });
