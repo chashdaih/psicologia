@@ -9,7 +9,7 @@
     <div><br></div>
     @if($program->cupo_actual > 0)
     <div>
-        <register-partaker url="{{URL::to('/')}}" :program="{{json_encode($pps[0]->program)}}"></register-partaker>
+        <register-partaker url="{{URL::to('/')}}" :program="{{json_encode($program)}}"></register-partaker>
     </div>
     @else
     <div class="button is-success">
