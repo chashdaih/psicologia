@@ -2,21 +2,22 @@
 
 @section('content')
 <section class="section">
-    {{-- @include('layouts.breadcrumbs') --}}
-    {{-- @if(session('success'))
-    <div class="notification is-primary">
-        {{ session('success') }}
-    </div>
-    @endif --}}
-    @if(count($pps))
-    <h1 class="title">Alumnos inscritos al programa "{{ $pps[0]->program->programa}}"</h1>
+    <h1 class="title">Alumnos inscritos al programa "{{ $program->programa}}"</h1>
     <div>
-        <a href="{{ route('lps_pdf', $pps[0]->program->id_practica) }}" class="button is-info">Descargar lista de estudiantes inscritos en pdf (3-IE2-LPS)</a>
-        <div>
-            <br>
-            <register-partaker url="{{URL::to('/')}}" :program="{{json_encode($pps[0]->program)}}"></register-partaker>
-        </div>
+        <a href="{{ route('lps_pdf', $program->id_practica) }}" class="button is-info">Descargar lista de estudiantes inscritos en pdf (3-IE2-LPS)</a>
     </div>
+    <div><br></div>
+    @if($program->cupo_actual > 0)
+    <div>
+        <register-partaker url="{{URL::to('/')}}" :program="{{json_encode($pps[0]->program)}}"></register-partaker>
+    </div>
+    @else
+    <div class="button is-success">
+        <p class="is-italic">Programa sin cupo disponible</p>
+    </div>
+    <div><br></div>
+    @endif
+    @if(count($pps))
     <br>
     <table class="table">
         <thead>
@@ -98,12 +99,12 @@
         </tbody>
     </table>
     @else
-    <p class="title">{{ $program->programa }}</p>
+    {{-- <p class="title">{{ $program->programa }}</p> --}}
     <p class="subtitle">Aún no hay alumnos inscritos al programa.</p>
-    <div>
+    {{-- <div>
         <br>
         <register-partaker url="{{URL::to('/')}}" :program="{{json_encode($program)}}"></register-partaker>
-    </div>
+    </div> --}}
     @endif
 </section>
 @endsection
