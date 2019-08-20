@@ -13,9 +13,14 @@ class Patient extends Model
         return $this->belongsTo('App\FE3FDG', 'fdg_id', 'id');
     }
 
-    public function program()
+    // public function program()
+    // {
+    //     return $this->belongsTo('App\Program', 'ps_program_id', 'id_practica');
+    // }
+
+    public function assigned()
     {
-        return $this->belongsTo('App\Program', 'ps_program_id', 'id_practica');
+        return $this->hasMany('App\PatientAssign', 'patient_id', 'id');
     }
 
 }

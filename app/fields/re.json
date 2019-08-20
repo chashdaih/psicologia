@@ -2,7 +2,7 @@
     "file_number": {
         "title": "No. expediente",
         "type": "text",
-        "nullable": false
+        "nullable": true
     },
     "created_at" : {
         "title" : "Fecha en que se llenó el documento",

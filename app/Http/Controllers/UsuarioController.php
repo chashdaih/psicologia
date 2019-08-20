@@ -7,6 +7,7 @@ use Excel;
 use App\Building;
 use App\FE3FDG;
 use App\Patient;
+use App\PatientAssign;
 use App\Program;
 use App\ProgramPartaker;
 use App\Supervisor;
@@ -27,7 +28,7 @@ class UsuarioController extends Controller
         $data = [];
         if (Auth::user()->type > 4) { // jefe de centro y coordinación
 
-            $data['porAsignar'] = Patient::where('cdr_id', '!=', 0)->where('ps_program_id', 0)->get();
+            $data['porAsignar'] = Patient::where('status', 2)->get(); // status 2 = necesita asignación
 
             $data['centers'] = Building::all();
     
@@ -38,7 +39,29 @@ class UsuarioController extends Controller
 
             if (Auth::user()->type == 5) { // jefe de centro
 
-                $data['asignados'] = Patient::where('ps_program_id', '!=', 0)
+                // $patients = Patient::where('status', 3)
+                // ->whereHas('assigned', function($q) {
+                //     $q->whereHas('program', function($r) {
+                //         $r->where('id_centro', Auth::user()->supervisor->id_centro);
+                //     });
+                // })
+                // ->get();
+
+                // $asignados = [];
+
+                // foreach ($patients as $patient) {
+                //     $id = $patient->id;
+                //     $programs = [];
+                //     $supervisors = [];
+                //     $centers = [];
+                //     foreach ($patient->assigned as $ass) {
+                //         dd($ass->program->programa);
+                //     }
+                //     $asignado = compact('id', 'programs', 'supervisors', 'centers');
+                //     array_push($asignados, $asignado);
+                // }
+                
+                Patient::where('ps_program_id', '!=', 0)
                 ->whereHas('program', function($query){
                     $query->where('semestre_activo', config('globales.semestre_activo'))
                     ->where('id_centro', Auth::user()->supervisor->center->id_centro);
@@ -51,7 +74,7 @@ class UsuarioController extends Controller
                         $q->where('center_id', Auth::user()->supervisor->id_centro);
                     })->get();
             } else { // coordinación
-                $data['asignados'] = Patient::where('ps_program_id', '!=', 0)->get();
+                $data['asignados'] = Patient::where('status', 3)->get();
                 $data['porCdr'] = Patient::where('cdr_id', 0)->get();
             }
         } else { // supervisores y alumnos
@@ -80,12 +103,19 @@ class UsuarioController extends Controller
                     ->pluck('id_practica')->toArray();
             }
 
-            $data['asignados'] = Patient::where('ps_program_id', '!=', 0)
-            ->whereHas('program', function($query) use ($misPracticas) {
-                $query->where('semestre_activo', config('globales.semestre_activo'))
-                ->whereIn('id_practica', $misPracticas);
+            $data['asignados'] = Patient::where('status', 3)
+            ->whereHas('assigned', function($q) use ($misPracticas) {
+                $q->whereHas('program', function($r) use ($misPracticas) {
+                    $r->whereIn('id_practica', $misPracticas);
+                });
             })
             ->get();
+            // Patient::where('ps_program_id', '!=', 0)
+            // ->whereHas('program', function($query) use ($misPracticas) {
+            //     $query->where('semestre_activo', config('globales.semestre_activo'))
+            //     ->whereIn('id_practica', $misPracticas);
+            // })
+            // ->get();
 
             $data['porCdr'] = Patient::where('fdg_id', '!=', 0)
             ->where('cdr_id', 0)
@@ -162,6 +192,15 @@ class UsuarioController extends Controller
 
     public function filterByEtapa($center_id, $supervisor_id, $etapa) // WS
     {
+        if ($etapa == 'ps') {
+            $etapa = 'admision';
+        } else if ($etapa == 're') {
+            $etapa = 'evaluacion';
+        } else if ($etapa = 'rs6') {
+            $etapa = 'orientacion';
+        } else if ($etapa  = 'rs7') {
+            $etapa = 'intervencion';
+        }
 
         $records = DB::table('practicas as p')
         ->when($center_id > 0, function ($query) use ($center_id) {
@@ -181,36 +220,51 @@ class UsuarioController extends Controller
     
     public function assign(Request $request) // WS
     {
-        // $etapa = $request->etapa;
-        $user_id = $request->user_id;
+        $etapa = $request->etapa;
         $program_id = $request->program_id;
-        // $code = null;
-        // switch ($etapa) {
-        //     case 'primer_contacto':
-        //         $code = 'cdr_program_id';
-        //         break;
-        //     case 'admision':
-        //         $code = 'ps_program_id';
-        //         break;
-        //     case 'evaluacion':
-        //         $code = 're_program_id';
-        //         break;
-        //     case 'orientacion':
-        //         $code = 'rs6_program_id';
-        //         break;
-        //     case 'intervencion':
-        //         $code = 'rs7_program_id';
-        //         break;
-        //     case 'egreso':
-        //         $code = 'he_program_id';
-        //         break;
-        // }
+        $patient_id = $request->patient_id;
+        $assigner_id = Auth::user()->supervisor->id_supervisor;
+        switch ($etapa) {
+            case 'admision': // debe asignar admision, evaluación, intervención y egreso
+                PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=>'ps']);
+                PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=> 're']);
+                PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=> 'rs7']);
+                PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=> 'he']);
+                PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=> 'cssp']);
+                break;
+            case 'orientacion': // asignar orientación y egreso
+            PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=> 'rs6']);
+            PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=> 'he']);
+            PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=> 'cssp']);
+                break;
+            case 'egreso': // solo egreso
+            PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=> 'he']);
+            PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=> 'cssp']);
+                break;
+            // para la reasignación individual
+            case 'ps':
+            PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=>'ps']);
+                break;
+            case 're':
+            PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=>'re']);
+                break;
+            case 'rs6':
+            PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=>'rs6']);
+                break;
+            case 'rs7':
+            PatientAssign::create(['patient_id'=>$patient_id, 'assigner_id'=>$assigner_id, 'program_id'=>$program_id, 'process_code'=>'rs7']);
+                break;
+            default: 
+                return 400;
+        }
+        Patient::where('id', $patient_id)->update(['status'=>3]); // status 3 = primera asignación
+        return 200;
         // if($code) {
         //     return Patient::where('id', $user_id)->update([$code => $program_id]);
         // } else {
         //     return 404;
         // }
-        return Patient::where('id', $user_id)->update(['ps_program_id' => $program_id, 're_program_id' => $program_id, 'rs6_program_id'=>$program_id, 'rs7_program_id'=>$program_id, 'he_program_id'=>$program_id, 'cssp_program_id'=>$program_id]);
+        // return Patient::where('id', $user_id)->update(['ps_program_id' => $program_id, 're_program_id' => $program_id, 'rs6_program_id'=>$program_id, 'rs7_program_id'=>$program_id, 'he_program_id'=>$program_id, 'cssp_program_id'=>$program_id]);
     }
 
     public function subirDocumento(Request $request)
@@ -225,9 +279,9 @@ class UsuarioController extends Controller
         return redirect()->route($request->tipo_documento.'.index', $request->patient_id)->with('success', 'Documento subido exitosamente');
     }
 
-    public function bajarDocumento($patient_id, $clave)
+    public function bajarDocumento($patient_id, $clave, $id, $extension)
     {
-        return response()->download(public_path() . '/storage/patients/'.$patient_id.'/'.$clave.'.pdf');
+        return response()->download(public_path() . '/storage/patients/'.$patient_id.'/'.$clave.'/'.$id.'.'.$extension);
     }
     
     public function programsExcel() // Esta función solo es para jefes / coordinación
@@ -372,7 +426,7 @@ class UsuarioController extends Controller
     protected $relationship = ['de la madre', 'del padre', 'del tutor'];
     protected $studies_level = ['No cuenta con escolaridad', 'Preescolar', 'Primaria', 'Secundaria', 'Preparatoria', 'Licenciatura', 'Posgrado'];
     protected $house_is = ['Otra', 'Propia', 'Propia, pero la está pagando', 'Rentada', 'Prestada', 'Intestada o en litigio'];
-    protected $service_type = ['Orientación/Consejo breve', 'Evaluación', 'Intervención'];
+    protected $service_type = ['Orientación/Consejo breve', 'Evaluación', 'Taller', 'Intervención'];
     protected $service_modality = ['Individual/Grupal', 'Familiar/Pareja'];
     protected $mhGAP_cause_classification = ['Depresión', 'Psicosis', 'Epilepsia', 'Transtornos mentales y conductuales del niño y el adolescente', 'Demencia', 'Transtornos por el consumo de sustancias', 'Autolesión/Suicidio', 'Otros padecimientos de salud importantes'];
     protected $type_previous_treatment = ['Psicológica', 'Psiquiátrica', 'Médica', 'Neurológica', 'Otra'];

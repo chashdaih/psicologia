@@ -10,7 +10,7 @@
         @else
         action="{{ route('he.store',  $patient_id) }}"
         @endif
-        method="POST">
+        method="POST" enctype="multipart/form-data">
         @if($process_model->id) <input name="_method" type="hidden" value="PUT"> @endif
             {{ csrf_field() }}
             @foreach ($fields as $field_name => $field)
@@ -64,6 +64,10 @@
                 </text-input>
                 @endif
             @endforeach
+            <small-file
+                name="file"
+                serv_error="{{ $errors->has('file') ? $errors->first('file') : '' }}"
+                ></small-file>
             <button class="button is-info" type="submit">@if($process_model->id) Actualizar @else Registrar @endif </button>
         </form>
     </div>

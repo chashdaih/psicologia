@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRsTable extends Migration
+class CreatePatientAssignsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateRsTable extends Migration
      */
     public function up()
     {
-        Schema::create('rs', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('patient_assigns', function (Blueprint $table) {
+            $table->increments('id');
             $table->timestamps();
             $table->unsignedInteger('patient_id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('assigner_id');
             $table->unsignedInteger('program_id');
-            $table->boolean('intervencion');
-            $table->unsignedTinyInteger('session_number');
-            $table->boolean('exist');
+            $table->string('process_code');
         });
     }
 
@@ -32,6 +30,6 @@ class CreateRsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rs');
+        Schema::dropIfExists('patient_assigns');
     }
 }

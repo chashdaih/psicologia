@@ -8,6 +8,7 @@ use App\FE3FDG;
 use App\He;
 use App\Option;
 use App\Patient;
+use App\PatientAssign;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -31,10 +32,19 @@ class HeController extends Controller
     {
         $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'HE'];
 
+        // $patient = Patient::where('id', $patient_id)->first();
+        // $he = He::where('id', $patient->he_id)->first();
+        
         $patient = Patient::where('id', $patient_id)->first();
-        $he = He::where('id', $patient->he_id)->first();
+        
+        $assigned = PatientAssign::where('patient_id', $patient_id)->where('process_code', 'he')->pluck('id');
 
-        return view('usuario.he.index', compact('patient_id', 'migajas', 'he'));
+        $path = public_path().'/storage/patients/'.$patient->id.'/he/';
+
+        $records = He::whereIn('assign_id', $assigned)->get();
+        $data = compact('patient', 'records', 'migajas', 'path');
+
+        return view('usuario.he.index', $data);
 
     }
 
@@ -51,14 +61,33 @@ class HeController extends Controller
     public function store($patient_id, Request $request)
     {
         $this->validate($request, [
-            'file_number' => 'required|string',
+            'file_number' => 'nullable|string',
             'created_at' => 'required|date',
-            'egress_type' => 'required|integer|min:0|max:5'
+            'egress_type' => 'required|integer|min:0|max:5',
+            'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
-        $fields = collect($request->except(['_token', '_method']))->toArray();
+
+        // $fields = collect($request->except(['_token', '_method']))->toArray();
+        // $fields['user_id'] = Auth::user()->id;
+        // $he = He::create($fields);
+        // Patient::where('id', $patient_id)->update(['he_id'=>$he->id]);
+        
+        $assign = PatientAssign::where('patient_id', $patient_id)->where('process_code', 'he')->orderBy('created_at', 'desc')->first();
+        $assign_id = $assign->id;
+
+        $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
+
         $fields['user_id'] = Auth::user()->id;
+        $fields['assign_id'] = $assign_id;
         $he = He::create($fields);
-        Patient::where('id', $patient_id)->update(['he_id'=>$he->id]);
+        
+        if ($request->file("file")) {
+            $extension = $request->file("file")->extension();
+            $file_folder = 'public/patients/'.$patient_id.'/he';
+            $file_name = $he->id.'.'.$extension;
+            $request->file("file")->storeAs($file_folder, $file_name);
+        }
+
         return redirect()->route('he.index', $patient_id)->with('success', 'Hoja de egreso registrada exitosamente');
     }
 
@@ -83,15 +112,28 @@ class HeController extends Controller
         return view('usuario.he.create', $data);
     }
 
-    public function update($patient_id, Request $request, $he)
+    public function update($patient_id, Request $request, $id)
     {
         $this->validate($request, [
-            'file_number' => 'required|string',
+            'file_number' => 'nullable|string',
             'created_at' => 'required|date',
-            'egress_type' => 'required|integer|min:0|max:5'
+            'egress_type' => 'required|integer|min:0|max:5',
+            'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
-        $values = collect($request->except(['_token', '_method']))->toArray();
-        He::where('id', $he)->update($values);
+        // $values = collect($request->except(['_token', '_method']))->toArray();
+        // He::where('id', $he)->update($values);
+        
+        $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
+        $fields['user_id'] = Auth::user()->id;
+        He::where('id', $id)->update($fields);
+        
+        if ($request->file("file")) {
+            $extension = $request->file("file")->extension();
+            $file_folder = 'public/patients/'.$patient_id.'/he';
+            $file_name = $id.'.'.$extension;
+            $request->file("file")->storeAs($file_folder, $file_name);
+        }
+
         return redirect()->route('he.index', $patient_id)->with('success', 'Hoja de egreso actualizada exitosamente');
     }
 

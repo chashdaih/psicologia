@@ -10,7 +10,7 @@
         @else
         action="{{ route('ps.store',  $patient_id) }}"
         @endif
-        method="POST">
+        method="POST" enctype="multipart/form-data">
         @if($process_model->id) <input name="_method" type="hidden" value="PUT"> @endif
             {{ csrf_field() }}
             @component('components.text-input', [
@@ -20,7 +20,7 @@
                 'type'=> 'text',
                 'prev' => old('file_number', isset($process_model) ? $process_model->file_number : null),
                 'maxlength' => 255,
-                'required' => true
+                'required' => false
             ])@endcomponent
             @foreach ($fields as $field_name => $field)
                 @if ($field['type'] == "text")
@@ -73,6 +73,10 @@
                 </text-input>
                 @endif
             @endforeach
+            <small-file
+                name="file"
+                serv_error="{{ $errors->has('file') ? $errors->first('file') : '' }}"
+                ></small-file>
             <button class="button is-info" type="submit">@if($process_model->id) Actualizar @else Registrar @endif </button>
         </form>
     </div>

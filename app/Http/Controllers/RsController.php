@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Auth;
-// use App\Bread;
 use App\FE3FDG;
+use App\PatientAssign;
 use App\Program;
 use App\Rs as Doc;
 
@@ -28,11 +28,17 @@ class RsController extends Controller
     {
         $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'Resumen de sesión'];
 
-
         $isIntervention = $this->isIntervention;
 
-        $records = Doc::where('patient_id', $patient_id)->where('intervencion', $isIntervention)->get();
-        $data = compact('patient_id', 'isIntervention', 'records', 'migajas');
+        $process_code = $this->isIntervention ? 'rs7' : 'rs6';
+        $code_name = $this->isIntervention ? 'intervencion' : 'breve';
+
+        $path = public_path().'/storage/patients/'.$patient_id.'/'.$code_name.'/';
+
+        $assigned = PatientAssign::where('patient_id', $patient_id)->where('process_code', $process_code)->pluck('id');
+
+        $records = Doc::whereIn('assign_id', $assigned)->where('intervencion', $isIntervention)->get();
+        $data = compact('patient_id', 'isIntervention', 'records', 'migajas', 'code_name', 'path');
         return view('usuario.rs.index', $data);
     }
 
@@ -55,37 +61,45 @@ class RsController extends Controller
 
     public function store($patient_id, Request $request)
     {
+        $process_code = $this->isIntervention ? 'rs7' : 'rs6';
+        $assign = PatientAssign::where('patient_id', $patient_id)->where('process_code', $process_code)->orderBy('created_at', 'desc')->first();
+        $assign_id = $assign->id;
+
         $isIntervention = $this->isIntervention;
-        $this->validate($request, [
+        $this->validate(request(), [
             'created_at' => 'required|date',
             'session_number' => [
                 'required',
                 'min:0',
                 'max:255',
-                Rule::unique('rs')->where(function($query) use ($patient_id, $isIntervention) {
-                    return $query->where('patient_id', $patient_id)->where('intervencion', $isIntervention);
+                Rule::unique('rs')->where(function($query) use ($assign_id, $isIntervention) {
+                    return $query->where('assign_id', $assign_id)->where('intervencion', $isIntervention);
                 })
             ],
             'file' => 'required|mimes:jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
         
         $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
-
-        $file_folder = 'public/patients/'.$patient_id;
-        if ($this->isIntervention) {
-            $file_folder = $file_folder.'/intervention';
-        } else {
-            $file_folder = $file_folder.'/breve';
-        }
-        $file_name = $fields['session_number'].'.pdf';
-        $request->file("file")->storeAs($file_folder, $file_name);
         
         $fields['user_id'] = Auth::user()->id;
-        $fields['patient_id'] = $patient_id;
-        $fields['program_id'] = 0;
+        $fields['assign_id'] = $assign_id;
         $fields['intervencion'] = $this->isIntervention;
         $fields['exist'] = true;
-        Doc::create($fields);
+        $rs = Doc::create($fields);
+
+        $program_id = $assign->program->id_programa;
+
+        if ($request->file("file")) {
+            $extension = $request->file("file")->extension();
+            $file_folder = 'public/patients/'.$patient_id;
+            if ($this->isIntervention) {
+                $file_folder = $file_folder.'/intervencion';
+            } else {
+                $file_folder = $file_folder.'/breve';
+            }
+            $file_name = $rs->id.'.'.$extension;
+            $request->file("file")->storeAs($file_folder, $file_name);
+        }
 
         $route = 'breve.index';
         if ($this->isIntervention) {
@@ -95,37 +109,90 @@ class RsController extends Controller
         return redirect()->route($route, $patient_id)->with('success', 'Resumen de sesión registrado exitosamente');
     }
 
-    public function show(Rs $rs)
-    {
-        //
-    }
+    // public function show($patient_id, $id)
+    // {
+    //     $file_folder = public_path().'/storage/patients/'.$patient_id;
+    //     if ($this->isIntervention) {
+    //         $file_folder = $file_folder.'/intervencion';
+    //     } else {
+    //         $file_folder = $file_folder.'/breve';
+    //     }
+    //     $file_name = $id.'.pdf';
+    //     return response()->file($file_folder.$file_name);
+    // }
 
-    public function edit(Rs $rs)
+    public function edit($patient_id, $id)
     {
-        //
-    }
-
-    public function update(Request $request, Rs $rs)
-    {
-        //
-    }
-
-    public function destroy(Program $program, FE3FDG $patient, $id)
-    {
-        $deletedRows = Doc::where('intervencion', $this->isIntervention)->where('session_number', $id)->delete();
-        // TODO error?
-
-        $file_folder = 'public/program/'.$program->id_practica.'/patient/'.$patient->id;
-        if ($this->isIntervention) {
-            $file_folder = $file_folder.'/intervention/';
+        $path = '';
+        if($this->isIntervention) {
+            $path = 'intervencion';
         } else {
-            $file_folder = $file_folder.'/breve/';
+            $path = 'breve';
         }
-        $file_name = $id.'.pdf';
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route($path.'.index', $patient_id) => 'Resumen de sesión', '#'=>'Actualizar resumen de sesión'];
 
-        Storage::delete($file_folder.$file_name);
-        return 200;
+        $fields = $this->getFields();
+        $process_model = Doc::where('id', $id)->first();
+        $isIntervention = $this->isIntervention;
+        $data = compact('patient_id', 'fields', 'process_model', 'isIntervention', 'migajas');
+        return view('usuario.rs.create', $data);
+        
     }
+
+    public function update(Request $request, $patient_id, $id)
+    {
+        $process_code = $this->isIntervention ? 'rs7' : 'rs6';
+        $isIntervention = $this->isIntervention;
+        $this->validate(request(), [
+            'created_at' => 'required|date',
+            'session_number' => [
+                'required',
+                'min:0',
+                'max:255'
+            ],
+            'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
+        ]);
+        
+        $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
+        $fields['user_id'] = Auth::user()->id;
+        Doc::where('id', $id)->update($fields);
+
+        if ($request->file("file")) {
+            $extension = $request->file("file")->extension();
+            $file_folder = 'public/patients/'.$patient_id;
+            if ($this->isIntervention) {
+                $file_folder = $file_folder.'/intervencion';
+            } else {
+                $file_folder = $file_folder.'/breve';
+            }
+            $file_name = $id.'.'.$extension;
+            $request->file("file")->storeAs($file_folder, $file_name);
+        }
+
+        $route = 'breve.index';
+        if ($this->isIntervention) {
+            $route = 'intervencion.index';
+        }
+
+        return redirect()->route($route, $patient_id)->with('success', 'Resumen de sesión actualizado exitosamente');
+    }
+
+    // public function destroy(Program $program, FE3FDG $patient, $id)
+    // {
+    //     $deletedRows = Doc::where('intervencion', $this->isIntervention)->where('session_number', $id)->delete();
+    //     // TODO error?
+
+    //     $file_folder = 'public/program/'.$program->id_practica.'/patient/'.$patient->id;
+    //     if ($this->isIntervention) {
+    //         $file_folder = $file_folder.'/intervention/';
+    //     } else {
+    //         $file_folder = $file_folder.'/breve/';
+    //     }
+    //     $file_name = $id.'.pdf';
+
+    //     Storage::delete($file_folder.$file_name);
+    //     return 200;
+    // }
 
     public function pdf(Program $program, FE3FDG $patient, $id)
     {

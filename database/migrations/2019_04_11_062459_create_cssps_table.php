@@ -16,8 +16,9 @@ class CreateCsspsTable extends Migration
         Schema::create('cssps', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->unsignedInteger('assign_id');
             $table->unsignedInteger('user_id');
-            $table->string('file_number');
+            $table->string('file_number')->nullable();
             $table->unsignedTinyInteger('q1');
             $table->unsignedTinyInteger('q2');
             $table->unsignedTinyInteger('q3');

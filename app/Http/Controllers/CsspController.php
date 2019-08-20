@@ -8,6 +8,7 @@ use App\Cssp;
 use App\FE3FDG;
 use App\Option;
 use App\Patient;
+use App\PatientAssign;
 // use App\Program;
 
 use Illuminate\Support\Facades\DB;
@@ -53,10 +54,19 @@ class CsspController extends Controller
     {
         $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'CSSP'];
 
+        // $patient = Patient::where('id', $patient_id)->first();
+        // $cssp = Cssp::where('id', $patient->cssp_id)->first();
+        
         $patient = Patient::where('id', $patient_id)->first();
-        $cssp = Cssp::where('id', $patient->cssp_id)->first();
+        
+        $assigned = PatientAssign::where('patient_id', $patient_id)->where('process_code', 'cssp')->pluck('id');
 
-        return view('usuario.cssp.index', compact('patient_id', 'migajas', 'cssp'));
+        $path = public_path().'/storage/patients/'.$patient->id.'/cssp/';
+
+        $records = Cssp::whereIn('assign_id', $assigned)->get();
+        $data = compact('patient', 'records', 'migajas', 'path');
+
+        return view('usuario.cssp.index', $data);
     }
 
 
@@ -73,7 +83,7 @@ class CsspController extends Controller
     public function store($patient_id, Request $request)
     {
         $this->validate($request, [
-            'file_number' => 'required|string',
+            'file_number' => 'nullable|string',
             'created_at' => 'required|date',
             'q1' => 'required|integer|min:0|max:3',
             'q2' => 'required|integer|min:0|max:3',
@@ -81,12 +91,30 @@ class CsspController extends Controller
             'q4' => 'required|integer|min:0|max:3',
             'q5' => 'required|integer|min:0|max:3',
             'o1' => 'nullable|string',
-            'o2' => 'nullable|string' 
+            'o2' => 'nullable|string',
+            'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
-        $fields = collect($request->except(['_token', '_method']))->toArray();
+        // $fields = collect($request->except(['_token', '_method']))->toArray();
+        // $fields['user_id'] = Auth::user()->id;
+        // $cssp = Cssp::create($fields);
+        // Patient::where('id', $patient_id)->update(['cssp_id'=>$cssp->id]);
+        
+        $assign = PatientAssign::where('patient_id', $patient_id)->where('process_code', 'cssp')->orderBy('created_at', 'desc')->first();
+        $assign_id = $assign->id;
+
+        $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
+
         $fields['user_id'] = Auth::user()->id;
+        $fields['assign_id'] = $assign_id;
         $cssp = Cssp::create($fields);
-        Patient::where('id', $patient_id)->update(['cssp_id'=>$cssp->id]);
+        
+        if ($request->file("file")) {
+            $extension = $request->file("file")->extension();
+            $file_folder = 'public/patients/'.$patient_id.'/cssp';
+            $file_name = $cssp->id.'.'.$extension;
+            $request->file("file")->storeAs($file_folder, $file_name);
+        }
+
         return redirect()->route('cssp.index', $patient_id)->with('success', 'Cuestionario de satisfacción con el servicio psicológico registrado exitosamente');
     }
 
@@ -130,10 +158,10 @@ class CsspController extends Controller
         return view('usuario.cssp.create', $data);
     }
 
-    public function update($patient_id, Request $request, $cssp)
+    public function update($patient_id, Request $request, $id)
     {
         $this->validate($request, [
-            'file_number' => 'required|string',
+            'file_number' => 'nullable|string',
             'created_at' => 'required|date',
             'q1' => 'required|integer|min:0|max:3',
             'q2' => 'required|integer|min:0|max:3',
@@ -141,10 +169,23 @@ class CsspController extends Controller
             'q4' => 'required|integer|min:0|max:3',
             'q5' => 'required|integer|min:0|max:3',
             'o1' => 'nullable|string',
-            'o2' => 'nullable|string' 
+            'o2' => 'nullable|string',
+            'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
-        $values = collect($request->except(['_token', '_method']))->toArray();
-        Cssp::where('id', $cssp)->update($values);
+        // $values = collect($request->except(['_token', '_method']))->toArray();
+        // Cssp::where('id', $cssp)->update($values);
+        
+        $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
+        $fields['user_id'] = Auth::user()->id;
+        Cssp::where('id', $id)->update($fields);
+        
+        if ($request->file("file")) {
+            $extension = $request->file("file")->extension();
+            $file_folder = 'public/patients/'.$patient_id.'/cssp';
+            $file_name = $id.'.'.$extension;
+            $request->file("file")->storeAs($file_folder, $file_name);
+        }
+
         return redirect()->route('cssp.index', $patient_id)->with('success', 'Cuestionario de satisfacción actualizado exitosamente');
     }
 

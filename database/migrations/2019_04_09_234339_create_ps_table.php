@@ -16,26 +16,16 @@ class CreatePsTable extends Migration
         Schema::create('ps', function (Blueprint $table) {
             $table->bigIncrements('id'); // No. expediente
             $table->timestamps();
+            $table->unsignedInteger('assign_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('file_number');
+            $table->string('file_number')->nullable();
 
             $table->unsignedTinyInteger('tipo_de_intervencion');
             $table->string('modelo_psicoterapia')->nullable();
             $table->unsignedTinyInteger('modalidad_de_servicio');
-            $table->text('sugerencias_de_intervencion');
+            $table->text('sugerencias_de_intervencion')->nullable();
 
-            // $table->string('file_number');
-            // $table->unsignedBigInteger('patient_id');
-            // $table->unsignedInteger('center_id');
-            // $table->unsignedBigInteger('program_id');
-            // $table->unsignedBigInteger('supervisor_id');
-            // $table->unsignedBigInteger('student_id');
-            // $table->unsignedTinyInteger('intervention_type');
-            // $table->string('other_intervention')->nullable();
-            // $table->unsignedTinyInteger('service_modality');
-            // $table->text('intervention_suggestions');
-
-            // TODO foreign keys
+            // TODO foreign keys?
         });
     }
 

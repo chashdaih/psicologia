@@ -43,7 +43,7 @@ class Fe3cdrController extends Controller
         $values['user_id'] = Auth::user()->id;
         $cdr = Fe3cdr::create($values);
 
-        Patient::where('id', $patient_id)->update(['cdr_id' => $cdr->id]);
+        Patient::where('id', $patient_id)->update(['cdr_id' => $cdr->id, 'status'=>2]);
         
         return redirect()->route('usuario.index')->with('success', 'CDR registrado exitosamente');
     }

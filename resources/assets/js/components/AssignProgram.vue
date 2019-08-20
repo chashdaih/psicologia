@@ -40,6 +40,16 @@
                         <template slot="empty">No hay resultados</template>
                     </b-autocomplete>
                 </b-field>
+
+                <b-field v-if="etapa == 'admision' || etapa == 'orientacion' || etapa == 'egreso'" label="Asignar a ..." horizontal>
+                    <b-select v-model="assign_code">
+                        <option value="admision">Admisión</option>
+                        <option value="orientacion">Orientación / consejo breve</option>
+                        <option value="egreso">Egreso</option>
+                    </b-select>
+                </b-field>
+                <p class="is-italic" v-else>Reasignación</p>
+
                 <b-table
                     :data="programs"
                     :columns="columns"
@@ -67,6 +77,7 @@ export default {
             selected_program: null,
             sups: this.supervisors,
             name: '',
+            assign_code: this.etapa,
             columns: [
                 {
                     field: 'programa',
@@ -102,7 +113,7 @@ export default {
             return;
         },
         filter() {
-            const url = this.base_url + "/filtrar_por_etapa/" + this.selected_stage + "/" + this.selected_supervisor + "/" + this.etapa;
+            const url = this.base_url + "/filtrar_por_etapa/" + this.selected_stage + "/" + this.selected_supervisor + "/" + this.assign_code;
             axios.get(url)
             .then(ans=>this.programs=ans.data)
             .catch(err=>console.log(err));
@@ -111,9 +122,9 @@ export default {
             // console.log(this.selected_program.id_practica);
             const url = this.base_url + "/asignar_por_etapa";
             const params = {
-                user_id: this.user_id,
+                patient_id: this.user_id,
                 program_id: this.selected_program.id_practica,
-                etapa: this.etapa
+                etapa: this.assign_code
             };
             axios.post(url, params)
             .then(

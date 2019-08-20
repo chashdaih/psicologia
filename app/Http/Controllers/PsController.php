@@ -9,6 +9,7 @@ use App\Bread;
 use App\FE3FDG;
 use App\Option;
 use App\Patient;
+use App\PatientAssign;
 // use App\Program;
 use App\Student;
 use App\Ps;
@@ -18,9 +19,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PsController extends Controller
 {
-    // protected $process = 'fe';
-    // protected $number = '4';
-    // protected $doc_code = 'ps';
     protected $interventions;
     protected $service_modality;
 
@@ -47,9 +45,18 @@ class PsController extends Controller
         $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'PS'];
 
         $patient = Patient::where('id', $patient_id)->first();
-        $ps = Ps::where('id', $patient->ps_id)->first();
 
-        return view('usuario.ps.index', compact('patient_id', 'migajas', 'ps'));
+        // $patient = Patient::where('id', $patient_id)->first();
+        // $ps = Ps::where('id', $patient->ps_id)->first();
+        
+        $assigned = PatientAssign::where('patient_id', $patient_id)->where('process_code', 'ps')->pluck('id');
+
+        $path = public_path().'/storage/patients/'.$patient->id.'/ps/';
+
+        $records = Ps::whereIn('assign_id', $assigned)->get();
+        $data = compact('patient', 'records', 'migajas', 'path');
+
+        return view('usuario.ps.index', $data);
     }
 
     public function create($patient_id)
@@ -66,16 +73,31 @@ class PsController extends Controller
     {
         $this->validate($request, [
             'created_at' => 'required|date',
-            'file_number' => 'required|string',
+            'file_number' => 'nullable|string',
             'tipo_de_intervencion' => 'required|integer|min:0|max:255',
             'modelo_psicoterapia' => 'nullable|string|max:255',
             'modalidad_de_servicio' => 'required|integer|min:0|max:255',
-            'sugerencias_de_intervencion' => 'required|string'
+            'sugerencias_de_intervencion' => 'nullable|string',
+            'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
-        $fields = collect($request)->toArray();
+        
+        $assign = PatientAssign::where('patient_id', $patient_id)->where('process_code', 'ps')->orderBy('created_at', 'desc')->first();
+        $assign_id = $assign->id;
+
+        $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
+
         $fields['user_id'] = Auth::user()->id;
+        $fields['assign_id'] = $assign_id;
         $ps = Ps::create($fields);
-        Patient::where('id', $patient_id)->update(['ps_id'=>$ps->id]);
+        
+        if ($request->file("file")) {
+            $extension = $request->file("file")->extension();
+            $fields['exist'] = true;
+            $file_folder = 'public/patients/'.$patient_id.'/ps';
+            $file_name = $ps->id.'.'.$extension;
+            $request->file("file")->storeAs($file_folder, $file_name);
+        }
+
         return redirect()->route('ps.index', $patient_id)->with('success', 'Plan de servicios registrado exitosamente');
     }
 
@@ -98,7 +120,7 @@ class PsController extends Controller
         return view('usuario.ps.create', compact('fields', 'process_model', 'patient_id'));
     }
 
-    public function update($patient_id, Request $request, $ps)
+    public function update($patient_id, Request $request, $id)
     {
         $this->validate($request, [
             'created_at' => 'required|date',
@@ -106,10 +128,25 @@ class PsController extends Controller
             'tipo_de_intervencion' => 'required|integer|min:0|max:255',
             'modelo_psicoterapia' => 'nullable|string|max:255',
             'modalidad_de_servicio' => 'required|integer|min:0|max:255',
-            'sugerencias_de_intervencion' => 'required|string'
+            'sugerencias_de_intervencion' => 'required|string',
+            'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
-        $fields = collect($request->except(['_method', '_token']))->toArray();
+
+        // $fields = collect($request->except(['_method', '_token']))->toArray();
+        // Ps::where('id', $ps)->update($fields);
+        
+        $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
+        $fields['user_id'] = Auth::user()->id;
         Ps::where('id', $ps)->update($fields);
+        
+        if ($request->file("file")) {
+            $extension = $request->file("file")->extension();
+            $fields['exist'] = true;
+            $file_folder = 'public/patients/'.$patient_id.'/ps';
+            $file_name = $id.'.'.$extension;
+            $request->file("file")->storeAs($file_folder, $file_name);
+        }
+
         return redirect()->route('ps.index', $patient_id)->with('success', 'Plan de servicios actualizado exitosamente');
     }
 

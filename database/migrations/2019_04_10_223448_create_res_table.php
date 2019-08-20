@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHesTable extends Migration
+class CreateResTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateHesTable extends Migration
      */
     public function up()
     {
-        Schema::create('hes', function (Blueprint $table) {
+        Schema::create('res', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
+            $table->unsignedInteger('assign_id');
             $table->unsignedInteger('user_id');
-            $table->string('file_number');
-            $table->unsignedTinyInteger('egress_type');
+            $table->string('file_number')->nullable();
+            $table->boolean('referencia_necesaria');
+            $table->string('lugar_de_referencia')->nullable();
         });
     }
 
@@ -29,6 +31,6 @@ class CreateHesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hes');
+        Schema::dropIfExists('res');
     }
 }

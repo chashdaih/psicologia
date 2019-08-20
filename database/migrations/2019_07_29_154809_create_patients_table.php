@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateResTable extends Migration
+class CreatePatientsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateResTable extends Migration
      */
     public function up()
     {
-        Schema::create('res', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('patients', function (Blueprint $table) {
+            $table->increments('id');
             $table->timestamps();
-            $table->unsignedInteger('user_id');
-            $table->string('file_number');
-            $table->boolean('referencia_necesaria');
-            $table->string('lugar_de_referencia')->nullable();
+            $table->unsignedInteger('fdg_id');
+            $table->unsignedInteger('cdr_id')->default(0);
+            $table->unsignedTinyInteger('status')->default(0); // por definir
         });
     }
 
@@ -30,6 +29,6 @@ class CreateResTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('res');
+        Schema::dropIfExists('patients');
     }
 }

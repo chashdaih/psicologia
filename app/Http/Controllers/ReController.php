@@ -7,6 +7,7 @@ use App\Building;
 use App\Bread;
 use App\FE3FDG;
 use App\Patient;
+use App\PatientAssign;
 use App\Re;
 use App\Partaker;
 use Illuminate\Support\Facades\DB;
@@ -18,10 +19,19 @@ class ReController extends Controller
     {
         $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'RE'];
 
+        // $patient = Patient::where('id', $patient_id)->first();
+        // $records = Re::where('id', $patient->re_id)->first();
+        
         $patient = Patient::where('id', $patient_id)->first();
-        $re = Re::where('id', $patient->re_id)->first();
+        
+        $assigned = PatientAssign::where('patient_id', $patient_id)->where('process_code', 're')->pluck('id');
 
-        return view('usuario.re.index', compact('patient_id', 'migajas', 're'));
+        $path = public_path().'/storage/patients/'.$patient->id.'/re/';
+
+        $records = Re::whereIn('assign_id', $assigned)->get();
+        $data = compact('patient', 'records', 'migajas', 'path');
+
+        return view('usuario.re.index', $data);
 
     }
 
@@ -38,14 +48,32 @@ class ReController extends Controller
     {
         $this->validate($request, [
             'created_at' => 'required|date',
-            'file_number' => 'required|string',
+            'file_number' => 'nullable|string',
             'referencia_necesaria' => 'required|boolean',
-            'lugar_de_referencia' => 'nullable|string|max:255'
+            'lugar_de_referencia' => 'nullable|string|max:255',
+            'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
-        $fields = collect($request->except(['_token', '_method']))->toArray();
+        // $fields = collect($request->except(['_token', '_method']))->toArray();
+        // $fields['user_id'] = Auth::user()->id;
+        // $re = Re::create($fields);
+        // Patient::where('id', $patient_id)->update(['re_id'=>$re->id]);
+        
+        $assign = PatientAssign::where('patient_id', $patient_id)->where('process_code', 're')->orderBy('created_at', 'desc')->first();
+        $assign_id = $assign->id;
+
+        $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
+
         $fields['user_id'] = Auth::user()->id;
+        $fields['assign_id'] = $assign_id;
         $re = Re::create($fields);
-        Patient::where('id', $patient_id)->update(['re_id'=>$re->id]);
+        
+        if ($request->file("file")) {
+            $extension = $request->file("file")->extension();
+            $file_folder = 'public/patients/'.$patient_id.'/re';
+            $file_name = $re->id.'.'.$extension;
+            $request->file("file")->storeAs($file_folder, $file_name);
+        }
+
         return redirect()->route('re.index', $patient_id)->with('success', 'Resultados de evaluación registrados exitosamente');
     }
 
@@ -69,16 +97,29 @@ class ReController extends Controller
         return view('usuario.re.create', $data);
     }
 
-    public function update($patient_id, Request $request, $re)
+    public function update($patient_id, Request $request, $id)
     {
         $this->validate($request, [
             'created_at' => 'required|date',
-            'file_number' => 'required|string',
+            'file_number' => 'nullable|string',
             'referencia_necesaria' => 'required|boolean',
-            'lugar_de_referencia' => 'nullable|string|max:255'
+            'lugar_de_referencia' => 'nullable|string|max:255',
+            'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
-        $values = collect($request->except(['_token', '_method']))->toArray();
-        Re::where('id', $re)->update($values);
+        // $values = collect($request->except(['_token', '_method']))->toArray();
+        // Re::where('id', $re)->update($values);
+        
+        $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
+        $fields['user_id'] = Auth::user()->id;
+        Re::where('id', $id)->update($fields);
+        
+        if ($request->file("file")) {
+            $extension = $request->file("file")->extension();
+            $file_folder = 'public/patients/'.$patient_id.'/re';
+            $file_name = $id.'.'.$extension;
+            $request->file("file")->storeAs($file_folder, $file_name);
+        }
+
         return redirect()->route('re.index', $patient_id)->with('success', 'Resultados de evaluación actualizados exitosamente');
     }
 

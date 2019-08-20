@@ -124,9 +124,9 @@ class EnrollController extends Controller
 
         $this->validate($request, [
             'id_tramite' => 'required',
-            'seguro_imss' => 'nullable|mimes:jpeg,bmp,png,gif,svg,pdf|max:14000',
-            'carta_comp' => 'nullable|mimes:jpeg,bmp,png,gif,svg,pdf|max:14000',
-            'historial_ac' => 'nullable|mimes:jpeg,bmp,png,gif,svg,pdf|max:14000'
+            'seguro_imss' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000',
+            'carta_comp' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000',
+            'historial_ac' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
 
         $doc = Document::firstOrNew(['id_participante'=>$partaker_id, 'id_tramite' => $request['id_tramite']]); 

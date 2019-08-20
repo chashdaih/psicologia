@@ -31,7 +31,7 @@
       <div class="navbar-item">
         <a href="{{route('usuario.index')}}" class="navbar-item">Personas atendidas</a>
       </div>
-      @if(Auth::user()->type == 6)
+      @if(Auth::user()->type > 4)
       <div class="navbar-item">
         <a href="{{ route('partaker.index') }}" class="navbar-item">Participantes</a>
       </div>

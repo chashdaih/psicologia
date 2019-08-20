@@ -22,8 +22,8 @@ Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], funct
     Route::resource('he', 'HeController');
     Route::resource('cssp', 'CsspController');
 
-    Route::post('subir-documento', 'UsuarioController@subirDocumento')->name('usuario.subir');
-    Route::get('bajar-documento/{clave}', 'UsuarioController@bajarDocumento')->name('usuario.bajar');
+    // Route::post('subir-documento', 'UsuarioController@subirDocumento')->name('usuario.subir');
+    Route::get('descargar-archivo/{clave}/{id}/{extension}', 'UsuarioController@bajarDocumento')->name('usuario.bajar');
 });
 
 Route::get('/asignar/{center_id}/{fecha?}', 'CalendarController@index')->name('asignar');
