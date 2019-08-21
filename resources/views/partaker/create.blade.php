@@ -19,6 +19,34 @@
                     </ul>
                 </div>
                 @endif
+                @if(isset($partaker))
+                <h1 class="title">{{$partaker->full_name}}</h1>
+                @if(count($partaker->tramites))
+                <usuario-coll nombre="Programas inscritos">
+                    <table class="table is-fullwidth is-hoverable is-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre del programa</th>
+                                <th>Centro</th>
+                                <th>Semestre activo</th>
+                                <th>Estatus</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($partaker->tramites as $tramite)
+                                <tr>
+                                    <td>{{$tramite->program->programa}}</td>
+                                    <td>{{$tramite->program->center->nombre}}</td>
+                                    <td>{{$tramite->program->semestre_activo}}</td>
+                                    <td>{{$tramite->estado}}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </usuario-coll>
+                <div><br></div>
+                @endif
+                @endif
                 <div class="card">
                     <div class="card-header">
                         <div class="card-header-title">

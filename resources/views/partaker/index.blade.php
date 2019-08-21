@@ -2,7 +2,7 @@
 @section('content')
 <section class="section">
     <div class="container">
-        <h1 class="title">Participantes registrados al programa</h1>
+        <h1 class="title">Participantes registrados</h1>
         <div class="has-text-centered">
             <a href="{{ route('partaker.create') }}" class="button is-info">Registrar nuevo participante</a>
         </div>
@@ -13,7 +13,7 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Número de cuenta</th>
-                    <th>Editar</th>
+                    <th class="has-text-centered">Programas e información personal</th>
                     {{-- <th>Eliminar</th> --}}
                 </tr>
             </thead>
@@ -21,9 +21,9 @@
             <tr>
                 <td>{{ $partaker->full_name }}</td>
                 <td>{{ $partaker->num_cuenta }}</td>
-                <td>
+                <td class="has-text-centered">
                     <a href="{{ route('partaker.edit', $partaker->num_cuenta) }}">
-                        <fai icon="edit" size="2x" />
+                        <fai icon="arrow-circle-right" size="2x" />
                     </a>
                 </td>
                 {{-- <td>

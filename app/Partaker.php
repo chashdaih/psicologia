@@ -28,7 +28,7 @@ class Partaker extends Model
 
     public function tramites()
     {
-        return $this->belongsTo('App\ProgramPartaker', 'num_cuenta', 'id_participante');
+        return $this->hasMany('App\ProgramPartaker', 'id_participante', 'num_cuenta')->orderBy('id_tramite', 'desc');
     }
 
     public function programs()
