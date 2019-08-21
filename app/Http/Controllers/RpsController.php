@@ -658,6 +658,8 @@ class RpsController extends Controller
         $pps = ProgramPartaker::where('id_practica', $id)->get();
         $this->params['pps'] = $pps;
 
+        $this->params['base_path'] = public_path() . '/storage/';
+
 
         return view($this->base_url.'.partakers', $this->params);
     }

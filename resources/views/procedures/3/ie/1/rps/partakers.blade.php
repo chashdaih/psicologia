@@ -40,26 +40,37 @@
                 <tr>
                     <td>{{ $pp->partaker->full_name }}</td>
                     <td>{{ $pp->estado }}</td>
-                    <td>@if($pp->document && $pp->document->seguro_imss)
+                    <td>
+                        {{-- @if($pp->document && $pp->document->seguro_imss)
                         <a href="{{ route('get_document', [$pp->document->id_tramite, 'seguro']) }}">
                             <fai icon="file-code" size="2x" />
-                        </a>
+                        </a> --}}
+                        @if(file_exists($base_path.$pp->id_tramite.'/seguro.pdf'))
+                        <a href="{{ route('get_document', [$pp->document->id_tramite, 'seguro']) }}">
+                            <fai icon="file-code" size="2x" />
+                        </a> 
                         @else
                         <fai icon="times" size="2x" />
                         @endif
                     </td>
-                    <td>@if($pp->document && $pp->document->carta_comp)
+                    <td>
+                        {{-- @if($pp->document && $pp->document->carta_comp)
                         <a href="{{ route('get_document', [$pp->document->id_tramite, 'carta']) }}">
                             <fai icon="file-code" size="2x" />
-                        </a>
+                        </a> --}}
+                        @if(file_exists($base_path.$pp->id_tramite.'/carta.pdf'))
+                        <a href="{{ route('get_document', [$pp->document->id_tramite, 'carta']) }}">
+                            <fai icon="file-code" size="2x" />
+                        </a> 
                         @else
                         <fai icon="times" size="2x" />
                         @endif
                     </td>
-                    <td>@if($pp->document && $pp->document->historial_ac)
+                    <td>
+                        @if(file_exists($base_path.$pp->id_tramite.'/historial.pdf'))
                         <a href="{{ route('get_document', [$pp->document->id_tramite, 'historial']) }}">
                             <fai icon="file-code" size="2x" />
-                        </a>
+                        </a> 
                         @else
                         <fai icon="times" size="2x" />                        
                         @endif
