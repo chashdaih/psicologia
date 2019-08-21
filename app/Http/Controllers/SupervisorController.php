@@ -25,14 +25,20 @@ class SupervisorController extends Controller
 
     public function index()
     {
-        // $user_type = Auth::user()->type;
-        // dd($user_type);
+        $center_id = 0;
+        
+        if (Auth::user()->type == 6) {
+            $stages = Building::all();
+        } else {
+            $center_id = Auth::user()->supervisor->center->id_centro;
+            $stages = Building::where('id_centro', $center_id)->get();
+        }
 
-        // $supervisors = Supervisor::all();
-        $stages = Building::all();
         $supervisors = DB::table('supervisores as s')
-            // ->where('estatus', '=', 'Activa')
             ->join('centros as c', 's.id_centro', '=', 'c.id_centro')
+            ->when($center_id != 0, function($q) use ($center_id) {
+                return $q->where('c.id_centro', $center_id);
+            })
             ->select('s.id_supervisor', 'c.nombre as centro', 's.estatus', 'c.id_centro',
             DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"))
             ->orderBy('s.nombre', 'asc')

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form v-if="stages" action="">
+        <form v-if="stages.length > 1" action="">
             <b-field label="Filtrar por escenario" horizontal>
                 <b-select
                 v-model="selected_stage"
@@ -27,11 +27,11 @@
                     :data="filteredDataObj"
                     field="full_name"
                     @select="selected">
-                    <template slot="header">
+                    <!-- <template slot="header">
                         <a @click="()=> {selected_supervisor=0; filter();}">
                             <span> Todos los supervisores </span>
                         </a> 
-                    </template>
+                    </template> -->
                     <template slot="empty">No hay resultados para {{name}}</template>
                 </b-autocomplete>
             </b-field>
@@ -50,7 +50,7 @@
           sortable
         >{{ props.row.full_name }}</b-table-column>
 
-        <b-table-column
+        <b-table-column v-if="stages.length > 1"
           field="centro" 
           label="Centro" 
           sortable>{{ props.row.centro }}</b-table-column>
@@ -95,17 +95,11 @@ export default {
   },
   methods: {
     filter() {
-        // this.isLoading = true;
-        // axios.get(this.url + "/supervisor/filter/" + this.selected_stage)
-        // .then(response => {
-        // this.isLoading = false;
-        //   this.sups = response.data
-        // }).catch((error) => {
-        // this.isLoading = false;
-        //   console.log(error);
-        //   // TODO alert error
-        // });
-        this.sups = this.supervisors.filter(sup => sup.id_centro == this.selected_stage);
+        if (this.selected_stage != 0) {
+          this.sups = this.supervisors.filter(sup => sup.id_centro == this.selected_stage);
+        } else {
+          this.sups = this.supervisors;
+        }
     },
     selected(option) {
       window.location.href = this.url + '/supervisor/' + option.id_supervisor + '/edit';
