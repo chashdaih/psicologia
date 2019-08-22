@@ -202,19 +202,34 @@ class UsuarioController extends Controller
             $etapa = 'intervencion';
         }
 
-        $records = DB::table('practicas as p')
+        // $records = DB::table('practicas as p')
+        // ->when($center_id > 0, function ($query) use ($center_id) {
+        //     return $query->where('p.id_centro', '=', $center_id);
+        // })
+        // ->when($supervisor_id > 0, function ($query) use ($supervisor_id) {
+        //     return $query->where('p.id_supervisor', '=', $supervisor_id);
+        // })
+        // ->where('semestre_activo', config('globales.semestre_activo'))
+        // ->join('caracteristicas_servicios as c', 'p.id_practica', '=', 'c.program_id')
+        // ->select('p.id_practica', 'p.programa')
+        // ->where('c.'.$etapa, 1)
+        // ->orderBy('p.semestre_activo', 'desc')
+        // ->get();
+
+        $records = Program::where('semestre_activo', config('globales.semestre_activo'))
+        // ->whereHas('car_ser', function($query) use ($etapa) { // TODO 
+        //     $query->where($etapa, 1);
+        // })
         ->when($center_id > 0, function ($query) use ($center_id) {
-            return $query->where('p.id_centro', '=', $center_id);
+            return $query->where('id_centro', '=', $center_id);
         })
         ->when($supervisor_id > 0, function ($query) use ($supervisor_id) {
-            return $query->where('p.id_supervisor', '=', $supervisor_id);
+            return $query->where('id_supervisor', '=', $supervisor_id);
         })
-        ->where('semestre_activo', config('globales.semestre_activo'))
-        ->join('caracteristicas_servicios as c', 'p.id_practica', '=', 'c.program_id')
-        ->select('p.id_practica', 'p.programa')
-        ->where('c.'.$etapa, 1)
-        ->orderBy('p.semestre_activo', 'desc')
         ->get();
+
+        // dd($records);
+
         return $records;
     }
     
