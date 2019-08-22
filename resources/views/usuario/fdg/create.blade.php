@@ -16,9 +16,9 @@
             <div>
                 <form 
                 @if(isset($fdg))
-                action="{{ route('usuario.update', $fdg->id) }}" 
+                action="{{ route('fdg.update', ['patient_id'=>0, 'fdg'=>$fdg->id]) }}" 
                 @else
-                action="{{ route('usuario.store') }}" 
+                action="{{ route('fdg.store', 0) }}" 
                 @endif
                 method="POST">
                 @if(isset($fdg)) <input name="_method" type="hidden" value="PUT"> @endif

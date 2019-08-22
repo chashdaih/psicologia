@@ -4,6 +4,8 @@
 <table class="table is-fullwidth">
     <thead>
         <tr>
+            <th>No. expediente</th>
+            <th>No. cuenta / No. trabajador / CURP</th>
             <th>Nombre de la persona atendida</th>
             <th>Editar ficha de datos generales</th>
             <th>Descargar ficha de datos generales</th>
@@ -19,14 +21,16 @@
     <tbody>
         @foreach ($porCdr as $usuario)
         <tr>
+            <td>{{$usuario->fdg->file_number}}</td>
+            <td>{{$usuario->fdg->curp}}</td>
             <td>{{$usuario->fdg->full_name}}</td>
             <td class="has-text-centered" >
-                <a href="{{ route('usuario.edit', $usuario->fdg_id) }}">
+                <a href="{{ route('fdg.edit', ['patient_id'=>$usuario->id, 'fdg'=>$usuario->fdg_id]) }}">
                     <fai icon="edit" size="2x" />
                 </a>
             </td>
             <td class="has-text-centered" >
-                <a href="{{ route('usuario.show', $usuario->fdg_id) }}">
+                <a href="{{ route('fdg.show', ['patient_id'=>$usuario->id, 'fdg'=>$usuario->fdg_id]) }}">
                     <fai icon="file-pdf" size="2x" />
                 </a>
             </td>

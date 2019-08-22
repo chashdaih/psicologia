@@ -26,6 +26,7 @@ class UsuarioController extends Controller
     public function index()
     {
         $data = [];
+        $asignados = [];
         if (Auth::user()->type > 4) { // jefe de centro y coordinación
 
             $data['porAsignar'] = Patient::where('status', 2)->get(); // status 2 = necesita asignación
@@ -39,42 +40,22 @@ class UsuarioController extends Controller
 
             if (Auth::user()->type == 5) { // jefe de centro
 
-                // $patients = Patient::where('status', 3)
-                // ->whereHas('assigned', function($q) {
-                //     $q->whereHas('program', function($r) {
-                //         $r->where('id_centro', Auth::user()->supervisor->id_centro);
-                //     });
-                // })
-                // ->get();
+                $patients = Patient::where('status', 3)
+                ->whereHas('assigned', function($q) {
+                    $q->whereHas('program', function($r) {
+                        $r->where('id_centro', Auth::user()->supervisor->id_centro);
+                    });
+                })
+                ->get();
 
-                // $asignados = [];
-
-                // foreach ($patients as $patient) {
-                //     $id = $patient->id;
-                //     $programs = [];
-                //     $supervisors = [];
-                //     $centers = [];
-                //     foreach ($patient->assigned as $ass) {
-                //         dd($ass->program->programa);
-                //     }
-                //     $asignado = compact('id', 'programs', 'supervisors', 'centers');
-                //     array_push($asignados, $asignado);
-                // }
-                
-                Patient::where('ps_program_id', '!=', 0)
-                ->whereHas('program', function($query){
-                    $query->where('semestre_activo', config('globales.semestre_activo'))
-                    ->where('id_centro', Auth::user()->supervisor->center->id_centro);
-                })->get();
-
-                
                 $data['porCdr'] = Patient::where('fdg_id', '!=', 0)
                     ->where('cdr_id', 0)
                     ->whereHas('fdg', function($q) {
                         $q->where('center_id', Auth::user()->supervisor->id_centro);
                     })->get();
             } else { // coordinación
-                $data['asignados'] = Patient::where('status', 3)->get();
+                // $data['asignados'] = 
+                $patients = Patient::where('status', 3)->get();
                 $data['porCdr'] = Patient::where('cdr_id', 0)->get();
             }
         } else { // supervisores y alumnos
@@ -103,7 +84,9 @@ class UsuarioController extends Controller
                     ->pluck('id_practica')->toArray();
             }
 
-            $data['asignados'] = Patient::where('status', 3)
+            // $data['asignados'] = 
+            
+            $patients = Patient::where('status', 3)
             ->whereHas('assigned', function($q) use ($misPracticas) {
                 $q->whereHas('program', function($r) use ($misPracticas) {
                     $r->whereIn('id_practica', $misPracticas);
@@ -124,46 +107,73 @@ class UsuarioController extends Controller
             })->get();
         }
 
+        foreach ($patients as $patient) {
+            $id = $patient->id;
+            $file_number = $patient->fdg->file_number;
+            $curp = $patient->fdg->curp;
+            $programs = [];
+            $supervisors = [];
+            $centers = [];
+            foreach ($patient->assigned as $ass) {
+                if (!array_key_exists($ass->program->id_practica, $programs)) {
+                    $programs[$ass->program->id_practica] = $ass->program->programa;
+                    $supervisors[$ass->program->id_supervisor] = $ass->program->supervisor->full_name;
+                    $centers[$ass->program->id_centro] = $ass->program->center->nombre;
+                }
+            }
+            $asignado = compact('id', 'file_number', 'curp',  'programs', 'supervisors', 'centers');
+            array_push($asignados, $asignado);
+        }
+
+        $data['asignados'] = $asignados;
+
         return view('usuario.index', $data);
     }
 
-    public function create()
+    // public function create()
+    // {
+    //     $centers = Building::all();
+    //     $preferedCenter = null;
+    //     if (Auth::user()->type == 3) { // participante
+    //         $partaker_id = Auth::user()->partaker->num_cuenta;
+    //         $partPrograms = ProgramPartaker::where('id_participante', $partaker_id)->where('ciclo_activo', config('globales.semestre_activo'))->first();
+    //         if ($partPrograms) {
+    //             $preferedCenter = $partPrograms->program->id_centro;
+    //         }
+    //     } else {
+    //         $preferedCenter = Auth::user()->supervisor->id_centro;
+    //     }
+    //     $migajas = [route('home') => 'Inicio', '#' => 'Nueva ficha de datos generales'];
+    //     return view('usuario.create', compact('migajas', 'centers', 'preferedCenter'));
+    // }
+
+
+    // public function store(Request $request)
+    // {
+    //     // dd($request);
+    //     $this->validateForm();
+    //     $parameters = collect($request)->toArray() + ['user_id' => auth()->id()];
+    //     $fdg = FE3FDG::create($parameters);
+    //     Patient::create(['fdg_id' => $fdg->id]);
+    //     return redirect()->route('usuario.index')->with('success', 'Usuario registrado exitosamente');
+    // }
+
+
+    public function show($id) 
     {
-        $centers = Building::all();
-        $preferedCenter = null;
-        if (Auth::user()->type == 3) { // participante
-            $partaker_id = Auth::user()->partaker->num_cuenta;
-            $partPrograms = ProgramPartaker::where('id_participante', $partaker_id)->where('ciclo_activo', config('globales.semestre_activo'))->first();
-            if ($partPrograms) {
-                $preferedCenter = $partPrograms->program->id_centro;
-            }
-        } else {
-            $preferedCenter = Auth::user()->supervisor->id_centro;
+        $patient= Patient::where('id', $id)->first();
+        $data['patient'] = $patient;
+        $data['migajas'] = [route('home') => 'Inicio', route('usuario.index') => 'Personas atendidas', '#' => 'Procesos'];
+
+        if (Auth::user()->type > 4) {
+            $supervisors = DB::table('supervisores')->where('estatus', '=', 'Activa')
+                ->orderBy('nombre', 'asc')->select('id_supervisor', 'id_centro',
+                DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
+            $data['supervisors'] = $this->fixNames($supervisors);
+            $data['centers'] = Building::all();
         }
-        $migajas = [route('home') => 'Inicio', '#' => 'Nueva ficha de datos generales'];
-        return view('usuario.create', compact('migajas', 'centers', 'preferedCenter'));
-    }
 
-
-    public function store(Request $request)
-    {
-        // dd($request);
-        $this->validateForm();
-        $parameters = collect($request)->toArray() + ['user_id' => auth()->id()];
-        $fdg = FE3FDG::create($parameters);
-        Patient::create(['fdg_id' => $fdg->id]);
-        return redirect()->route('usuario.index')->with('success', 'Usuario registrado exitosamente');
-    }
-
-
-    public function show($id)
-    {
-        $pdf = \App::make('dompdf.wrapper');
-        $pdf->getDomPDF()->set_option("enable_php", true);
-        $doc = $this->formatFdg($id);
-        $full_code = "3-FE3-FDG";
-        $pdf->loadView('usuario.show', compact('doc', 'full_code'));
-        return $pdf->stream('fdg.pdf');
+        return view('usuario.show', $data);
     }
 
 
@@ -176,13 +186,13 @@ class UsuarioController extends Controller
     }
 
 
-    public function update(Request $request, $id)
-    {
-        $this->validateForm();
-        $values = collect($request->except(['_token', '_method']))->toArray();
-        FE3FDG::where('id', $id)->update($values);
-        return redirect()->route('usuario.index')->with('success', 'Ficha de datos generales actualizada exitosamente');
-    }
+    // public function update(Request $request, $id)
+    // {
+    //     $this->validateForm();
+    //     $values = collect($request->except(['_token', '_method']))->toArray();
+    //     FE3FDG::where('id', $id)->update($values);
+    //     return redirect()->route('usuario.index')->with('success', 'Ficha de datos generales actualizada exitosamente');
+    // }
 
 
     public function destroy($id)
@@ -435,51 +445,6 @@ class UsuarioController extends Controller
         ]);
     }
 
-    protected $marital_status = ['Soltero', 'Casado', 'Unión libre', 'Viudo', 'Separado'];
-    protected $position = ['Estudiante', 'Académico', 'Administrativo'];
-    protected $person_requesting = ['La persona', 'Padres o tutores', 'Otro familiar', 'Otro'];
-    protected $relationship = ['de la madre', 'del padre', 'del tutor'];
-    protected $studies_level = ['No cuenta con escolaridad', 'Preescolar', 'Primaria', 'Secundaria', 'Preparatoria', 'Licenciatura', 'Posgrado'];
-    protected $house_is = ['Otra', 'Propia', 'Propia, pero la está pagando', 'Rentada', 'Prestada', 'Intestada o en litigio'];
-    protected $service_type = ['Orientación/Consejo breve', 'Evaluación', 'Taller', 'Intervención'];
-    protected $service_modality = ['Individual/Grupal', 'Familiar/Pareja'];
-    protected $mhGAP_cause_classification = ['Depresión', 'Psicosis', 'Epilepsia', 'Transtornos mentales y conductuales del niño y el adolescente', 'Demencia', 'Transtornos por el consumo de sustancias', 'Autolesión/Suicidio', 'Otros padecimientos de salud importantes'];
-    protected $type_previous_treatment = ['Psicológica', 'Psiquiátrica', 'Médica', 'Neurológica', 'Otra'];
-    protected $refer = ['No', 'Escuela', 'Trabajo', 'Hospital/Instituto', 'Dpto. de Psiquiatría y Salud Mental (Fac. Medicina)', 'Otra'];
-    protected $prefer_time = ['Matutino', 'Vespertino', 'Indiferente'];
-
-    protected function formatFdg($id) {
-        $fdg = FE3FDG::where('id', $id)->first();
-        // dd($fdg);
-        $fdg->marital_status = $this->marital_status[$fdg->marital_status];
-        if ($fdg->position) {
-            $fdg->position = $this->position[$fdg->position];
-        }
-        $fdg->person_requesting = $this->person_requesting[$fdg->person_requesting];
-        if ($fdg->relationship_1) {
-            $fdg->relationship_1 = $this->relationship[$fdg->relationship_1];
-        }
-        if ($fdg->studies_level_1) {
-            $fdg->studies_level_1 = $this->studies_level[$fdg->studies_level_1];
-        }
-        if ($fdg->relationship_2) {
-            $fdg->relationship_2 = $this->relationship[$fdg->relationship_2];
-        }
-        if ($fdg->studies_level_2) {
-            $fdg->studies_level_2 = $this->studies_level[$fdg->studies_level_2];
-        }
-        $fdg->scholarship = $this->studies_level[$fdg->scholarship];
-        $fdg->house_is = $this->house_is[$fdg->house_is];
-        $fdg->service_type = $this->service_type[$fdg->service_type];
-        $fdg->service_modality = $this->service_modality[$fdg->service_modality];
-        // $fdg->mhGAP_cause_classification = $this->mhGAP_cause_classification[$fdg->mhGAP_cause_classification];
-        if ($fdg->type_previous_treatment) {
-            $fdg->type_previous_treatment = $this->type_previous_treatment[$fdg->type_previous_treatment];
-        }
-        $fdg->refer = $this->refer[$fdg->refer];
-        $fdg->prefer_time = $this->prefer_time[$fdg->prefer_time];
-        return $fdg;
-    }
 
     protected function fixNames($records)
     {

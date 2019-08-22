@@ -1,14 +1,13 @@
-@extends('layouts.base')
-@section('content')
-<section class="section">
-    <div class="container">
-        <h1 class="title">{{$patient->fdg->full_name}}</h1>
-        <div class="card">
+<h1 class="title">Personas atendidas asignadas a programas</h1>
+@if(count($asignados) > 0)
+@foreach ($asignados as $key => $patient)
+
+<usuario-coll content-id={{$key}} nombre="{{$patient->fdg->full_name}}" >
         <div class="tile">
                 <div class="tile is-parent is-9">
                         <article class="tile is-child notification has-text-centered">
                         <p class="title">FE3 - Primer contacto</p>
-                        <a href={{ route('fdg.show', ['patient_id'=>$patient->id, 'fdg'=>$patient->fdg_id]) }} class="button is-info is-fullwidth is-medium">FDG - Ficha de datos generales</a>
+                        <a href={{ route('usuario.show', $patient->fdg_id) }} class="button is-info is-fullwidth is-medium">FDG - Ficha de datos generales</a>
                         <div><br></div>
                         <a href={{ route('cdr.show', ['patient_id'=>$patient->id, 'cdr'=>$patient->cdr_id]) }} class="button is-info is-fullwidth is-medium">CDR - Cuestionario de detección de riesgos</a>
                         </article>
@@ -18,7 +17,6 @@
                         </article>
                 </div>
         </div>
-        @if(count($patient->assigned))
         <div class="tile">
                 @if($patient->assigned->where('process_code', 'ps'))
                 <div class="tile is-parent is-9">
@@ -256,8 +254,9 @@
                 </div>
                 @endif
         </div>
-        @endif
-    </div>
-    </div>
-</section>
-@endsection
+</usuario-coll>
+
+@endforeach
+@else
+<p class="is-italic">No hay personas atendidas asignados a ningún programa @if(Auth::user()->type == 5) del centro @endif</p>
+@endif

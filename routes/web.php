@@ -6,7 +6,7 @@ Route::get('/partaker/enrollment_proof/{tramit_id}', 'ListController@enrollmentP
 
 Route::get('tramite/{id_tramite}/{doc}', 'RpsController@document')->name('get_document');
 
-Route::resource('/program/{program_id}/patient', 'FE3FDGController');
+// Route::resource('/program/{program_id}/patient', 'FE3FDGController');
 Route::get('program/{id}/partakers', 'RpsController@partakers')->name('users_list');
 Route::resource('program/{program_id}/partakers/{partaker_id}/ecpr', 'EcprController', ['middleware' => 'auth']);
 Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresController');
@@ -14,6 +14,7 @@ Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresCont
 Route::resource('/usuario', 'UsuarioController');
 Route::get('excel/programs', 'UsuarioController@programsExcel')->name('programs_excel');
 Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], function() {
+    Route::resource('fdg', 'FE3FDGController');
     Route::resource('cdr', 'Fe3cdrController');
     Route::resource('ps', 'PsController');
     Route::resource('re', 'ReController');
