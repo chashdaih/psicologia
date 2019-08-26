@@ -80,7 +80,7 @@
           label="Periodo" 
           sortable>{{ props.row.semestre_activo }}</b-table-column>
 
-        <b-table-column
+        <b-table-column v-if="type!=5"
           field="centro" 
           label="Centro" 
           sortable>{{ props.row.centro }}</b-table-column>
@@ -108,7 +108,7 @@
           </a>
         </b-table-column>
 
-        <b-table-column label="Participantes" centered>
+        <b-table-column label="Estudiantes" centered>
           <a :href='base_url + "/program/" + props.row.id_practica + "/partakers"'>
               <fai icon="chalkboard-teacher" size="2x" />
           </a>
@@ -182,7 +182,7 @@
 import Swal from 'sweetalert2';
 import { mkdir } from 'fs';
 export default {
-    props:['records', 'url', 'stages', 'supervisors', 'stage', 'supervisor', 'lps', 'base_url'],
+    props:['records', 'url', 'stages', 'supervisors', 'stage', 'supervisor', 'lps', 'base_url', 'type'],
   data() {
     return {
       recs: this.records,
@@ -200,9 +200,9 @@ export default {
     };
   },
   mounted() {
-    if (this.supervisors) {
-      this.$refs.autocomplete.setSelected("Todos los supervisores");
-    }
+    // if (this.supervisors) {
+    //   this.$refs.autocomplete.setSelected("Todos los supervisores");
+    // }
   },
   methods: {
     selected(option) {

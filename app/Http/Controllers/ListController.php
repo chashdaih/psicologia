@@ -56,7 +56,7 @@ class ListController extends Controller
             
             $id_centro = Auth::user()->supervisor->id_centro;
 
-            $data['records'] = $this->filter(0, Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
+            
             $user_type = Auth::user()->type;
 
             if ($user_type == 5) { // jefe de centro
@@ -66,6 +66,13 @@ class ListController extends Controller
                 ->orderBy('nombre', 'asc')->select('id_supervisor', 
                 DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
                 $data['supervisors'] = $this->fixNames($supervisors);
+
+                $data['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
+
+                $data['otherCenters'] = $this->filter(0, Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
+
+                $data['insitu'] = $this->getInSituPrograms(Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
+
             } else if ($user_type == 6) { // coordinación
                 $stages = Building::whereNotIn('id_centro', [10])->get();
                 $data['stages'] = $stages;
@@ -74,7 +81,13 @@ class ListController extends Controller
                 ->orderBy('nombre', 'asc')->select('id_supervisor', 
                 DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
                 $data['supervisors'] = $this->fixNames($supervisors);
-            } else {
+
+                $data['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
+
+            } else { // supervisor
+
+                $data['records'] = $this->filter(0, Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
+
                 $data['insitu'] = $this->getInSituPrograms(Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));
             }
         }
