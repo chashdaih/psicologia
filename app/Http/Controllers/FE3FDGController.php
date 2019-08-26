@@ -6,6 +6,7 @@ use Auth;
 use App\Building;
 use App\FE3FDG;
 use App\Program;
+use App\ProgramPartaker;
 use App\Patient;
 use Illuminate\Http\Request;
 
@@ -133,7 +134,7 @@ class FE3FDGController extends Controller
             'curp' => 'required|string|max:255',
             'gender' => 'required|boolean',
             'birthdate' => 'required|date',
-            'marital_status' => 'required|boolean',
+            'marital_status' => 'required|integer',
             'is_unam' => 'required|boolean',
             'academic_entity' => 'nullable|string|max:255',
             'position' => 'nullable|integer|min:0|max:255',
