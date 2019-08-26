@@ -119,6 +119,9 @@
     pdf-url="{{ route('rps_pdf', 0) }}"
     en-url="{{ route('insc.enroll', 0) }}"
 ></programs-list> --}}
+@else
+<h1 class="title">El periodo de altas ha terminado</h1>
+<h2 class="subtitle">Para cualquier aclaración, por favor acude a la coordinación</h2>
 @endif
 
 @if (count($enroll_programs) < 2 && Config::get('globales.altas_fin') > date_timestamp_get($todaysDate) && date_timestamp_get($todaysDate) > Config::get('globales.altas_inicio'))
