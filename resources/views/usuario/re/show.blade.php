@@ -9,7 +9,7 @@
         <p><span style="font-weight:bold;">Fecha: </span>{{ $doc->created_at->format('d/m/Y') }}</p>
     </div>
     <div>
-        <p><span style="font-weight:bold;">Participante que hizo el registro: </span>{{ $doc->user->type == 3 ? $doc->user->partaker->full_name : $doc->user->supervisor->full_name }}</p>
+        <p><span style="font-weight:bold;">Registrado por: </span>{{ $doc->user->type == 3 ? $doc->user->partaker->full_name : $doc->user->supervisor->full_name }}</p>
         <br><br>
         <p><span style="font-weight:bold;">¿Fue necesario hacer referencia?: </span>{{ $doc->referencia_necesaria? 'Si': 'No' }}</p>
         @if ($doc->referencia_necesaria)

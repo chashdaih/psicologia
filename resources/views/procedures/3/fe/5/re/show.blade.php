@@ -11,7 +11,7 @@
         <p><span style="font-weight:bold;">Nombre del usuario: </span>{{ $doc->patient->full_name }}</p>
         <p><span style="font-weight:bold;">Programa: </span>{{ $doc->program->programa }}</p>
         <p><span style="font-weight:bold;">Supervisor del programa: </span>{{ $doc->program->supervisor->full_name }}</p>
-        <p><span style="font-weight:bold;">Participante que hizo el registro: </span>{{ $doc->user->type == 3 ? $doc->user->partaker->full_name : $doc->user->supervisor->full_name }}</p>
+        <p><span style="font-weight:bold;">Registrado por: </span>{{ $doc->user->type == 3 ? $doc->user->partaker->full_name : $doc->user->supervisor->full_name }}</p>
         <br><br>
         <p><span style="font-weight:bold;">¿Fue necesario hacer referencia?: </span>{{ $doc->referencia_necesaria? 'Si': 'No' }}</p>
         @if ($doc->referencia_necesaria)

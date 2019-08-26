@@ -2,9 +2,9 @@
 @section('content')
 <section class="section">
     <div class="container">
-        <h1 class="title">Participantes registrados</h1>
+        <h1 class="title">Estudiantes registrados</h1>
         <div class="has-text-centered">
-            <a href="{{ route('partaker.create') }}" class="button is-info">Registrar nuevo participante</a>
+            <a href="{{ route('partaker.create') }}" class="button is-info">Registrar nuevo estudiante</a>
         </div>
         <partaker-search url="{{ url('/') }}"></partaker-search>
         <br>

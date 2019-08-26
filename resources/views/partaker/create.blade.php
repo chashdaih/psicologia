@@ -51,9 +51,9 @@
                     <div class="card-header">
                         <div class="card-header-title">
                             @if (isset($partaker))
-                            Editar participante
+                            Editar estudiante
                             @else
-                            Registrar nuevo participante
+                            Registrar nuevo estudiante
                             @endif
                         </div>
                     </div>

@@ -10,7 +10,7 @@
     <b-modal :active.sync="isModalActive" >
         <div class="modal-card">
             <header class="modal-card-head">
-                <p class="modal-card-title">Dar de baja participante</p>
+                <p class="modal-card-title">Dar de baja estudiante</p>
             </header>
             <section class="modal-card-body">
                 <p>¿Está seguro que quiere dar de baja a <span class="is-italic">{{partaker}}</span> del programa <span class="is-italic">{{program}}</span>?</p>

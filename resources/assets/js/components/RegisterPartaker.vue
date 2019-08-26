@@ -1,10 +1,10 @@
 <template>
     <div>
-        <a href="#" @click.prevent="isModalActive = true" class="button is-success">Registrar participante al programa</a>
+        <a href="#" @click.prevent="isModalActive = true" class="button is-success">Registrar estudiante al programa</a>
 
         <b-modal :active.sync="isModalActive"  >
             <header class="modal-card-head">
-                <p class="modal-card-title">Registrar participante al programa: "{{program.programa}}"</p>
+                <p class="modal-card-title">Registrar estudiante al programa: "{{program.programa}}"</p>
             </header>
             <section class="modal-card-body" style="height:50vh;">
                 <b-field label="Busca por nombre, apellido o número de cuenta">
@@ -71,7 +71,7 @@ export default {
                 Swal.fire({
                     title: "Éxito",
                     type: "success",
-                    text: "El participante se registró correctamente.",
+                    text: "El estudiante se registró correctamente.",
                     confirmButtonText: "Aceptar",
                     onClose: function() {
                         location.reload();

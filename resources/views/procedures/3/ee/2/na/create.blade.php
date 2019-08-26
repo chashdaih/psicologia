@@ -25,7 +25,7 @@
                 </div>
             </div>
             <div class="field">
-                <label class="label">Participante</label>
+                <label class="label">Estudiante</label>
                 <div class="control">
                     <div class="select">
                         <select name="provider_id">

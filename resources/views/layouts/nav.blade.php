@@ -33,7 +33,7 @@
       </div>
       @if(Auth::user()->type > 4)
       <div class="navbar-item">
-        <a href="{{ route('partaker.index') }}" class="navbar-item">Participantes</a>
+        <a href="{{ route('partaker.index') }}" class="navbar-item">Estudiantes</a>
       </div>
       <div class="navbar-item">
         <a href="{{ route('supervisor.index') }}" class="navbar-item">Supervisores</a>

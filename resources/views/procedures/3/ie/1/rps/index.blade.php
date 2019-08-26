@@ -1,4 +1,4 @@
-@extends('layouts.base')
+{{-- @extends('layouts.base')
 
 @section('content')
 <section class="section">
@@ -14,7 +14,6 @@
         <br/>
     </div>
     <div ><br></div>
-    {{-- <p>{{ $supervisors }}</p> --}}
     <sortable-table
         url="{{ route($doc_code.".index") }}"
         :records="{{ $records }}" 
@@ -24,4 +23,4 @@
         :stage={{ Auth::user()->supervisor->id_centro }}
         ></sortable-table>
 </section>
-@endsection
+@endsection --}}
