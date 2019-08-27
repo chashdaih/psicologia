@@ -17,7 +17,7 @@
 </head>
 <body>
 
-    <div id="app">
+    <div id="app" style="min-height: 100vh; display: flex; flex-direction: column;">
         @auth
         @include('layouts.nav')
         @endauth
