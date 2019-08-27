@@ -20,7 +20,7 @@
         </div>
         @if(count($patient->assigned))
         <div class="tile">
-                @if($patient->assigned->where('process_code', 'ps'))
+                @if(count($patient->assigned->where('process_code', 'ps'))>0)
                 <div class="tile is-parent is-9">
                         <article class="tile is-child notification has-text-centered">
                         <p class="title">FE4 - Admisión</p>
@@ -67,7 +67,7 @@
                 @endif
         </div>
         <div class="tile">
-                @if($patient->assigned->where('process_code', 're'))
+                @if(count($patient->assigned->where('process_code', 're'))>0)
                 <div class="tile is-parent is-9">
                         <article class="tile is-child notification has-text-centered">
                         <p class="title">FE5 - Evaluación</p>
@@ -191,9 +191,9 @@
                         </article>
                 </div>
                 <div class="tile is-parent">
-                        <article class="tile is-child notification has-text-centered">
+                        <article class="tile is-child notification">
                                 <p class="title">Programa</p>
-                                <p class="is-italic">Sin programa asignado</p>
+                                <p class="subtitle">Sin programa asignado</p>
                                 @if(Auth::user()->type > 4)
                                 <assign-program
                                         :stages="{{json_encode($centers)}}"
@@ -220,7 +220,7 @@
                 <div class="tile is-parent">
                         <article class="tile is-child notification has-text-centered">
                                 <p class="title">Programa</p>
-                                <p class="subtitle">{{ $patient->assigned->where('process_code', 'rs7')->last()->program->programa }}</p>
+                                <p class="subtitle">{{ $patient->assigned->where('process_code', 'he')->last()->program->programa }}</p>
                                 @if(Auth::user()->type > 4)
                                 <assign-program
                                         :stages="{{json_encode($centers)}}"
