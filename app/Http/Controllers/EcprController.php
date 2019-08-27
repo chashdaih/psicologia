@@ -26,7 +26,9 @@ class EcprController extends Controller
         $e_p = 'e'.$request->evaluation_phase;
         $ecpr = Ecpr::create($request->except('_token'));
 
-        EvaluateStudent::updateOrCreate(['partaker_id' => $partaker_id, 'program_id' => $program_id, $e_p=>$ecpr->id]);
+        $es = EvaluateStudent::firstOrNew(['partaker_id' => $partaker_id, 'program_id' => $program_id]);
+        $es[$e_p] = $ecpr->id;
+        $es->save();
         
         return redirect()->route('users_list', $program_id)->with('success', 'Evaluación registrada correctamente');
     }
