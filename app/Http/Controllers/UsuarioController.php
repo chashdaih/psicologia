@@ -29,7 +29,7 @@ class UsuarioController extends Controller
         $asignados = [];
         if (Auth::user()->type > 4) { // jefe de centro y coordinación
 
-            $data['porAsignar'] = Patient::where('status', 2)->get(); // status 2 = necesita asignación
+            
 
             $data['centers'] = Building::all();
     
@@ -53,10 +53,19 @@ class UsuarioController extends Controller
                     ->whereHas('fdg', function($q) {
                         $q->where('center_id', Auth::user()->supervisor->id_centro);
                     })->get();
+
+                $data['porAsignar'] = Patient::where('status', 2) // status 2 = necesita asignación
+                    ->whereHas('fdg', function($q) {
+                        $q->where('center_id', Auth::user()->supervisor->id_centro);
+                    })
+                ->get(); 
+                    
             } else { // coordinación
                 // $data['asignados'] = 
                 $patients = Patient::where('status', 3)->get();
                 $data['porCdr'] = Patient::where('cdr_id', 0)->get();
+
+                $data['porAsignar'] = Patient::where('status', 2)->get(); // status 2 = necesita asignación
             }
         } else { // supervisores y alumnos
 
