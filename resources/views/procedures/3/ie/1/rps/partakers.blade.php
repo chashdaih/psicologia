@@ -46,7 +46,7 @@
                             <fai icon="file-code" size="2x" />
                         </a> --}}
                         @if(file_exists($base_path.$pp->id_tramite.'/seguro.pdf'))
-                        <a href="{{ route('get_document', [$pp->document->id_tramite, 'seguro']) }}">
+                        <a href="{{ route('get_document', [$pp->id_tramite, 'seguro']) }}">
                             <fai icon="file-code" size="2x" />
                         </a> 
                         @else
@@ -59,7 +59,7 @@
                             <fai icon="file-code" size="2x" />
                         </a> --}}
                         @if(file_exists($base_path.$pp->id_tramite.'/carta.pdf'))
-                        <a href="{{ route('get_document', [$pp->document->id_tramite, 'carta']) }}">
+                        <a href="{{ route('get_document', [$pp->id_tramite, 'carta']) }}">
                             <fai icon="file-code" size="2x" />
                         </a> 
                         @else
@@ -68,7 +68,7 @@
                     </td>
                     <td>
                         @if(file_exists($base_path.$pp->id_tramite.'/historial.pdf'))
-                        <a href="{{ route('get_document', [$pp->document->id_tramite, 'historial']) }}">
+                        <a href="{{ route('get_document', [$pp->id_tramite, 'historial']) }}">
                             <fai icon="file-code" size="2x" />
                         </a> 
                         @else
