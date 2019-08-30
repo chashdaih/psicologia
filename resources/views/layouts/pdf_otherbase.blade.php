@@ -76,7 +76,7 @@
             $color = array(0.4, 0.7, 1);
             $pdf->page_text($x, $y, $text, $font, $size, $color);
 
-            $doc_full_code = "3-IE1-RPS";
+            $doc_full_code = "2-IE1-RPS";
             $pdf->page_text(40, $y, $doc_full_code, $font, $size, $color);
         }
     </script>
