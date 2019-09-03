@@ -36,15 +36,20 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($pps as $pp)
+            @foreach ($pps as $key=>$pp)
                 <tr>
                     <td>{{ $pp->partaker->full_name }}</td>
                     <td>{{ $pp->estado }}</td>
+                    @if(isset($imssUrls))
                     <td>
-                        {{-- @if($pp->document && $pp->document->seguro_imss)
-                        <a href="{{ route('get_document', [$pp->document->id_tramite, 'seguro']) }}">
-                            <fai icon="file-code" size="2x" />
-                        </a> --}}
+                        @if($imssUrls[$key])
+                        <a href="{{$imssUrls[$key]}}">descargar</a>
+                        @else
+                        <fai icon="times" size="2x" />
+                        @endif
+                    </td>
+                    @else
+                    <td>
                         @if(file_exists($base_path.$pp->id_tramite.'/seguro.pdf'))
                         <a href="{{ route('get_document', [$pp->id_tramite, 'seguro']) }}">
                             <fai icon="file-code" size="2x" />
@@ -53,11 +58,17 @@
                         <fai icon="times" size="2x" />
                         @endif
                     </td>
+                    @endif
+                    @if(isset($cartaUrls))
                     <td>
-                        {{-- @if($pp->document && $pp->document->carta_comp)
-                        <a href="{{ route('get_document', [$pp->document->id_tramite, 'carta']) }}">
-                            <fai icon="file-code" size="2x" />
-                        </a> --}}
+                        @if($cartaUrls[$key])
+                        <a href="{{$cartaUrls[$key]}}">descargar</a>
+                        @else
+                        <fai icon="times" size="2x" />
+                        @endif
+                    </td>
+                    @else
+                    <td>
                         @if(file_exists($base_path.$pp->id_tramite.'/carta.pdf'))
                         <a href="{{ route('get_document', [$pp->id_tramite, 'carta']) }}">
                             <fai icon="file-code" size="2x" />
@@ -66,6 +77,16 @@
                         <fai icon="times" size="2x" />
                         @endif
                     </td>
+                    @endif
+                    @if(isset($historialUrls))
+                    <td>
+                        @if($historialUrls[$key])
+                        <a href="{{$historialUrls[$key]}}">descargar</a>
+                        @else
+                        <fai icon="times" size="2x" />
+                        @endif
+                    </td>
+                    @else
                     <td>
                         @if(file_exists($base_path.$pp->id_tramite.'/historial.pdf'))
                         <a href="{{ route('get_document', [$pp->id_tramite, 'historial']) }}">
@@ -75,6 +96,7 @@
                         <fai icon="times" size="2x" />                        
                         @endif
                     </td>
+                    @endif
                     <td>
                         @if ($pp->evaluate_student && $pp->evaluate_student->e1)
                             <a href="{{route('ecpr.edit', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Editar</a> / <a href="{{route('ecpr.show', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Pdf</a>

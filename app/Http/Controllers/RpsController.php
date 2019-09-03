@@ -660,8 +660,36 @@ class RpsController extends Controller
 
         $this->params['base_path'] = public_path() . '/storage/';
 
+        if ($program->semestre_activo == '2019-2' || $program->semestre_activo == '2019-1') {
+            $sem_act = $program->semestre_activo;
+            $imssUrls = [];
+            $cartaUrls = [];
+            $historialUrls = [];
+            foreach ($pps as $key => $pp) {
+                $imssUrl = 'http://test.psicologiaunam.com/intranet/uploads/Programas'.$sem_act.'/'.$program->id_practica.'/'.$pp->id_participante.'_imss.pdf';
+                $imssUrls[$key] = $this->check404($imssUrl) == 200 ? $imssUrl : null;
+
+                $cartaUrl = 'http://test.psicologiaunam.com/intranet/uploads/Programas'.$sem_act.'/'.$program->id_practica.'/'.$pp->id_participante.'_carta_com.pdf';
+                $cartaUrls[$key] = $this->check404($cartaUrl) == 200 ? $cartaUrl : null;
+
+                $historialUrl = 'http://test.psicologiaunam.com/intranet/uploads/Programas'.$sem_act.'/'.$program->id_practica.'/'.$pp->id_participante.'_hist.pdf';
+                $historialUrls[$key] = $this->check404($historialUrl) == 200 ? $historialUrl : null;
+
+            }
+            $this->params['imssUrls'] = $imssUrls;
+            $this->params['cartaUrls'] = $cartaUrls;
+            $this->params['historialUrls'] = $historialUrls;
+        }
+
 
         return view($this->base_url.'.partakers', $this->params);
+    }
+
+    protected function check404($url) {
+        $ch = curl_init($url); 
+        curl_setopt($ch, CURLOPT_NOBODY, true); 
+        curl_exec($ch); 
+        return curl_getinfo($ch, CURLINFO_HTTP_CODE); 
     }
 
     public function document($id_tramite, $doc)
