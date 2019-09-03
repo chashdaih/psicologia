@@ -66,7 +66,7 @@ class EnrollController extends Controller
 
         $registered_programs = ProgramPartaker::where('id_participante', $partaker_id)
         ->where('ciclo_activo', config('globales.semestre_activo'))
-        ->first();
+        ->get();
 
         if (count($registered_programs) > 2) {
             return redirect()->route('insc')->with('fail', "Solo se permiten dos programas por participante");

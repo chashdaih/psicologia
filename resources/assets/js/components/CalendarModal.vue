@@ -41,7 +41,7 @@
                                 <div class="select" id="terapeuta">
                                     <select name="terapeuta" v-model="selectedStudent" @change="studentSelected">
                                         <option value=0 disabled>Selecciona un alumno</option>
-                                        <option v-for="student in students" :value="student.num_cuenta" :key="student.num_cuenta">{{ student.full_name }}</option>
+                                        <option v-for="student in students" :value="student.num_cuenta" :key="student.num_cuenta">{{ fixName(student) }}</option>
                                         <option value = 9999>El Supervisor brinda la atención</option>
                                     </select>
                                 </div>
@@ -133,6 +133,11 @@
 import { eventBus } from '../app.js';
 import Swal from 'sweetalert2';
 
+function titleCase(str) {
+  return str.split(' ').map(item => 
+         item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()).join(' ');
+}
+
 export default {
     props:['supervisors', 'url', 'fecha', 'sendUrl', 'center_id'],
     data() {
@@ -221,6 +226,10 @@ export default {
                     confirmButtonText: "Aceptar"
                 });
             })
+        },
+        fixName(s) {
+            let nombre = s.nombre_part+" "+s.ap_paterno+" "+s.ap_materno;
+            return titleCase(nombre);
         }
     }
 }

@@ -28,7 +28,7 @@ Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], funct
 });
 
 Route::get('/asignar/{center_id}/{fecha?}', 'CalendarController@index')->name('asignar');
-Route::get('/getStudents/{sup_id}', 'CalendarController@getStudents')->name('get_students');
+Route::get('/getStudents/{date}/{sup_id}', 'CalendarController@getStudents')->name('get_students');
 Route::post('/make-appo', 'CalendarController@makeAppo')->name('make_appo');
 Route::delete('/cancel_appo/{id}', 'CalendarController@cancelAppo')->name('cancel_appo');
 Route::group(['prefix' => '/procedures/3/', 'middleware' => 'auth'], function() {
