@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Appointment;
 use App\Building;
+use App\Partaker;
+use App\Program;
+use App\ProgramPartaker;
 use App\Supervisor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -92,16 +95,27 @@ class CalendarController extends Controller
 
     }
 
-    public function getStudents($sup_id)
+    public function getStudents($date, $sup_id)
     {
-        $ciclo_activo = '2019-2';
-        $ciclo_anterior = '2019-1';
 
-        $query = "SELECT num_cuenta, concat(participante.nombre_part,' ',participante.ap_paterno,' ',participante.ap_materno) as 'full_name' FROM (participante INNER JOIN asigna_practica on asigna_practica.id_participante=participante.num_cuenta ) INNER JOIN practicas ON practicas.id_practica=asigna_practica.id_practica WHERE practicas.id_supervisor = '".$sup_id."' and asigna_practica.estado <> 'Necesita Documentacion' and ((practicas.periodicidad= 'SEMESTRAL'and practicas.semestre_activo='".$ciclo_activo."')or(practicas.periodicidad= 'ANUAL' and practicas.semestre_activo='".$ciclo_anterior."')) order by full_name, ap_paterno, ap_materno";
+        $programs = Program::where('id_supervisor', $sup_id)
+            ->whereHas('car_ser', function($q)  use ($date){
+                // $q->where('fecha_inicio', '<', $date)
+                // ->where('fecha_fin', '>', $date);
+            })
+            ->pluck('id_practica')->toArray();
+        ;
 
-        $students = DB::select($query);
-        $students = $this->fixNames($students);
-        return $students;
+        $assigned = ProgramPartaker::whereIn('id_practica', $programs)->pluck('id_participante')->toArray();
+
+        // $partakers = Partaker::whereHas('tramites', function ($q) use ($programs) {
+        //         $q->whereIn('id_practica', $programs);
+        //     })
+        //     ->get(['num_cuenta', 'nombre_part', 'ap_paterno', 'ap_materno']);
+
+        $partakers = Partaker::whereIn('num_cuenta', $assigned)->get(['num_cuenta', 'nombre_part', 'ap_paterno', 'ap_materno']);
+
+        return $partakers;
     }
 
     public function makeAppo(Request $request)
