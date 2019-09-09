@@ -15,6 +15,9 @@
             <div><br></div>
             @endif
         </div>
+        <patient-search
+            url="{{route('usuario.index')}}"
+        ></patient-search>
         @if(Auth::user()->type > 4)
         @include('layouts.usuario.porAsignar')
         @endif

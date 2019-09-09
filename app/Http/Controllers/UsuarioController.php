@@ -206,7 +206,32 @@ class UsuarioController extends Controller
 
     public function destroy($id)
     {
-        //
+        if(Auth::user()->type < 4) {
+            return response('Unauthorized.', 401);
+        }
+
+        $patient = Patient::findOrFail($id);
+        if ($patient->status == 3) {
+            $patient->status = 99; // status 99 = dado de baja
+            $patient->save();
+        } else {
+            $patient->delete();
+        }
+        return response (200);
+    }
+
+    public function search($searchTerm)
+    {
+        return DB::table('patients as p')->join('fe3fdg as d', 'p.fdg_id', 'd.id')
+            ->select('p.id', 'd.file_number', DB::raw("CONCAT(d.name, ' ', d.last_name, ' ', d.mothers_name) AS full_name"))
+            ->where('d.file_number', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('d.name', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('d.last_name', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('d.mothers_name', 'LIKE', "%{$searchTerm}%")
+            ->orderBy('d.last_name')
+            ->limit(20)
+            ->get();
+
     }
 
     public function filterByEtapa($center_id, $supervisor_id, $etapa) // WS

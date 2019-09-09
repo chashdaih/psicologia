@@ -14,6 +14,9 @@
                 <th colspan="2" style="text-align: center">FDG</th>
                 <th colspan="2" style="text-align: center">CDR</th>
                 <th>Asignar a programa</th>
+                @if(Auth::user()->type > 4)
+                <th>Borrar</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -47,6 +50,15 @@
                         user_id="{{$usuario->id}}"
                     ></assign-program>
                 </td>
+                @if(Auth::user()->type > 4)
+                <td>
+                    <patient-delete
+                        file-number="{{$usuario->fdg->file_number}}"
+                        full-name="{{ $usuario->fdg->full_name }}"
+                        url="{{ route('usuario.destroy', $usuario->id) }}"
+                    ></patient-delete>
+                </td>
+                @endif
             </tr>
             @endforeach
         </tbody>

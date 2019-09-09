@@ -8,9 +8,32 @@
                 <div class="tile is-parent is-9">
                         <article class="tile is-child notification has-text-centered">
                         <p class="title">FE3 - Primer contacto</p>
-                        <a href={{ route('fdg.show', ['patient_id'=>$patient->id, 'fdg'=>$patient->fdg_id]) }} class="button is-info is-fullwidth is-medium">FDG - Ficha de datos generales</a>
+                        <div class="field id-grouped">
+                                <a href={{ route('fdg.edit', ['patient_id'=>$patient->id, 'fdg'=>$patient->fdg_id]) }} 
+                                        class="button is-info is-medium">
+                                        <span class="icon"><fai icon="edit" size="2x" /></span>
+                                        <span>FDG - Ficha de datos generales</span>
+                                </a>
+                                <a href={{ route('fdg.show', ['patient_id'=>$patient->id, 'fdg'=>$patient->fdg_id]) }} 
+                                        class="button is-info is-medium">
+                                        <span class="icon"><fai icon="file-pdf" size="2x" /></span>
+                                        <span>FDG - Ficha de datos generales</span>
+                                </a>
+                        </div>
                         <div><br></div>
-                        <a href={{ route('cdr.show', ['patient_id'=>$patient->id, 'cdr'=>$patient->cdr_id]) }} class="button is-info is-fullwidth is-medium">CDR - Cuestionario de detección de riesgos</a>
+                        <div class="field id-grouped">
+                                <a href={{ route('cdr.edit', ['patient_id'=>$patient->id, 'cdr'=>$patient->cdr_id]) }} 
+                                        class="button is-info is-medium">
+                                        <span class="icon"><fai icon="edit" size="2x" /></span>
+                                        <span>CDR - Cuest. de detección de riesgos</span>
+                                </a>
+                                <a href={{ route('cdr.show', ['patient_id'=>$patient->id, 'cdr'=>$patient->cdr_id]) }} 
+                                        class="button is-info is-medium">
+                                        <span class="icon"><fai icon="file-pdf" size="2x" /></span>
+                                        <span>CDR - Cuest. de detección de riesgos</span>
+                                </a>
+                        </div>
+                        {{-- <a href={{ route('cdr.show', ['patient_id'=>$patient->id, 'cdr'=>$patient->cdr_id]) }} class="button is-info is-fullwidth is-medium"></a> --}}
                         </article>
                 </div>
                 <div class="tile is-parent">

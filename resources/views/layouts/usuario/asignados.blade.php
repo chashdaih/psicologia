@@ -2,6 +2,7 @@
 @if(count($asignados) > 0)
 
 <filter-patients
+    type="{{Auth::user()->type}}"
     :patients="{{json_encode($asignados)}}"
     base-url="{{route('usuario.index')}}"
 ></filter-patients>

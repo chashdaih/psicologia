@@ -86,7 +86,7 @@ class EcprController extends Controller
     {
         $this->validate(request(), [
             'created_at'=> 'required|date',
-            'semester'=> 'required|integer|min:5|max:8',
+            'semester'=> 'required|integer|min:1|max:10',
             'evaluation_phase'=>'required|integer|min:1|max:3',
             'q11'=>'required|integer|min:0|max:6' // TODO: validar el resto de las preguntas
         ]);

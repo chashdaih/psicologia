@@ -16,6 +16,9 @@
                 @endif
             @endif
             <th>Realizar CDR</th>
+            @if(Auth::user()->type > 4)
+            <th>Borrar</th>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -53,6 +56,15 @@
                     <fai icon="plus-circle" size="2x" />
                 </a>
             </td>
+            @if(Auth::user()->type > 4)
+            <td>
+                <patient-delete
+                    file-number="{{$usuario->fdg->file_number}}"
+                    full-name="{{ $usuario->fdg->full_name }}"
+                    url="{{ route('usuario.destroy', $usuario->id) }}"
+                ></patient-delete>
+            </td>
+            @endif
         </tr>
         @endforeach
     </tbody>
