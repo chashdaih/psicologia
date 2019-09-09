@@ -52,7 +52,9 @@
         </table>
                 
         <calendar-modal v-on:open-modal="isActive = true" center_id="{{ $center->id_centro }}" :supervisors="{{ json_encode($supervisors) }}" url="{{ route('get_students', ['date'=>$fecha, 'sup_id'=>0]) }}" fecha="{{ $fecha }}" send-url="{{ route('make_appo') }}"></calendar-modal>
+        @if(Auth::user()->type > 4)
         <cal-cancel-modal v-on:open-modal="isActive = true" url="{{ route('cancel_appo', 0) }}"></cal-cancel-modal>
+        @endif
         @else
         <p>No hay supervisores registrados</p>
         @endif
