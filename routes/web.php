@@ -11,6 +11,13 @@ Route::get('program/{id}/partakers', 'RpsController@partakers')->name('users_lis
 Route::resource('program/{program_id}/partakers/{partaker_id}/ecpr', 'EcprController', ['middleware' => 'auth']);
 Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresController');
 
+// ws para programas dentro de usuarios
+Route::get('get-programs/{supId}', 'UsuarioController@getPrograms');
+Route::get('get-patients/{programId}', 'UsuarioController@getPatients');
+Route::get('centers', 'UsuarioController@getCenters');
+Route::get('cdrneeded/{centerId}', 'UsuarioController@cdrNeeded');
+Route::get('programneeded/{centerId}', 'UsuarioController@programNeeded');
+
 Route::resource('/usuario', 'UsuarioController');
 Route::get('/usuario/search/{searchTerm}', 'UsuarioController@search');
 Route::get('excel/programs', 'UsuarioController@programsExcel')->name('programs_excel');

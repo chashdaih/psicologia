@@ -26,115 +26,149 @@ class UsuarioController extends Controller
     public function index()
     {
         $data = [];
-        $asignados = [];
-        if (Auth::user()->type > 4) { // jefe de centro y coordinación
+        
+        // $asignados = [];
+        // if (Auth::user()->type > 4) { // jefe de centro y coordinación
 
             
+            // $data['centers'] = Building::select(['id_centro', 'nombre'])->get();
 
-            $data['centers'] = Building::all();
-    
-            $supervisors = DB::table('supervisores')->where('estatus', '=', 'Activa')
-            ->orderBy('nombre', 'asc')->select('id_supervisor', 'id_centro',
-            DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
-            $data['supervisors'] = $this->fixNames($supervisors);
-
-            if (Auth::user()->type == 5) { // jefe de centro
-
-                $patients = Patient::where('status', 3)
-                ->whereHas('assigned', function($q) {
-                    $q->whereHas('program', function($r) {
-                        $r->where('id_centro', Auth::user()->supervisor->id_centro);
-                    });
-                })
-                ->get();
-
-                $data['porCdr'] = Patient::where('fdg_id', '!=', 0)
-                    ->where('cdr_id', 0)
-                    ->whereHas('fdg', function($q) {
-                        $q->where('center_id', Auth::user()->supervisor->id_centro);
-                    })->get();
-
-                $data['porAsignar'] = Patient::where('status', 2) // status 2 = necesita asignación
-                    ->whereHas('fdg', function($q) {
-                        $q->where('center_id', Auth::user()->supervisor->id_centro);
-                    })
-                ->get(); 
-                    
-            } else { // coordinación
-                // $data['asignados'] = 
-                $patients = Patient::where('status', 3)->get();
-                $data['porCdr'] = Patient::where('cdr_id', 0)->get();
-
-                $data['porAsignar'] = Patient::where('status', 2)->get(); // status 2 = necesita asignación
-            }
-        } else { // supervisores y alumnos
-
-            $misPracticas = [];
+            // TODO filtrar según type, programas y demás
             
-            if (Auth::user()->type == 2) { // supervisor
-                $programs = Program::where('semestre_activo', config('globales.semestre_activo'))
-                ->where('id_supervisor', Auth::user()->supervisor->id_supervisor)
-                ->pluck('id_practica')
-                ->toArray();
-
-                $inSitu = DB::table('sup_in_situs as sup')
-                ->where('reg_sup_id', Auth::user()->supervisor->id_supervisor)
-                ->join('practicas as p', 'sup.program_id', '=', 'p.id_practica')
-                ->where('p.semestre_activo', config('globales.semestre_activo'))
-                ->whereNotIn('p.id_practica', $programs)
-                ->pluck('p.id_practica')
-                ->toArray();
-
-                $misPracticas = array_merge($programs, $inSitu);
-
-            } else { // partaker
-                $misPracticas = ProgramPartaker::where('id_participante', Auth::user()->partaker->num_cuenta)
-                    ->where('ciclo_activo', config('globales.semestre_activo'))
-                    ->pluck('id_practica')->toArray();
-            }
-
-            // $data['asignados'] = 
-            
-            $patients = Patient::where('status', 3)
-            ->whereHas('assigned', function($q) use ($misPracticas) {
-                $q->whereHas('program', function($r) use ($misPracticas) {
-                    $r->whereIn('id_practica', $misPracticas);
-                });
-            })
-            ->get();
-            // Patient::where('ps_program_id', '!=', 0)
-            // ->whereHas('program', function($query) use ($misPracticas) {
-            //     $query->where('semestre_activo', config('globales.semestre_activo'))
-            //     ->whereIn('id_practica', $misPracticas);
-            // })
-            // ->get();
-
-            $data['porCdr'] = Patient::where('fdg_id', '!=', 0)
-            ->where('cdr_id', 0)
-            ->whereHas('fdg', function($q) {
-                $q->where('user_id', Auth::user()->id);
-            })->get();
-        }
-
-        foreach ($patients as $patient) {
-            $id = $patient->id;
-            $file_number = $patient->fdg->file_number;
-            $curp = $patient->fdg->curp;
+            $type = Auth::user()->type;
             $programs = [];
-            $supervisors = [];
-            $centers = [];
-            foreach ($patient->assigned as $ass) {
-                if (!array_key_exists($ass->program->id_practica, $programs)) {
-                    $programs[$ass->program->id_practica] = $ass->program->programa;
-                    $supervisors[$ass->program->id_supervisor] = $ass->program->supervisor->full_name;
-                    $centers[$ass->program->id_centro] = $ass->program->center->nombre;
-                }
+            if ($type > 4) {
+                $supervisors = DB::table('supervisores')->where('estatus', '=', 'Activa')
+                ->orderBy('nombre', 'asc')->select('id_supervisor', 'id_centro',
+                DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
+                $data['supervisors'] = $this->fixNames($supervisors)->toArray();
+            } else if ($type == 3) {
+                $date = date('Y-m-d');
+                $programs = ProgramPartaker::where('asigna_practica.id_participante', Auth::user()->partaker->num_cuenta)
+                ->join('practicas', 'asigna_practica.id_practica', 'practicas.id_practica')
+                ->select('practicas.id_practica', 'programa')
+                ->get()->toArray();
+                // dd($programs);
+                $data['programs'] = $programs;
+                $data['supervisors'] = [];
+            } else {
+                $supervisors = DB::table('supervisores')->where('id_supervisor', Auth::user()->supervisor->id_supervisor)
+                ->select('id_supervisor', 'id_centro',
+                DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
+                $data['supervisors'] = $supervisors;
             }
-            $asignado = compact('id', 'file_number', 'curp',  'programs', 'supervisors', 'centers');
-            array_push($asignados, $asignado);
-        }
 
-        $data['asignados'] = $asignados;
+            $data['programs'] = $programs;
+
+            // dd($data['supervisors']);
+
+            // TODO 
+            if (Auth::user()->type!=3) {
+                $data['initialSup'] = Auth::user()->supervisor->id_supervisor;
+            } else {
+                //TODO depende del programa?
+                $data['initialSup'] = 0;
+            }
+
+    
+
+        //     if (Auth::user()->type == 5) { // jefe de centro
+
+        //         $patients = Patient::where('status', 3)
+        //         ->whereHas('assigned', function($q) {
+        //             $q->whereHas('program', function($r) {
+        //                 $r->where('id_centro', Auth::user()->supervisor->id_centro);
+        //             });
+        //         })
+        //         ->get();
+
+        //         $data['porCdr'] = Patient::where('fdg_id', '!=', 0)
+        //             ->where('cdr_id', 0)
+        //             ->whereHas('fdg', function($q) {
+        //                 $q->where('center_id', Auth::user()->supervisor->id_centro);
+        //             })->get();
+
+        //         $data['porAsignar'] = Patient::where('status', 2) // status 2 = necesita asignación
+        //             ->whereHas('fdg', function($q) {
+        //                 $q->where('center_id', Auth::user()->supervisor->id_centro);
+        //             })
+        //         ->get(); 
+                    
+        //     } else { // coordinación
+        //         // $data['asignados'] = 
+        //         $patients = Patient::where('status', 3)->get();
+        //         $data['porCdr'] = Patient::where('cdr_id', 0)->get();
+
+        //         $data['porAsignar'] = Patient::where('status', 2)->get(); // status 2 = necesita asignación
+        //     }
+        // } else { // supervisores y alumnos
+
+        //     $misPracticas = [];
+            
+        //     if (Auth::user()->type == 2) { // supervisor
+        //         $programs = Program::where('semestre_activo', config('globales.semestre_activo'))
+        //         ->where('id_supervisor', Auth::user()->supervisor->id_supervisor)
+        //         ->pluck('id_practica')
+        //         ->toArray();
+
+        //         $inSitu = DB::table('sup_in_situs as sup')
+        //         ->where('reg_sup_id', Auth::user()->supervisor->id_supervisor)
+        //         ->join('practicas as p', 'sup.program_id', '=', 'p.id_practica')
+        //         ->where('p.semestre_activo', config('globales.semestre_activo'))
+        //         ->whereNotIn('p.id_practica', $programs)
+        //         ->pluck('p.id_practica')
+        //         ->toArray();
+
+        //         $misPracticas = array_merge($programs, $inSitu);
+
+        //     } else { // partaker
+        //         $misPracticas = ProgramPartaker::where('id_participante', Auth::user()->partaker->num_cuenta)
+        //             ->where('ciclo_activo', config('globales.semestre_activo'))
+        //             ->pluck('id_practica')->toArray();
+        //     }
+
+        //     // $data['asignados'] = 
+            
+        //     $patients = Patient::where('status', 3)
+        //     ->whereHas('assigned', function($q) use ($misPracticas) {
+        //         $q->whereHas('program', function($r) use ($misPracticas) {
+        //             $r->whereIn('id_practica', $misPracticas);
+        //         });
+        //     })
+        //     ->get();
+        //     // Patient::where('ps_program_id', '!=', 0)
+        //     // ->whereHas('program', function($query) use ($misPracticas) {
+        //     //     $query->where('semestre_activo', config('globales.semestre_activo'))
+        //     //     ->whereIn('id_practica', $misPracticas);
+        //     // })
+        //     // ->get();
+
+        //     $data['porCdr'] = Patient::where('fdg_id', '!=', 0)
+        //     ->where('cdr_id', 0)
+        //     ->whereHas('fdg', function($q) {
+        //         $q->where('user_id', Auth::user()->id);
+        //     })->get();
+        // }
+
+        // foreach ($patients as $patient) {
+        //     $id = $patient->id;
+        //     $file_number = $patient->fdg->file_number;
+        //     $curp = $patient->fdg->curp;
+        //     $programs = [];
+        //     $supervisors = [];
+        //     $centers = [];
+        //     foreach ($patient->assigned as $ass) {
+        //         if (!array_key_exists($ass->program->id_practica, $programs)) {
+        //             $programs[$ass->program->id_practica] = $ass->program->programa;
+        //             $supervisors[$ass->program->id_supervisor] = $ass->program->supervisor->full_name;
+        //             $centers[$ass->program->id_centro] = $ass->program->center->nombre;
+        //         }
+        //     }
+        //     $asignado = compact('id', 'file_number', 'curp',  'programs', 'supervisors', 'centers');
+        //     array_push($asignados, $asignado);
+        // }
+
+        // $data['asignados'] = $asignados;
 
         return view('usuario.index', $data);
     }
@@ -234,6 +268,85 @@ class UsuarioController extends Controller
 
     }
 
+    public function getPrograms($supId)
+    {
+        if($supId == 0) return [];
+
+        $date = date('Y-m-d');
+        
+        return Program::where('id_supervisor', $supId)
+        // ->whereHas('car_ser', function($q)  use ($date){
+        //     $q->where('fecha_inicio', '<', $date)
+        //     ->where('fecha_fin', '>', $date);
+        // })
+        ->join('caracteristicas_servicios', 'id_practica', 'program_id')
+        ->where('fecha_inicio', '<', $date)
+        ->where('fecha_fin', '>', $date)
+        ->select(['id_practica', 'programa'])
+        // TODO comparar car_ser fechas 
+        ->get();
+    }
+
+    public function getPatients($programId) 
+    {
+        return Patient::whereHas('assigned', function($q) use ($programId) {
+            return $q->where('program_id', $programId);
+        })
+        ->join('fe3fdg', 'fdg_id', 'fe3fdg.id')
+        ->select('patients.id', 'file_number','name', 'last_name', 'mothers_name')
+        ->get()->toArray();
+        
+    }
+
+    public function getCenters()
+    {
+        $type = Auth::user()->type;
+        if ($type == 6) {
+            return Building::select('id_centro', 'nombre')->get();
+        } else if ($type == 5 || $type == 2) {
+            $centerId = Auth::user()->supervisor->id_centro;
+            return Building::where('id_centro', $centerId)->select('id_centro', 'nombre')->get();
+        } else if ($type == 3) {
+            // TODO filtrar para estudiantes
+            return Building::select('id_centro', 'nombre')->get();
+        } else {
+            return response('No autorizado', 401);
+        }
+    }
+
+    public function cdrNeeded($centerId)
+    {
+        if (Auth::user()->type > 4) {
+            return Patient::where('fdg_id', '!=', 0)
+                        ->where('cdr_id', 0)
+                        ->whereHas('fdg', function($q) use ($centerId) {
+                            $q->where('center_id', $centerId);
+                        })
+                        ->join('fe3fdg', 'fdg_id', 'fe3fdg.id')
+                        ->select(['patients.id', 'name', 'last_name', 'mothers_name', 'file_number', 'fe3fdg.id as fdg', 'curp', 'other_filler'])
+                        ->get();
+        } else {
+            return Patient::where('fdg_id', '!=', 0)
+                ->where('cdr_id', 0)
+                ->whereHas('fdg', function($q) {
+                    $q->where('user_id', Auth::user()->id);
+                })->get();
+        }
+    }
+
+    public function programNeeded($centerId)
+    {
+        if (Auth::user()->type < 4) return [];
+
+        return Patient::where('status', 2) // status 2 = necesita asignación
+                    ->whereHas('fdg', function($q) use ($centerId){
+                        $q->where('center_id', $centerId);
+                    })
+                    ->join('fe3fdg', 'fdg_id', 'fe3fdg.id')
+                    ->select(['patients.id', 'name', 'last_name', 'mothers_name', 'file_number', 'fdg_id', 'curp', 'other_filler', 'cdr_id'])
+                ->get(); 
+    }
+
     public function filterByEtapa($center_id, $supervisor_id, $etapa) // WS
     {
         if ($etapa == 'ps') {
@@ -279,6 +392,8 @@ class UsuarioController extends Controller
     
     public function assign(Request $request) // WS
     {
+        if (Auth::user()->type < 4) return response('No tienes los permisos para asignar programas.', 401);
+
         $etapa = $request->etapa;
         $program_id = $request->program_id;
         $patient_id = $request->patient_id;

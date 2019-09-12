@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a @click.prevent="isModalVisible=true" class="button is-info">Elegir programa</a>
+        <!-- <a @click.prevent="isModalVisible=true" class="button is-info">Elegir programa</a> -->
         <b-modal :active.sync="isModalVisible">
             <header class="modal-card-head">
                 <p class="modal-card-title">Elegir programa</p>
@@ -67,7 +67,7 @@
 <script>
 import Swal from 'sweetalert2';
 export default {
-    props:['stages', 'etapa', 'supervisors', 'base_url', 'user_id'],
+    props:['stages', 'etapa', 'supervisors', 'base_url', 'user_id', 'isVisible'],
     data() {
         return {
             programs: [],
@@ -84,6 +84,15 @@ export default {
                     label: 'Nombre del programa',
                 },
             ]
+        }
+    },
+    watch: {
+        isVisible() {
+            if (this.isVisible) {
+                this.isModalVisible  = true;
+            } else {
+                this.isModalVisible = false;
+            }
         }
     },
     methods: {
@@ -119,7 +128,6 @@ export default {
             .catch(err=>console.log(err));
         },
         asignar() {
-            // console.log(this.selected_program.id_practica);
             const url = this.base_url + "/asignar_por_etapa";
             const params = {
                 patient_id: this.user_id,
@@ -133,7 +141,7 @@ export default {
                     type: "success",
                     text: "El programa se asignó correctamente",
                     confirmButtonText: "Aceptar",
-                    onClose: () => location.reload(true)
+                    onClose: () => this.$emit('patient-assigned', this.user_id)
                 })
             )
             .catch(err=>{
@@ -144,6 +152,7 @@ export default {
                     confirmButtonText: "Aceptar"
                 });
             });
+            
         }
     },
   computed: {

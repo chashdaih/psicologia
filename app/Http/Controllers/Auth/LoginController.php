@@ -44,7 +44,7 @@ class LoginController extends Controller
 
         if(request()->num_cuenta) {
             $email = Partaker::where('num_cuenta', request()->num_cuenta)->first();
-            if(count($email)) {
+            if($email) {
                 request()->merge(['email' => $email->correo]);
             } else {
                 return back()->with('num_cuenta', 'El número de cuenta no está registrado en nuestro sistema.');
