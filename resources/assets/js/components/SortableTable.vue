@@ -199,11 +199,6 @@ export default {
       isCloneModalVisible: false
     };
   },
-  mounted() {
-    // if (this.supervisors) {
-    //   this.$refs.autocomplete.setSelected("Todos los supervisores");
-    // }
-  },
   methods: {
     selected(option) {
       if (!option) {
@@ -290,6 +285,55 @@ export default {
                   .toLowerCase()
                   .indexOf(this.name.toLowerCase()) >= 0
           })
+      }
+  },
+  mounted() {
+        if (localStorage.getItem('selected_stage')) {
+            this.selected_stage = JSON.parse(localStorage.getItem('selected_stage'));
+        }
+        if (localStorage.getItem('selected_sem')) {
+            this.selected_sem = JSON.parse(localStorage.getItem('selected_sem'));
+        }
+        if (localStorage.getItem('selected_supervisor')) {
+            this.selected_supervisor = JSON.parse(localStorage.getItem('selected_supervisor'));
+        }
+        if (localStorage.getItem('name')) {
+            this.name = JSON.parse(localStorage.getItem('name'));
+        }
+        if (localStorage.getItem('recs')) {
+            this.recs = JSON.parse(localStorage.getItem('recs'));
+        }
+  },
+  watch: {
+      selected_stage: {
+          handler() {
+              localStorage.setItem('selected_stage', JSON.stringify(this.selected_stage));
+          },
+          deep: false
+      },
+      selected_sem: {
+          handler() {
+              localStorage.setItem('selected_sem', JSON.stringify(this.selected_sem));
+          },
+          deep: false
+      },
+      selected_supervisor: {
+          handler() {
+              localStorage.setItem('selected_supervisor', JSON.stringify(this.selected_supervisor));
+          },
+          deep: false
+      },
+      name: {
+          handler() {
+              localStorage.setItem('name', JSON.stringify(this.name));
+          },
+          deep: false
+      },
+      recs: {
+          handler() {
+              localStorage.setItem('recs', JSON.stringify(this.recs));
+          },
+          deep: true
       }
   }
 };

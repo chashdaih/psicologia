@@ -70,7 +70,7 @@
                 <label class="label">Ver personas atendidas registradas en el centro:</label>
                 <div class="control">
                     <div class="select" :class="{'is-loading':loadingCenters}">
-                        <select v-model="selectedCenter">
+                        <select v-model="selectedCenter"  @change="getUnassigned()">
                             <option value="0" disabled>Elige un centro</option>
                             <option v-for="(center, idx) in centers" 
                                 :value="center.id_centro" :key="idx"
@@ -148,8 +148,8 @@
                 <label class="label">Selecciona un centro</label>
                 <div class="control">
                     <div class="select" :class="{'is-loading':loadingCenters}">
-                        <select v-model="selectedCenter">
-                            <option value="0">Elige un centro</option>
+                        <select v-model="selectedCenter" @change="getCdr()">
+                            <option value="0" disabled>Elige un centro</option>
                             <option v-for="(center, idx) in centers" 
                                 :value="center.id_centro" :key="idx"
                             >{{center.nombre}}</option>
@@ -277,7 +277,10 @@ export default {
             this.patients = [];
             const url = this.baseUrl + '/get-programs/' + this.selectedSup;
             axios.get(url)
-            .then(res=>{this.programs = res.data})
+            .then(res=>{
+                this.selectedProgram = 0;
+                this.programs = res.data;
+            })
             .catch(err=>console.log(err))
             .finally(()=> {
                 this.loadingPrograms = false;
@@ -380,41 +383,6 @@ export default {
             .finally(()=>this.isWaiting=false)
         }
     },
-    watch: {
-        selectedSup: function() {this.getPrograms()},
-        selectedProgram: function () {
-            this.getPatients();
-        },
-        progress: function() {
-            if (this.progress == 0 || this.progress == 1) {
-                if (this.centers.length < 1) {
-                    this.getCenters();
-                }
-            }
-        },
-        selectedCenter: function() {
-            if (this.progress == 0) {
-                this.getCdr()
-            } else if (this.progress == 1) {
-                this.getUnassigned()
-            }
-        }
-    },
-    created() {
-        const sup = this.supervisors.find(s=>{
-            return s.id_supervisor == this.initialSup;
-        })
-        if (sup) {
-            this.supName = sup.full_name;
-        }
-
-        if (this.userType == 3) {
-            this.programs = this.prgms;
-        } else {
-            this.getPrograms();
-        }
-
-    },
     computed: {
         filteredSups() {
             return this.supervisors.filter(option => {
@@ -424,6 +392,115 @@ export default {
                         .indexOf(this.supName.toLowerCase()) >= 0
             })
         }
-    }
+    },
+    mounted() {
+        if (localStorage.getItem('patients.progress')) {
+            this.progress = JSON.parse(localStorage.getItem('patients.progress'));
+        }
+
+        // personas asignadas
+        if (localStorage.getItem('patients.supname')) {
+            this.supName = JSON.parse(localStorage.getItem('patients.supname'));
+        }
+
+        if (this.userType == 3) {
+            this.programs = this.prgms;
+        } else {
+            if (localStorage.getItem('patients.programs')) {
+                this.programs = JSON.parse(localStorage.getItem('patients.programs'));
+            } else {
+                this.getPrograms();
+            }
+        }
+
+        if (localStorage.getItem('patients.selProg')) {
+            this.selectedProgram = JSON.parse(localStorage.getItem('patients.selProg'));
+        }
+
+        if (this.selectedProgram != 0) {
+            if (localStorage.getItem('patients.assPat')) {
+                this.assignedPatients = JSON.parse(localStorage.getItem('patients.assPat'));
+            } else {
+                this.getPatients();
+            }
+        }
+
+        // sin programa asignado
+
+
+        // sin cdr
+        if (localStorage.getItem('patients.centers')) {
+            this.centers = JSON.parse(localStorage.getItem('patients.centers'));
+        }
+        if (localStorage.getItem('patients.selectedCenter')) {
+            this.selectedCenter = JSON.parse(localStorage.getItem('patients.selectedCenter'));
+        }
+        // if (this.progress == 0 && this.selectedCenter != 0) {
+        //     if (localStorage.getItem('patients.cdrNeeded')) {
+        //         this.cdrNeeded = JSON.parse(localStorage.getItem('patients.cdrNeeded'))
+        //     } else {
+        //     this.getCdr();
+        //     }
+        // }
+    },
+    watch: {
+        selectedSup: function() {this.getPrograms()},
+        selectedProgram: function () {
+            this.getPatients();
+        },
+        progress() {
+            localStorage.setItem('patients.progress', JSON.stringify(this.progress));
+            if (this.progress == 0 || this.progress == 1) {
+                if (this.centers.length < 1) {
+                    this.getCenters();
+                }
+                if (this.selectedCenter != 0) {
+                    if (this.progress == 0) {
+                        this.getCdr();
+                    } else {
+                        this.getUnassigned();
+                    }
+                }
+            }
+        },
+        // personas atendidas
+        supName() {
+            localStorage.setItem('patients.supname', JSON.stringify(this.supName));
+        },
+        programs: {
+            deep: true,
+            handler() {
+                localStorage.setItem('patients.programs', JSON.stringify(this.programs));
+            }
+        },
+        selectedProgram() {
+            localStorage.setItem('patients.selProg', JSON.stringify(this.selectedProgram));
+        },
+        assignedPatients: {
+            deep: true,
+            handler() {
+                localStorage.setItem('patients.assPat', JSON.stringify(this.assignedPatients));
+            }
+        },
+        // sin programa asignado
+
+        // sin cdr
+        centers: {
+            deep: true,
+            handler() {
+                localStorage.setItem('patients.centers', JSON.stringify(this.centers));
+            }
+        },
+        selectedCenter() {
+            localStorage.setItem('patients.selectedCenter', JSON.stringify(this.selectedCenter));
+        },
+        // cdrNeeded: {
+        //     deep: true,
+        //     handler() {
+        //         localStorage.setItem('patients.cdrNeeded', JSON.stringify(this.cdrNeeded));
+        //     }
+        // },
+    },
+
 }
 </script>
