@@ -445,9 +445,9 @@ export default {
     },
     watch: {
         selectedSup: function() {this.getPrograms()},
-        selectedProgram: function () {
-            this.getPatients();
-        },
+        // selectedProgram: function () {
+        //     this.getPatients();
+        // },
         progress() {
             localStorage.setItem('patients.progress', JSON.stringify(this.progress));
             if (this.progress == 0 || this.progress == 1) {
@@ -475,6 +475,7 @@ export default {
         },
         selectedProgram() {
             localStorage.setItem('patients.selProg', JSON.stringify(this.selectedProgram));
+            this.getPatients();
         },
         assignedPatients: {
             deep: true,
