@@ -106,30 +106,32 @@
         <p><span style="font-style: italic">Sede:</span> {{ $programPartaker->program->center->nombre }}</p>
         <p><span style="font-style: italic">Dirección:</span> {{ $programPartaker->program->center->direccion }}</p>
         <p><span style="font-style: italic">Supervisor:</span> {{ $programPartaker->program->supervisor->full_name }}</p>
-        @if ($programPartaker->program->car_ser->fecha_inicio)
-        <p><span style="font-style: italic">Fecha de inicio:</span> {{ $programPartaker->program->car_ser->fecha_inicio->formatLocalized('%d de %B %Y') }}</p>
-        @endif
-        @if ($programPartaker->program->car_ser->fecha_fin)
-        <p><span style="font-style: italic">Fecha de finalización:</span> {{ $programPartaker->program->car_ser->fecha_fin->formatLocalized('%d de %B %Y') }}</p>
-        @endif
-        <p style="font-style: italic">Horario:</p>
-        @if($programPartaker->program->car_ser->gen_l)
-        <p>Lunes, {{$programPartaker->program->car_ser->gen_hora_l}}</p>
-        @endif
-        @if($programPartaker->program->car_ser->gen_ma)
-        <p>Martes, {{$programPartaker->program->car_ser->gen_hora_ma}}</p>
-        @endif
-        @if($programPartaker->program->car_ser->gen_mi)
-        <p>Miercoles, {{$programPartaker->program->car_ser->gen_hora_mi}}</p>
-        @endif
-        @if($programPartaker->program->car_ser->gen_j)
-        <p>Jueves, {{$programPartaker->program->car_ser->gen_hora_j}}</p>
-        @endif
-        @if($programPartaker->program->car_ser->gen_v)
-        <p>Viernes, {{$programPartaker->program->car_ser->gen_hora_v}}</p>
-        @endif
-        @if($programPartaker->program->car_ser->gen_s)
-        <p>Sábado, {{$programPartaker->program->car_ser->gen_hora_s}}</p>
+        @if($programPartaker->program->car_ser != null)
+            @if ($programPartaker->program->car_ser->fecha_inicio)
+            <p><span style="font-style: italic">Fecha de inicio:</span> {{ $programPartaker->program->car_ser->fecha_inicio->formatLocalized('%d de %B %Y') }}</p>
+            @endif
+            @if ($programPartaker->program->car_ser->fecha_fin)
+            <p><span style="font-style: italic">Fecha de finalización:</span> {{ $programPartaker->program->car_ser->fecha_fin->formatLocalized('%d de %B %Y') }}</p>
+            @endif
+            <p style="font-style: italic">Horario:</p>
+            @if($programPartaker->program->car_ser->gen_l)
+            <p>Lunes, {{$programPartaker->program->car_ser->gen_hora_l}}</p>
+            @endif
+            @if($programPartaker->program->car_ser->gen_ma)
+            <p>Martes, {{$programPartaker->program->car_ser->gen_hora_ma}}</p>
+            @endif
+            @if($programPartaker->program->car_ser->gen_mi)
+            <p>Miercoles, {{$programPartaker->program->car_ser->gen_hora_mi}}</p>
+            @endif
+            @if($programPartaker->program->car_ser->gen_j)
+            <p>Jueves, {{$programPartaker->program->car_ser->gen_hora_j}}</p>
+            @endif
+            @if($programPartaker->program->car_ser->gen_v)
+            <p>Viernes, {{$programPartaker->program->car_ser->gen_hora_v}}</p>
+            @endif
+            @if($programPartaker->program->car_ser->gen_s)
+            <p>Sábado, {{$programPartaker->program->car_ser->gen_hora_s}}</p>
+            @endif
         @endif
     </div>
     <div>
