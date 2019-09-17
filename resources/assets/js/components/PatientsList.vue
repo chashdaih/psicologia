@@ -132,7 +132,6 @@
             <p v-else>No se encontraron personas atendidas con los filtros seleccionados</p>
 
             <assign-program
-                :stages="centers"
                 :supervisors="supervisors"
                 etapa="admision"
                 :base_url="baseUrl"
@@ -144,7 +143,7 @@
         </div>
 
         <div v-if="progress==0">
-            <div class="field">
+            <div class="field" v-if="userType > 4">
                 <label class="label">Selecciona un centro</label>
                 <div class="control">
                     <div class="select" :class="{'is-loading':loadingCenters}">
@@ -450,18 +449,38 @@ export default {
         // },
         progress() {
             localStorage.setItem('patients.progress', JSON.stringify(this.progress));
-            if (this.progress == 0 || this.progress == 1) {
+            // if (this.progress == 0 || this.progress == 1) {
+            //     if (this.centers.length < 1) {
+            //         this.getCenters();
+            //     }
+            //     if (this.selectedCenter != 0) {
+            //         if (this.progress == 0) {
+            //             this.getCdr();
+            //         } else {
+            //             this.getUnassigned();
+            //         }
+            //     }
+            // }
+
+            if (this.progress == 0) {
+                if (this.centers.length < 1) {
+                    this.getCenters();
+                }
+                if (this.userType < 4) {
+                    this.getCdr();
+                } else if (this.selectedCenter != 0) {
+                    this.getCdr();
+                }
+            } else if (this.progress == 1) {
                 if (this.centers.length < 1) {
                     this.getCenters();
                 }
                 if (this.selectedCenter != 0) {
-                    if (this.progress == 0) {
-                        this.getCdr();
-                    } else {
-                        this.getUnassigned();
-                    }
+                    this.getUnassigned();
                 }
+
             }
+
         },
         // personas atendidas
         supName() {

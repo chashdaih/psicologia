@@ -412,7 +412,7 @@
                         'title'=>'Correo electrónico',
                         'field'=>'email',
                         'errors'=>$errors,
-                        'type'=> 'email',
+                        'type'=> 'text',
                         'prev' => isset($fdg) ? $fdg->email : null,
                         'maxlength' => 255
                     ])@endcomponent

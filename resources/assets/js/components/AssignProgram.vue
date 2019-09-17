@@ -6,7 +6,7 @@
                 <p class="modal-card-title">Elegir programa</p>
             </header>
             <section class="modal-card-body" style="height:50vh;">
-                <b-field label="Escoge un escenario" horizontal>
+                <!-- <b-field label="Escoge un escenario" horizontal>
                     <b-select
                         v-model="selected_stage" 
                         @input="filter_sups()"
@@ -18,7 +18,7 @@
                         :key=stage.id_centro
                         >{{ stage.nombre }}</option>
                     </b-select>
-                </b-field>
+                </b-field> -->
 
                 <b-field label="Filtrar por supervisor" horizontal>
                     <b-autocomplete
@@ -32,11 +32,11 @@
                         @focus="name = ''"
                         ref="autocomplete"
                         >
-                        <template slot="header">
+                        <!-- <template slot="header">
                             <a @click="allSups()">
                                 <span> Todos los supervisores </span>
                             </a> 
-                        </template>
+                        </template> -->
                         <template slot="empty">No hay resultados</template>
                     </b-autocomplete>
                 </b-field>
@@ -50,15 +50,20 @@
                 </b-field>
                 <p class="is-italic" v-else>Reasignación</p>
 
-                <b-table
+                <b-table v-if="programs.length > 0"
                     :data="programs"
                     :columns="columns"
                     :selected.sync="selected_program"
+                    :loading="fetching_programs"
                 ></b-table>
+                <b-notification :closable="false" v-else>
+                    No se encontraron programas con los filtros seleccionados
+                    <b-loading :is-full-page="false" :active.sync="fetching_programs" ></b-loading>
+                </b-notification>
             </section>
             <footer class="modal-card-foot">
                 <button class="button" type="button" @click="isModalVisible = false">Cancelar</button>
-                <button class="button is-success" @click="asignar">Seleccionar programa</button>
+                <button class="button is-success" @click="asignar" :disabled="selected_program == null" :class="{'is-loading': assigning}" >Asignar a programa seleccionado</button>
             </footer>
         </b-modal>
     </div>
@@ -83,7 +88,13 @@ export default {
                     field: 'programa',
                     label: 'Nombre del programa',
                 },
-            ]
+                {
+                    field: 'nombre',
+                    label: 'Centro'
+                }
+            ],
+            fetching_programs: false, 
+            assigning: false,
         }
     },
     watch: {
@@ -100,34 +111,40 @@ export default {
             if (!option) {
                 return;
             }
-            if (option=="Todos los supervisores") {
-                this.selected_supervisor = 0;
-            } else {
+            // if (option=="Todos los supervisores") {
+            //     this.selected_supervisor = 0;
+            // } else {
                 this.selected_supervisor = option.id_supervisor;
-            }
+            // }
             this.filter();
         },
-        allSups() {
-            this.selected_supervisor=0;
-            this.filter();
-            this.$refs.autocomplete.setSelected("Todos los supervisores");
-        },
-        filter_sups(){
-            // console.log(this.selected_stage);
-            if(this.selected_stage == 0) {
-                this.sups = this.supervisors;
-                return;
-            }
-            this.sups = this.supervisors.filter(option => option.id_centro == this.selected_stage);
-            return;
-        },
+        // allSups() {
+        //     this.selected_supervisor=0;
+        //     this.filter();
+        //     this.$refs.autocomplete.setSelected("Todos los supervisores");
+        // },
+        // filter_sups(){
+        //     // console.log(this.selected_stage);
+        //     if(this.selected_stage == 0) {
+        //         this.sups = this.supervisors;
+        //         return;
+        //     }
+        //     this.sups = this.supervisors.filter(option => option.id_centro == this.selected_stage);
+        //     return;
+        // },
         filter() {
+            this.fetching_programs = true;
             const url = this.base_url + "/filtrar_por_etapa/" + this.selected_stage + "/" + this.selected_supervisor + "/" + this.assign_code;
             axios.get(url)
-            .then(ans=>this.programs=ans.data)
-            .catch(err=>console.log(err));
+            .then(ans=>{
+                this.selected_program = null;
+                this.programs=ans.data;
+            })
+            .catch(err=>console.log(err))
+            .finally(()=>this.fetching_programs = false);
         },
         asignar() {
+            this.assigning = true;
             const url = this.base_url + "/asignar_por_etapa";
             const params = {
                 patient_id: this.user_id,
@@ -151,7 +168,8 @@ export default {
                     type: "error",
                     confirmButtonText: "Aceptar"
                 });
-            });
+            })
+            .finally(()=>this.assigning = false);
             
         }
     },

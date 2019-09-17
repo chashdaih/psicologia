@@ -330,7 +330,10 @@ class UsuarioController extends Controller
                 ->where('cdr_id', 0)
                 ->whereHas('fdg', function($q) {
                     $q->where('user_id', Auth::user()->id);
-                })->get();
+                })
+                ->join('fe3fdg', 'fdg_id', 'fe3fdg.id')
+                ->select(['patients.id', 'name', 'last_name', 'mothers_name', 'file_number', 'fe3fdg.id as fdg', 'curp', 'other_filler'])
+                ->get();
         }
     }
 
@@ -377,12 +380,15 @@ class UsuarioController extends Controller
         // ->whereHas('car_ser', function($query) use ($etapa) { // TODO 
         //     $query->where($etapa, 1);
         // })
-        ->when($center_id > 0, function ($query) use ($center_id) {
-            return $query->where('id_centro', '=', $center_id);
-        })
-        ->when($supervisor_id > 0, function ($query) use ($supervisor_id) {
-            return $query->where('id_supervisor', '=', $supervisor_id);
-        })
+        // ->when($center_id > 0, function ($query) use ($center_id) {
+        //     return $query->where('id_centro', '=', $center_id);
+        // })
+        // ->when($supervisor_id > 0, function ($query) use ($supervisor_id) {
+        //     return $query
+            ->where('id_supervisor', '=', $supervisor_id)
+        // })
+        ->join('centros', 'practicas.id_centro', 'centros.id_centro')
+        ->select('id_practica', 'programa', 'nombre')
         ->get();
 
         // dd($records);

@@ -164,7 +164,7 @@ class FE3FDGController extends Controller
             'cell_phone' => 'nullable|string|max:255',
             'work_phone' => 'nullable|string|max:255',
             'work_phone_ext' => 'nullable|string|max:255',
-            'email' => 'nullable|email|max:255',
+            'email' => 'nullable|max:255',
             //
             'scholarship' => 'required|integer|max:255',
             'studied_years' => 'required|integer|max:255',

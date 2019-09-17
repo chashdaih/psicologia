@@ -114,8 +114,8 @@ class PsController extends Controller
 
     public function edit($patient_id, $ps)
     {
-        $patient = Patient::where('id', $patient_id)->first();
-        $process_model = Ps::where('id', $patient->ps_id)->first();
+        // $patient = Patient::where('id', $patient_id)->first();
+        $process_model = Ps::where('id', $ps)->first();
         $fields = include('ps_fields.php');
         return view('usuario.ps.create', compact('fields', 'process_model', 'patient_id'));
     }
