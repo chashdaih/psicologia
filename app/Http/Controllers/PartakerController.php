@@ -88,7 +88,7 @@ class PartakerController extends Controller
             'password' => bcrypt($request['password']),
         ]);
 
-        return redirect()->route('home')->with('success', 'Participante registrado exitosamente');
+        return redirect()->route('partaker.index')->with('success', 'Participante registrado exitosamente');
 
     }
 
