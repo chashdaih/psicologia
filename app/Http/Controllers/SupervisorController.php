@@ -139,9 +139,25 @@ class SupervisorController extends Controller
         //
     }
 
-    // public function filter($id)
-    // {
-    //     return Supervisor::where('id_centro', $id)->get();
-    // }
+    public function changePassword($supId, Request $request)
+    {
+        if (Auth::user()->type > 5 || Auth::user()->supervisor->id_supervisor == $supId) {
+            $this->validate($request, [
+                'newPass' => 'required|string',
+            ]);
+            $newPass = $request['newPass'];
+            $user = User::whereHas('supervisor', function($q) use ($supId) {
+                $q->where('id_supervisor', $supId);
+            })
+            ->first();
+            $user->password = bcrypt($newPass);
+            $user->save();
+            return response(200);
+        } else {
+            return response(401);
+        }
+    }
+
+
 }
  

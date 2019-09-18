@@ -120,6 +120,7 @@ Route::delete('/disenroll/{enr}', 'EnrollController@disenroll')->name('insc.dise
 Route::resource('/evaluar', 'EvaluateStudentController');
 
 Route::resource('/supervisor', 'SupervisorController', ['middleware' => 'auth']);
+Route::post('/supervisor/{userId}/changePass', 'SupervisorController@changePassword', ['middleware' => 'auth']);
 // Route::get('/supervisor/filter/{id}', 'SupervisorController@filter', ['middleware' => 'auth'])->name('sup_filter');
 
 Route::resource('/partaker', 'PartakerController', ['middleware' => 'auth']);

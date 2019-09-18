@@ -37,6 +37,7 @@ import FilterPatients from './components/FilterPatients';
 import PatientSearch from './components/PatientSearch';
 import PatientDelete from './components/PatientDelete';
 import PatientsList from './components/PatientsList';
+import PasswordUpdate from './components/PasswordUpdate';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt, faFileExcel, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -86,7 +87,8 @@ const app = new Vue({
         UsuarioColl,
         UsuarioDisenroll,
         // usuario view
-        FilterPatients, PatientSearch, PatientDelete, PatientsList
+        FilterPatients, PatientSearch, PatientDelete, PatientsList,
+        PasswordUpdate,
     },
     data: {
         isActive: false
