@@ -56,7 +56,7 @@
       <div class="navbar-item">
         <div class="buttons">
             <a class="button" style="background-color: #9400D3; color:white" href="{{ route('logout') }}"
-            onclick="event.preventDefault();
+            onclick="event.preventDefault();localStorage.clear();
                           document.getElementById('logout-form').submit();">
               Cerrar sesión
             </a>

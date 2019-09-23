@@ -1,13 +1,11 @@
 import './bootstrap';
 
-// import LoginForm from './components/LoginForm';
 import LoginToggle from './components/LoginToggle';
 import ListCheckbox from './components/ListCheckbox';
 import CalendarModal from './components/CalendarModal';
 import CalDateSel from './components/CalDateSel';
 import CalCancelModal from './components/CalCancelModal';
 import CalendarSpace from './components/CalendarSpace';
-// import FDGForm from './components/FDGForm';
 import CdrForm from './components/CdrForm';
 import CdrSection from './components/CdrSection';
 import Test from './components/Test';
@@ -88,6 +86,7 @@ const app = new Vue({
         UsuarioDisenroll,
         // usuario view
         FilterPatients, PatientSearch, PatientDelete, PatientsList,
+        // supervisor view
         PasswordUpdate,
     },
     data: {
