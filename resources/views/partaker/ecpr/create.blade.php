@@ -58,6 +58,7 @@
                                 max="6"
                                 name="{{'q'.str_replace('.', '', strstr($question, ' ', true))}}"
                                 value="{{old('q'.str_replace('.', '', strstr($question, ' ', true)), $ecpr->{'q'.str_replace('.', '', strstr($question, ' ', true))})}}"
+                                style="min-width: 50px"
                                 />
                             </td>
                         </tr>
