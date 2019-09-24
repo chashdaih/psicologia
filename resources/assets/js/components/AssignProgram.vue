@@ -1,24 +1,11 @@
 <template>
     <div>
         <!-- <a @click.prevent="isModalVisible=true" class="button is-info">Elegir programa</a> -->
-        <b-modal :active.sync="isModalVisible">
+        <b-modal :active.sync="isModalVisible" v-on:close="$emit('hide-assign')">
             <header class="modal-card-head">
                 <p class="modal-card-title">Elegir programa</p>
             </header>
             <section class="modal-card-body" style="height:50vh;">
-                <!-- <b-field label="Escoge un escenario" horizontal>
-                    <b-select
-                        v-model="selected_stage" 
-                        @input="filter_sups()"
-                        placeholder="Selecciona un escenario">
-                        <option value=0>Todos los escenarios</option>
-                        <option style="width:50px;"
-                        v-for="stage in stages"
-                        :value=stage.id_centro
-                        :key=stage.id_centro
-                        >{{ stage.nombre }}</option>
-                    </b-select>
-                </b-field> -->
 
                 <b-field label="Filtrar por supervisor" horizontal>
                     <b-autocomplete
@@ -31,12 +18,7 @@
                         @select="selected"
                         @focus="name = ''"
                         ref="autocomplete"
-                        >
-                        <!-- <template slot="header">
-                            <a @click="allSups()">
-                                <span> Todos los supervisores </span>
-                            </a> 
-                        </template> -->
+                    >
                         <template slot="empty">No hay resultados</template>
                     </b-autocomplete>
                 </b-field>
@@ -62,7 +44,7 @@
                 </b-notification>
             </section>
             <footer class="modal-card-foot">
-                <button class="button" type="button" @click="isModalVisible = false">Cancelar</button>
+                <button class="button" type="button" @click="closeModal">Cancelar</button>
                 <button class="button is-success" @click="asignar" :disabled="selected_program == null" :class="{'is-loading': assigning}" >Asignar a programa seleccionado</button>
             </footer>
         </b-modal>
@@ -107,31 +89,17 @@ export default {
         }
     },
     methods: {
+        closeModal(){
+                this.isModalVisible = false;
+                this.$emit('hide-assign');
+        },
         selected(option) {
             if (!option) {
                 return;
             }
-            // if (option=="Todos los supervisores") {
-            //     this.selected_supervisor = 0;
-            // } else {
-                this.selected_supervisor = option.id_supervisor;
-            // }
+            this.selected_supervisor = option.id_supervisor;
             this.filter();
         },
-        // allSups() {
-        //     this.selected_supervisor=0;
-        //     this.filter();
-        //     this.$refs.autocomplete.setSelected("Todos los supervisores");
-        // },
-        // filter_sups(){
-        //     // console.log(this.selected_stage);
-        //     if(this.selected_stage == 0) {
-        //         this.sups = this.supervisors;
-        //         return;
-        //     }
-        //     this.sups = this.supervisors.filter(option => option.id_centro == this.selected_stage);
-        //     return;
-        // },
         filter() {
             this.fetching_programs = true;
             const url = this.base_url + "/filtrar_por_etapa/" + this.selected_stage + "/" + this.selected_supervisor + "/" + this.assign_code;

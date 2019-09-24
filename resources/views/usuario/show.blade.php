@@ -55,13 +55,19 @@
                         <p class="title">Programa</p>
                         <p class="subtitle">{{ $patient->assigned->where('process_code', 'ps')->last()->program->programa }}</p>
                         @if(Auth::user()->type > 4)
-                        <assign-program
+                        {{-- <assign-program
                                 :stages="{{json_encode($centers)}}"
                                 :supervisors="{{$supervisors}}"
                                 etapa="ps"
                                 base_url="{{URL::to('/')}}"
                                 user_id="{{$patient->id}}"
-                        ></assign-program>
+                        ></assign-program> --}}
+                        <show-assign
+                        :supervisors="{{$supervisors}}"
+                        stage="ps"
+                        base-url="{{URL::to('/')}}"
+                        user-id="{{$patient->id}}"
+                        ></show-assign>
                         @endif
                         </article>
                 </div>
@@ -77,13 +83,19 @@
                         <p class="title">Programa</p>
                         <p class="subtitle">Sin programa asignado</p>
                         @if(Auth::user()->type > 4)
-                        <assign-program
+                        {{-- <assign-program
                                 :stages="{{json_encode($centers)}}"
                                 :supervisors="{{$supervisors}}"
                                 etapa="ps"
                                 base_url="{{URL::to('/')}}"
                                 user_id="{{$patient->id}}"
-                        ></assign-program>
+                        ></assign-program> --}}
+                        <show-assign
+                        :supervisors="{{$supervisors}}"
+                        stage="ps"
+                        base-url="{{URL::to('/')}}"
+                        user-id="{{$patient->id}}"
+                        ></show-assign>
                         @endif
                         </article>
                 </div>
@@ -102,13 +114,19 @@
                         <p class="title">Programa</p>
                         <p class="subtitle">{{ $patient->assigned->where('process_code', 're')->last()->program->programa }}</p>
                         @if(Auth::user()->type > 4)
-                        <assign-program
+                        {{-- <assign-program
                                 :stages="{{json_encode($centers)}}"
                                 :supervisors="{{$supervisors}}"
                                 etapa="re"
                                 base_url="{{URL::to('/')}}"
                                 user_id="{{$patient->id}}"
-                        ></assign-program>
+                        ></assign-program> --}}
+                        <show-assign
+                        :supervisors="{{$supervisors}}"
+                        stage="re"
+                        base-url="{{URL::to('/')}}"
+                        user-id="{{$patient->id}}"
+                        ></show-assign>
                         @endif
                         </article>
                 </div>
@@ -124,13 +142,19 @@
                         <p class="title">Programa</p>
                         <p class="subtitle">Sin programa asignado</p>
                         @if(Auth::user()->type > 4)
-                        <assign-program
+                        {{-- <assign-program
                                 :stages="{{json_encode($centers)}}"
                                 :supervisors="{{$supervisors}}"
                                 etapa="re"
                                 base_url="{{URL::to('/')}}"
                                 user_id="{{$patient->id}}"
-                        ></assign-program>
+                        ></assign-program> --}}
+                        <show-assign
+                        :supervisors="{{$supervisors}}"
+                        stage="re"
+                        base-url="{{URL::to('/')}}"
+                        user-id="{{$patient->id}}"
+                        ></show-assign>
                         @endif
                         </article>
                 </div>
@@ -149,13 +173,19 @@
                                 <p class="title">Programa</p>
                                 <p class="subtitle">{{ $patient->assigned->where('process_code', 'rs6')->last()->program->programa }}</p>
                                 @if(Auth::user()->type > 4)
-                                <assign-program
+                                {{-- <assign-program
                                         :stages="{{json_encode($centers)}}"
                                         :supervisors="{{$supervisors}}"
                                         etapa="rs6"
                                         base_url="{{URL::to('/')}}"
                                         user_id="{{$patient->id}}"
-                                ></assign-program>
+                                ></assign-program> --}}
+                                <show-assign
+                                :supervisors="{{$supervisors}}"
+                                stage="rs6"
+                                base-url="{{URL::to('/')}}"
+                                user-id="{{$patient->id}}"
+                                ></show-assign>
                                 @endif
                         </article>
                 </div>
@@ -171,13 +201,19 @@
                                 <p class="title">Programa</p>
                                 <p class="is-italic">Sin programa asignado</p>
                                 @if(Auth::user()->type > 4)
-                                <assign-program
+                                {{-- <assign-program
                                         :stages="{{json_encode($centers)}}"
                                         :supervisors="{{$supervisors}}"
                                         etapa="rs6"
                                         base_url="{{URL::to('/')}}"
                                         user_id="{{$patient->id}}"
-                                ></assign-program>
+                                ></assign-program> --}}
+                                <show-assign
+                                :supervisors="{{$supervisors}}"
+                                stage="rs6"
+                                base-url="{{URL::to('/')}}"
+                                user-id="{{$patient->id}}"
+                                ></show-assign>
                                 @endif
                         </article>
                 </div>
@@ -196,13 +232,19 @@
                                 <p class="title">Programa</p>
                                 <p class="subtitle">{{ $patient->assigned->where('process_code', 'rs7')->last()->program->programa }}</p>
                                 @if(Auth::user()->type > 4)
-                                <assign-program
+                                {{-- <assign-program
                                         :stages="{{json_encode($centers)}}"
                                         :supervisors="{{$supervisors}}"
                                         etapa="rs7"
                                         base_url="{{URL::to('/')}}"
                                         user_id="{{$patient->id}}"
-                                ></assign-program>
+                                ></assign-program> --}}
+                                <show-assign
+                                :supervisors="{{$supervisors}}"
+                                stage="rs7"
+                                base-url="{{URL::to('/')}}"
+                                user-id="{{$patient->id}}"
+                                ></show-assign>
                                 @endif
                         </article>
                 </div>
@@ -218,13 +260,19 @@
                                 <p class="title">Programa</p>
                                 <p class="subtitle">Sin programa asignado</p>
                                 @if(Auth::user()->type > 4)
-                                <assign-program
+                                {{-- <assign-program
                                         :stages="{{json_encode($centers)}}"
                                         :supervisors="{{$supervisors}}"
                                         etapa="rs7"
                                         base_url="{{URL::to('/')}}"
                                         user_id="{{$patient->id}}"
-                                ></assign-program>
+                                ></assign-program> --}}
+                                <show-assign
+                                :supervisors="{{$supervisors}}"
+                                stage="rs7"
+                                base-url="{{URL::to('/')}}"
+                                user-id="{{$patient->id}}"
+                                ></show-assign>
                                 @endif
                         </article>
                 </div>
@@ -245,13 +293,19 @@
                                 <p class="title">Programa</p>
                                 <p class="subtitle">{{ $patient->assigned->where('process_code', 'he')->last()->program->programa }}</p>
                                 @if(Auth::user()->type > 4)
-                                <assign-program
+                                {{-- <assign-program
                                         :stages="{{json_encode($centers)}}"
                                         :supervisors="{{$supervisors}}"
                                         etapa="egreso"
                                         base_url="{{URL::to('/')}}"
                                         user_id="{{$patient->id}}"
-                                ></assign-program>
+                                ></assign-program> --}}
+                                <show-assign
+                                :supervisors="{{$supervisors}}"
+                                stage="egreso"
+                                base-url="{{URL::to('/')}}"
+                                user-id="{{$patient->id}}"
+                                ></show-assign>
                                 @endif
                         </article>
                 </div>
@@ -267,13 +321,19 @@
                                 <p class="title">Programa</p>
                                 <p class="is-italic">Sin programa asignado</p>
                                 @if(Auth::user()->type > 4)
-                                <assign-program
+                                {{-- <assign-program
                                         :stages="{{json_encode($centers)}}"
                                         :supervisors="{{$supervisors}}"
                                         etapa="egreso"
                                         base_url="{{URL::to('/')}}"
                                         user_id="{{$patient->id}}"
-                                ></assign-program>
+                                ></assign-program> --}}
+                                <show-assign
+                                :supervisors="{{$supervisors}}"
+                                stage="egreso"
+                                base-url="{{URL::to('/')}}"
+                                user-id="{{$patient->id}}"
+                                ></show-assign>
                                 @endif
                         </article>
                 </div>
