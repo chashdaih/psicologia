@@ -45,7 +45,7 @@ export default {
                 throw error;
             })
             .finally(()=>{this.isFetching = false})
-        }, 500),
+        }, 0),
         selected(option) {
             window.location.href = this.url  + '/' + option.id ;
         }

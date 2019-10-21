@@ -39,7 +39,13 @@
             @foreach ($pps as $key=>$pp)
                 <tr>
                     <td>{{ $pp->partaker->full_name }}</td>
-                    <td>{{ $pp->estado }}</td>
+                    <td>
+                        @if(file_exists($base_path.$pp->id_tramite.'/seguro.pdf') && file_exists($base_path.$pp->id_tramite.'/carta.pdf') && file_exists($base_path.$pp->id_tramite.'/historial.pdf'))
+                        Inscrito
+                        @else
+                        Necesita documentación
+                        @endif
+                    </td>
                     @if(isset($imssUrls))
                     <td>
                         @if($imssUrls[$key])

@@ -121,6 +121,17 @@ class RsController extends Controller
     //     return response()->file($file_folder.$file_name);
     // }
 
+    public function show($patient_id, $id)
+    {
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        // $doc = $this->formatRs($id);
+        $doc = Doc::where('id', $id)->first();
+        $full_code = "3-FE6-RS";
+        $pdf->loadView('usuario.rs.show', compact('doc', 'full_code'));
+        return $pdf->stream('rs.pdf');
+    }
+
     public function edit($patient_id, $id)
     {
         $path = '';

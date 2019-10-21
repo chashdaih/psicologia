@@ -3,9 +3,30 @@
         "title": "Fecha",
         "type": "date"
     },
+    "file_number": {
+        "title": "No. expediente",
+        "type": "text"
+    },
     "session_number":{
         "title": "Número de sesión",
-        "type": "number"
+        "type": "number",
+        "nullable": false
+    },
+    "session_objective": {
+        "title": "Objetivo de la sesión",
+        "type": "text"
+    },
+    "session_summary": {
+        "title": "Descripción / resumen de la sesión",
+        "type": "area"
+    },
+    "session_techniques": {
+        "title": "Técnicas / procedimientos / temas abordados en la sesión",
+        "type": "area"
+    },
+    "session_results": {
+        "title": "Resultados",
+        "type": "area"
     },
     "exist": {
         "title": "¿Existe?",

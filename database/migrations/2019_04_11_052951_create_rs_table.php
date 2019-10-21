@@ -18,8 +18,13 @@ class CreateRsTable extends Migration
             $table->timestamps();
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('assign_id');
+            $table->string('file_number')->nullable();
             $table->boolean('intervencion');
             $table->unsignedTinyInteger('session_number');
+            $table->string('session_objective')->nullable();
+            $table->text('session_summary')->nullable();
+            $table->text('session_techniques')->nullable();
+            $table->text('session_results')->nullable();
             $table->boolean('exist');
         });
     }

@@ -169,11 +169,13 @@
             </div>
         </div>
         <br>
+        @if(isset($supervisor))
         @if (Auth::user()->id == $supervisor->id_supervisor || Auth::user()->type > 5)
         <password-update
             url="{{URL::to('/')}}"
             user-id="{{$supervisor->id_supervisor}}"
         ></password-update>
+        @endif
         @endif
     </div>
 </section>

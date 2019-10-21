@@ -18,6 +18,7 @@
                     <th>Registrado por</th>
                     <th>Fecha de registro</th>
                     <th>Editar o subir otro archivo</th>
+                    <th>Generar pdf</th>
                     <th>Descargar archivo</th>
                 </tr>
             </thead>
@@ -33,9 +34,15 @@
                         @endif
                         <td>{{$record->created_at->format('d/m/Y')}}</td>
                         <td class="has-text-centered" >
-                            <a  href="{{ route($code_name.'.edit', ['patient_id'=>$patient_id, 'id'=>$record->id]) }}">
+                            <a href="{{ route($code_name.'.edit', ['patient_id'=>$patient_id, 'id'=>$record->id]) }}">
                                 <fai icon="edit" size="2x" />
                             </a>
+                        </td>
+                        <td class="has-text-centered">
+                            <a href="{{ route($code_name.'.show', ['patient_id'=>$patient_id, 'id'=>$record->id]) }}">
+                                <fai icon="file-pdf" size="2x" />
+                            </a>
+
                         </td>
                         <td class="has-text-centered" >
                             @if(file_exists($path.$record->id.'.pdf'))
