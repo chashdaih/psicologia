@@ -120,7 +120,7 @@ class PsController extends Controller
         return view('usuario.ps.create', compact('fields', 'process_model', 'patient_id'));
     }
 
-    public function update($patient_id, Request $request, $id)
+    public function update($patient_id, Request $request, $ps)
     {
         $this->validate($request, [
             'created_at' => 'required|date',
@@ -143,7 +143,7 @@ class PsController extends Controller
             $extension = $request->file("file")->extension();
             $fields['exist'] = true;
             $file_folder = 'public/patients/'.$patient_id.'/ps';
-            $file_name = $id.'.'.$extension;
+            $file_name = $ps.'.'.$extension;
             $request->file("file")->storeAs($file_folder, $file_name);
         }
 

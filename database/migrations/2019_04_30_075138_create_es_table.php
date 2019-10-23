@@ -16,20 +16,18 @@ class CreateEsTable extends Migration
         Schema::create('es', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->unsignedTinyInteger('program_type');
-            $table->string('student_id');
-            $table->unsignedTinyInteger('q1');
+            $table->unsignedTinyInteger('q11');
+            $table->unsignedTinyInteger('q12');
+            $table->unsignedTinyInteger('q13');
+            $table->unsignedTinyInteger('q14');
+            $table->unsignedTinyInteger('q15');
+            $table->unsignedTinyInteger('q16');
             $table->unsignedTinyInteger('q2');
             $table->unsignedTinyInteger('q3');
             $table->unsignedTinyInteger('q4');
             $table->unsignedTinyInteger('q5');
             $table->unsignedTinyInteger('q6');
-            $table->unsignedTinyInteger('q7');
-            $table->unsignedTinyInteger('q8');
-            $table->unsignedTinyInteger('q9');
-            $table->unsignedTinyInteger('q10');
-            $table->unsignedTinyInteger('q11');
-            $table->text('comments');
+            $table->text('comments')->nullable();
         });
     }
 

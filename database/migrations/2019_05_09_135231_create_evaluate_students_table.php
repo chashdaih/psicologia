@@ -18,9 +18,10 @@ class CreateEvaluateStudentsTable extends Migration
             $table->timestamps();
             $table->unsignedInteger('program_id');
             $table->unsignedInteger('partaker_id');
-            $table->boolean('e1')->default(false);
-            $table->boolean('e2')->default(false);
-            $table->boolean('e3')->default(false);
+            $table->integer('e1')->default(false);
+            $table->integer('e2')->default(false);
+            $table->integer('e3')->default(false);
+            $table->integer('es_id')->nullable();
         });
     }
 

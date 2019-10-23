@@ -2,6 +2,7 @@
 
 Route::get('/', 'ListController@index')->name('home');
 Route::get('/partaker/enrollment_proof/{tramit_id}', 'ListController@enrollmentProof')->name('e_proof');
+Route::resource('/assign/{assign_id}/es', 'EsController', ['middleware' => 'auth']);
 // Route::get('partaker/register', 'ListController@partakerRegisterForm')->name('partaker_form');
 
 Route::get('tramite/{id_tramite}/{doc}', 'RpsController@document')->name('get_document');

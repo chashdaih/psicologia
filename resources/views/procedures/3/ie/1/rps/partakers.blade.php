@@ -124,7 +124,13 @@
                             <a href="{{route('ecpr.create', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante])}}">Registrar</a>
                         @endif
                     </td>
-                    <td></td>
+                    <td>
+                        @if ($pp->evaluate_student && $pp->evaluate_student->es_id)
+                        <a href="{{route('es.show', ['assign_id' => $pp->id_tramite, 'id' => $pp->evaluate_student->es_id])}}">Pdf</a>
+                        @else 
+                            <p class="has-text-centered">-</p>
+                        @endif
+                    </td>
                     <td>
                         <usuario-disenroll
                         url="{{route('insc.disenroll', $pp->id_tramite)}}"

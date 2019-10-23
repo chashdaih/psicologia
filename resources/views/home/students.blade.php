@@ -24,6 +24,21 @@
                 </tr>
             </tbody>
         </table>
+            {{-- todo limitar evaluación de satisfacción a fecha --}}
+            <br>
+            <h2 class="subtitle">Cuestionario de satisfacción</h2>
+            @if ($enr->evaluate_student->es_id)
+            <div class="field is-grouped">
+                <div class="control">
+                    <a href="{{ route('es.edit', ['partaker_id' => $enr->id_tramite, 'es'=>$enr->evaluate_student->es_id]) }}" class="button is-success">Editar cuestionario</a>
+                    <a href="{{ route('es.show', ['partaker_id' => $enr->id_tramite, 'es'=>$enr->evaluate_student->es_id]) }}" class="button is-success">Ver en pdf</a>
+                </div>
+            </div>
+            @else
+            <a href="{{ route('es.create', ['partaker_id' => $enr->id_tramite]) }}" class="button is-success">Llenar cuestionario</a>
+            @endif
+            <br>
+            <br>
         @else
         
         <div class="container">
