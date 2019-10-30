@@ -268,6 +268,46 @@ class UsuarioController extends Controller
 
     }
 
+    public function patientExcel($patientId)
+    {
+        $patient = Patient::where('id', $patientId)->first();
+        Excel::create('Listado', function($excel) use ($patient) {
+            $fdg = $patient->fdg;
+            $cdr = $patient->cdr;
+            $excel->sheet('FE3-FE8 SERVICIOS', function($sheet) use ($fdg, $cdr) {
+                $fe3 = ['FE3 PRIMER CONTACTO/SOLICITUD DE SERVICIO PSICOLÓGICO'];
+                $fe3_3 = ['3-FEG-FDG Ficha de Datos Generales'];
+                $fe3_3_1 = ['Identificación de la persona que requiere el servicio'];
+                $fe3_3_1_e = ['No. Expediente', 'No. de cuenta / Trabajador / CURP', 'Fecha', 'Nombre', 'Sexo', 'Fecha de nacimiento', 'Edad', 'Estado civil', '¿Pertenece a la comunidad UNAM?', 'Entidad académica de procedencia', 'Eres', 'Carrera que estudias', 'Semestre que cursas', 'Persona que solicita el servicio', 'Nombre de quien solicita el servicio'];
+                $fe3_3_2 = ['Si la atención es para un menor de edad, anote los datos de los padres o tutores:'];
+                $fe3_3_2_e = [''];
+                 
+                // $sheet->row(1, $fe3);
+                // $sheet->row(2, $fe3_3);
+                // $sheet->row(3, $fe3_3_1);
+                // $sheet->row(4, $fe3_3_1_e);
+                $sheet->row(5, [$fdg->file_number, $fdg->curp, $fdg->created_at->toDateString(), $fdg->full_name, $fdg->gender ? 'Hombre' : 'Mujer', $fdg->birthdate->toDateString(), $fdg->birthdate->age, $fdg->marital, $fdg->isUnam ? 'Si' : 'No', $fdg->academic_entity, $fdg->position, $fdg->career, $fdg->semester, $fdg->requester, $fdg->name_requester,
+                // segunda sección
+                $fdg->tutor_name_1, $fdg->rel1, $fdg->tutor_birthdate_1, $fdg->tutor_birthdate_1 ? $fdg->tutor_birthdate_1->age : null, $fdg->tStudies1, $fdg->occupation_1,
+                $fdg->tutor_name_2, $fdg->rel2, $fdg->tutor_birthdate_2, $fdg->tutor_birthdate_2 ? $fdg->tutor_birthdate_2->age : null, $fdg->tStudies2, $fdg->occupation_2,
+                // Dirección de la persona que requiere el servicio
+                $fdg->street_name, $fdg->external_number, $fdg->internal_number, $fdg->neighborhood, $fdg->postal_code, $fdg->municipality, $fdg->state, $fdg->house_phone, $fdg->cell_phone, $fdg->work_phone, $fdg->work_phone_ext, $fdg->email,
+                // Situación socioeconómica
+                $fdg->studyLevel, $fdg->studied_years, $fdg->has_work ? 'Si' : 'No', $fdg->has_salary ? 'Si':'No', $fdg->work_description, $fdg->household_members, $fdg->monthly_family_income, $fdg->number_people_contributing, $fdg->number_people_depending, $fdg->housing,
+                // Servicio solicitado
+                $fdg->serType, $fdg->serMod, $fdg->consultation_cause, $fdg->mhGAP_cause_classification, $fdg->problem_since, $fdg->has_recived_previous_treatment ? 'Si':'No', $fdg->number_times_treatment, $fdg->type_previous_treatment, $fdg->refer ? 'Si':'No', $fdg->refer_problem, $fdg->unam_previous_treatment ? 'Si':'No', $fdg->unam_previous_treatment_program, $fdg->has_health_issue ? 'Si':'No', $fdg->health_issue, $fdg->takes_medication ? 'Si':'No', $fdg->medication, $fdg->medication_dose, $fdg->prefer_time, $fdg->user->supervisor->full_name, null,
+                //cita
+                null, null, null,
+                // 3-FE3- CDR CUESTIONARIO DE DETECCIÓN DE RIESGOS EN LA SALUD FÍSICA Y MENTAL
+                //Identificación
+                $fdg->curp, $cdr->created_at->toDateString(), null, null, $cdr->other_filler, $cdr->user->supervisor->full_name,
+                // DEP. En las últimas dos semanas…
+                
+                ]);
+            });
+        })->download('xlsx');
+    }
+
     public function getPrograms($supId)
     {
         if($supId == 0) return [];

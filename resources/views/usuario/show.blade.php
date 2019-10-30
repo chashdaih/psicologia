@@ -3,6 +3,11 @@
 <section class="section">
     <div class="container">
         <h1 class="title">{{$patient->fdg->full_name}}</h1>
+        <a href="{{route('patientExcel', $patient->id)}}" class="button is-success">
+                <span class="icon"><fai icon="file-excel" size="1x" /></span>
+                <span>Generar excel</span>
+        </a>
+        <br><br>
         <div class="card">
         <div class="tile">
                 <div class="tile is-parent is-9">
