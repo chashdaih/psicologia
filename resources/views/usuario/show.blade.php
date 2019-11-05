@@ -26,6 +26,7 @@
                                 </a>
                         </div>
                         <div><br></div>
+                        @if ($patient->cdr_id)
                         <div class="field id-grouped">
                                 <a href={{ route('cdr.edit', ['patient_id'=>$patient->id, 'cdr'=>$patient->cdr_id]) }} 
                                         class="button is-info is-medium">
@@ -38,11 +39,32 @@
                                         <span>CDR - Cuest. de detección de riesgos</span>
                                 </a>
                         </div>
+                        @else
+                        <div class="field id-grouped">
+                                <a href={{ route('cdr.create', ['patient_id'=>$patient->id]) }} 
+                                        class="button is-info is-medium">
+                                        <span class="icon"><fai icon="plus-circle" size="2x" /></span>
+                                        <span>CDR - Cuest. de detección de riesgos</span>
+                                </a>
+                        </div>
+                        @endif
                         {{-- <a href={{ route('cdr.show', ['patient_id'=>$patient->id, 'cdr'=>$patient->cdr_id]) }} class="button is-info is-fullwidth is-medium"></a> --}}
                         </article>
                 </div>
                 <div class="tile is-parent">
                         <article class="tile is-child notification">
+                                @if (!count($patient->assigned) && $patient->cdr_id)
+                                <p class="title">Programa</p>
+                                <p class="subtitle">Sin programa asignado</p>
+                                        @if(Auth::user()->type > 4)
+                                        <show-assign
+                                                :supervisors="{{$supervisors}}"
+                                                stage="admision"
+                                                base-url="{{URL::to('/')}}"
+                                                user-id="{{$patient->id}}"
+                                        ></show-assign>
+                                        @endif
+                                @endif
                         </article>
                 </div>
         </div>
