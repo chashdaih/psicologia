@@ -12,6 +12,8 @@
                 </span>
                 <span>Descargar info programas</span>
             </a>
+            <br><br>
+            <a href="{{route('recepcion', Auth::user()->supervisor->id_centro)}}" class="button is-link">Ver vista de recepción</a>
             <div><br></div>
             @endif
         </div>

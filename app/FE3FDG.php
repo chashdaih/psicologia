@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FE3FDG extends Model
 {
-    protected $table = 'FE3FDG';
+    protected $table = 'fe3fdg';
     protected $guarded = [];
     protected $dates = ['birthdate', 'tutor_birthdate_1', 'tutor_birthdate_2'];
 
@@ -16,6 +16,7 @@ class FE3FDG extends Model
     protected $houseStatus = ['Otra', 'Propia', 'Propia, pero la está pagando', 'Rentada', 'Prestada', 'Intestada o en litigio'];
     protected $serviceTypes = ['Orientación/Consejo breve', 'Evaluación', 'Taller', 'Intervención'];
     protected $modalities = ['Individual/Grupal', 'Familiar/Pareja'];
+    protected $times = ['Matutino', 'Vespertino', 'Indiferente'];
     
     public function getFullNameAttribute()
     {
@@ -27,7 +28,7 @@ class FE3FDG extends Model
     }
 
     public function getMaritalAttribute() {
-        $status = ['Soltero', 'Casado', 'Unión libre', 'Viudo', 'Separado'];
+        $status = ['Soltero', 'Casado', 'Unión libre', 'Viudo', 'Separado', '?', '??'];
         return $status[$this->marital_status];
     }
 
@@ -52,6 +53,31 @@ class FE3FDG extends Model
 
     public function getSerModAttribute() { return @$this->modalities[$this->service_modality]; }
 
+    public function getPhonesAttribute()
+    {
+        $phones = "Ninguno";
+        if ($this->house_phone) {
+            $phones = $this->house_phone;
+        }
+        if ($this->cell_phone) {
+            if ($phones != "Ninguno") {
+                $phones = $phones." / ".$this->cell_phone;
+            } else {
+                $phones = $this->cell_phone;
+            }
+        }
+        if ($this->work_phone) {
+            if ($phones != "Ninguno") {
+                $phones = $phones." / ".$this->work_phone;
+            } else {
+                $phones = $this->work_phone;
+            }
+        }
+        return $phones;
+    }
+
+    public function getTimesAttribute() { return @$this->times[$this->prefer_time]; }
+
     public function prev_program()
     {
         return $this->belongsTo(Building::class, 'unam_previous_treatment_program', 'id_centro');
@@ -75,6 +101,11 @@ class FE3FDG extends Model
     public function super_user()
     {
         return $this->belongsTo(User::class, 'supervisor');
+    }
+
+    public function patient()
+    {
+        return $this->belongsTo('App\Patient', 'id', 'fdg_id');
     }
 
 

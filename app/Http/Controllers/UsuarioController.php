@@ -293,6 +293,13 @@ class UsuarioController extends Controller
         })->download('xlsx');
     }
 
+    public function recepcion($centerId)
+    {
+        $patients = FE3FDG::where('center_id', $centerId)->get();
+        $centerName = Building::where('id_centro', $centerId)->first()->nombre;
+        return view('recepcion', compact('patients', 'centerName'));
+    }
+
     protected function formatFdgFields($patient)
     {
         $fdg = $patient->fdg;

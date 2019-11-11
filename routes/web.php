@@ -37,6 +37,8 @@ Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], funct
     Route::get('descargar-archivo/{clave}/{id}/{extension}', 'UsuarioController@bajarDocumento')->name('usuario.bajar');
 });
 
+Route::get('/recepcion/{centerId}', 'UsuarioController@recepcion', ['middleware' => 'auth'])->name('recepcion');
+
 Route::get('/asignar/{center_id}/{fecha?}', 'CalendarController@index')->name('asignar');
 Route::get('/getStudents/{date}/{sup_id}', 'CalendarController@getStudents')->name('get_students');
 Route::post('/make-appo', 'CalendarController@makeAppo')->name('make_appo');
