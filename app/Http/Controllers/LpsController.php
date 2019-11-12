@@ -30,20 +30,6 @@ class LpsController extends Controller
 
     public function index()
     {
-        // // TODO use new records when students can register
-        // $url = url()->current();
-        // $type = "EXTRACURRICULAR";
-        // if (substr($url, -1) == "s") {
-        //     $type = "CURRICULAR";
-        // }
-        // $records = Program::where('id_supervisor', Auth::user()->supervisor->id_supervisor)
-        //             ->where('tipo', $type)
-        //             ->where('semestre_activo', '2019-2')->get();
-
-        // // $records = Doc::where('supervisor_id', Auth::user()->supervisor->id_supervisor)->get();
-        // $this->params['records'] = $records;
-
-        
         $id_centro = Auth::user()->supervisor->id_centro;
 
         $this->params['records'] = $this->filter($id_centro, Auth::user()->supervisor->id_supervisor, config('globales.semestre_activo'));

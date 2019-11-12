@@ -12,6 +12,8 @@
             @if(isset($supervisors)):supervisors="{{ $supervisors }}"@endif
             :supervisor={{ Auth::user()->supervisor->id_supervisor }}
             :stage={{ Auth::user()->supervisor->id_centro }}
+            :semestres="{{json_encode(config('globales.semestres'))}}"
+            selected_sem="{{config('globales.semestre_activo')}}"
             ></lps-table>
 
         {{-- <table class="table is-fullwidth">
