@@ -42,17 +42,21 @@
     </div>
 
     <div class="navbar-end">
-    @if (Auth::user()->type == 3) <!-- student -->
-      <p class="navbar-item">{{ Auth::user()->partaker->full_name }}</p>
-      <div class="navbar-item">
-        <a href="{{ route('partaker.edit', Auth::user()->partaker->num_cuenta) }}" class="navbar-link is-arrowless">Ver / Editar mis datos</a>
+      <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            {{Auth::user()->type == 3 ? Auth::user()->partaker->full_name : Auth::user()->supervisor->full_name}}
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="{{Auth::user()->type == 3 ? route('partaker.edit', Auth::user()->partaker->num_cuenta) : route('supervisor.edit', Auth::user()->supervisor->id_supervisor)}}" >
+                Ver / Editar mis datos
+            </a>
+          </div>
       </div>
-    @else
-      <p class="navbar-item">{{ Auth::user()->supervisor->full_name }}</p>
+      @if (Auth::user()->type == 6)
       <div class="navbar-item">
-        <a class="navbar-link is-arrowless" href="{{ route('supervisor.edit', Auth::user()->supervisor->id_supervisor)}}">Ver / Editar mis datos</a>
+        <a href="{{route('configuracion.index')}}" class="navbar-link is-arrowless">Configuración</a>
       </div>
-    @endif
+      @endif
       <div class="navbar-item">
         <div class="buttons">
             <a class="button" style="background-color: #9400D3; color:white" href="{{ route('logout') }}"

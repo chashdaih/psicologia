@@ -141,6 +141,9 @@ Route::post('asignar_por_etapa', 'UsuarioController@assign');
 
 Auth::routes();
 
+Route::get('configuracion', 'ConfiguracionController@index', ['middleware' => 'auth'])->name('configuracion.index');
+Route::post('configuracion', 'ConfiguracionController@update', ['middleware' => 'auth'])->name('configuracion.update');
+
 Route::get('refresh-csrf', function(){
     return csrf_token();
 });
