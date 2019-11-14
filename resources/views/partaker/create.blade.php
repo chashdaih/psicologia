@@ -30,6 +30,7 @@
                                 <th>Centro</th>
                                 <th>Semestre activo</th>
                                 <th>Estatus</th>
+                                <th>Más...</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,6 +40,9 @@
                                     <td>{{$tramite->program->center->nombre}}</td>
                                     <td>{{$tramite->program->semestre_activo}}</td>
                                     <td>{{$tramite->estado}}</td>
+                                    <td>
+                                        <a href="{{route('users_list', $tramite->program->id_practica)}}"><fai icon="arrow-circle-right" size="2x" /></a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
