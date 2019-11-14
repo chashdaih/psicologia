@@ -14,5 +14,6 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/patients/{centerId}/reception', 'ApiController@reception');
+Route::post('/patients/{centerId}/update', 'ApiController@receive');
 
 Route::get('/supervisors', 'ApiController@supervisors');
