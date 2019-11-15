@@ -37,6 +37,7 @@ import PatientDelete from './components/PatientDelete';
 import PatientsList from './components/PatientsList';
 import PasswordUpdate from './components/PasswordUpdate';
 import ShowAssign from './components/ShowAssign';
+import RecTable from './components/RecTable';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt, faFileExcel, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -91,6 +92,8 @@ const app = new Vue({
         PasswordUpdate,
         // patient show
         ShowAssign,
+        // recepción
+        RecTable,
     },
     data: {
         isActive: false

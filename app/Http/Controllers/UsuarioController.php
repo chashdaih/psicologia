@@ -295,7 +295,25 @@ class UsuarioController extends Controller
 
     public function recepcion($centerId)
     {
-        $patients = FE3FDG::where('center_id', $centerId)->get();
+        // $patients = FE3FDG::where('center_id', $centerId)->get();
+        $patients = DB::table('fe3fdg as f')
+        ->select('file_number', 'f.created_at', DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS supName"), DB::raw("CONCAT(p.nombre_part, ' ', p.ap_paterno, ' ', p.ap_materno) AS parName"), DB::raw("CONCAT(f.name, ' ', f.last_name, ' ', f.mothers_name) AS 'patName'"), 'birthdate', 'genero.valor as genero', 'edo_civil.valor as edoCivil', 'tutor_name_1', 'neighborhood', DB::raw("Concat(COALESCE(house_phone, '-'), ' / ', COALESCE(work_phone, '-'), ' / ', COALESCE(cell_phone, '-')) as phones"), 'f.email', 'nivel_estudios.valor as nivelEstudios', 'has_work', 'work_description', 'monthly_family_income', 'number_people_depending', 'household_members', 'consultation_cause', 'problem_since', 'has_recived_previous_treatment', 'atencion_recibida.valor as atencionRecibida', 'refer', 'refer_where', 'refer_problem', 'health_issue', 'takes_medication', 'medication', 'horarios.valor as horarioPreferencia', 'practicas.programa', 'patient_assigns.created_at as fechaAsig')
+        ->join('users as u', 'f.user_id', 'u.id')
+        ->leftJoin('supervisores as s', 'u.email', 's.correo')
+        ->leftJoin('participante as p', 'u.email', 'p.correo')
+        ->join('genero', 'f.gender', 'genero.id')
+        ->join('edo_civil', 'f.marital_status', 'edo_civil.id')
+        ->join('nivel_estudios', 'f.scholarship', 'nivel_estudios.id')
+        ->leftJoin('atencion_recibida', 'f.type_previous_treatment', 'atencion_recibida.id')
+        ->join('horarios', 'f.prefer_time', 'horarios.id')
+        ->leftJoin('patients as pat', 'f.id', 'pat.fdg_id')
+        ->leftJoin('patient_assigns', function($leftJoin) {
+            $leftJoin->on('pat.id', '=', 'patient_assigns.patient_id')
+            ->where('patient_assigns.id', '=', DB::raw("(select max(id) from patient_assigns where patient_assigns.patient_id=pat.id)"));
+        })
+        ->leftJoin('practicas', 'patient_assigns.program_id', 'practicas.id_practica')
+        ->where('center_id', $centerId)
+        ->get();
         $centerName = Building::where('id_centro', $centerId)->first()->nombre;
         return view('recepcion', compact('patients', 'centerName'));
     }

@@ -10,7 +10,8 @@
         </nav>
     <div class="container">
         <h1 class="title">Recepción del {{$centerName}}</h1>
-        <div class="table-container">
+        <rec-table :patients="{{json_encode($patients)}}"></rec-table>
+        {{-- <div class="table-container">
             <table class="table">
                 <thead>
                     <tr>
@@ -25,8 +26,6 @@
                         <th>Alcaldía o municipio</th>
                         <th>Teléfonos</th>
                         <th>Email</th>
-                        {{-- <th>Procedencia</th>
-                        <th>Facultad / Escuela / FES / Instituto de procedencia</th> --}}
                         <th>Nivel estudios</th>
                         <th>¿Trabaja? (En caso de ser menor de edad, si el responsable trabaja)</th>
                         <th>Ocupación</th>
@@ -47,14 +46,6 @@
                         <th>Programa asignado</th>
                         <th>Nombre del supervisor del programa</th>
                         <th>Fecha asignación al programa</th>
-                        {{-- <th>Estatus</th>
-                        <th>Fecha de alta o baja</th>
-                        <th>No. de sesiones (aplica en alta e interrupción de tratamiento)</th>
-                        <th>Motivo de baja (interrupción del tx sin mejoría)</th>
-                        <th>Reasignación de tratamiento</th>
-                        <th>Fecha de reasignación de tx (si aplica)</th>
-                        <th>Tx reasignado o interconsulta</th>
-                        <th>Observaciones</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -71,8 +62,6 @@
                         <td>{{$p->municipality}}</td>
                         <td>{{$p->phones}}</td>
                         <td>{{$p->email or '-'}}</td>
-                        {{-- <td></td>
-                        <td></td> --}}
                         <td>{{$p->studyLevel}}</td>
                         <td>{{$p->hasWork ? 'Si':'No'}}</td>
                         <td>{{$p->work_description or 'N/A'}}</td>
@@ -97,7 +86,7 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
+        </div> --}}
     </div>
 </section>
 @endsection
