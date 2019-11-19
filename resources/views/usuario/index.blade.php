@@ -26,6 +26,7 @@
             user-type="{{Auth::user()->type}}"
             base-url="{{URL::to('/')}}"
             :prgms="{{json_encode($programs)}}"
+            :semesters="{{config('globales.semestre_activo')}}"
         ></patients-list>
 
 

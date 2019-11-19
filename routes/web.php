@@ -136,7 +136,7 @@ Route::post('/clone_program', 'RpsController@cloneProgram');
 
 Route::post('/program/{program}/partakers/register', 'EnrollController@enrolledBySup'); // no tiene nombre por que es para vue
 
-Route::get('/filtrar_por_etapa/{center_id}/{supervisor_id}/{etapa}', 'UsuarioController@filterByEtapa');
+Route::get('/filtrar_por_etapa/{center_id}/{supervisor_id}/{etapa}/{semestre}', 'UsuarioController@filterByEtapa');
 Route::post('asignar_por_etapa', 'UsuarioController@assign');
 
 Auth::routes();

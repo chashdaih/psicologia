@@ -23,6 +23,12 @@
                     </b-autocomplete>
                 </b-field>
 
+                <b-field label="Filtrar por semestre" horizontal>
+                    <b-select v-model="semester" @input="filter">
+                        <option v-for="sem in semesters" :key="sem" :value="sem">{{sem}}</option>
+                    </b-select>
+                </b-field>
+
                 <b-field v-if="etapa == 'admision' || etapa == 'orientacion' || etapa == 'egreso'" label="Asignar a ..." horizontal>
                     <b-select v-model="assign_code">
                         <option value="admision">Admisión</option>
@@ -54,7 +60,7 @@
 <script>
 import Swal from 'sweetalert2';
 export default {
-    props:['stages', 'etapa', 'supervisors', 'base_url', 'user_id', 'isVisible'],
+    props:['stages', 'etapa', 'supervisors', 'base_url', 'user_id', 'isVisible', 'semesters'],
     data() {
         return {
             programs: [],
@@ -77,6 +83,7 @@ export default {
             ],
             fetching_programs: false, 
             assigning: false,
+            semester: this.semesters[this.semesters.length -1],
         }
     },
     watch: {
@@ -102,7 +109,8 @@ export default {
         },
         filter() {
             this.fetching_programs = true;
-            const url = this.base_url + "/filtrar_por_etapa/" + this.selected_stage + "/" + this.selected_supervisor + "/" + this.assign_code;
+            // const url = this.base_url + "/filtrar_por_etapa/" + this.selected_stage + "/" + this.selected_supervisor + "/" + this.assign_code;
+            const url = `${this.base_url}/filtrar_por_etapa/${this.selected_stage}/${this.selected_supervisor}/${this.assign_code}/${this.semester}`;
             axios.get(url)
             .then(ans=>{
                 this.selected_program = null;

@@ -45,6 +45,7 @@
                     <assign-program
                         :stages="{{json_encode($centers)}}"
                         :supervisors="{{$supervisors}}"
+                        :semesters="{{json_encode(config('globales.semestres'))}}"
                         etapa="admision"
                         base_url="{{URL::to('/')}}"
                         user_id="{{$usuario->id}}"

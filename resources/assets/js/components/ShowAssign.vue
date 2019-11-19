@@ -7,6 +7,7 @@
                 :base_url="baseUrl"
                 :user_id="userId"
                 :isVisible="isVisibleChooser"
+                :semesters="semesters"
                 v-on:hide-assign="isVisibleChooser=false"
                 v-on:patient-assigned="reload"
             ></assign-program>
@@ -15,7 +16,7 @@
 <script>
 import AssignProgram from './AssignProgram';
 export default {
-    props: ['stage', 'baseUrl', 'userId', 'supervisors'],
+    props: ['stage', 'baseUrl', 'userId', 'supervisors', 'semesters'],
     components: { AssignProgram, },
     data() {
         return {

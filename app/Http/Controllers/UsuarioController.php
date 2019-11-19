@@ -435,7 +435,7 @@ class UsuarioController extends Controller
                 ->get(); 
     }
 
-    public function filterByEtapa($center_id, $supervisor_id, $etapa) // WS
+    public function filterByEtapa($center_id, $supervisor_id, $etapa, $semestre) // WS
     {
         if ($etapa == 'ps') {
             $etapa = 'admision';
@@ -461,7 +461,7 @@ class UsuarioController extends Controller
         // ->orderBy('p.semestre_activo', 'desc')
         // ->get();
 
-        $records = Program::where('semestre_activo', config('globales.semestre_activo'))
+        $records = Program::where('semestre_activo', $semestre)
         // ->whereHas('car_ser', function($query) use ($etapa) { // TODO 
         //     $query->where($etapa, 1);
         // })

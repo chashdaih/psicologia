@@ -138,6 +138,7 @@
                 :user_id="selectedPatient"
                 :isVisible="isVisibleChooser"
                 v-on:patient-assigned="removeAssigned"
+                :semesters="semesters"
             ></assign-program>
 
         </div>
@@ -227,7 +228,7 @@ import Swal from 'sweetalert2';
 import AssignProgram from './AssignProgram';
 export default {
     components: { AssignProgram },
-    props:['supervisors', 'initialSup', 'userType', 'baseUrl', 'prgms'],
+    props:['supervisors', 'initialSup', 'userType', 'baseUrl', 'prgms', 'semesters'],
     data() {
         return {
             titles: [

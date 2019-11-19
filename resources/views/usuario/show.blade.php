@@ -62,6 +62,7 @@
                                                 stage="admision"
                                                 base-url="{{URL::to('/')}}"
                                                 user-id="{{$patient->id}}"
+                                                :semesters="{{json_encode(config('globales.semestres'))}}"
                                         ></show-assign>
                                         @endif
                                 @endif
@@ -94,6 +95,7 @@
                         stage="ps"
                         base-url="{{URL::to('/')}}"
                         user-id="{{$patient->id}}"
+                        :semesters="{{json_encode(config('globales.semestres'))}}"
                         ></show-assign>
                         @endif
                         </article>
@@ -122,6 +124,7 @@
                         stage="ps"
                         base-url="{{URL::to('/')}}"
                         user-id="{{$patient->id}}"
+                        :semesters="{{json_encode(config('globales.semestres'))}}"
                         ></show-assign>
                         @endif
                         </article>
@@ -153,6 +156,7 @@
                         stage="re"
                         base-url="{{URL::to('/')}}"
                         user-id="{{$patient->id}}"
+                        :semesters="{{json_encode(config('globales.semestres'))}}"
                         ></show-assign>
                         @endif
                         </article>
@@ -181,6 +185,7 @@
                         stage="re"
                         base-url="{{URL::to('/')}}"
                         user-id="{{$patient->id}}"
+                        :semesters="{{json_encode(config('globales.semestres'))}}"
                         ></show-assign>
                         @endif
                         </article>
@@ -212,6 +217,7 @@
                                 stage="rs6"
                                 base-url="{{URL::to('/')}}"
                                 user-id="{{$patient->id}}"
+                                :semesters="{{json_encode(config('globales.semestres'))}}"
                                 ></show-assign>
                                 @endif
                         </article>
@@ -240,6 +246,7 @@
                                 stage="rs6"
                                 base-url="{{URL::to('/')}}"
                                 user-id="{{$patient->id}}"
+                                :semesters="{{json_encode(config('globales.semestres'))}}"
                                 ></show-assign>
                                 @endif
                         </article>
@@ -271,6 +278,7 @@
                                 stage="rs7"
                                 base-url="{{URL::to('/')}}"
                                 user-id="{{$patient->id}}"
+                                :semesters="{{json_encode(config('globales.semestres'))}}"
                                 ></show-assign>
                                 @endif
                         </article>
@@ -299,6 +307,7 @@
                                 stage="rs7"
                                 base-url="{{URL::to('/')}}"
                                 user-id="{{$patient->id}}"
+                                :semesters="{{json_encode(config('globales.semestres'))}}"
                                 ></show-assign>
                                 @endif
                         </article>
@@ -332,6 +341,7 @@
                                 stage="egreso"
                                 base-url="{{URL::to('/')}}"
                                 user-id="{{$patient->id}}"
+                                :semesters="{{json_encode(config('globales.semestres'))}}"
                                 ></show-assign>
                                 @endif
                         </article>
@@ -360,6 +370,7 @@
                                 stage="egreso"
                                 base-url="{{URL::to('/')}}"
                                 user-id="{{$patient->id}}"
+                                :semesters="{{json_encode(config('globales.semestres'))}}"
                                 ></show-assign>
                                 @endif
                         </article>
