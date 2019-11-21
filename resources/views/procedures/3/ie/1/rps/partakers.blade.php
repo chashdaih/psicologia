@@ -138,9 +138,10 @@
                     </td>
                     <td>
                         @if ($pp->evaluate_student && $pp->evaluate_student->es_id)
+                        <a href="{{route('es.edit', ['assign_id' => $pp->id_tramite, 'id' => $pp->evaluate_student->es_id])}}">Editar</a>/
                         <a href="{{route('es.show', ['assign_id' => $pp->id_tramite, 'id' => $pp->evaluate_student->es_id])}}">Pdf</a>
                         @else 
-                            <p class="has-text-centered">-</p>
+                        <a href="{{route('es.create', ['assign_id' => $pp->id_tramite])}}">Registrar</a>
                         @endif
                     </td>
                     <td>

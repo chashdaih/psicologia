@@ -34,7 +34,13 @@ class EsController extends Controller
 
         EvaluateStudent::where('program_id', $pp->id_practica)->where('partaker_id', $pp->id_participante)->update(['es_id' => $es->id]); // todo: hacer esto en un listener
 
-        return redirect()->route('home')->with('success', 'Evaluación de satisfacción registrada correctamente');
+        if (Auth::user()->type == 3) {
+            return redirect()->route('home')->with('success', 'Evaluación de satisfacción registrada correctamente');
+        }
+
+        $program_id = ProgramPartaker::where('id_tramite', $assign_id)->first()->id_practica;
+        
+        return redirect()->route('users_list', $program_id)->with('success', 'Evaluación de satisfacción registrada correctamente');
     }
 
     public function show($assign_id, $es)
@@ -70,7 +76,13 @@ class EsController extends Controller
 
         $es = Es::where('id', $es)->update($fields);
 
-        return redirect()->route('home')->with('success', 'Evaluación de satisfacción actualizada correctamente');
+        if (Auth::user()->type == 3) {
+            return redirect()->route('home')->with('success', 'Evaluación de satisfacción actualizada correctamente');
+        }
+
+        $program_id = ProgramPartaker::where('id_tramite', $assign_id)->first()->id_practica;
+        
+        return redirect()->route('users_list', $program_id)->with('success', 'Evaluación de satisfacción actualizada correctamente');
     }
 
     public function destroy(Es $es)

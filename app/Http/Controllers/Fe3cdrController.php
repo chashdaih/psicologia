@@ -73,6 +73,10 @@ class Fe3cdrController extends Controller
         $process_model = $cdr;
         $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.'crp.json');
         $sections = json_decode($json, true);
+        // $age = Patient::where('id', $patient_id)->first()->fdg->birthdate->age;
+        // if (is_numeric($age)) {
+
+        // }
         $data = compact('sections', 'process_model', 'patient_id', 'migajas');
         return view('usuario.cdr.create', $data);
     }
@@ -83,7 +87,6 @@ class Fe3cdrController extends Controller
         $values = collect($request->except(['_token', '_method']))->toArray();
         $values['user_id'] = Auth::user()->id;
         Fe3cdr::where('id', $id)->update($values);
-        // return response(200);
         return redirect()->route('cdr.index', $patient_id)->with('success', 'Cuestionario actualizado exitosamente');
 
     }
