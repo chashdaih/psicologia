@@ -138,6 +138,7 @@
                 :user_id="selectedPatient"
                 :isVisible="isVisibleChooser"
                 v-on:patient-assigned="removeAssigned"
+                v-on:hide-assign="isVisibleChooser = false"
                 :semesters="semesters"
             ></assign-program>
 
