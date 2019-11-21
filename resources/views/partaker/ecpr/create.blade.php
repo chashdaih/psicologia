@@ -4,6 +4,10 @@
 <section class="section">
     <div class="container">
         <h1 class="title">Evaluación de competencias del estudiante de pregrado</h1>
+        <h2 class="subtitle">Determine el nivel de avance de las competencias consideradas en la siguiente lista, con base en la ejecución del estudiante en la semana previa al día de hoy.</h2>
+        <p class="has-text-weight-bold">Para facilidad de llenado, solo se pueden introducir valores numéricos.</p>
+        <p>0 - No lo domina, 1 a 4 - En proceso, 5 - Lo domina, 6 - No aplica</p>
+        <br>
         <form
         @if($ecpr->id)
         action="{{route('ecpr.update', ['program_id'=>$program_id, 'partaker_id'=>$partaker_id, 'ecpr'=>$ecpr->id])}}" 
@@ -52,13 +56,9 @@
                         <tr>
                             <td>{{$question}}</td>
                             <td>
-                                <input type="number" class="input"
-                                placeholder="0 - 6"
-                                min="0"
-                                max="6"
-                                name="{{'q'.str_replace('.', '', strstr($question, ' ', true))}}"
-                                value="{{old('q'.str_replace('.', '', strstr($question, ' ', true)), $ecpr->{'q'.str_replace('.', '', strstr($question, ' ', true))})}}"
-                                style="min-width: 50px"
+                                <numeric-input
+                                    name="{{'q'.str_replace('.', '', strstr($question, ' ', true))}}"
+                                    value="{{old('q'.str_replace('.', '', strstr($question, ' ', true)), $ecpr->{'q'.str_replace('.', '', strstr($question, ' ', true))})}}"
                                 />
                             </td>
                         </tr>

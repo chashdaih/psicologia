@@ -28,7 +28,7 @@ class FE3FDG extends Model
     }
 
     public function getMaritalAttribute() {
-        $status = ['Soltero', 'Casado', 'Unión libre', 'Viudo', 'Separado', '?', '??'];
+        $status = ['Soltera(o)', 'Casada(o)', 'Unión libre', 'Viuda(o)', 'Separada(o)', '?', '??'];
         return $status[$this->marital_status];
     }
 

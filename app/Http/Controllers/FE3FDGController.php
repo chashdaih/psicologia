@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 
 class FE3FDGController extends Controller
 {
-    protected $marital_status = ['Soltero', 'Casado', 'Unión libre', 'Viudo', 'Separado'];
     protected $position = ['Estudiante', 'Académico', 'Administrativo'];
     protected $person_requesting = ['La persona', 'Padres o tutores', 'Otro familiar', 'Otro'];
     protected $relationship = ['de la madre', 'del padre', 'del tutor'];
@@ -202,7 +201,7 @@ class FE3FDGController extends Controller
     protected function formatFdg($id) {
         $fdg = FE3FDG::where('id', $id)->first();
         // dd($fdg);
-        $fdg->marital_status = $this->marital_status[$fdg->marital_status];
+        $fdg->marital_status = config('globales.estado_civil')[$fdg->marital_status];
         if ($fdg->position) {
             $fdg->position = $this->position[$fdg->position];
         }

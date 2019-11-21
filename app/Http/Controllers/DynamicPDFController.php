@@ -9,7 +9,7 @@ use PDF;
 
 class DynamicPDFController extends Controller
 {
-    protected $marital_status = ['Soltero', 'Casado', 'Unión libre', 'Viudo', 'Separado'];
+    // protected $marital_status = config('globales.estado_civil');
     protected $position = ['Estudiante', 'Académico', 'Administrativo'];
     protected $person_requesting = ['La persona', 'Padres o tutores', 'Otro familiar', 'Otro'];
     protected $relationship = ['de la madre', 'del padre', 'del tutor'];
@@ -335,7 +335,7 @@ class DynamicPDFController extends Controller
     protected function getFdg($id) {
         $fdg = FE3FDG::where('id', $id)->first();
         // dd($fdg);
-        $fdg->marital_status = $this->marital_status[$fdg->marital_status];
+        $fdg->marital_status = config('globales.estado_civil')[$fdg->marital_status];
         if ($fdg->position) {
             $fdg->position = $this->position[$fdg->position];
         }

@@ -12,4 +12,5 @@
   'altas_inicio' => 1565568000,
   'altas_fin' => 1566000000,
   'satisfaccion_inicio' => 1575158400,
+  'estado_civil' => ['Soltera(o)', 'Casada(o)', 'Unión libre', 'Viuda(o)', 'Separada(o)']
 ) ;

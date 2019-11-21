@@ -823,7 +823,7 @@ export default {
     components: {
         LabelSelect
     },
-    props:['url', 'programs'],
+    props:['url', 'programs', 'estados_civiles'],
     data() {
         return {
             is_under_18: false,

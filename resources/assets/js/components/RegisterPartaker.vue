@@ -1,10 +1,12 @@
 <template>
     <div>
-        <a href="#" @click.prevent="isModalActive = true" class="button is-success">Registrar estudiante al programa</a>
-
+        <a href="#" @click.prevent="isModalActive = true" class="button is-success is-medium">
+                <span class="icon"><fai icon="plus-circle" size="1x" /></span>
+                <span>Agregar estudiante al programa</span>
+        </a>
         <b-modal :active.sync="isModalActive"  >
             <header class="modal-card-head">
-                <p class="modal-card-title">Registrar estudiante al programa: "{{program.programa}}"</p>
+                <p class="modal-card-title">Agregar estudiante al programa: "{{program.programa}}"</p>
             </header>
             <section class="modal-card-body" style="height:50vh;">
                 <b-field label="Busca por nombre, apellido o número de cuenta">

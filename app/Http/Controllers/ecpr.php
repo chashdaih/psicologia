@@ -30,7 +30,7 @@ return [
         ]
     ],
     [
-        'title' => 'Evaluuación',
+        'title' => 'Evaluación',
         'questions' => [
             '3.1 Formula y teoriza la situación/del caso a partir de las metas del servicio.',
             '3.2 Elabora y/o selecciona instrumentos /propone instrumentos, formatos, encuestas, cuestionarios y/o material para la obtención de datos que permitan la medición de las características de las conductas o condición a evaluar.',

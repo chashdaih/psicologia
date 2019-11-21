@@ -134,7 +134,7 @@
                     @component('components.array-sel',[
                         'title'=>'Estado civil',
                         'field'=>'marital_status',
-                        'options'=>['Soltero', 'Casado', 'Unión libre', 'Viudo', 'Separado', 'Licenciatura', 'Posgrado'],
+                        'options'=>config('globales.estado_civil'),
                         'errors'=>$errors,
                         'prev'=>isset($fdg)?$fdg->marital_status:null
                     ])@endcomponent

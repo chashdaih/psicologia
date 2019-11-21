@@ -3,9 +3,21 @@
 @section('content')
 <section class="section">
     <h1 class="title">Alumnos inscritos al programa "{{ $program->programa}}"</h1>
-    <div>
-        <a href="{{ route('lps_pdf', $program->id_practica) }}" class="button is-info">Descargar lista de estudiantes inscritos en pdf (3-IE2-LPS)</a>
+    <div class="field is-grouped">
+        <div class="control">
+            <a href="{{ route('lps_pdf', $program->id_practica) }}" class="button is-info">
+                <span class="icon"><fai icon="file-pdf" size="1x" /></span>
+                <span>Descargar lista de estudiantes inscritos en pdf (3-IE2-LPS)</span>
+            </a>
+        </div>
+        <div class="control">
+            <a href="{{ route('students_list', $program->id_practica) }}" class="button is-info">
+                <span class="icon"><fai icon="file-excel" size="1x" /></span>
+                <span>Descargar excel con la información de esta pantalla</span>
+            </a>
+        </div>
     </div>
+    <div>
     <div><br></div>
     @if($program->cupo_actual > 0)
     <div>

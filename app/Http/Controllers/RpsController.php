@@ -630,6 +630,32 @@ class RpsController extends Controller
         })->download('xlsx');
     }
 
+    public function programPartakersExcel($program_id)
+    {
+        Excel::create('AlumnosPrograma', function ($excel) use ($program_id) {
+            $excel->sheet('Hoja 1', function ($sheet) use ($program_id) {
+                $program = Program::where('id_practica', $program_id)->first();
+                $pps = ProgramPartaker::where('id_practica', $program_id)->get();
+                $sheet->row(1, [$program->programa]);
+                $sheet->row(2, ['Nombre del alumno', 'Estatus', 'Seguro', 'Carta compromiso', 'Historial', 'Primera evaluación', 'Segunda evaluación', 'Tercera evaluación', 'Cuestionario de satisfacción']);
+                foreach ($pps as $key => $pp) {
+                    $base_path = public_path() . '/storage/';
+                    $status = (file_exists($base_path.$pp->id_tramite.'/seguro.pdf') && file_exists($base_path.$pp->id_tramite.'/carta.pdf') && file_exists($base_path.$pp->id_tramite.'/historial.pdf')) ? 'Inscrito' : 'Necesita documentación';
+                    $seguro = file_exists($base_path.$pp->id_tramite.'/seguro.pdf') ? 'Si' : 'Pendiente';
+                    $carta = file_exists($base_path.$pp->id_tramite.'/carta.pdf') ? 'Si' : 'Pendiente';
+                    $hist = file_exists($base_path.$pp->id_tramite.'/historial.pdf') ? 'Si' : 'Pendiente';
+                    $e1 = ($pp->evaluate_student && $pp->evaluate_student->e1) ? 'Si' : 'Pendiente';
+                    $e2 = ($pp->evaluate_student && $pp->evaluate_student->e2) ? 'Si' : 'Pendiente';
+                    $e3 = ($pp->evaluate_student && $pp->evaluate_student->e3) ? 'Si' : 'Pendiente';
+                    $sat = ($pp->evaluate_student && $pp->evaluate_student->es_id) ? 'Si' : 'Pendiente';
+
+                    $sheet->row($key + 3, [$pp->partaker->fullName, $status, $seguro, $carta, $hist, $e1, $e2, $e3, $sat]);
+                }
+            });
+        })->download('xlsx');
+
+    }
+
     public function deleteRow($type, $id)
     {
         switch ($type) {
