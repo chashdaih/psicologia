@@ -36,7 +36,7 @@ class RpsController extends Controller
     protected $params;
     protected $user_id;
     
-    protected $programFields = ['cupo', 'cupo_actual', 'id_centro', 'id_supervisor', 'periodicidad', 'programa', 'tipo'];
+    protected $programFields = ['cupo', 'cupo_actual', 'id_centro', 'id_supervisor', 'periodicidad', 'programa', 'tipo', 'semestre_activo'];
 
     public function __construct()
     {
@@ -139,7 +139,12 @@ class RpsController extends Controller
 
         $request['cupo_actual'] = $request['cupo'];
 
-        $program = Program::create( collect($request->only($this->programFields))
+        dd(collect($request->only($this->programFields))
+        ->filter(function($value) {
+            return null !== $value;
+        })->toArray());
+
+        $program = Program::create(collect($request->only($this->programFields))
         ->filter(function($value) {
             return null !== $value;
         })->toArray());

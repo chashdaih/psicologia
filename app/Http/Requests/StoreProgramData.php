@@ -31,6 +31,7 @@ class StoreProgramData extends FormRequest
             'periodicidad' => 'nullable|integer|min:0|max:4', //
             'programa' => 'required|max:250', //
             'tipo' => 'required',
+            'semestre_activo' => 'required',
             // program data
             'resumen' => 'nullable',
             'justificacion'=> 'nullable',

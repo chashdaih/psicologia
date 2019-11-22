@@ -52,6 +52,22 @@
                     {{-- @else
                     <input name="id_centro" type="hidden" value={{  Auth::user()->supervisor->id_centro }}>
                     @endif --}}
+                    <div class="field">
+                        <div class="label">Semestre en el que inicia el programa</div>
+                        <div class="control">
+                            <div class="select">
+                                <select name="semestre_activo">
+                                    @foreach (Config::get('globales.semestres') as $sem)
+                                        <option value="{{$sem}}"
+                                            @if ($sem == old('semestre_activo', isset($program)?$program->semestre_activo:Config::get('globales.semestre_activo')) )
+                                            selected="selected"
+                                            @endif
+                                            >{{$sem}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <br>
