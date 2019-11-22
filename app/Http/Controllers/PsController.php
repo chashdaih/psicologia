@@ -150,9 +150,11 @@ class PsController extends Controller
         return redirect()->route('ps.index', $patient_id)->with('success', 'Plan de servicios actualizado exitosamente');
     }
 
-    public function destroy(Ps $ps)
+    public function destroy($patient_id, $p)
     {
-        //
+        // TODO delete file, if exist
+        Ps::destroy($p);
+        return 200;
     }
 
     protected function getFormatedPs($id)

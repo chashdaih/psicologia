@@ -40,7 +40,7 @@
             <br>
             <br>
         @else
-        
+        @if ($enr->program)
         <div class="container">
         <h1 class="title">{{ $enr->program->programa }}</h1>
         <p class="subtitle">Estás pre-registrado al programa</p>
@@ -52,7 +52,6 @@
             <p class="has-text-weight-bold">Para completar tu registro, necesitas subir tres documentos:</p>
             <div>
                 <p>1. Un comprobante de que tienes seguro médico</p>
-                {{-- <a href="" class="button is-info">Ir a la página del seguro social</a> --}}
             </div>
             <br>
             <div>
@@ -62,7 +61,6 @@
             <br>
             <div>
                 <p>3. Tu historial académico</p>
-                {{-- <a class="button is-info" href="">Ir a la página del historial</a> --}}
             </div>
             <br>
             <p class="is-italic">Puedes subir los documentos en diferentes momentos, solo recuerda subirlos antes de la fecha límite</p>
@@ -122,6 +120,7 @@
             </div>
         </div>
     </div>
+    @endif {{-- fin if existe programa --}}
         @endif
     @endforeach
 {{-- @else
