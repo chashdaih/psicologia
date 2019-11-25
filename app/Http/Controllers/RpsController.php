@@ -139,10 +139,10 @@ class RpsController extends Controller
 
         $request['cupo_actual'] = $request['cupo'];
 
-        dd(collect($request->only($this->programFields))
-        ->filter(function($value) {
-            return null !== $value;
-        })->toArray());
+        // dd(collect($request->only($this->programFields))
+        // ->filter(function($value) {
+        //     return null !== $value;
+        // })->toArray());
 
         $program = Program::create(collect($request->only($this->programFields))
         ->filter(function($value) {
@@ -238,6 +238,7 @@ class RpsController extends Controller
             }
             $cloneProgram = $ogProgram->replicate();
             $cloneProgram->programa = $ogProgram->programa.' - Duplicado';
+            $cloneProgram->cupo_actual = $cloneProgram->cupo;
             $cloneProgram->save();
 
             $ogProgramData = ProgramData::where('id_practica', $id)->first();
@@ -289,7 +290,10 @@ class RpsController extends Controller
     {
 
         $program = Program::where('id_practica', $id)->first();
-        if ($program->semestre_activo != '2020-1') { // TODO filtrar por string comienza con 20
+        // if ($program->semestre_activo != '2020-1') { // TODO filtrar por string comienza con 20
+        $sub = substr ($program->semestre_activo, 0, 3);
+        $pos = substr_count($sub, '2');
+        if ($pos < 2) { 
             return redirect('http://test.psicologiaunam.com/intranet/modificar_programa.php?id='.$id);
         }
         $this->params['program'] = $program;
@@ -485,7 +489,7 @@ class RpsController extends Controller
         // TODO: ajax
         // return 200;
 
-        return redirect()->route('home');//route($this->doc_code.'.index')->with('success', 'Programa borrado exitosamente');
+        return redirect()->route('home')->with('success', 'Programa borrado exitosamente');
 
     }
 
@@ -598,7 +602,7 @@ class RpsController extends Controller
             ->orderBy('p.semestre_activo', 'desc')
         ->get();
 
-        dd($records);
+        // dd($records);
 
     }
 

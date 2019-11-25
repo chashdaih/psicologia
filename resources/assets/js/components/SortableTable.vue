@@ -182,14 +182,13 @@
 import Swal from 'sweetalert2';
 import { mkdir } from 'fs';
 export default {
-    props:['records', 'url', 'stages', 'supervisors', 'stage', 'supervisor', 'lps', 'base_url', 'type', 'semestres', 'selected_sem'],
+    props:['records', 'url', 'stages', 'supervisors', 'stage', 'supervisor', 'lps', 'base_url', 'type', 'semestres', 'selSem', 'needsRefresh'],
   data() {
     return {
       recs: this.records,
       selected_stage: this.stage,
       selected_supervisor: this.supervisor,
-      // semestres: ['2020-1', '2019-2', '2019-1', '2018-2', '2018-1', '2017-2'], // TODO hacer un array global de todos los periodos
-      // selected_sem: '2020-1', // TODO prop semestre activo
+      selected_sem: this.selSem,
       isLoading: false,
       csrf: document.head.querySelector('meta[name="csrf-token"]').content,
       sups: this.supervisors,
@@ -263,7 +262,10 @@ export default {
               type: "success",
               text: "El programa se duplicó correctamente",
               confirmButtonText: "Aceptar",
-              onClose: () => this.closeModal()
+              onClose: () => {
+                this.closeModal();
+                this.filter();
+              }
           });
       })
       .catch(error=>{
@@ -302,6 +304,9 @@ export default {
         }
         if (localStorage.getItem('recs')) {
             this.recs = JSON.parse(localStorage.getItem('recs'));
+        }
+        if (this.needsRefresh) {
+          this.filter();
         }
   },
   watch: {

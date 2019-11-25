@@ -35,6 +35,7 @@
                         </thead>
                         <tbody>
                             @foreach ($partaker->tramites as $tramite)
+                                @if ($tramite->program)
                                 <tr>
                                     <td>{{$tramite->program->programa}}</td>
                                     <td>{{$tramite->program->center->nombre}}</td>
@@ -44,6 +45,7 @@
                                         <a href="{{route('users_list', $tramite->program->id_practica)}}"><fai icon="arrow-circle-right" size="2x" /></a>
                                     </td>
                                 </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>

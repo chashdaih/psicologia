@@ -21,7 +21,13 @@
     :stage={{ Auth::user()->type == 2 ? 0 : Auth::user()->supervisor->id_centro }}
     base_url={{URL::to('/')}}
     :semestres="{{json_encode(config('globales.semestres'))}}"
-    selected_sem="{{config('globales.semestre_activo')}}"
+    sel-sem="{{config('globales.semestre_activo')}}"
+    @if (session('success'))
+    :needs-refresh="true"
+    @else
+    :needs-refresh="false"
+    @endif
+
     ></sortable-table>
 
     <div ><br><br></div>
@@ -35,7 +41,12 @@
     stage=0
     base_url={{URL::to('/')}}
     :semestres="{{json_encode(config('globales.semestres'))}}"
-    selected_sem="{{config('globales.semestre_activo')}}"
+    sel-sem="{{config('globales.semestre_activo')}}"
+    @if (session('success'))
+    :needs-refresh="true"
+    @else
+    :needs-refresh="false"
+    @endif
     ></sortable-table>
 @endif
 
