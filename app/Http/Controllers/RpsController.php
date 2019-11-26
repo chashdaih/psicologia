@@ -515,7 +515,9 @@ class RpsController extends Controller
     public function pdf($id)
     {
         $program = Program::where('id_practica', $id)->first();
-        if ($program->semestre_activo != '2020-1') { // TODO filtrar bien
+        $sub = substr ($program->semestre_activo, 0, 3);
+        $pos = substr_count($sub, '2');
+        if ($pos < 2) { 
             return redirect('http://test.psicologiaunam.com/intranet/imprimir_programa_practicas.php?id='.$id);
         }
 
