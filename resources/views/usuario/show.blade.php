@@ -5,7 +5,7 @@
         <h1 class="title">{{$patient->fdg->full_name}}</h1>
         <a href="{{route('patientExcel', $patient->id)}}" class="button is-success">
                 <span class="icon"><fai icon="file-excel" size="1x" /></span>
-                <span>Generar excel</span>
+                <span>Generar excel de todos los procesos para la persona atendida</span>
         </a>
         <br><br>
         <div class="card">
@@ -13,30 +13,40 @@
                 <div class="tile is-parent is-9">
                         <article class="tile is-child notification has-text-centered">
                         <p class="title">FE3 - Primer contacto</p>
-                        <div class="field id-grouped">
+                        <div class="field">
+                                <p class="has-text-weight-bold">FDG - Ficha de datos generales</p>
                                 <a href={{ route('fdg.edit', ['patient_id'=>$patient->id, 'fdg'=>$patient->fdg_id]) }} 
-                                        class="button is-info is-medium">
-                                        <span class="icon"><fai icon="edit" size="2x" /></span>
-                                        <span>FDG - Ficha de datos generales</span>
+                                        class="button is-info">
+                                        <span class="icon"><fai icon="edit" size="1x" /></span>
+                                        <span>Editar</span>
                                 </a>
                                 <a href={{ route('fdg.show', ['patient_id'=>$patient->id, 'fdg'=>$patient->fdg_id]) }} 
-                                        class="button is-info is-medium">
-                                        <span class="icon"><fai icon="file-pdf" size="2x" /></span>
-                                        <span>FDG - Ficha de datos generales</span>
+                                        class="button is-link">
+                                        <span class="icon"><fai icon="file-pdf" size="1x" /></span>
+                                        <span>Descargar pdf</span>
+                                </a>
+                                <a href="{{route('fdge', $patient->fdg_id)}}" class="button is-success">
+                                        <span class="icon"><fai icon="file-excel" size="1x" /></span>
+                                        <span>Generar excel</span>
                                 </a>
                         </div>
                         <div><br></div>
                         @if ($patient->cdr_id)
-                        <div class="field id-grouped">
+                        <p class="has-text-weight-bold">CDR - Cuest. de detección de riesgos</p>
+                        <div class="field">
                                 <a href={{ route('cdr.edit', ['patient_id'=>$patient->id, 'cdr'=>$patient->cdr_id]) }} 
-                                        class="button is-info is-medium">
-                                        <span class="icon"><fai icon="edit" size="2x" /></span>
-                                        <span>CDR - Cuest. de detección de riesgos</span>
+                                        class="button is-info">
+                                        <span class="icon"><fai icon="edit" size="1x" /></span>
+                                        <span>Editar</span>
                                 </a>
                                 <a href={{ route('cdr.show', ['patient_id'=>$patient->id, 'cdr'=>$patient->cdr_id]) }} 
-                                        class="button is-info is-medium">
-                                        <span class="icon"><fai icon="file-pdf" size="2x" /></span>
-                                        <span>CDR - Cuest. de detección de riesgos</span>
+                                        class="button is-link">
+                                        <span class="icon"><fai icon="file-pdf" size="1x" /></span>
+                                        <span>Descargar pdf</span>
+                                </a>
+                                <a href="{{route('patientExcel', $patient->id)}}" class="button is-success">
+                                        <span class="icon"><fai icon="file-excel" size="1x" /></span>
+                                        <span>Generar excel</span>
                                 </a>
                         </div>
                         @else

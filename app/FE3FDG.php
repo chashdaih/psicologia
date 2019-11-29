@@ -108,5 +108,4 @@ class FE3FDG extends Model
         return $this->belongsTo('App\Patient', 'id', 'fdg_id');
     }
 
-
 }

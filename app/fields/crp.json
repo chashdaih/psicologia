@@ -21,7 +21,7 @@
                     "7. Has tenido cambios en tu apetito (más hambre, menos hambre).",
                     "8. Has tenido fatiga",
                     "9. Has tenido pensamientos de que careces de logros",
-                    "10. Has tenido pensamientos de qque todo lo que pasa es culpa tuya",
+                    "10. Has tenido pensamientos de que todo lo que pasa es culpa tuya",
                     "11. Has tenido dificultades en mi vida: Social, laboral o/y educativa."
                 ]
             }
@@ -121,7 +121,7 @@
         ]
     },
     {
-        "title": "TRASTORNOS DESARROLLO",
+        "title": "TRASTORNOS DESARROLLO, NIÑOS Y ADOLESCENTES",
         "code": "tde",
         "medical": [
             "a. Presenta: desnutrición",
@@ -137,7 +137,7 @@
         "main": 
         [
             {
-                "period": "<5 años",
+                "period": "Hasta 5 años",
                 "ten": [
                     "1. Falta de apetito",
                     "2. Poco crecimiento en compararción con otros niños", 
@@ -166,11 +166,11 @@
         ]
     },
     {
-        "title": "TRASTORNOS CONDUCTA",
+        "title": "TRASTORNOS CONDUCTA, NIÑOS Y ADOLESCENTES",
         "code": "tc",
         "main":[
             {
-                "period": "SECCIÓN NIÑOS - ADOLESCENTES. Señala el grado en que el menor ha presentado alguno de los siguientes problemas (4 a 18 años)",
+                "period": "Señala el grado en que el menor ha presentado alguno de los siguientes problemas (4 a 18 años)",
                 "ten": [
                     "1. Se mueve sin cesar.",
                     "2. Dificultad permanecer quieto por un tiempo",
@@ -202,11 +202,11 @@
         ]
     },
     {
-        "title": "TRASTORNOS EMOCIONALES",
+        "title": "TRASTORNOS EMOCIONALES, NIÑOS Y ADOLESCENTES",
         "code": "te",
         "main":[
             {
-                "period": "SECCIÓN NIÑOS - ADOLESCENTES (<5 años)",
+                "period": "Hasta 5 años",
                 "ten": [
                     "1. Presenta llanto excesivo",
                     "2. Tiene dificultades para separarse de su cuidador",
@@ -218,7 +218,7 @@
                 ]
             },
             {
-                "period": "(6 a 12 años)",
+                "period": "6 a 12 años",
                 "ten":[
                     "8. Presenta dolor de cabeza o estómago recurrente", 
                     "9. Se niega a ir a la escuela",
@@ -227,7 +227,7 @@
                 ]
             },
             {
-                "period": "(13 a 18 años)",
+                "period": "13 a 18 años",
                 "ten":[
                     "12. Se irrita o molesta con facilidad",
                     "13. Se deprime con frecuencia",

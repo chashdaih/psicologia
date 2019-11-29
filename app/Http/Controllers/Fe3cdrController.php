@@ -30,6 +30,7 @@ class Fe3cdrController extends Controller
         $process_model = new Fe3cdr();
         $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.'crp.json');
         $sections = json_decode($json, true);
+        $sections = $this->removeUneededFields($patient_id, $sections);
         $data = compact('sections', 'process_model', 'patient_id', 'migajas');
 
         return view('usuario.cdr.create', $data);
@@ -56,6 +57,7 @@ class Fe3cdrController extends Controller
         $process_model = $cdr;
         $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.'crp.json');
         $sections = json_decode($json, true);
+        $sections = $this->removeUneededFields($patient_id, $sections);
         $full_code="3 - FE3 - CDR";
 
         $results = $this->calculateResults($cdr);
@@ -73,10 +75,7 @@ class Fe3cdrController extends Controller
         $process_model = $cdr;
         $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.'crp.json');
         $sections = json_decode($json, true);
-        // $age = Patient::where('id', $patient_id)->first()->fdg->birthdate->age;
-        // if (is_numeric($age)) {
-
-        // }
+        $sections = $this->removeUneededFields($patient_id, $sections);
         $data = compact('sections', 'process_model', 'patient_id', 'migajas');
         return view('usuario.cdr.create', $data);
     }
@@ -87,13 +86,52 @@ class Fe3cdrController extends Controller
         $values = collect($request->except(['_token', '_method']))->toArray();
         $values['user_id'] = Auth::user()->id;
         Fe3cdr::where('id', $id)->update($values);
-        return redirect()->route('cdr.index', $patient_id)->with('success', 'Cuestionario actualizado exitosamente');
+        return redirect()->route('usuario.index')->with('success', 'Cuestionario actualizado exitosamente');
 
     }
 
     public function destroy(Fe3cdr $fe3cdr)
     {
         //
+    }
+
+    private function removeUneededFields($patient_id, $sections) {
+        
+        $age = Patient::where('id', $patient_id)->first()->fdg->birthdate->age;
+        if (is_numeric($age)) {
+            if ($age > 18) { // quitar preguntas desarrollo
+                unset($sections[7]);
+                unset($sections[6]);
+                unset($sections[5]);
+            } else {
+                if ($age < 6) {
+                    unset($sections[7]['main'][1]);
+                    unset($sections[7]['main'][2]);
+                    
+                    unset($sections[5]['main'][1]);
+                    unset($sections[5]['main'][2]);
+                } else if ($age < 13) {
+                    unset($sections[7]['main'][0]);
+                    unset($sections[7]['main'][2]);
+                    
+                    unset($sections[5]['main'][0]);
+                    unset($sections[5]['main'][2]);
+                } else {
+                    unset($sections[7]['main'][0]);
+                    unset($sections[7]['main'][1]);
+
+                    unset($sections[5]['main'][0]);
+                    unset($sections[5]['main'][1]);
+                }
+                if ($age < 5) {
+                    unset($sections[6]);
+                }
+            }
+            if ($age < 55) { // quitar sección demencia
+                unset($sections[4]);
+            }
+        }
+        return $sections;
     }
 
     protected function dirname_r($path, $count=1) 

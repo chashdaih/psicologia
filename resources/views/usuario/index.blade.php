@@ -6,13 +6,13 @@
             <a href="{{route('fdg.create',0)}}" class="button is-success is-centered is-medium">Registrar persona a atender (3-FE3-FDG)</a>
             <div><br></div>
             @if(Auth::user()->type > 3)
-            <a href="{{route('programs_excel')}}" class="button is-info">
+            {{-- <a href="{{route('programs_excel')}}" class="button is-info">
                 <span class="icon">
                     <fai icon="file-excel" />
                 </span>
                 <span>Descargar info programas</span>
             </a>
-            <br><br>
+            <br><br> --}}
             <a href="{{route('recepcion', Auth::user()->supervisor->id_centro)}}" class="button is-link">Ver vista de recepción</a>
             <div><br></div>
             @endif

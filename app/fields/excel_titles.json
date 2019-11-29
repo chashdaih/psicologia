@@ -1,0 +1,47 @@
+[
+    {
+        "code": "fe3",
+        "title": "FE3 PRIMER CONTACTO/SOLICITUD DE SERVICIO PSICOLÓGICO",
+        "color": "#5B9BD5",
+        "procedures": [
+            {
+                "code": "fdg",
+                "title": "FE3 PRIMER CONTACTO/SOLICITUD DE SERVICIO PSICOLÓGICO",
+                "color": "#1f4379",
+                "sections": [
+                    {
+                        "title": "Identificación de la persona que requiere el servicio",
+                        "color": "#b3b5fb",
+                        "columns" : ["No. Expediente", "No. de cuenta / Trabajador / CURP", "Fecha", "Nombre", "Sexo", "Fecha de nacimiento", "Edad", "Estado civil", "¿Pertenece a la Comunidad UNAM?", "Entidad académica de procedencia", "Eres", "Carrera que estudias", "Semestre que cursas", "Persona que solicita el servicio", "Nombre de quien solicita el servicio"]
+                    },
+                    {
+                        "title": "Si la atención es para un menor de edad, anote los datos de los padres o tutores:",
+                        "color": "#b3b5fb",
+                        "columns": ["Nombre del padre, madre o tutor", "Parentesco", "Fecha de nacimiento", "Edad", "Nivel máximo de estudios:", "Ocupación del padre, madre o tutor:", "Nombre del padre, madre o tutor", "Parentesco", "Fecha de nacimiento", "Edad", "Nivel máximo de estudios", "Ocupación del padre, madre o tutor"]
+                    },
+                    {
+                        "title": "Dirección de la persona que requiere el servicio",
+                        "color": "#b3b5fb",
+                        "columns": ["Calle", "Número exterior", "Numero interior", "Colonia", "C.P.", "Alcaldía/Municipio", "Entidad federativa", "Teléfono de casa", "Teléfono celular", "Teléfono de trabajo", "ext.", "Correo electrónico"]
+                    },
+                    {
+                        "title": "Situación socioeconómica",
+                        "color": "#b3b5fb",
+                        "columns": ["Escolaridad", "Años concluidos de estudio", "¿Trabaja actualmente?", "¿Recibe renumeración económica por su trabajo?", "Descripción de su trabajo:", "Número de integrantes dle hogar (contando la persona que requiere el servicio):", "Ingreso familiar mensual", "Número de personas que aportan na este ingreso (contando la perona que requiere el servicio)", "Número de personas que dependen de este ingreso (contando la persona que requiere el servicio)", "Su casa es:"]
+                    },
+                    {
+                        "title": "Servicio solicitado",
+                        "color": "#b3b5fb",
+                        "columns": ["Tipo de servicio:", "Modalidad de servicio que solicita", "Motivo de consulta (Describa de forma detallada lo que le pasa y qué espera de la atención que se le puede brindar en este Centro/Programa", "Clasificación del motivo de consulta según laguiá mhGAP", "¿Desde cuándo le pasa esto?", "¿Ha recibido anteriormente tratamiento para dar solución a esta situación?", "Número de veces que ha sido atendido para esta situación:", "Tipo de atención que ha recibido:", "¿Viene referido de otra institución?", "Problemática referido de la institución:", "¿Ha recibido atención en otros centros y/o programas de la facultad para su motivo de consulta?", "Centro/Programa", "¿Tiene algún problema de salud?", "¿Cuál?", "Toma medicamentos:", "¿Cuál(es)?", "Dosis", "Horario de preferencia", "Nombre de quien realizó el primer contacto", "Centro/Programa en el que será atendido"]
+                    },
+                    {
+                        "title": "Cita",
+                        "color": "#b3b5fb",
+                        "columns": ["Fecha", "Hora", "Supervisor responsable"]
+                    }
+                ]
+            }
+        ]
+    }
+    
+]

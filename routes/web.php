@@ -38,6 +38,10 @@ Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], funct
     Route::get('descargar-archivo/{clave}/{id}/{extension}', 'UsuarioController@bajarDocumento')->name('usuario.bajar');
 });
 
+Route::group(['prefix' => 'excel', 'middleware' => 'auth'], function() {
+    Route::get('fdg/{fdg}', 'ExcelController@fdg')->name('fdge');
+});
+
 Route::get('/recepcion/{centerId}', 'UsuarioController@recepcion', ['middleware' => 'auth'])->name('recepcion');
 
 Route::get('/asignar/{center_id}/{fecha?}', 'CalendarController@index')->name('asignar');

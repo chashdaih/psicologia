@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="field">
+        <!-- <div class="field">
             <label class="label">Ver pacientes en otra etapa del proceso</label>
             <div class="control">
                 <div class="select">
@@ -11,7 +11,11 @@
                     </select>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <p class="label">Ver personas atendidas en otra etapa del proceso</p>
+        <b-field position="is-centered">
+            <b-radio-button v-for="(title, idx) in titles" v-model="progress" :key="idx" :native-value="idx" type="is-link" >{{title}}</b-radio-button>
+        </b-field>
         <h1 class="title">{{titles[progress]}}</h1>
         <div v-if="progress==2">
             <b-field v-if="userType > 3" label="Elige un supervisor">
@@ -229,16 +233,21 @@ import Swal from 'sweetalert2';
 import AssignProgram from './AssignProgram';
 export default {
     components: { AssignProgram },
-    props:['supervisors', 'initialSup', 'userType', 'baseUrl', 'prgms', 'semesters'],
+    props: ['supervisors', 'initialSup', 'userType', 'baseUrl', 'prgms', 'semesters'],
     data() {
         return {
+            // titles: [
+            //     'Personas que necesitan finalizar su primer contacto',
+            //     'Personas atendidas sin programa asignado',
+            //     'Personas atendidas asignadas a programas',
+            // ],
             titles: [
-                'Personas que necesitan finalizar su primer contacto',
-                'Personas atendidas sin programa asignado',
-                'Personas atendidas asignadas a programas',
+                'Necesitan finalizar su primer contacto',
+                'Sin programa asignado',
+                'Asignadas a programas',
             ],
             progress: 2, // 0 - porCdr, 1 - porAsignar, 2 - asignados
-            progressTitle: 'Personas atendidas asignadas a programas',
+            progressTitle: 'Necesitan finalizar su primer contacto',
             // assigned
             selectedSup: this.initialSup,
             supName: '',
