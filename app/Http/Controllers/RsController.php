@@ -76,7 +76,7 @@ class RsController extends Controller
                     return $query->where('assign_id', $assign_id)->where('intervencion', $isIntervention);
                 })
             ],
-            'file' => 'required|mimes:jpeg,bmp,png,gif,svg,pdf|max:14000'
+            'file' => 'nullable|mimes:jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
         
         $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
