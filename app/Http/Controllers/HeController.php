@@ -137,9 +137,11 @@ class HeController extends Controller
         return redirect()->route('he.index', $patient_id)->with('success', 'Hoja de egreso actualizada exitosamente');
     }
 
-    public function destroy(He $he)
+    public function destroy($patient_id, $he)
     {
-        //
+        // TODO delete file, if exist
+        He::destroy($he);
+        return 200;
     }
 
     protected function dirname_r($path, $count=1){
