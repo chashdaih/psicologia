@@ -3,10 +3,10 @@
 <section class="section">
     <div class="container">
         <h1 class="title">{{$patient->fdg->full_name}}</h1>
-        <a href="{{route('patientExcel', $patient->id)}}" class="button is-success">
+        {{-- <a href="{{route('patientExcel', $patient->id)}}" class="button is-success">
                 <span class="icon"><fai icon="file-excel" size="1x" /></span>
                 <span>Generar excel de todos los procesos para la persona atendida</span>
-        </a>
+        </a> --}}
         <br><br>
         <div class="card">
         <div class="tile">
@@ -25,7 +25,7 @@
                                         <span class="icon"><fai icon="file-pdf" size="1x" /></span>
                                         <span>Descargar pdf</span>
                                 </a>
-                                <a href="{{route('fdge', $patient->fdg_id)}}" class="button is-success">
+                                <a href="{{route('fdge', $patient->id)}}" class="button is-success">
                                         <span class="icon"><fai icon="file-excel" size="1x" /></span>
                                         <span>Generar excel</span>
                                 </a>
@@ -44,7 +44,7 @@
                                         <span class="icon"><fai icon="file-pdf" size="1x" /></span>
                                         <span>Descargar pdf</span>
                                 </a>
-                                <a href="{{route('patientExcel', $patient->id)}}" class="button is-success">
+                                <a href="{{route('cdre', $patient->id)}}" class="button is-success">
                                         <span class="icon"><fai icon="file-excel" size="1x" /></span>
                                         <span>Generar excel</span>
                                 </a>

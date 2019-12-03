@@ -43,6 +43,100 @@ class ExcelController extends Controller
         })->download('xlsx');
     }
 
+    public function cdr($patientId)
+    {
+        $docTitle = "FE3-CDR";
+        $patient = Patient::where('id', $patientId)->first();
+        $cdr = $patient->cdr;
+        $data = [
+            // Identificación
+            $patient->fdg->curp, $cdr->created_at->toDateString(), null, null, $cdr->other_filler ? $cdr->other_filler : ($cdr->user->type == 3 ? $cdr->user->partaker->full_name : null),  $cdr->user->type != 3 ? $cdr->user->supervisor->full_name : null, 
+        ];
+        $data = $this->addColumns($cdr, $data, 'dep', 8);
+        $data = $this->addColumns($cdr, $data, 'psi', 5);
+        $data = $this->addColumns($cdr, $data, 'epi', 5);
+        $data = $this->addColumns($cdr, $data, 'dem', 3);
+        $data = $this->addColumns($cdr, $data, 'tde', 4);
+        $data = $this->addColumns($cdr, $data, 'tde', 7, 4);
+        $data = $this->addColumns($cdr, $data, 'tde', 12, 7);
+        $data = $this->addColumns($cdr, $data, 'tc', 11);
+        $data = $this->addColumns($cdr, $data, 'tc', 25, 11);
+        $data = $this->addColumns($cdr, $data, 'te', 7);
+        $data = $this->addColumns($cdr, $data, 'te', 11, 7);
+        $data = $this->addColumns($cdr, $data, 'te', 18, 11);
+        $data = $this->addColumns($cdr, $data, 'sui', 3);
+        $data = $this->addColumns($cdr, $data, 'ans', 7);
+        $data = $this->addColumns($cdr, $data, 'sex', 7);
+        $data = $this->addColumns($cdr, $data, 'vio', 6);
+
+        $tempN = [];
+        for($i = 0; $i < 7; $i++) {
+            $letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+            $tempL = [];
+            foreach ($letras as $key=>$letra) {
+                $tempL[$key] = $cdr->{'sus'.($i + 1).($letra)};
+            }
+            $tempN = array_merge($tempN, $tempL);
+        }
+        $data = array_merge($data, $tempN);
+        $data = array_merge($data, [$cdr->sus80, $cdr->sus81]);
+
+        $results = $this->calculateResults($cdr);
+        $numSections = 16;
+        for ($j = 0; $j < $numSections; $j++) {
+            array_push($data, $results[0][$j], $results[1][$j], null);
+        }
+        foreach ($results[2] as $key => $value) {
+            array_push($data, $value);
+        }
+
+        Excel::create($docTitle, function($excel) use ($data, $docTitle) {
+            $excel->sheet($docTitle, function($sheet) use ($data) {
+                $titles = json_decode($this->json, true);
+                $this->formatHeader($sheet, $titles, 0, 1);
+                $sheet->row(5, $data);
+            });
+        })->download('xlsx');
+    }
+
+    private function calculateResults($cdr)
+    {
+        $res1 = [];
+        $res2 = [];
+        $res3 = [];
+        $values = [110, 80, 50, 50, 40, 40, 30, 50, 250, 70, 40, 70, 60, 70, 70, 60];
+        $part1 = [array('dep'=> [1,11]), array('man' => [1,8]), array('psi' => [1,5]), array('epi' => [1,5]), array('dem' => [1,4]), array('tde'=>[1, 4]), array('tde'=>[5, 7]), array('tde'=>[8,12]), array('tc'=>[1,18]), array('te'=>[1,7]), array('te'=>[8,11]), array('te'=>[12,18]), array('sui'=>[1,5]), array('ans'=>[1,7]), array('sex'=>[1,4]), array('vio'=>[1,6])];
+        foreach ($part1 as $key => $section) {
+            foreach ($section as $code => $range) {
+                $sum = 0;
+                for ($i=$range[0]; $i <= end($range) ; $i++) { 
+                   $sum = $sum + $cdr->{$code.$i};
+                }
+                array_push($res1, $sum);
+                array_push($res2, round(($sum*100)/$values[$key]));
+            }
+        }
+
+        $index2 = ['a', 'b', 'c', 'd', 'e', 'g', 'h', 'i', 'j'];
+        foreach ($index2 as $letter) {
+            $sum = 0;
+            for ($i=2; $i < 8; $i++) {
+                $sum = $sum + $cdr->{'sus'.$i.$letter};
+            }
+            array_push($res3, $sum);
+        }
+        return [$res1, $res2, $res3];
+    }
+
+    private function addColumns($cdr, $data, $code, $total, $start = 0)
+    {
+        $temp = [];
+        for($i = $start; $i < $total; $i++) {
+            $temp[] = $cdr->{$code.($i + 1)};
+        }
+        return array_merge($data, $temp);
+    }
+
     private function formatHeader($sheet, $titles, $fNumber, $procNumber)
     {
         //Secciones

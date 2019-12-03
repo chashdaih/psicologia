@@ -39,7 +39,8 @@ Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], funct
 });
 
 Route::group(['prefix' => 'excel', 'middleware' => 'auth'], function() {
-    Route::get('fdg/{fdg}', 'ExcelController@fdg')->name('fdge');
+    Route::get('fdg/{patientId}', 'ExcelController@fdg')->name('fdge');
+    Route::get('cdr/{patientId}', 'ExcelController@cdr')->name('cdre');
 });
 
 Route::get('/recepcion/{centerId}', 'UsuarioController@recepcion', ['middleware' => 'auth'])->name('recepcion');

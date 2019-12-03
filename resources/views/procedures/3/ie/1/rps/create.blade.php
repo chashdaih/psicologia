@@ -573,7 +573,7 @@
                                     <option value="1" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 1) selected="selected" @endif>Conductual</option>
                                     <option value="2" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 2) selected="selected" @endif>Cognitivo</option>
                                     <option value="3" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 3) selected="selected" @endif>Sistémico</option>
-                                    <option value="4" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 4) selected="selected" @endif>Psicoinámico</option>
+                                    <option value="4" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 4) selected="selected" @endif>Psicodinámico</option>
                                     <option value="5" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 5) selected="selected" @endif>Gestalt</option>
                                     <option value="6" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 6) selected="selected" @endif>Constructivista</option>
                                     <option value="7" @if(old('enfoque_servicio', isset($car_serv)?$car_serv->enfoque_servicio:null) == 7) selected="selected" @endif>Otro</option>

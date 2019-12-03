@@ -16,7 +16,7 @@
                     },
                     {
                         "title": "Si la atención es para un menor de edad, anote los datos de los padres o tutores:",
-                        "color": "#b3b5fb",
+                        "color": "#a0a4fa",
                         "columns": ["Nombre del padre, madre o tutor", "Parentesco", "Fecha de nacimiento", "Edad", "Nivel máximo de estudios:", "Ocupación del padre, madre o tutor:", "Nombre del padre, madre o tutor", "Parentesco", "Fecha de nacimiento", "Edad", "Nivel máximo de estudios", "Ocupación del padre, madre o tutor"]
                     },
                     {
@@ -26,7 +26,7 @@
                     },
                     {
                         "title": "Situación socioeconómica",
-                        "color": "#b3b5fb",
+                        "color": "#a0a4fa",
                         "columns": ["Escolaridad", "Años concluidos de estudio", "¿Trabaja actualmente?", "¿Recibe renumeración económica por su trabajo?", "Descripción de su trabajo:", "Número de integrantes dle hogar (contando la persona que requiere el servicio):", "Ingreso familiar mensual", "Número de personas que aportan na este ingreso (contando la perona que requiere el servicio)", "Número de personas que dependen de este ingreso (contando la persona que requiere el servicio)", "Su casa es:"]
                     },
                     {
@@ -36,12 +36,461 @@
                     },
                     {
                         "title": "Cita",
-                        "color": "#b3b5fb",
+                        "color": "#a0a4fa",
                         "columns": ["Fecha", "Hora", "Supervisor responsable"]
                     }
                 ]
+            },
+            {
+                "code": "cdr",
+                "title": "3-FE3-CDR CUESTIONARIO DE DETECCIÓN DE RIESGOS EN LA SALUD FÍSICA Y MENTAL ",
+                "color": "#2c79d8",
+                "sections": [
+                    {
+                        "title": "Identificación",
+                        "color": "#98c0ec",
+                        "columns": ["No. Cuenta / Trabajador / CURP:", "Fecha", "Centro", "Programa", "Estudiante", "Académico / Supervisor"]
+                    },
+                    {
+                        "title": "DEP. En las últimas dos semanas...",
+                        "color": "#79ade7",
+                        "columns": [
+                            "1. Te has sentido triste frecuentemente", 
+                            "2. Lloras frecuentemente",
+                            "3. Ha disminuido tu interés en realizar actividades que antes disfrutabas",
+                            "4. Has pensado que tu futuro es poco prometedor",
+                            "5. Duermes más o duermes menos de lo habitual",
+                            "6. Has dejado de asistir a actividades, reuniones y/l compromisos sociales por falta de energía",
+                            "7. Ha disminuido o aumentado tu apetito sin causa aparente", 
+                            "8. Te has sentido fatigado sin causa aparente"
+                        ]
+                    },
+                    {
+                        "title": "PSI. En los últimos tres meses...",
+                        "color": "#98c0ec",
+                        "columns": [
+                            "1. Has sospechado que las personas planean algo en contra tuya",
+                            "2. Has escuchado voces que los demás no perciben",
+                            "3. Has visto cosas que los demás no perciben",
+                            "4. Has tenido pensamientos persistentes que los demás no comparten contigo",
+                            "5. Te han dicho que has descuidado tu aspecto personal"
+                        ]
+                    },
+                    {
+                        "title": "EPI. Has presentado alguna de las siguientes condiciones…",
+                        "color": "#79ade7",
+                        "columns": [
+                            "1. Crisis convulsivas",
+                            "2. Los movimientos convulsivos duraron más de 1 minuto",
+                            "3. Durante la convulsión: he perdido el conocimiento",
+                            "4. Durante la convulsión: he tenido confusión",
+                            "5. Durante la convulsión: he tenido rigidez"
+                        ]
+                    },
+                    {
+                        "title": "DEM. En los últimos seis meses (solamente de 55 años en adelante)",
+                        "color": "#98c0ec",
+                        "columns": [
+                            "1. Actualmente he presentado: problemas de memoria (olvidos)",
+                            "2. Actualmente he presentado: problemas de orientación (perder la conciencia dela hora, el día de la semana, el mes, el año, el lugar)",
+                            "3. Has presentado: dificultad para desempeñar roles o actividades (por ejemplo ir de compras, cocinar, pagar facturas) dado la pérdida de memoria"
+                        ]
+                    },
+                    {
+                        "title": "TDE SECCIÓN NIÑOS - ADOLESCENTES (Menores de edad de <5 años)",
+                        "color": "#79ade7",
+                        "columns": [
+                            "1. Falta de apetito",
+                            "2. Poco crecimiento en compararción con otros niños", 
+                            "3. Debilidad en los músculos",
+                            "4. No ha alcanzado las pautas del desarrollo en comparación con los niños de su edad (sonreír, sentarse, interactuar con otras personas, caminar, hablar o ir al baño)"
+                        ]
+                    },
+                    {
+                        "title": "TDE SECCIÓN NIÑOS - ADOLESCENTES (Mediana infancia, 6 a 12 años)",
+                        "color": "#98c0ec",
+                        "columns": [
+                            "5. Retraso en aprender a leer",
+                            "6. Retraso en aprender a escribir", 
+                            "7. Retraso en el autocuidado (vestirse y bañarse solo, cepillarse los dientes, etc)"
+                        ]
+                    },
+                    {
+                        "title": "TDE SECCIÓN NIÑOS - ADOLESCENTES (Adolescentes, 13 a 18 años)",
+                        "color": "#79ade7",
+                        "columns": [
+                            "8. Dificultad para leer",
+                            "9. Dificultad para escribir",
+                            "10. Deficiente rendimiento escolar",
+                            "11. Dificultad para la interacción social",
+                            "12. Dificultad para adaptarse a los cambios"
+                        ]
+                    },
+                    {
+                        "title": "TC SECCIÓN NIÑOS - ADOLESCENTES    Menores de edad de 4 a 18 años PAH",
+                        "color": "#98c0ec",
+                        "columns": [
+                            "1. Se mueve sin cesar.",
+                            "2. Dificultad permanecer quieto por un tiempo",
+                            "3. Habla en exceso",
+                            "4. Da respuestas antes de que terminen de preguntarle",
+                            "5. Tiene dificultades para esperar su turno",
+                            "6. Interrumpe o irrumpe a otros",
+                            "7. Se distrae con facilidad",
+                            "8. Tiene dificultad para terminar sus tareas",
+                            "9. Pierde cosas necesarias para tareas o actividades",
+                            "10. Falla en poner atención a detalles o comete errores por descuido",
+                            "11. Con frecuencia hace soas sin reflexionar (es impulsivo(a))"
+                        ]
+                    },
+                    {
+                        "title": "TC SECCIÓN NIÑOS - ADOLESCENTES  Menores de edad de 4 a 18 años TC",
+                        "color": "#79ade7",
+                        "columns": [
+                            "12. Presenta comportamiento repetido y continuo que perturba a otros",
+                            "13. Discute con adultos",
+                            "14. Frecuentemente se enoja",
+                            "15. Molesta a la gente",
+                            "16. Es vengativo",
+                            "17. Miente reiteradamente",
+                            "18. Hace berrinches con frecuencia",
+                            "19. Se opone o se niega a obedecer a las peticiones o reglas dadas por los adultos",
+                            "20. Culpa a otros por sus propios errores o mala conducta",
+                            "21. Presenta comportamiento cruel",
+                            "22. Ha robado",
+                            "23. Se aísla",
+                            "24. Muestra agresión verbal",
+                            "25. Muestra conductas auto destructivas"
+                        ]
+                    },
+                    {
+                        "title": "TE SECCIÓN NIÑOS - ADOLESCENTES Menores de edad de <5 años",
+                        "color": "#98c0ec",
+                        "columns": [
+                            "1. Presenta llanto excesivo",
+                            "2. Tiene dificultades para separarse de su cuidador",
+                            "3. Tiene episodios en donde se mantiene inmóvil y en silencion",
+                            "4. Presenta timidez extrema",
+                            "5. Presenta conductas regresivas en comparación con los niños de su edad (hacerse pipi o popo, ensuciarse o chuparse el dedo)",
+                            "6. Juega poco",
+                            "7. Menor interacción social"
+                        ]
+                    },
+                    {
+                        "title": "TE SECCIÓN NIÑOS - ADOLESCENTES Mediana infancia (6 a 12 años)",
+                        "color": "#79ade7",
+                        "columns": [
+                            "8. Presenta dolor de cabeza o estómago recurrente", 
+                            "9. Se niega a ir a la escuela",
+                            "10. Timidez extrema",
+                            "11. Presenta coductas regresivas en comparación con los niños de su edad (hacerse pipi o popo, ensuciarse o chuparse el dedo)"
+                        ]
+                    },
+                    {
+                        "title": "TE SECCIÓN NIÑOS - ADOLESCENTES Adolescentes (13 a 18 años)",
+                        "color": "#98c0ec",
+                        "columns": [
+                            "12. Se irrita o molesta con facilidad",
+                            "13. Se deprime con frecuencia",
+                            "14. Se frustra",
+                            "15. Presenta cambios inesperados del estado de ánimo (explosiones emocionales)",
+                            "16. Tiene dificultad para concentrarse",
+                            "17. Presenta bajo desempeño escolar",
+                            "18. Con frecuencia desea estar solo"
+                        ]
+                    },
+                    {
+                        "title": "SUI. Presentas o presentaste alguna de las siguientes situaciones…",
+                        "color": "#79ade7",
+                        "columns": [
+                            "1. Tienes pensamientos o ideas de hacerte daño o de atentar contra tu vida", 
+                            "2. Intentaste hacerte daño o atentar contra tu vida",
+                            "3. Has buscado los medios para hacerte daño o atentar contra tu vida"
+                        ]
+                    },
+                    {
+                        "title": "ANS. En las dos últimas semanas:",
+                        "color": "#98c0ec",
+                        "columns": [
+                            "1. Te has sentido preocupado constantemente de que algo malo pueda pasar (asalto, enfermedad, tener un accidente, ‘hacer el ridículo’ frente a desconocidos, etc.)",
+                            "2. Te has sentido nervioso constantemente",
+                            "3. Has sentido tensión muscular",
+                            "4. Has sentido que tu corazón late más rápido de lo habitual",
+                            "5. Te has sentido tan nervioso que te ha impedido realizar tus actividades",
+                            "6. Te has alejado de situaciones que te hacen sentir nervioso",
+                            "7. Has sentido miedo sin razón aparente"
+                        ]
+                    },
+                    {
+                        "title": "SEX. En el último año:",
+                        "color": "#79ade7",
+                        "columns": [
+                            "1. Mantuviste relaciones sexuales con más de una persona",
+                            "2. Has tenido relaciones sexuales sin usar condón",
+                            "3. Enviaste y recibiste imágenes o mensajes con contenido sexul a través de dispositivos tecnológicos",
+                            "4. Tienes dificultades en tu vida sexual (por ejemplo, inhibición en el deseo sexual, dificultad para mantener la erección, eyaculación precoz, dificultad en la lubricación, dificultad para tener orgasmos, etc.)",
+                            "5. Infecciones de transimisión sexual (VIH/SIDA, VPH, clamidiasis, gonorrea, sífilis, tricomoniasis, etc.)",
+                            "6. Embarazo no deseado",
+                            "7. Dudas sobre tu orientación sexual"
+                        ]
+                    },
+                    {
+                        "title": "VIO. En el último año…",
+                        "color": "#98c0ec",
+                        "columns": [
+                            "1. Alguien te lastimó físicamente de forma intencional (por ejemplo, empujar, golpear, pellizcar, etc.)",
+                            "2. Alguien te lastimó emocionalmente de forma intencional (por ejemplo, humillarte, insultarte, amenazarte, ignorarte, prohibirte, celarte)",
+                            "3. Alguien sobrepasó los límites en tu sexualidad (por ejemplo, acoso sexual, abuso sexual, violación)",
+                            "4. Lastimaste físicamente a otra persona con la intención de hacerlo (por ejemplo, empujar, golpear, pellizcar, etc.)",
+                            "5. Lastimaste emocionalmente a otra persona con la intención de hacerlo (por ejemplo, humillaste, insultaste, amenazaste, ignoraste, prohibiste, celaste)",
+                            "6. Sobrepasaste los límites en la sexualidad de otra persona (por ejemplo, acoso sexual, abuso sexual, violación)"
+                        ]
+                    },
+                    {
+                        "title": "SUS. 1. A lo largo de la vida, ¿cuál de las siguientes sustancias ha consumido alguna vez (sólo las que consumió sin receta médica)?",
+                        "color": "#79ade7",
+                        "columns": [
+                            "a. Tabaco (cigarrillos, tabaco para mascar, puros, etc.)",
+                            "b. Bebidas alcohólicas (cerveza, vinos, licores, etc.)",
+                            "c. Cannabis (marihuana, mota, hierba, hachís, etc.)",
+                            "d. Cocaína (coca, crack, etc.)",
+                            "e. Estimulantes de tipo anfetamina (speed, anfetaminas, éxtasis, etc.)",
+                            "f. Inhalantes (óxido nitroso, pegamento, gasolina, solvente para pintura, etc.)",
+                            "g. Sedantes o pastillas para dormir (diazepam, alprazolam, flunitrazepam, midazolam, etc.)",
+                            "h. Alucinógenos (LSD, ácidos, hongos, ketamina, etc.)",
+                            "i. Opiáceos (heroína, morfina, metadona, buprenorfina, codeína, etc.)",
+                            "j. Otras, especifica:"
+                        ]
+                    },
+                    {
+                        "title": "SUS. 2. En los últimos tres meses, ¿con qué frecuencia has consumido las sustancias que mencionó (primera droga, segunda droga, etc.)?",
+                        "color": "#98c0ec",
+                        "columns": [
+                            "a. Tabaco (cigarrillos, tabaco para mascar, puros, etc.)",
+                            "b. Bebidas alcohólicas (cerveza, vinos, licores, etc.)",
+                            "c. Cannabis (marihuana, mota, hierba, hachís, etc.)",
+                            "d. Cocaína (coca, crack, etc.)",
+                            "e. Estimulantes de tipo anfetamina (speed, anfetaminas, éxtasis, etc.)",
+                            "f. Inhalantes (óxido nitroso, pegamento, gasolina, solvente para pintura, etc.)",
+                            "g. Sedantes o pastillas para dormir (diazepam, alprazolam, flunitrazepam, midazolam, etc.)",
+                            "h. Alucinógenos (LSD, ácidos, hongos, ketamina, etc.)",
+                            "i. Opiáceos (heroína, morfina, metadona, buprenorfina, codeína, etc.)",
+                            "j. Otras, especifica:"
+                        ]
+                    },
+                    {
+                        "title": "SUS. 3. En los últimos tres meses, ¿con qué frecuencia has tenido un fuerte deseo o ansias de consumir (primera droga, segunda droga, etc.)?",
+                        "color": "#79ade7",
+                        "columns": [
+                            "a. Tabaco (cigarrillos, tabaco para mascar, puros, etc.)",
+                            "b. Bebidas alcohólicas (cerveza, vinos, licores, etc.)",
+                            "c. Cannabis (marihuana, mota, hierba, hachís, etc.)",
+                            "d. Cocaína (coca, crack, etc.)",
+                            "e. Estimulantes de tipo anfetamina (speed, anfetaminas, éxtasis, etc.)",
+                            "f. Inhalantes (óxido nitroso, pegamento, gasolina, solvente para pintura, etc.)",
+                            "g. Sedantes o pastillas para dormir (diazepam, alprazolam, flunitrazepam, midazolam, etc.)",
+                            "h. Alucinógenos (LSD, ácidos, hongos, ketamina, etc.)",
+                            "i. Opiáceos (heroína, morfina, metadona, buprenorfina, codeína, etc.)",
+                            "j. Otras, especifica:"
+                        ]
+                    },
+                    {
+                        "title": "SUS. 4. En los últimos tres meses, ¿con qué frecuencia el consumo de (primera droga, segunda droga, etc.) te ha causado problemas de salud, sociales, legales o económicos?",
+                        "color": "#98c0ec",
+                        "columns": [
+                            "a. Tabaco (cigarrillos, tabaco para mascar, puros, etc.)",
+                            "b. Bebidas alcohólicas (cerveza, vinos, licores, etc.)",
+                            "c. Cannabis (marihuana, mota, hierba, hachís, etc.)",
+                            "d. Cocaína (coca, crack, etc.)",
+                            "e. Estimulantes de tipo anfetamina (speed, anfetaminas, éxtasis, etc.)",
+                            "f. Inhalantes (óxido nitroso, pegamento, gasolina, solvente para pintura, etc.)",
+                            "g. Sedantes o pastillas para dormir (diazepam, alprazolam, flunitrazepam, midazolam, etc.)",
+                            "h. Alucinógenos (LSD, ácidos, hongos, ketamina, etc.)",
+                            "i. Opiáceos (heroína, morfina, metadona, buprenorfina, codeína, etc.)",
+                            "j. Otras, especifica:"
+                        ]
+                    },
+                    {
+                        "title": "SUS. 5. En los últimos tres meses, ¿con qué frecuencia dejó de hacer lo que habitualmente se esperaba de ti por el consumo de (primera droga, segunda droga, etc.)?",
+                        "color": "#79ade7",
+                        "columns": [
+                            "a. Tabaco (cigarrillos, tabaco para mascar, puros, etc.)",
+                            "b. Bebidas alcohólicas (cerveza, vinos, licores, etc.)",
+                            "c. Cannabis (marihuana, mota, hierba, hachís, etc.)",
+                            "d. Cocaína (coca, crack, etc.)",
+                            "e. Estimulantes de tipo anfetamina (speed, anfetaminas, éxtasis, etc.)",
+                            "f. Inhalantes (óxido nitroso, pegamento, gasolina, solvente para pintura, etc.)",
+                            "g. Sedantes o pastillas para dormir (diazepam, alprazolam, flunitrazepam, midazolam, etc.)",
+                            "h. Alucinógenos (LSD, ácidos, hongos, ketamina, etc.)",
+                            "i. Opiáceos (heroína, morfina, metadona, buprenorfina, codeína, etc.)",
+                            "j. Otras, especifica:"
+                        ]
+                    },
+                    {
+                        "title": "SUS. 6. ¿Un amigo, un familiar o alguien más alguna vez ha mostrado preocupación por tus hábitos de consumo de (primera droga, segunda droga, etc.)?",
+                        "color": "#98c0ec",
+                        "columns": [
+                            "a. Tabaco (cigarrillos, tabaco para mascar, puros, etc.)",
+                            "b. Bebidas alcohólicas (cerveza, vinos, licores, etc.)",
+                            "c. Cannabis (marihuana, mota, hierba, hachís, etc.)",
+                            "d. Cocaína (coca, crack, etc.)",
+                            "e. Estimulantes de tipo anfetamina (speed, anfetaminas, éxtasis, etc.)",
+                            "f. Inhalantes (óxido nitroso, pegamento, gasolina, solvente para pintura, etc.)",
+                            "g. Sedantes o pastillas para dormir (diazepam, alprazolam, flunitrazepam, midazolam, etc.)",
+                            "h. Alucinógenos (LSD, ácidos, hongos, ketamina, etc.)",
+                            "i. Opiáceos (heroína, morfina, metadona, buprenorfina, codeína, etc.)",
+                            "j. Otras, especifica:"
+                        ]
+                    },
+                    {
+                        "title": "SUS. 7. ¿Has intentado alguna vez reducir o eliminar el consumo de (primera droga, segunda droga, etc.) y no lo has logrado?",
+                        "color": "#79ade7",
+                        "columns": [
+                            "a. Tabaco (cigarrillos, tabaco para mascar, puros, etc.)",
+                            "b. Bebidas alcohólicas (cerveza, vinos, licores, etc.)",
+                            "c. Cannabis (marihuana, mota, hierba, hachís, etc.)",
+                            "d. Cocaína (coca, crack, etc.)",
+                            "e. Estimulantes de tipo anfetamina (speed, anfetaminas, éxtasis, etc.)",
+                            "f. Inhalantes (óxido nitroso, pegamento, gasolina, solvente para pintura, etc.)",
+                            "g. Sedantes o pastillas para dormir (diazepam, alprazolam, flunitrazepam, midazolam, etc.)",
+                            "h. Alucinógenos (LSD, ácidos, hongos, ketamina, etc.)",
+                            "i. Opiáceos (heroína, morfina, metadona, buprenorfina, codeína, etc.)",
+                            "j. Otras, especifica:"
+                        ]
+                    },
+                    {
+                        "title": "SUS. 8. Drogas inyectadas",
+                        "color": "#98c0ec",
+                        "columns": ["¿Alguna vez has consumido alguna droga por vía inyectada?", "Hábitos de inyectarse durante los últimos tres meses. Frecuencia"]
+                    },
+                    {
+                        "title": "Resultados DEP",
+                        "color": "#79ade7",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados PSI",
+                        "color": "#98c0ec",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados EPI",
+                        "color": "#79ade7",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados DEM",
+                        "color": "#98c0ec",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados TDE < 5 años",
+                        "color": "#79ade7",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados TDE 6 a 12 años",
+                        "color": "#98c0ec",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados TD 13 a 18 años",
+                        "color": "#79ade7",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados TC 4 a 18 años PAH",
+                        "color": "#98c0ec",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados TC 4 a 18 años TC",
+                        "color": "#79ade7",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados TE < 5 años",
+                        "color": "#98c0ec",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados TE 6 a 12 años",
+                        "color": "#79ade7",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados TE 13 a 18 años",
+                        "color": "#98c0ec",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados SUI",
+                        "color": "#79ade7",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados ANS",
+                        "color": "#98c0ec",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados SEX",
+                        "color": "#79ade7",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados VIO",
+                        "color": "#98c0ec",
+                        "columns": ["Puntaje", "Porcentaje", "Observaciones"]
+                    },
+                    {
+                        "title": "Resultados ASSIST",
+                        "color": "#79ade7",
+                        "columns": ["PUNTACIÓN TABACO", "PUNTACIÓN ALCOHOL", "PUNTACIÓN CANNABIS", "PUNTACIÓN COCAÍNA", "PUNTACIÓN ANFETAMINAS", "PUNTACIÓN SEDANTES", "PUNTACIÓN ALUCINÓGENOS", "PUNTACIÓN OPIÁCEOS", "PUNTACIÓN OTRAS DROGAS"]
+                    },
+                    {
+                        "title": "Indicadores OPS",
+                        "color": "#98c0ec",
+                        "columns": ["La persona atendida comprende los síntomas identificados en el cuestionario", "La persona atendida acepta los síntomas y el pronóstico del padecimiento identificado", "La persona atendida acepta asistir al servicio identificado e indicado"]
+                    }
+                ]
+            },
+            {
+                "title": "Observaciones",
+                "color": "#5B9BD5",
+                "sections": []
+            }
+        ]
+    },
+    {
+        "code": "fe4",
+        "title": "FE4 ",
+        "color": "#c65911",
+        "procedures": [
+            {
+                "title": "¿Se encuentra el formato?",
+                "color": "#c65911",
+                "sections": []
+            },
+            {
+                "code": "ps",
+                "title": "ADMISIÓN DE LAS PERSONAS ATENDIDAS",
+                "color": "#c65911",
+                "sections": [
+                    {
+                        "title": "PS Plan de servicios",
+                        "color": "#f18417",
+                        "columns": ["No de cuenta / Trabajador / CURP", "Fecha", "Centro", "Programa", "Estudiante", "Académico / Supervisor", "Tipo de intervención", "Modalidad de servicio"]
+                    }
+                ]
+            },
+            {
+                "title": "Observaciones",
+                "color": "#c65911",
+                "sections": []
             }
         ]
     }
+
     
 ]
