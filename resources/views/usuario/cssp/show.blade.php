@@ -43,5 +43,25 @@
         <i>Lo que considero que se tendría que mejorar es:</i>
         <p>{{ $doc->o2 }}</p>
     </div>
+    <div style="page-break-after: always;"></div>
+    <div>
+        <br>
+        <p style="font-weight:bold;">Listado de habilidades manejadas previo y posterior al programa</p>
+        <br>
+        <table>
+            <tr>
+                <th>Habilidad de: </th>
+                <th>Al iniciar la intervención</th>
+                <th>Al terminar la intervención</th>
+            </tr>
+            @foreach ($newQs as $key => $q)
+                <tr>
+                    <td>{{$q}}</td>
+                    <td align="center">{{$doc['n'.($key + 1).'i'] ? $doc['n'.($key + 1).'i'] : 'N/A'}}</td>
+                    <td align="center">{{$doc['n'.($key + 1).'f'] ? $doc['n'.($key + 1).'f'] : 'N/A'}}</td>
+                </tr>
+            @endforeach
+        </table>
+    </div>
 </section>
 @endsection

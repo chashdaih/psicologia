@@ -40,6 +40,8 @@ import ShowAssign from './components/ShowAssign';
 import RecTable from './components/RecTable';
 import NumericInput from './components/NumericInput';
 import PsDelete from './components/PsDelete';
+import ConfirmDelete from './components/ConfirmDelete';
+import To100Input from './components/To100Input';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt, faFileExcel, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
@@ -100,6 +102,9 @@ const app = new Vue({
         NumericInput,
         // ps
         PsDelete,
+        ConfirmDelete,
+        //cssp
+        To100Input,
     },
     data: {
         isActive: false

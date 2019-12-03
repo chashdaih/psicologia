@@ -64,6 +64,34 @@
                 </text-input>
                 @endif
             @endforeach
+            <p>A continuación se presenta una lista con diferentes habilidades, según su consideración, anote el porcentaje con el que la persona atendida manejaba dicha habilidad al iniciar la intervención y el porcentaje del manejo de las habilidades posterior a la intervención.</p>
+            <p class="has-text-weight-bold">Si no aplica, dejar en blanco</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Habilidad de:</th>
+                        <th>Al iniciar la intervención (%)</th>
+                        <th>Al terminar la intervención (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach ($newQs as $key => $q)
+                    <tr>
+                        <td>{{$q}}</td>
+                        <td>
+                            <to-100-input name={{"n".($key + 1)."i"}} 
+                                value={{old("n".($key + 1)."i", ($process_model->id ? $process_model["n".($key + 1)."i"] : null))}}
+                            ></to-100-input>
+                        </td>
+                        <td>
+                                <to-100-input name={{"n".($key + 1)."f"}} 
+                                    value={{old("n".($key + 1)."f", ($process_model->id ? $process_model["n".($key + 1)."f"] : null))}}
+                                ></to-100-input>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
             <small-file
                 name="file"
                 serv_error="{{ $errors->has('file') ? $errors->first('file') : '' }}"

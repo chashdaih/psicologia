@@ -22,6 +22,8 @@ class CsspController extends Controller
     protected $helped;
     protected $satisfied;
 
+    protected $newQs = ["Comunicación", "Toma de decisiones", "Solución de problemas", "Interacción Social/Recreativa", "Manejo del enojo", "Manejo de la tristeza", "Manejo de la ansiedad/estrés", "Manejo de los celos", "Búsqueda y mantenimiento de empleo", "Mantenerse sin consumo de sustancias", "Prevención de recaídas en el consumo de sustancias", "Para mantener una mejor relación familiar", "Mantener una mejor relación de pareja", "Manejo de la conducta de los hijos", "Manejo de las emociones de los hijos", "Crianza Positiva para padres", "Manejo de problemas del desarrollo en los hijos (Problemas para leer o escribir, de comunicación, físicos, etc.)", "Manejo de duelo", "Estilos de vida saludable", "Otro:"];
+
     public function __construct()
     {
         $this->excelent = [
@@ -76,7 +78,8 @@ class CsspController extends Controller
 
         $fields = $this->getFields();
         $process_model = new Cssp();
-        $data = compact('patient_id', 'fields', 'process_model', 'migajas');
+        $newQs = $this->newQs;
+        $data = compact('patient_id', 'fields', 'process_model', 'migajas', 'newQs');
         return view('usuario.cssp.create', $data);
     }
 
@@ -126,8 +129,9 @@ class CsspController extends Controller
         $pdf->getDomPDF()->set_option("enable_php", true);
 
         $doc = $this->getFormattedDoc($cssp);
+        $newQs = $this->newQs;
 
-        $pdf->loadView('usuario.cssp.show', compact('doc'));
+        $pdf->loadView('usuario.cssp.show', compact('doc', 'newQs'));
         return $pdf->stream('cssp.pdf');
     }
 
@@ -154,7 +158,8 @@ class CsspController extends Controller
         $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('cssp.index', $patient_id) => 'CSSP', "#"=>"Registrar CSSP"];
         $process_model = Cssp::where('id', $cssp)->first();
         $fields = $this->getFields();
-        $data = compact('fields', 'process_model', 'patient_id', 'migajas');
+        $newQs = $this->newQs;
+        $data = compact('fields', 'process_model', 'patient_id', 'migajas', 'newQs');
         return view('usuario.cssp.create', $data);
     }
 
