@@ -18,6 +18,7 @@
                     <th>Editar o subir archivo</th>
                     <th>Ver pdf</th>
                     <th>Descargar archivo</th>
+                    <th>Eliminar registro</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,7 +30,7 @@
                         @else
                         <td>{{$record->user->supervisor->full_name}}</td>
                         @endif
-                        <td>{{$record->created_at->format('d/m/Y')}}</td>
+                        <td>{{isset($record->created_at) ? $record->created_at->format('d/m/Y') : "-"}}</td>
                         <td class="has-text-centered" >
                             <a  href="{{ route('cssp.edit', ['patient_id'=>$patient->id, 'id'=>$record->id]) }}">
                                 <fai icon="edit" size="2x" />
@@ -60,6 +61,12 @@
                         @else
                         <fai icon="times" size="2x" />
                         @endif
+                        </td>
+                        <td>
+                            <confirm-delete
+                            doc-title="cuestionario de satisfacción"
+                            full-url="{{ route('cssp.destroy', ['patient_id'=>$patient->id, 'id'=>$record->id]) }}"
+                            ></confirm-delete>
                         </td>
                     </tr>
                 @endforeach

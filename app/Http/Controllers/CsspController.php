@@ -87,7 +87,7 @@ class CsspController extends Controller
     {
         $this->validate($request, [
             'file_number' => 'nullable|string',
-            'created_at' => 'required|date',
+            'created_at' => 'nullable|date',
             'q1' => 'required|integer|min:0|max:3',
             'q2' => 'required|integer|min:0|max:3',
             'q3' => 'required|integer|min:0|max:3',
@@ -167,7 +167,7 @@ class CsspController extends Controller
     {
         $this->validate($request, [
             'file_number' => 'nullable|string',
-            'created_at' => 'required|date',
+            'created_at' => 'nullable|date',
             'q1' => 'required|integer|min:0|max:3',
             'q2' => 'required|integer|min:0|max:3',
             'q3' => 'required|integer|min:0|max:3',
@@ -194,9 +194,11 @@ class CsspController extends Controller
         return redirect()->route('cssp.index', $patient_id)->with('success', 'Cuestionario de satisfacción actualizado exitosamente');
     }
 
-    public function destroy(Cssp $cssp)
+    public function destroy($patient_id, $cssp)
     {
-        //
+        // TODO delete file, if exist
+        Cssp::destroy($cssp);
+        return 200;
     }
 
     protected function dirname_r($path, $count=1){
