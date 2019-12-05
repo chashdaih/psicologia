@@ -71,34 +71,42 @@
         }
     </script>
 
-    <h1>Evaluación de competencias del estudiante de posgrado</h1>
+    <h2>Evaluación de competencias del estudiante de posgrado</h2>
 
     <div style="width:100%; text-align: right;">
-        <p><span style="font-weight:bold">Fecha: </span>{{ $doc->created_at->format('d/m/Y') }}</p>
-        <p><span style="font-weight:bold">Semestre en curso: </span>{{ $doc->active_sem }}</p>
-        <p><span style="font-weight:bold">Número de cuenta: </span>{{ $doc->its_student->id_usuario }}</p>
+        <p><span style="font-weight:bold">Registrado el : </span>{{ $doc->created_at->format('d/m/Y') }}</p>
+        <p><span style="font-weight:bold">Número de cuenta del estudiante: </span>{{ $partaker->num_cuenta }}</p>
+        <br>
     </div>
     <div>
-        <p><span style="font-weight:bold">Nombre del estudiante: </span>{{ $doc->its_student->nombre_t }}</p>
-        <p><span style="font-weight:bold">Semestre que cursa: </span>{{ $doc->semester }}°</p>
+        <p><span style="font-weight:bold">Nombre del estudiante: </span>{{ $partaker->full_name }}</p>
         <p><span style="font-weight:bold">Fase de evaluación: </span>{{ $doc->evaluation_phase }}</p>
-        <p><span style="font-weight:bold">Supervisor </span>{{ $doc->its_supervisor->full_name }}</p>
+        <p><span style="font-weight:bold">Registrado por: </span>{{ $doc->user->type == 3 ? $doc->user->partaker->full_name : $doc->user->supervisor->full_name }}</p>
+        <br>
     </div>
     <div>
         @foreach ($sections as $index => $section)
-        <p class="has-text-weight-bold">{{ $section['title'] }}</p>
+        <p style="font-weight:bold">{{ $section['title'] }}</p>
         <table class="table is-hoverable is-bordered is-striped" style="width: 100%; table-layout: fixed">
             @foreach ($section['questions'] as $key => $question)
             <tr>
-                <td style="width:60%">{{ $question }}</td>
-                @for ($i = 0; $i < 7; $i++)
+                <td style="width:80%">{{ $question }}</td>
+                {{-- @for ($i = 0; $i < 7; $i++)
                 <td>
                     <input type="radio" {{ $doc['q'.($index + 1).($key + 1)] == $i ? 'checked' : '' }}>
                 </td>
-                @endfor
+                @endfor --}}
+                <td>
+                    @if ($doc['q'.($index + 1).($key + 1)])
+                    {{$doc['q'.($index + 1).($key + 1)]}}
+                    @else
+                        N/A
+                    @endif
+                </td>
             </tr>    
             @endforeach
         </table>
+        <br>
         @endforeach
     </div>
 </body>

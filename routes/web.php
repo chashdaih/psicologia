@@ -11,6 +11,7 @@ Route::get('tramite/{id_tramite}/{doc}', 'RpsController@document')->name('get_do
 Route::get('program/{id}/partakers', 'RpsController@partakers')->name('users_list');
 Route::get('program/{id}/partakers/estudiantes_programa_excel', 'RpsController@ProgramPartakersExcel')->name('students_list');
 Route::resource('program/{program_id}/partakers/{partaker_id}/ecpr', 'EcprController', ['middleware' => 'auth']);
+Route::resource('program/{program_id}/partakers/{partaker_id}/{stage}/ecpo', 'EcpoController', ['middleware' => 'auth']);
 Route::resource('/program/{program_id}/patient/{patient_id}/fe', 'ProceduresController');
 
 // ws para programas dentro de usuarios

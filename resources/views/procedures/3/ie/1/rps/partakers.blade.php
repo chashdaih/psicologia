@@ -115,6 +115,18 @@
                         @endif
                     </td>
                     @endif
+                    {{-- start evaluación estudiante --}}
+                    @if ($program->car_ser->pre_pos) 
+                        @foreach ([1,2,3] as $stage)
+                    <td>
+                        @if($pp->evaluate_student && $pp->evaluate_student['e'.$stage])
+                        <a href="{{route('ecpo.edit', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'stage'=>$stage, 'ecpo'=>$pp->evaluate_student['e'.$stage]])}}">Editar</a> / <a href="{{route('ecpo.show', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'stage'=>$stage, 'ecpo'=>$pp->evaluate_student['e'.$stage] ])}}">Pdf</a>
+                        @else
+                        <a href="{{route('ecpo.create', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'stage'=>$stage])}}">Registrar</a>
+                        @endif
+                    </td>
+                        @endforeach
+                    @else
                     <td>
                         @if ($pp->evaluate_student && $pp->evaluate_student->e1)
                             <a href="{{route('ecpr.edit', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Editar</a> / <a href="{{route('ecpr.show', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante, 'ecpr'=>$pp->evaluate_student->e1])}}">Pdf</a>
@@ -136,6 +148,8 @@
                             <a href="{{route('ecpr.create', ['program_id'=>$program->id_practica, 'partaker_id'=>$pp->id_participante])}}">Registrar</a>
                         @endif
                     </td>
+                    @endif
+                    {{-- end evaluación estudiante --}}
                     <td>
                         @if ($pp->evaluate_student && $pp->evaluate_student->es_id)
                         <a href="{{route('es.edit', ['assign_id' => $pp->id_tramite, 'id' => $pp->evaluate_student->es_id])}}">Editar</a>/

@@ -2,49 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use auth;
 use App\Ecpo;
+use App\EvaluateStudent;
+use App\Program;
+use App\Partaker;
 // use App\Student;
 use Illuminate\Http\Request;
 
 class EcpoController extends Controller
 {
-    public function index()
+    public function create($program_id, $partaker_id, $stage)
     {
-        $records = Ecpo::all(); // TODO pagination
-        $doc_name = "Evaluación de competencias del estudiante de posgrado";
-        $doc_code = "ecpo";
-        return view('procedures.3.fe.1.ecpo.index', compact('records', 'doc_name', 'doc_code'));
-    }
-
-    public function create()
-    {
-        $students = Student::where('Sistema', 'Escolarizado')->get(); // TODO get supervisor's students
+        $program = Program::where('id_practica', $program_id)->first();
+        $partaker = Partaker::where('num_cuenta', $partaker_id)->first();
+        $migajas = [route('home')=>'Inicio', route('users_list', $program_id) => $program->programa, route('partaker.edit', $partaker_id) => $partaker->full_name, '#'=>'Registrar ECPO'];
         $sections = collect(include('ecpo.php')); // TODO move to another dir
-        $doc_code = 'ecpo';
-        $doc = new Ecpo();
-        $doc['active_sem'] = "2019-2"; // TODO set this value using the global variable
-        $doc['supervisor'] = 1; // TODO set this with auth user
-        return view('procedures.3.fe.1.ecpo.create', compact('sections', 'students', 'doc_code', 'doc'));
+        $ecpo = new Ecpo();
+        $data = compact('sections', 'ecpo', 'program', 'partaker', 'migajas', 'stage');
+        return view('partaker.ecpo.create', $data);
     }
 
-    public function store(Request $request)
+    public function store($program_id, $partaker_id, $stage, Request $request)
     {
-        foreach ($request->except('_token') as $data => $value) {
-            $valids[$data] = "required";
-        }
-        $validated = $request->validate($valids);
-        Ecpo::create($validated);
-        return response(200);
+        $this->validateEcpo();
+        $ecpo = new Ecpo($request->except('_token'));
+        $ecpo->filler_id = Auth::user()->id;
+        $ecpo->evaluation_phase = $stage;
+        $ecpo->save();
+
+        $es = EvaluateStudent::firstOrNew(['partaker_id' => $partaker_id, 'program_id' => $program_id]);
+        $e_p = 'e'.$stage;
+        $es[$e_p] = $ecpo->id;
+        $es->save();
+        
+        return redirect()->route('users_list', $program_id)->with('success', 'Evaluación registrada correctamente');
     }
 
-    public function show($id)
-    {
-        $doc = $this->getFormatedEcpo($id);
-        $sections = collect(include('ecpo.php'));
-        return view('procedures.3.fe.1.ecpo.show', compact('doc', 'sections'));
-    }
-
-    public function pdf($id)
+    public function show($program_id, $partaker_id, $stage, $id)
     {
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
@@ -52,31 +47,50 @@ class EcpoController extends Controller
         $doc = $this->getFormatedEcpo($id);
         $sections = collect(include('ecpo.php'));
 
-        $pdf->loadView('procedures.3.fe.1.ecpo.show', compact('doc', 'sections'));
-        return $pdf->download('ecpo_'.$doc->its_student->nombre_t.'.pdf');
+        $partaker = Partaker::where('num_cuenta', $partaker_id)->first();
+
+        $pdf->loadView('procedures.3.fe.1.ecpo.show', compact('doc', 'sections', 'partaker'));
+        return $pdf->stream('ecpo_'.$partaker->full_name.'.pdf');
     }
     
     protected function getFormatedEcpo($id)
     {
-        $evaluation_phase = ['Inicial', 'Intermedia', 'Final'];
+        $evaluation_phase = ['','Inicial', 'Intermedia', 'Final'];
 
-        $ecpr = Ecpo::where('id', $id)->first();
-        $ecpr['evaluation_phase'] = $evaluation_phase[$ecpr->evaluation_phase];
-        return $ecpr;
+        $ecpo = Ecpo::where('id', $id)->first();
+        $ecpo['evaluation_phase'] = $evaluation_phase[$ecpo->evaluation_phase];
+        return $ecpo;
     }
 
-    public function edit(Ecpo $ecpo)
+    public function edit($program_id, $partaker_id, $stage, $ecpo)
     {
-        //
+        $program = Program::where('id_practica', $program_id)->first();
+        $partaker = Partaker::where('num_cuenta', $partaker_id)->first();
+        $migajas = [route('home')=>'Inicio', route('users_list', $program_id) => $program->programa, route('partaker.edit', $partaker_id) => $partaker->full_name, '#'=>'Editar ECPO'];
+        $sections = collect(include('ecpo.php')); // TODO move to another dir
+        $ecpo =Ecpo::where('id', $ecpo)->first();
+        $data = compact('sections', 'ecpo', 'program', 'partaker', 'migajas', 'stage');
+        return view('partaker.ecpo.create', $data);
     }
 
-    public function update(Request $request, Ecpo $ecpo)
+    public function update(Request $request, $program_id, $partaker_id, $stage, $ecpo)
     {
-        //
+        $this->validateEcpo();
+        Ecpo::where('id', $ecpo)->update($request->except('_token', '_method'));
+        
+        return redirect()->route('users_list', $program_id)->with('success', 'Evaluación actualizada correctamente');
     }
 
     public function destroy(Ecpo $ecpo)
     {
         //
+    }
+
+    private function validateEcpo()
+    {
+        $this->validate(request(), [
+            'created_at'=> 'nullable|date',
+            'q11'=>'nullable|integer|min:0|max:5' // TODO: validar el resto de las preguntas
+        ]);
     }
 }
