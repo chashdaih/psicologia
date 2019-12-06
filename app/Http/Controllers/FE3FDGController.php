@@ -125,7 +125,7 @@ class FE3FDGController extends Controller
         return $this->validate(request(), [
             'center_id' => 'required|integer|min:1|max:255',
             'other_filler' => 'nullable|string|max:255',
-            'file_number' => 'nullable|string|max:255',
+            'file_number' => 'required|string|unique:fe3fdg',
             'created_at' => 'required|date',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',

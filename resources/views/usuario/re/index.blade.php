@@ -18,6 +18,7 @@
                     <th>Editar o subir archivo</th>
                     <th>Ver pdf</th>
                     <th>Descargar archivo</th>
+                    <th>Eliminar registro</th>
                 </tr>
             </thead>
             <tbody>
@@ -60,6 +61,12 @@
                         @else
                         <fai icon="times" size="2x" />
                         @endif
+                        </td>
+                        <td>
+                            <confirm-delete
+                            doc-title="resultado de evaluación"
+                            full-url="{{ route('re.destroy', ['patient_id'=>$patient->id, 'id'=>$record->id]) }}"
+                            ></confirm-delete>
                         </td>
                     </tr>
                 @endforeach

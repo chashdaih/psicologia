@@ -116,7 +116,7 @@
                     </td>
                     @endif
                     {{-- start evaluación estudiante --}}
-                    @if ($program->car_ser->pre_pos) 
+                    @if ($program->car_ser && $program->car_ser->pre_pos) 
                         @foreach ([1,2,3] as $stage)
                     <td>
                         @if($pp->evaluate_student && $pp->evaluate_student['e'.$stage])

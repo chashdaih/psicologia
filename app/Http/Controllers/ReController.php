@@ -17,12 +17,8 @@ class ReController extends Controller
 {
     public function index($patient_id)
     {
-        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'RE'];
-
-        // $patient = Patient::where('id', $patient_id)->first();
-        // $records = Re::where('id', $patient->re_id)->first();
-        
         $patient = Patient::where('id', $patient_id)->first();
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Personas atendidas', route('usuario.show', $patient_id)=>$patient->fdg->full_name, '#' => 'RE'];
         
         $assigned = PatientAssign::where('patient_id', $patient_id)->where('process_code', 're')->pluck('id');
 
@@ -123,9 +119,11 @@ class ReController extends Controller
         return redirect()->route('re.index', $patient_id)->with('success', 'Resultados de evaluación actualizados exitosamente');
     }
 
-    public function destroy(Re $re)
+    public function destroy($patient_id, $re)
     {
-        //
+        // TODO delete file, if exist
+        Re::destroy($re);
+        return 200;
     }
 
     protected function dirname_r($path, $count=1){

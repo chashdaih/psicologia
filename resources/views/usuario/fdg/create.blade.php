@@ -10,6 +10,12 @@
         <h1 class="title">Registrar ficha de datos generales</h1>
         <p class="subtitle">Agregue los datos de la persona que requiere el servicio</p>
         @endif
+        <article class="message is-info">
+            <div class="message-body">
+                <p>El sistema acepta acentos, mayúsculas y minúsculas.</p>
+                <p>Por favor, ingresa los datos con minúsculas y mayúsculas para tener un registro uniforme.</p>
+            </div>
+        </article>
         <fdg-new inline-template
         v-on:mounted="console.log('mounted')"
         >
