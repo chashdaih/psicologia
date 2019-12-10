@@ -239,6 +239,7 @@ class RpsController extends Controller
             $cloneProgram = $ogProgram->replicate();
             $cloneProgram->programa = $ogProgram->programa.' - Duplicado';
             $cloneProgram->cupo_actual = $cloneProgram->cupo;
+            $cloneProgram->semestre_activo = config('globales.semestre_activo');
             $cloneProgram->save();
 
             $ogProgramData = ProgramData::where('id_practica', $id)->first();
@@ -247,7 +248,17 @@ class RpsController extends Controller
             $cloneProgramData->save();
 
             $ogCarSer = CaracteristicasServicio::where('program_id', $id)->first();
-            $cloneCarSer = $ogCarSer->replicate();
+            if ($ogCarSer) {
+                $cloneCarSer = $ogCarSer->replicate();
+            } else {
+                $cloneCarSer = new CaracteristicasServicio();
+                $cloneCarSer->enfoque_servicio = 0;
+                $cloneCarSer->serv_horas_total = 0;
+                $cloneCarSer->gen_horas_total = 0;
+                $cloneCarSer->pre_pos = 0;
+                $cloneCarSer->minimo_pacientes_semestre = 0;
+                $cloneCarSer->pacientes_semana = 0;
+            }
             $cloneCarSer->program_id = $cloneProgram->id_practica;
             $cloneCarSer->save();
 
