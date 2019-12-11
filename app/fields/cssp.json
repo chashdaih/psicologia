@@ -19,7 +19,7 @@
         "options": ["Sí, definitivamente", "Sí, en general", "Muy poco", "Definitivamente no"]
     },
     "q3":{
-        "title": "¿Recomendaría neustros servicios de atención psicológica?",
+        "title": "¿Recomendaría nuestros servicios de atención psicológica?",
         "type": "select",
         "options": ["Sí, definitivamente", "Sí, en general", "Muy poco", "Definitivamente no"]
     },

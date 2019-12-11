@@ -54,12 +54,8 @@ class CsspController extends Controller
 
     public function index($patient_id)
     {
-        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'CSSP'];
-
-        // $patient = Patient::where('id', $patient_id)->first();
-        // $cssp = Cssp::where('id', $patient->cssp_id)->first();
-        
         $patient = Patient::where('id', $patient_id)->first();
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('usuario.show', $patient_id)=>$patient->fdg->full_name, '#' => 'CSSP'];
         
         $assigned = PatientAssign::where('patient_id', $patient_id)->where('process_code', 'cssp')->pluck('id');
 
@@ -74,7 +70,8 @@ class CsspController extends Controller
 
     public function create($patient_id)
     {
-        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('cssp.index', $patient_id) => 'CSSP', "#"=>"Registrar CSSP"];
+        $patient = Patient::where('id', $patient_id)->first();
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('usuario.show', $patient_id)=>$patient->fdg->full_name, route('cssp.index', $patient_id) => 'CSSP', "#"=>"Registrar"];
 
         $fields = $this->getFields();
         $process_model = new Cssp();
@@ -97,10 +94,6 @@ class CsspController extends Controller
             'o2' => 'nullable|string',
             'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
-        // $fields = collect($request->except(['_token', '_method']))->toArray();
-        // $fields['user_id'] = Auth::user()->id;
-        // $cssp = Cssp::create($fields);
-        // Patient::where('id', $patient_id)->update(['cssp_id'=>$cssp->id]);
         
         $assign = PatientAssign::where('patient_id', $patient_id)->where('process_code', 'cssp')->orderBy('created_at', 'desc')->first();
         $assign_id = $assign->id;
@@ -123,8 +116,6 @@ class CsspController extends Controller
 
     public function show($parent_id, $cssp)
     {
-        // $doc = $this->getFormattedDoc($id);
-        // return view('procedures.3.fe.8.cssp.show', compact('doc'));
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
 
@@ -135,27 +126,10 @@ class CsspController extends Controller
         return $pdf->stream('cssp.pdf');
     }
 
-    // public function pdf(Program $program, FE3FDG $patient, $id)
-    // {
-    //     $pdf = \App::make('dompdf.wrapper');
-    //     $pdf->getDomPDF()->set_option("enable_php", true);
-
-    //     $doc = $this->getFormattedDoc($id);
-
-    //     $pdf->loadView('procedures.3.fe.8.cssp.show', compact('doc'));
-    //     return $pdf->stream('cssp.pdf');
-    // }
-
-    // public function edit(Program $program, FE3FDG $patient, $id)
-    // {
-    //     $process_model = Cssp::where('id', $id)->first();
-    //     $fields = $this->getFields();
-    //     $data = compact('fields', 'process_model', 'program', 'patient');
-    //     return view('procedures.3.fe.8.cssp.create', $data);
-    // }
     public function edit($patient_id, $cssp)
     {
-        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('cssp.index', $patient_id) => 'CSSP', "#"=>"Registrar CSSP"];
+        $patient = Patient::where('id', $patient_id)->first();
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('usuario.show', $patient_id)=>$patient->fdg->full_name, route('cssp.index', $patient_id) => 'CSSP', "#"=>"Editar"];
         $process_model = Cssp::where('id', $cssp)->first();
         $fields = $this->getFields();
         $newQs = $this->newQs;

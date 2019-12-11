@@ -17,6 +17,7 @@
                     <th>Fecha de registro</th>
                     <th>Editar o subir archivo</th>
                     <th>Ver pdf</th>
+                    <th>Generar excel</th>
                     <th>Descargar archivo</th>
                     <th>Eliminar registro</th>
                 </tr>
@@ -32,13 +33,18 @@
                         @endif
                         <td>{{$record->created_at->format('d/m/Y')}}</td>
                         <td class="has-text-centered" >
-                            <a  href="{{ route('re.edit', ['patient_id'=>$patient->id, 'id'=>$record->id]) }}">
+                            <a href="{{ route('re.edit', ['patient_id'=>$patient->id, 'id'=>$record->id]) }}">
                                 <fai icon="edit" size="2x" />
                             </a>
                         </td>
                         <td class="has-text-centered" >
-                            <a  href="{{ route('re.show', ['patient_id'=>$patient->id, 'id'=>$record->id]) }}">
-                                <fai icon="file-pdf" size="2x" />
+                            <a href="{{ route('re.show', ['patient_id'=>$patient->id, 'id'=>$record->id]) }}" class="button is-link">
+                                <fai icon="file-pdf" size="1x" />
+                            </a>
+                        </td>
+                        <td class="has-text-centered" >
+                            <a href="{{ route('ree', $record->id) }}" class="button is-success">
+                                <fai icon="file-excel" size="1x" />
                             </a>
                         </td>
                         <td class="has-text-centered" >

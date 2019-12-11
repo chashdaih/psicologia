@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use Excel;
+use App\Cssp;
+use App\He;
 use App\Patient;
 use App\Ps;
+use App\Re;
+use App\Rs;
 use Illuminate\Http\Request;
 
 class ExcelController extends Controller
@@ -22,7 +26,7 @@ class ExcelController extends Controller
         $patient = Patient::where('id', $patientId)->first();
         $fdg = $patient->fdg;
         // dd($patient->fdg->full_name);
-        $data = [$fdg->file_number, $fdg->curp, $fdg->created_at->toDateString(), $fdg->full_name, $fdg->gender ? 'Hombre' : 'Mujer', $fdg->birthdate->toDateString(), $fdg->birthdate->age, $fdg->marital, $fdg->isUnam ? 'Si' : 'No', $fdg->academic_entity, $fdg->position, $fdg->career, $fdg->semester, $fdg->requester, $fdg->name_requester,
+        $data = [$fdg->file_number, $fdg->curp, $fdg->created_at ? $fdg->created_at->toDateString() : null, $fdg->full_name, $fdg->gender ? 'Hombre' : 'Mujer', $fdg->birthdate->toDateString(), $fdg->birthdate->age, $fdg->marital, $fdg->isUnam ? 'Si' : 'No', $fdg->academic_entity, $fdg->position, $fdg->career, $fdg->semester, $fdg->requester, $fdg->name_requester,
         // segunda sección
         $fdg->tutor_name_1, $fdg->rel1, $fdg->tutor_birthdate_1, $fdg->tutor_birthdate_1 ? $fdg->tutor_birthdate_1->age : null, $fdg->tStudies1, $fdg->occupation_1,
         $fdg->tutor_name_2, $fdg->rel2, $fdg->tutor_birthdate_2, $fdg->tutor_birthdate_2 ? $fdg->tutor_birthdate_2->age : null, $fdg->tStudies2, $fdg->occupation_2,
@@ -51,7 +55,7 @@ class ExcelController extends Controller
         $cdr = $patient->cdr;
         $data = [
             // Identificación
-            $patient->fdg->curp, $cdr->created_at->toDateString(), null, null, $cdr->other_filler ? $cdr->other_filler : ($cdr->user->type == 3 ? $cdr->user->partaker->full_name : null),  $cdr->user->type != 3 ? $cdr->user->supervisor->full_name : null, 
+            $patient->fdg->curp, $cdr->created_at ? $cdr->created_at->toDateString() : null, null, null, $cdr->other_filler ? $cdr->other_filler : ($cdr->user->type == 3 ? $cdr->user->partaker->full_name : null),  $cdr->user->type != 3 ? $cdr->user->supervisor->full_name : null, 
         ];
         $data = $this->addColumns($cdr, $data, 'dep', 8);
         $data = $this->addColumns($cdr, $data, 'psi', 5);
@@ -104,12 +108,77 @@ class ExcelController extends Controller
     {
         $docTitle = "Plan de servicios";
         $ps = Ps::where('id', $id)->first();
-        $data = [$ps->assign->patient->fdg->curp, $ps->created_at->toDateString(), $ps->assign->program->center->nombre, $ps->assign->program->programa, $ps->user->type == 3 ? $ps->user->partaker->full_name : $ps->user->supervisor->full_name, $ps->assign->program->supervisor->full_name, $ps->tipo, $ps->modalidad];
+        $data = [$ps->assign->patient->fdg->curp, $ps->created_at ? $ps->created_at->toDateString() : null, $ps->assign->program->center->nombre, $ps->assign->program->programa, $ps->user->type == 3 ? $ps->user->partaker->full_name : $ps->user->supervisor->full_name, $ps->assign->program->supervisor->full_name, $ps->tipo, $ps->modalidad];
 
         Excel::create($docTitle, function($excel) use ($data, $docTitle) {
             $excel->sheet($docTitle, function($sheet) use ($data) {
                 $titles = json_decode($this->json, true);
                 $this->formatHeader($sheet, $titles, 1, 1);
+                $sheet->row(5, $data);
+            });
+        })->download('xlsx');
+    }
+
+    public function re($id)
+    {
+        $docTitle = "Resultados de evaluación";
+        $re = Re::where('id', $id)->first();
+        $data = [$re->assign->patient->fdg->curp, $re->created_at ? $re->created_at->toDateString() : null, $re->assign->program->center->nombre, $re->assign->program->programa, $re->user->type == 3 ? $re->user->partaker->full_name : $re->user->supervisor->full_name, $re->assign->program->supervisor->full_name, $re->referencia_necesaria ? 'Si': 'No', $re->lugar_de_referencia];
+
+        Excel::create($docTitle, function($excel) use ($data, $docTitle) {
+            $excel->sheet($docTitle, function($sheet) use ($data) {
+                $titles = json_decode($this->json, true);
+                $this->formatHeader($sheet, $titles, 2, 1);
+                $sheet->row(5, $data);
+            });
+        })->download('xlsx');
+    }
+
+    public function breve($id)
+    {
+        $docTitle = "Resultados de evaluación";
+        $rs = Rs::where('id', $id)->first();
+        $data = [$rs->assign->patient->fdg->curp, $rs->created_at ? $rs->created_at->toDateString() : null, 'Si'];
+
+        Excel::create($docTitle, function($excel) use ($data, $docTitle) {
+            $excel->sheet($docTitle, function($sheet) use ($data) {
+                $titles = json_decode($this->json, true);
+                $this->formatHeader($sheet, $titles, 3, 0);
+                $sheet->row(5, $data);
+            });
+        })->download('xlsx');
+    }
+
+    public function he($id)
+    {
+        $docTitle = "Hoja de egreso";
+        $he = He::where('id', $id)->first();
+        $data = [$he->assign->patient->fdg->curp, $he->created_at ? $he->created_at->toDateString() : null, $he->assign->program->center->nombre, $he->assign->program->programa, $he->user->type == 3 ? $he->user->partaker->full_name : $he->user->supervisor->full_name, $he->assign->program->supervisor->full_name, $he->egreso];
+
+        Excel::create($docTitle, function($excel) use ($data, $docTitle) {
+            $excel->sheet($docTitle, function($sheet) use ($data) {
+                $titles = json_decode($this->json, true);
+                $this->formatHeader($sheet, $titles, 4, 1);
+                $sheet->row(5, $data);
+            });
+        })->download('xlsx');
+    }
+
+    public function cssp($id)
+    {
+        $docTitle = "Cuestionario de satisfacción";
+        $cssp = Cssp::where('id', $id)->first();
+        $data = [$cssp->assign->patient->fdg->curp, $cssp->created_at ? $cssp->created_at->toDateString() : null, $cssp->calidad, $cssp->utilidad, $cssp->recomendaria, $cssp->ayudado, $cssp->satisfecho, $cssp->o1, $cssp->o2];
+
+        for ($i=1; $i < 21; $i++) {
+            $data[] = $cssp['n'.$i.'i'];
+            $data[] = $cssp['n'.$i.'f'];
+        }
+
+        Excel::create($docTitle, function($excel) use ($data, $docTitle) {
+            $excel->sheet($docTitle, function($sheet) use ($data) {
+                $titles = json_decode($this->json, true);
+                $this->formatHeader($sheet, $titles, 4, 2);
                 $sheet->row(5, $data);
             });
         })->download('xlsx');

@@ -37,8 +37,13 @@
                             </a>
                         </td>
                         <td class="has-text-centered" >
-                            <a  href="{{ route('cssp.show', ['patient_id'=>$patient->id, 'id'=>$record->id]) }}">
-                                <fai icon="file-pdf" size="2x" />
+                            <a href="{{ route('cssp.show', ['patient_id'=>$patient->id, 'id'=>$record->id]) }}" class="button is-link">
+                                <fai icon="file-pdf" size="1x" />
+                            </a>
+                        </td>
+                        <td class="has-text-centered" >
+                            <a href="{{ route('csspe', $record->id) }}" class="button is-success">
+                                <fai icon="file-excel" size="1x" />
                             </a>
                         </td>
                         <td class="has-text-centered" >

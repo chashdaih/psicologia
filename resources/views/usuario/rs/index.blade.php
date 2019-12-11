@@ -18,7 +18,8 @@
                     <th>Registrado por</th>
                     <th>Fecha de registro</th>
                     <th>Editar o subir otro archivo</th>
-                    <th>Generar pdf</th>
+                    <th>Ver pdf</th>
+                    <th>Generar excel</th>
                     <th>Descargar archivo</th>
                 </tr>
             </thead>
@@ -39,10 +40,14 @@
                             </a>
                         </td>
                         <td class="has-text-centered">
-                            <a href="{{ route($code_name.'.show', ['patient_id'=>$patient_id, 'id'=>$record->id]) }}">
-                                <fai icon="file-pdf" size="2x" />
+                            <a href="{{ route($code_name.'.show', ['patient_id'=>$patient_id, 'id'=>$record->id]) }}" class="button is-link">
+                                <fai icon="file-pdf" size="1x" />
                             </a>
-
+                        </td>
+                        <td class="has-text-centered" >
+                            <a href="{{ route('brevee', $record->id) }}" class="button is-success">
+                                <fai icon="file-excel" size="1x" />
+                            </a>
                         </td>
                         <td class="has-text-centered" >
                             @if(file_exists($path.$record->id.'.pdf'))

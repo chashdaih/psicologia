@@ -30,13 +30,9 @@ class HeController extends Controller
 
     public function index($patient_id)
     {
-        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'HE'];
-
-        // $patient = Patient::where('id', $patient_id)->first();
-        // $he = He::where('id', $patient->he_id)->first();
-        
         $patient = Patient::where('id', $patient_id)->first();
-        
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('usuario.show', $patient_id)=>$patient->fdg->full_name, '#' => 'Hoja de egreso'];
+
         $assigned = PatientAssign::where('patient_id', $patient_id)->where('process_code', 'he')->pluck('id');
 
         $path = public_path().'/storage/patients/'.$patient->id.'/he/';
@@ -50,7 +46,8 @@ class HeController extends Controller
 
     public function create($patient_id)
     {
-        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('he.index', $patient_id) => 'HE', "#"=>"Registrar HE"];
+        $patient = Patient::where('id', $patient_id)->first();
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('usuario.show', $patient_id)=>$patient->fdg->full_name, route('he.index', $patient_id) => 'Hoja de egreso', "#"=>"Registrar"];
 
         $fields = $this->getFields();
         $process_model = new He();
@@ -105,7 +102,8 @@ class HeController extends Controller
 
     public function edit($patient_id, $he)
     {
-        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('he.index', $patient_id) => 'HE', "#"=>"Registrar HE"];
+        $patient = Patient::where('id', $patient_id)->first();
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('usuario.show', $patient_id)=>$patient->fdg->full_name, route('he.index', $patient_id) => 'Hoja de egreso', "#"=>"Editar"];
         $process_model = He::where('id', $he)->first();
         $fields = $this->getFields();
         $data = compact('fields', 'process_model', 'patient_id', 'migajas');

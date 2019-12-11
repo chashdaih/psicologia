@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\FE3FDG;
 use App\PatientAssign;
+use App\Patient;
 use App\Program;
 use App\Rs as Doc;
 
@@ -26,7 +27,8 @@ class RsController extends Controller
 
     public function index($patient_id)
     {
-        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'Resumen de sesión'];
+        $patient = Patient::where('id', $patient_id)->first();
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('usuario.show', $patient_id)=>$patient->fdg->full_name, '#' => 'Resumen de sesión'];
 
         $isIntervention = $this->isIntervention;
 

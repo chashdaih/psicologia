@@ -40,6 +40,10 @@ Route::group(['prefix' => 'excel', 'middleware' => 'auth'], function() {
     Route::get('fdg/{patientId}', 'ExcelController@fdg')->name('fdge');
     Route::get('cdr/{patientId}', 'ExcelController@cdr')->name('cdre');
     Route::get('ps/{ps}', 'ExcelController@ps')->name('pse');
+    Route::get('re/{id}', 'ExcelController@re')->name('ree');
+    Route::get('breve/{id}', 'ExcelController@breve')->name('brevee');
+    Route::get('he/{id}', 'ExcelController@he')->name('hee');
+    Route::get('cssp/{id}', 'ExcelController@cssp')->name('csspe');
 });
 
 Route::get('/recepcion/{centerId}', 'UsuarioController@recepcion', ['middleware' => 'auth'])->name('recepcion');

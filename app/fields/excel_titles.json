@@ -506,7 +506,105 @@
                 "sections": []
             }
         ]
+    },
+    {
+        "code": "fe5",
+        "title": "FE5 EVALUACIÓN DE LA PERSONA ATENDIDA",
+        "color": "#548235",
+        "procedures": [
+            {
+                "title": "¿Se encuentra el documento?",
+                "color": "#548235",
+                "sections": []
+            },
+            {
+                "title": "3-FE5-RE Resultados de evaluación",
+                "color": "#70ad47",
+                "sections": ["No de cuenta / Trabajador / CURP", "Fecha", "Centro", "Programa", "Estudiante", "Académico / Supervisor", "¿Fue necesario hacer referencia?", "Lugar de referencia"]
+            },
+            {
+                "title": "Observaciones",
+                "color":"#548235",
+                "sections": []
+            }
+        ]
+    },
+    {
+        "code": "fe67",
+        "title": "FE6 ORIENTACIÓN / CONSEJO BREVE Y FE7 INTERVENCIÓN",
+        "color": "#9600ea",
+        "procedures": [
+            {
+                "title": "Resumen de sesión 3-FE6-RS",
+                "color": "#b42dff",
+                "sections": [
+                    {
+                        "title": "No. de cuenta / Trabajador / CURP",
+                        "color": "#ffffff",
+                        "columns" : [""]
+                    },
+                    {
+                        "title": "Sesión",
+                        "color": "#ffffff",
+                        "columns": ["Fecha", "¿Está?"]
+                    }
+                ]
+            },
+            {
+                "title": "Observaciones",
+                "color": "#9600ea",
+                "sections": []
+            }
+        ]
+    },
+    {
+        "code": "fe8",
+        "title": "FE8 EGRESO",
+        "color": "#b83275",
+        "procedures": [
+            {
+                "title": "¿Se encuentra el documento?",
+                "color": "#b83275",
+                "sections": []
+            },
+            {
+                "title": "3-FE8-HE Hoja de Egreso",
+                "color": "#dc2492",
+                "sections": [
+                    {
+                        "title": "Datos del egreso",
+                        "color": "#e767b4",
+                        "columns": ["No. Cuenta / Trabajador / CURP", "Fecha", "Centro", "Programa", "Estudiante", "Académico / Supervisor", "Tipo de egreso"]
+                    },
+                    {
+                        "title": "Indicadores OPS",
+                        "color": "#ee96ca",
+                        "columns": ["% Inicial Comunicación", "% Final Comunicación", "% Inicial Toma de decisiones", "% Final Toma de decisiones", "% Inicial Solución de problemas", "% Final Solución de problemas", "% Inicial Interacción social/recreativa", "% Final Intneracción social/recreativa", "% Inicial Mannejo de enojo", "% Final Manejo de enojo", "% Inicial Manejo de tristeza", "% Final Manejo de tristeza", "% Inicial Manejo de ansiedad / estrés", "% Final Mannnejo de ansiedad / estrés", "% Inicial Manejo de celos", "% Final Manejo de celos", "% Inicial Búsqueda y mantenimiento de empleo", "% Final Búsqueda y mantenimiento de empleo", "% Inicial Abstinencia sustancias", "% Final Abstinencia sustancias", "% Inicial Prevención de recaídas sustancias", "% Final Prevención de recaídas sustancias", "% Inicial Relación familiar", "% Final Relación familiar", "% Inicial Relación de pareja", "% Final Relación de pareja", "% Inicial Conducta de los hijos", "% Final Conducta de los hijos", "% Inicial Emociones de los hijos", "% Final Emociones de los hijos", "% Inicial Crianza positiva", "% Final Crianza positiva", "% Inicial Manejo problemas del desarrollo", "% Final Manejo problemas del desarrollo", "% Inicial Manejo de duelo", "% Final Manejo de duelo", "% Inicial Estilos de vida saludables", "% Final Estilos de vida saludables", "% Inicial Otro", "% Final Otro"]
+                    }
+                ]
+            },
+            {
+                "title": "3-FE8-CSSP Cuestionario de satisfacción con el servicio psicológico",
+                "color": "#ff438f",
+                "sections": [
+                    {
+                        "title": "",
+                        "color": "#ff7dbe",
+                        "columns": ["No. de cuenta / Trabajador / CURP", "Fecha", "¿Cómo evaluaría la calidad de los servicios que ha recibido?", "¿Le fue de utilidad el servicio recibido?", "¿Recomendaría nuestros servicios de atención psicológica?", "¿Los servicios que ha recibido le han ayudado a enfrentarse mejor a sus problemas?", "En general, ¿qué tan satisfecho/a está usted con los servicios que ha recibido?", "Lo que más me gustó de la atención que recibí fue", "Lo que considero que se tendría que mejorar es"]
+                    },
+                    {
+                        "title": "Indicadores OPS",
+                        "color": "#ff89b0",
+                        "columns": ["% Inicial Comunicación", "% Final Comunicación", "% Inicial Toma de decisiones", "% Final Toma de decisiones", "% Inicial Solución de problemas", "% Final Solución de problemas", "% Inicial Interacción social/recreativa", "% Final Intneracción social/recreativa", "% Inicial Mannejo de enojo", "% Final Manejo de enojo", "% Inicial Manejo de tristeza", "% Final Manejo de tristeza", "% Inicial Manejo de ansiedad / estrés", "% Final Mannnejo de ansiedad / estrés", "% Inicial Manejo de celos", "% Final Manejo de celos", "% Inicial Búsqueda y mantenimiento de empleo", "% Final Búsqueda y mantenimiento de empleo", "% Inicial Abstinencia sustancias", "% Final Abstinencia sustancias", "% Inicial Prevención de recaídas sustancias", "% Final Prevención de recaídas sustancias", "% Inicial Relación familiar", "% Final Relación familiar", "% Inicial Relación de pareja", "% Final Relación de pareja", "% Inicial Conducta de los hijos", "% Final Conducta de los hijos", "% Inicial Emociones de los hijos", "% Final Emociones de los hijos", "% Inicial Crianza positiva", "% Final Crianza positiva", "% Inicial Manejo problemas del desarrollo", "% Final Manejo problemas del desarrollo", "% Inicial Manejo de duelo", "% Final Manejo de duelo", "% Inicial Estilos de vida saludables", "% Final Estilos de vida saludables", "% Inicial Otro", "% Final Otro"]
+                    }
+                ]
+            },
+            {
+                "title": "Observaciones",
+                "color": "#b83275",
+                "sections": []
+            }
+        ]
     }
-
     
 ]

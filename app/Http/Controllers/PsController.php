@@ -42,13 +42,9 @@ class PsController extends Controller
 
     public function index($patient_id)
     {
-        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', '#' => 'PS'];
-
         $patient = Patient::where('id', $patient_id)->first();
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('usuario.show', $patient_id)=>$patient->fdg->full_name, '#' => 'PS'];
 
-        // $patient = Patient::where('id', $patient_id)->first();
-        // $ps = Ps::where('id', $patient->ps_id)->first();
-        
         $assigned = PatientAssign::where('patient_id', $patient_id)->where('process_code', 'ps')->pluck('id');
 
         $path = public_path().'/storage/patients/'.$patient->id.'/ps/';
