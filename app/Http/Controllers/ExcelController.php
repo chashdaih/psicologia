@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Excel;
 use App\Patient;
+use App\Ps;
 use Illuminate\Http\Request;
 
 class ExcelController extends Controller
@@ -99,6 +100,21 @@ class ExcelController extends Controller
         })->download('xlsx');
     }
 
+    public function ps($id)
+    {
+        $docTitle = "Plan de servicios";
+        $ps = Ps::where('id', $id)->first();
+        $data = [$ps->assign->patient->fdg->curp, $ps->created_at->toDateString(), $ps->assign->program->center->nombre, $ps->assign->program->programa, $ps->user->type == 3 ? $ps->user->partaker->full_name : $ps->user->supervisor->full_name, $ps->assign->program->supervisor->full_name, $ps->tipo, $ps->modalidad];
+
+        Excel::create($docTitle, function($excel) use ($data, $docTitle) {
+            $excel->sheet($docTitle, function($sheet) use ($data) {
+                $titles = json_decode($this->json, true);
+                $this->formatHeader($sheet, $titles, 1, 1);
+                $sheet->row(5, $data);
+            });
+        })->download('xlsx');
+    }
+
     private function calculateResults($cdr)
     {
         $res1 = [];
@@ -144,16 +160,27 @@ class ExcelController extends Controller
         $initialCol = 0;
         $endCol = 0;
         $headers = [];
-        foreach ($sections as $section) {
-            $endCol = $initialCol + count($section['columns']);
+        if (!is_string($sections[0])){ // si no hay sub secciones
+            foreach ($sections as $section) {
+                $endCol = $initialCol + count($section['columns']);
+                $initialLetter = \PHPExcel_Cell::stringFromColumnIndex($initialCol);
+                $endLetter = \PHPExcel_Cell::stringFromColumnIndex($endCol - 1);
+                $this->formatRow($sheet, $initialLetter.'3', $endLetter.'3', $section['title'], $section['color']);
+                $initialCol = $endCol;
+                //Encabezados
+                $headers = array_merge($headers, $section['columns']);
+            }
+            $sheet->row(4, $headers);
+        } else {
+            $endCol = $initialCol + count($sections);
             $initialLetter = \PHPExcel_Cell::stringFromColumnIndex($initialCol);
             $endLetter = \PHPExcel_Cell::stringFromColumnIndex($endCol - 1);
-            $this->formatRow($sheet, $initialLetter.'3', $endLetter.'3', $section['title'], $section['color']);
-            $initialCol = $endCol;
-            //Encabezados
-            $headers = array_merge($headers, $section['columns']);
+            for ($i = $initialCol; $i < $endCol; $i++) {
+                $letter = \PHPExcel_Cell::stringFromColumnIndex($i);
+                $sheet->mergeCells($letter.'3:'.$letter.'4');
+            }
+            $sheet->row(3, $sections);
         }
-        $sheet->row(4, $headers);
 
         //Nombre del proceso
         $this->formatRow($sheet, 'A1', $endLetter.'1', $titles[$fNumber]['title'], $titles[$fNumber]['color'], true, 20);

@@ -459,12 +459,34 @@
                 "title": "Observaciones",
                 "color": "#5B9BD5",
                 "sections": []
+            },
+            {
+                "code": "fe4",
+                "title": "FE4 ADMISIÓN DE LAS PERSONAS ATENDIDAS",
+                "color": "#c75a12",
+                "sections": [
+                    {
+                        "title": "¿Se encuentra el formato?",
+                        "color": "#c75a12",
+                        "columns": []
+                    },
+                    {
+                        "title": "3-FE4-PS Plan de Servicios",
+                        "color": "#f18417",
+                        "columns": ["No. de cuenta / Trabajador / CURP", "Fecha", "Centro", "Programa", "Estudiante", "Académico / Supervisor", "Tipo de intervención", "Modalidad de servicio"]
+                    },
+                    {
+                        "title": "Observaciones",
+                        "color": "#c75a12",
+                        "columns": []
+                    }
+                ]
             }
         ]
     },
     {
         "code": "fe4",
-        "title": "FE4 ",
+        "title": "FE4 ADMISIÓN DE LAS PERSONAS ATENDIDAS",
         "color": "#c65911",
         "procedures": [
             {
@@ -474,15 +496,9 @@
             },
             {
                 "code": "ps",
-                "title": "ADMISIÓN DE LAS PERSONAS ATENDIDAS",
-                "color": "#c65911",
-                "sections": [
-                    {
-                        "title": "PS Plan de servicios",
-                        "color": "#f18417",
-                        "columns": ["No de cuenta / Trabajador / CURP", "Fecha", "Centro", "Programa", "Estudiante", "Académico / Supervisor", "Tipo de intervención", "Modalidad de servicio"]
-                    }
-                ]
+                "title": "3-FE4-PS Plan de Servicios",
+                "color": "#f18417",
+                "sections": ["No de cuenta / Trabajador / CURP", "Fecha", "Centro", "Programa", "Estudiante", "Académico / Supervisor", "Tipo de intervención", "Modalidad de servicio"]
             },
             {
                 "title": "Observaciones",

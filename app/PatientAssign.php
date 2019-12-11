@@ -12,4 +12,9 @@ class PatientAssign extends Model
     {
         return $this->belongsTo('App\Program', 'program_id', 'id_practica');
     }
+
+    public function patient()
+    {
+        return $this->belongsTo('App\Patient', 'patient_id', 'id');
+    }
 }
