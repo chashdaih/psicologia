@@ -80,6 +80,13 @@
                                 'errors'=>$errors,
                                 'type'=> 'password'
                                 ])@endcomponent
+                            @else
+                            <div class="field">
+                                <label class="label">Correo electrónico</label>
+                                <div class="control">
+                                    <input class="input" disabled value="{{ $supervisor->correo }}">
+                                </div>
+                            </div>
                             @endif
                             @component('components.text-input', [
                                 'title'=>'Nombre',
