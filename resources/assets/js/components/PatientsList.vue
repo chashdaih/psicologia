@@ -31,13 +31,22 @@
                     <template slot="empty">No hay resultados para {{supName}}</template>
                 </b-autocomplete>
             </b-field>
-            <div class="field">
-                <label class="label">Selecciona un programa</label>
-                <div class="select" :class="{'is-loading': loadingPrograms}">
-                    <select v-model="selectedProgram">
-                        <option value="0" disabled>Elige un programa</option>
-                        <option v-for="(program, idx) in programs" :value="program.id_practica" :key="idx">{{program.programa}}</option>
-                    </select>
+            <label class="label">Selecciona un programa</label>
+            <div class="field has-addons">
+                <div class="control">
+                    <div class="select">
+                        <select v-model="selectedPeriod">
+                            <option v-for="period in semesters" :key="period" :value="period">{{period}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control">
+                    <div class="select" :class="{'is-loading': loadingPrograms}">
+                        <select v-model="selectedProgram">
+                            <option value="0" disabled>Elige un programa</option>
+                            <option v-for="(program, idx) in programs" :value="program.id_practica" :key="idx">{{program.programa}}</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <table v-if="assignedPatients.length > 0 || loadingPatients" class="table is-fullwidth is-hoverable is-striped">
@@ -272,6 +281,7 @@ export default {
             patientId: 0,
             fileNumber: '',
             isWaiting: false,
+            selectedPeriod: this.semesters[this.semesters.length-1]
         }
     },
     methods: {
@@ -285,7 +295,8 @@ export default {
         getPrograms() {
             this.loadingPrograms = true;
             this.patients = [];
-            const url = this.baseUrl + '/get-programs/' + this.selectedSup;
+            // const url = this.baseUrl + '/get-programs/' + this.selectedSup;
+            const url = `${this.baseUrl}/procedures/3/1/rps/filter/0/${this.selectedSup}/${this.selectedPeriod}`;
             axios.get(url)
             .then(res=>{
                 this.selectedProgram = 0;
@@ -455,6 +466,7 @@ export default {
     },
     watch: {
         selectedSup: function() {this.getPrograms()},
+        selectedPeriod: function() { this.getPrograms() },
         // selectedProgram: function () {
         //     this.getPatients();
         // },
