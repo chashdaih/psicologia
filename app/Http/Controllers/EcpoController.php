@@ -50,7 +50,7 @@ class EcpoController extends Controller
         $partaker = Partaker::where('num_cuenta', $partaker_id)->first();
 
         $pdf->loadView('procedures.3.fe.1.ecpo.show', compact('doc', 'sections', 'partaker'));
-        return $pdf->stream('ecpo_'.$partaker->full_name.'.pdf');
+        return $pdf->stream('ecpo.pdf');
     }
     
     protected function getFormatedEcpo($id)

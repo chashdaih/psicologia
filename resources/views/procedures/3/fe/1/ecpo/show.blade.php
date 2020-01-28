@@ -56,7 +56,7 @@
 
     <footer class="my-blue">
         <p>ESTE DOCUMENTO FORMA PARTE DEL SISTEMA DE GESTIÓN DE CALIDAD</p>
-        <p>3-FE1-ECPO</p>
+        <p>3-FE1-ECPO_V4</p>
     </footer>
     <script type="text/php">
         if (isset($pdf)) {
@@ -71,7 +71,7 @@
         }
     </script>
 
-    <h2>Evaluación de competencias del estudiante de posgrado</h2>
+    <h2 style="text-align: center;">Evaluación de competencias del estudiante de posgrado</h2>
 
     <div style="width:100%; text-align: right;">
         <p><span style="font-weight:bold">Registrado el : </span>{{ $doc->created_at->format('d/m/Y') }}</p>
