@@ -55,14 +55,44 @@
                         'maxlength' => 255,
                     ])@endcomponent
                     @endif
-                    @component('components.text-input', [
+                    <br>
+                    <article class="message is-danger">
+                        <div class="message-header">Atención</div>
+                        <div class="message-body">
+                            <p>El número de expediente sigue el formato {{ $yearLastDigits }}-0000</p>
+                            <p>El sistema coloca automáticamente el año y el centro.</p>
+                            <p>Por favor, introduce solamente los últimos dígitos del expediente.</p>
+                        </div>
+                    </article>
+                    <label class="label">No. expediente</label>
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input type="text" class="input" value="{{$yearLastDigits}} - " disabled style="max-width: 50px;">
+                        </div>
+                        <!-- <span class="select">
+                            <select disabled><option>20 - </option></select>
+                        </span> -->
+                        <div class="control">
+                            <numeric-input
+                                name="file_number"
+                                value="{{substr(old('file_number', isset($fdg) ? $fdg->file_number : $yearLastDigits), 3)}}"
+                                clazz="input {{$errors->has('file_number')? ' is-danger':'' }}"
+                                max=9999
+                            />
+                        </div>
+                        @if ($errors->has('file_number'))
+                        <p class="help is-danger">{{ $errors->first('file_number') }}</p>
+                        @endif
+                    </div>
+                    <br>
+                    <!-- @component('components.text-input', [
                         'title'=>'No. expediente',
                         'field'=>'file_number',
                         'errors'=>$errors,
                         'type'=> 'text',
                         'prev' => old('file_number', isset($fdg) ? $fdg->file_number : null),
                         'maxlength' => 255,
-                    ])@endcomponent
+                    ])@endcomponent -->
                     @component('components.text-input', [
                         'title'=>'CURP/No.Cuenta/No.Trabajador',
                         'field'=>'curp',
@@ -119,6 +149,15 @@
                         'prev'=>isset($fdg)?$fdg->gender:null
                     ])
                     @endcomponent
+                    @component('components.text-input', [
+                        'title'=>'Lugar de nacimiento',
+                        'field'=>'birth_place',
+                        'errors'=>$errors,
+                        'type'=> 'text',
+                        'prev' => isset($fdg) ? $fdg->birth_place : null,
+                        'maxlength' => 255,
+                        'required' => true
+                    ])@endcomponent
                     <date-component
                         label="Fecha de nacimiento"
                         name="birthdate"
@@ -499,6 +538,12 @@
                         'errors'=>$errors,
                         'prev'=>isset($fdg)?$fdg->household_members:null
                     ])@endcomponent
+                    <article class="message is-info">
+                        <div class="message-body">
+                            <p>Por favor, solo ingrese números enteros.</p>
+                            <p>El sistema agrega el signo de pesos y los centavos.</p>
+                        </div>
+                    </article>
                     @component('components.text-input', [
                         'title'=>'Ingreso familiar mensual',
                         'field'=>'monthly_family_income',

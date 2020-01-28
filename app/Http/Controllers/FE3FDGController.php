@@ -8,6 +8,7 @@ use App\FE3FDG;
 use App\Program;
 use App\ProgramPartaker;
 use App\Patient;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FE3FDGController extends Controller
@@ -40,7 +41,6 @@ class FE3FDGController extends Controller
     
     public function create($id)
     {
-
         $centers = Building::all();
         $preferedCenter = null;
         if (Auth::user()->type == 3) { // participante
@@ -52,8 +52,9 @@ class FE3FDGController extends Controller
         } else {
             $preferedCenter = Auth::user()->supervisor->id_centro;
         }
+        $yearLastDigits = Carbon::now()->format('y');
         $migajas = [route('home') => 'Inicio', route('usuario.index')=>'Personas atendidas','#' => 'Nueva ficha de datos generales'];
-        return view('usuario.fdg.create', compact('migajas', 'centers', 'preferedCenter'));
+        return view('usuario.fdg.create', compact('migajas', 'centers', 'preferedCenter', 'yearLastDigits'));
 
         // $program_id = $id;
         // $program = Program::where('id_practica', $id)->first();
@@ -63,17 +64,13 @@ class FE3FDGController extends Controller
 
     public function store(Request $request, $id)
     {
+        $lastYearDigits = Carbon::now()->format('y');
+        $request->merge(['file_number' => $lastYearDigits."-".$request->get('file_number')]);
         $this->validateForm();
         $parameters = collect($request)->toArray() + ['user_id' => auth()->id()];
         $fdg = FE3FDG::create($parameters);
         Patient::create(['fdg_id' => $fdg->id]);
         return redirect()->route('usuario.index')->with('success', 'Usuario registrado exitosamente');
-
-        // $this->validateForm();
-
-        // $fdg = FE3FDG::create(collect($request)->toArray() + ['user_id' => auth()->id(), 'program_id' => $id]);
-
-        // return redirect()->route('patient.index', ['id' => $id])->with('success', 'Usuario registrado exitosamente');
     }
 
     public function show($patient_id, $id)
@@ -81,18 +78,19 @@ class FE3FDGController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
         $doc = $this->formatFdg($id);
-        $full_code = "3-FE3-FDG";
+        $full_code = "3-FE3-FDG_V4";
         $pdf->loadView('usuario.fdg.show', compact('doc', 'full_code'));
         return $pdf->stream('fdg.pdf');
     }
 
     public function edit($patient_id, $id)
     {
+        $yearLastDigits = Carbon::now()->format('y');
         $fdg = FE3FDG::where('id', $id)->first();
         $patient = Patient::where('id', $patient_id)->first();
         $centers = Building::all();
         $migajas = [route('home') => 'Inicio', route('usuario.index')=>'Personas atendidas', route('usuario.show', $patient_id)=>$patient->fdg->full_name,'#' => 'Editar ficha de datos generales'];
-        return view('usuario.fdg.create', compact('migajas', 'fdg', 'centers'));
+        return view('usuario.fdg.create', compact('migajas', 'fdg', 'centers', 'yearLastDigits'));
 
         // $program_id = $id;
         // $program = Program::where('id_practica', $id)->first();
@@ -103,6 +101,8 @@ class FE3FDGController extends Controller
 
     public function update($patient_id, $id, Request $request)
     {
+        $lastYearDigits = Carbon::now()->format('y');
+        $request->merge(['file_number' => $lastYearDigits."-".$request->get('file_number')]);
         $this->validateForm();
         $values = collect($request->except(['_token', '_method']))->toArray();
         FE3FDG::where('id', $id)->update($values);
@@ -133,6 +133,7 @@ class FE3FDGController extends Controller
             'curp' => 'required|string|max:255',
             'gender' => 'required|boolean',
             'birthdate' => 'required|date',
+            'birth_place' => 'required|string',
             'marital_status' => 'required|integer',
             'is_unam' => 'required|boolean',
             'academic_entity' => 'nullable|string|max:255',

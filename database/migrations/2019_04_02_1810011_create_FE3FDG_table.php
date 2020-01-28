@@ -28,6 +28,7 @@ class CreateFe3fdgTable extends Migration
             $table->string('curp');
             $table->boolean('gender');
             $table->date('birthdate');
+            $table->string('birth_place')->nullable();
             $table->unsignedTinyInteger('marital_status');
             $table->boolean('is_unam');
             $table->string('academic_entity')->nullable();

@@ -13,6 +13,7 @@
         <h3>Identificación de la persona que requiere el servicio</h3>
         <p><span style="font-weight:bold;">Nombre: </span>{{ $doc->full_name}}</p>
         <p><span style="font-weight:bold;">Sexo: </span>{{ $doc->gender ? 'Hombre' : 'Mujer'}}</p>
+        <p><span style="font-weight:bold;">Lugar de nacimiento: </span>{{ $doc->birth_place}}</p>
         <p><span style="font-weight:bold;">Fecha de nacimiento: </span>{{ $doc->birthdate->format('d/m/Y')}}</p>
         <p><span style="font-weight:bold;">Edad: </span>{{ $doc->birthdate->age}}</p>
         <p><span style="font-weight:bold;">Estado civil de la persona que requiere el servicio: </span>{{ $doc->marital_status}}</p>
@@ -71,7 +72,7 @@
         <p><span style="font-weight:bold;">Depende de: </span> {{ $doc->who_depends_on }}</p>
         @endif
         <p><span style="font-weight:bold;">Número de integrantes del hogar </span> (contando a la persona que requiere el servicio): {{ $doc->household_members }}</p>
-        <p><span style="font-weight:bold;">Ingreso familiar mensual:</span> {{ $doc->monthly_family_income }}</p>
+        <p><span style="font-weight:bold;">Ingreso familiar mensual:</span> ${{ $doc->monthly_family_income }}.00</p>
         <p><span style="font-weight:bold;">Número de personas que aportan a este ingreso </span>(contando la persona que requiere el servicio): {{ $doc->number_people_contributing }}</p>
         <p><span style="font-weight:bold;">Número de personas que dependen de este ingreso </span>(contando la persona que requiere el servicio): {{ $doc->number_people_depending }}</p>
         <p><span style="font-weight:bold;">Su casa es:</span> {{ $doc->house_is }}</p>
