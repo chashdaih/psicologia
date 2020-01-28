@@ -64,12 +64,12 @@
 </head>
 <body>
     <footer class="my-blue">
-        <p style="margin:0">ESTE DOCUMENTO FORMA PARTE DEL SISTEMA DE GESTIÓN DE CALIDAD</p>
+        <p style="margin:0; font-size:8pt;">ESTE DOCUMENTO FORMA PARTE DEL SISTEMA DE GESTIÓN DE CALIDAD</p>
     </footer>
     <script type="text/php">
         if (isset($pdf)) {
             $text = "{PAGE_NUM} / {PAGE_COUNT}";
-            $size = 10;
+            $size = 9;
             $font = $fontMetrics->getFont("Verdana");
             $width = $fontMetrics->get_text_width($text, $font, $size) / 2;
             $x = ($pdf->get_width() - $width) ;
@@ -77,21 +77,16 @@
             $color = array(0.4, 0.7, 1);
             $pdf->page_text($x, $y, $text, $font, $size, $color);
 
-            $doc_full_code = "3-IE2-CCEP";
+            $doc_full_code = "2-IE2-CCEP_V4";
             $pdf->page_text(40, $y, $doc_full_code, $font, $size, $color);
         }
     </script>
-    {{-- <div class="header">
-        <img class="unam" src="{{ asset('img/unam.jpg') }}">
-        <div class="block" style="text-align: center;">
-            <p style="font-size:12pt;">Coordinación de Centros de Formación y Servicios Psicológicos</p>
-            <p style="font-size:9pt;">CARTA COMPROMISO DEL ESTUDIANTE DE PREGRADO</p>
-        </div>
-        <img class="psico" src="{{ asset('img/psi.jpg') }}">
-    </div> --}}
     @component('pdf.header')
     <p style="font-size:12pt;">CARTA COMPROMISO DEL ESTUDIANTE DE PREGRADO</p>
     @endcomponent
+    <div style="text-align: center;">
+        <b>Programa <i>Extra</i> Curricular</b>
+    </div>
     <div style="line-height: 1.5">
         <br>
         <p>Por este medio, yo {{ Auth::user()->partaker->full_name }}, con número de cuenta {{ Auth::user()->partaker->num_cuenta }}, manifiesto mi compromiso con
