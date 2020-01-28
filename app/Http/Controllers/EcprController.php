@@ -17,7 +17,8 @@ class EcprController extends Controller
         $migajas = [route('home')=>'Inicio', route('users_list', $program_id) => $program->programa, '#'=>'Registrar Cuestionario ECPR'];
         $sections = collect(include('ecpr.php'));
         $ecpr = new Ecpr();
-        return view('partaker.ecpr.create', compact('sections', 'ecpr', 'program_id', 'partaker_id', 'migajas'));
+        $semesters = [5=>'5to semestre', 6=>'6to semestre', 7=>'7mo semestre', 8=>'8vo semestre', 9=>'9no semestre', 10=>'Pasante'];
+        return view('partaker.ecpr.create', compact('sections', 'ecpr', 'program_id', 'partaker_id', 'migajas', 'semesters'));
     }
 
     public function store($program_id, $partaker_id, Request $request)
@@ -41,12 +42,14 @@ class EcprController extends Controller
         $doc = $this->getFormatedEcpr($ecpr);
         $sections = collect(include('ecpr.php'));
 
-        $full_code = '3 - FE1 - ECPR';
+        $full_code = '3-FE1-ECPR_ V4';
 
         $partaker = Partaker::where('num_cuenta', $partaker_id)->first();
         $program = Program::where('id_practica', $program_id)->first();
+        // TODO semesters debe ser estar en archivo de constantes
+        $semesters = [5=>'5to semestre', 6=>'6to semestre', 7=>'7mo semestre', 8=>'8vo semestre', 9=>'9no semestre', 10=>'Pasante'];
 
-        $pdf->loadView('partaker.ecpr.show', compact('doc', 'sections', 'full_code', 'partaker', 'program'));
+        $pdf->loadView('partaker.ecpr.show', compact('doc', 'sections', 'full_code', 'partaker', 'program', 'semesters'));
         return $pdf->stream('ecpr.pdf');
     }
 
@@ -66,7 +69,9 @@ class EcprController extends Controller
         $migajas = [route('home')=>'Inicio', route('users_list', $program_id) => $program->programa, '#'=>'Editar cuestionario ECPR'];
         $sections = collect(include('ecpr.php'));
         $ecpr = Ecpr::where('id', $ecpr)->first();
-        return view('partaker.ecpr.create', compact('sections', 'ecpr', 'program_id', 'partaker_id', 'migajas'));
+        // TODO semesters debe ser estar en archivo de constantes
+        $semesters = [5=>'5to semestre', 6=>'6to semestre', 7=>'7mo semestre', 8=>'8vo semestre', 9=>'9no semestre', 10=>'Pasante'];
+        return view('partaker.ecpr.create', compact('sections', 'ecpr', 'program_id', 'partaker_id', 'migajas', 'semesters'));
     }
 
     public function update($program_id, $partaker_id, Request $request, $ecpr)

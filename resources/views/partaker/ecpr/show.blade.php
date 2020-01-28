@@ -8,9 +8,14 @@
     </div>
     <div>
         <p><span style="font-weight:bold;">Nombre del estudiante: </span>{{ $partaker->full_name }}</p>
-        <p><span style="font-weight:bold;">Semestre que cursa: </span>{{ $doc->semester }}</p>
+        <p><span style="font-weight:bold;">Semestre que cursa: </span>{{ $semesters[$doc->semester] }}</p>
         <p><span style="font-weight:bold;">Fase de evaluación: </span>{{ $doc->evaluation_phase }}</p>
         <p><span style="font-weight:bold;">Supervisor del programa: </span>{{ $program->supervisor->full_name }}</p>
+    </div>
+    <br>
+    <div>
+        <b>Escala:</b>
+        <p>0 - No lo domina, 1 a 4 - En proceso, 5 - Lo domina, 6 - No aplica.</p>
     </div>
     <br>
     <div>
@@ -24,13 +29,14 @@
             </thead>
             <tbody>
                 @foreach ($section['questions'] as $question)
-                    <tr>
+                    <tr style="line-height: 27pt;">
                         <td>{{$question}}</td>
                         <td>{{$doc->{'q'.str_replace('.', '', strstr($question, ' ', true))} }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        <br>
         @endforeach
     </div>
 </section>
