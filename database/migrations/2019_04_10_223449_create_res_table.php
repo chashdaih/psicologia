@@ -16,11 +16,14 @@ class CreateResTable extends Migration
         Schema::create('res', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
-            $table->unsignedInteger('assign_id');
-            $table->unsignedInteger('user_id');
-            $table->string('file_number')->nullable();
+            $table->unsignedInteger('assign_id'); // patient_assign table
+            $table->unsignedInteger('user_id'); // filler
+            // $table->string('file_number')->nullable();
+            $table->text('tecnicas_evaluacion')->nullable();
+            $table->text('resultados_obtenidos')->nullable();
+            $table->text('indicadores_evolucion')->nullable();
             $table->boolean('referencia_necesaria');
-            $table->string('lugar_de_referencia')->nullable();
+            $table->text('tipo_problematica')->nullable();
         });
     }
 

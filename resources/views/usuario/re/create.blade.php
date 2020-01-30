@@ -3,67 +3,69 @@
 @section('content')
 <section class="section">
     <div class="container">
-        <h1 class="title">Resultados de evaluación</h1>
+        <h1 class="title">{{ $process_model->id ? 'Editar' : 'Registrar' }} Resultados de evaluación</h1>
         <form
-        @if($process_model->id)
-        action="{{ route('re.update',  ['patient_id'=>$patient_id, 're'=>$process_model->id]) }}"
-        @else
-        action="{{ route('re.store',  $patient_id) }}"
-        @endif
-        method="POST" enctype="multipart/form-data">
-        @if($process_model->id) <input name="_method" type="hidden" value="PUT"> @endif
+            @if($process_model->id)
+            action="{{ route('re.update',  ['patient_id'=>$patient_id, 're'=>$process_model->id]) }}"
+            @else
+            action="{{ route('re.store',  $patient_id) }}"
+            @endif
+            method="POST" enctype="multipart/form-data">
+            @if($process_model->id) <input name="_method" type="hidden" value="PUT"> @endif
             {{ csrf_field() }}
-            @foreach ($fields as $field_name => $field)
-                @if ($field['type'] == "text")
-                @component('components.text-input', [
-                    'title'=>$field['title'],
-                    'field'=>$field_name,
-                    'errors'=>$errors,
-                    'type'=> 'text',
-                    'prev' => old($field_name, $process_model->$field_name),
-                    'maxlength' => 250
-                    ])@endcomponent
-                @elseif($field['type'] == "date")
-                <date-component
-                    label="{{ $field['title'] }}"
-                    name="{{$field_name}}"
-                    old="{{old($field_name, $process_model->$field_name)}}"
-                    ></date-component>
-                @elseif($field['type'] == "select")
-                <label class="label">{{ $field['title'] }}</label>
+            <div class="field">
+                <label class="label">Número de expediente</label>
                 <div class="control">
-                    <div class="select">
-                        <select name="{{ $field_name }}">
-                            @foreach ($field['options'] as $key=>$value)
-                            <option value="{{ $key }}"
-                            @if($key == old($field_name, $process_model->$field_name)) selected="selected" @endif
-                            >{{ $value }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <input type="text" class="input" value="{{$file_number}}" disabled>
                 </div>
-                @elseif($field['type'] == "area")
-                <text-input class="field" inline-template
-                    {{ $errors->has($field_name) ? ":error=true" : '' }}
-                    title="{{ $field['title'] }}">
-                    <div>
-                    <label class="label">{{ $field['title'] }}</label>
-                    <div class="control">
-                        <textarea name="{{ $field_name }}"
-                            class="textarea{{ $errors->has($field_name)? ' is-danger':'' }}"
-                            placeholder="{{ $field['title'] }}"
-                            v-on:input="clearError"
-                            ref="{{ $field['title'] }}"
-                            @if(isset($field['required']) && $field['required']) required @endif
-                            >{{ old($field_name, $process_model->$field_name) }}</textarea>
-                    </div>
-                    @if ($errors->has($field_name))
-                    <p v-if="hasError" class="help is-danger">{{ $errors->first($field_name) }}</p>
-                    @endif
-                    </div>
-                </text-input>
-                @endif
-            @endforeach
+            </div>
+            <date-component
+                label="Fecha en que se llenó el formato"
+                name="created_at"
+                old="{{old('created_at', $process_model->created_at)}}"
+            ></date-component>
+            <br>
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Instrumentos / Técnicas de evaluación aplicadas</th>
+                        <th>Resultados obtenidos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="width: 50%;">
+                            <textarea class="textarea" name="tecnicas_evaluacion">{{ old('tecnicas_evaluacion', $process_model->tecnicas_evaluacion) }}</textarea>
+                        </td>
+                        <td>
+                            <textarea class="textarea" name="resultados_obtenidos">{{ old('resultados_obtenidos', $process_model->resultados_obtenidos) }}</textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="field">
+                <label class="label">Indicadores de evolución</label>
+                <div class="control">
+                    <textarea class="textarea" name="indicadores_evolucion" placeholder="Indicadores de evolución">{{ old('indicadores_evolucion', $process_model->resultados_obtenidos) }}</textarea>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">¿Fue necesario hacer referencia?</label>
+                <div class="control">
+                  <div class="select">
+                    <select name="referencia_necesaria">
+                      <option value="0" {{ old('referencia_necesaria', $process_model->referencia_necesaria) == 0 ? 'selected' : '' }} >No</option>
+                      <option value="1" {{ old('referencia_necesaria', $process_model->referencia_necesaria) == 1 ? 'selected' : '' }} >Si</option>
+                    </select>
+                  </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Impresión diagnóstica o tipo de problemática</label>
+                <div class="control">
+                    <textarea class="textarea" name="tipo_problematica" placeholder="Impresión diagnóstica o tipo de problemática">{{ old('tipo_problematica', $process_model->tipo_problematica) }}</textarea>
+                </div>
+            </div>
             <small-file
                 name="file"
                 serv_error="{{ $errors->has('file') ? $errors->first('file') : '' }}"

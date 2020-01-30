@@ -33,10 +33,12 @@ class ReController extends Controller
 
     public function create($patient_id)
     {
-        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('re.index', $patient_id) => 'RE', '#'=>'Registrar RE'];
-        $fields = $this->getFields();
+        $patient = Patient::where('id', $patient_id)->first();
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Personas atendidas', route('usuario.show', $patient_id)=>$patient->fdg->full_name, route('re.index', $patient_id) => 'RE', '#'=>'Registrar RE'];
+        // $fields = $this->getFields();
+        $file_number = $patient->fdg->file_number;
         $process_model = new Re();
-        $data = compact('fields', 'process_model', 'migajas', 'patient_id');
+        $data = compact('process_model', 'migajas', 'patient_id', 'file_number');
         return view('usuario.re.create', $data);
     }
 
@@ -44,15 +46,11 @@ class ReController extends Controller
     {
         $this->validate($request, [
             'created_at' => 'required|date',
-            'file_number' => 'nullable|string',
+            // 'file_number' => 'nullable|string',
             'referencia_necesaria' => 'required|boolean',
-            'lugar_de_referencia' => 'nullable|string|max:255',
+            // 'lugar_de_referencia' => 'nullable|string|max:255',
             'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
-        // $fields = collect($request->except(['_token', '_method']))->toArray();
-        // $fields['user_id'] = Auth::user()->id;
-        // $re = Re::create($fields);
-        // Patient::where('id', $patient_id)->update(['re_id'=>$re->id]);
         
         $assign = PatientAssign::where('patient_id', $patient_id)->where('process_code', 're')->orderBy('created_at', 'desc')->first();
         $assign_id = $assign->id;
@@ -75,21 +73,25 @@ class ReController extends Controller
 
     public function show($patient_id, $re)
     {
+        $patient = Patient::where('id', $patient_id)->first();
         $pdf = \App::make('dompdf.wrapper');
         $pdf->getDomPDF()->set_option("enable_php", true);
 
         $doc = Re::where('id', $re)->first();
-
-        $pdf->loadView('usuario.re.show', compact('doc'));
+        $full_code = "3-FE5-RE_V4";
+        $pdf->loadView('usuario.re.show', compact('doc', 'patient', 'full_code'));
         return $pdf->stream('fe5re.pdf');
     }
 
     public function edit($patient_id, $re)
     {
-        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Usuarios', route('re.index', $patient_id) => 'RE', '#'=>'Registrar RE'];
-        $fields = $this->getFields();
+        $patient = Patient::where('id', $patient_id)->first();
+        $migajas = [route('home')=>'Inicio', route('usuario.index')=>'Personas atendidas', route('usuario.show', $patient_id)=>$patient->fdg->full_name, route('re.index', $patient_id) => 'RE', '#'=>'Editar RE'];
+        // $fields = $this->getFields();
+        $file_number = $patient->fdg->file_number;
+        // $fields = $this->getFields();
         $process_model = Re::where('id', $re)->first();
-        $data = compact('fields', 'process_model', 'migajas', 'patient_id');
+        $data = compact('process_model', 'migajas', 'patient_id', 'file_number');
         return view('usuario.re.create', $data);
     }
 
@@ -97,13 +99,11 @@ class ReController extends Controller
     {
         $this->validate($request, [
             'created_at' => 'required|date',
-            'file_number' => 'nullable|string',
+            // 'file_number' => 'nullable|string',
             'referencia_necesaria' => 'required|boolean',
-            'lugar_de_referencia' => 'nullable|string|max:255',
+            // 'lugar_de_referencia' => 'nullable|string|max:255',
             'file' => 'nullable|mimes:jpg,jpeg,bmp,png,gif,svg,pdf|max:14000'
         ]);
-        // $values = collect($request->except(['_token', '_method']))->toArray();
-        // Re::where('id', $re)->update($values);
         
         $fields = collect($request->except(['_token', '_method', 'file']))->toArray();
         $fields['user_id'] = Auth::user()->id;
