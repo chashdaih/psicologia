@@ -20,7 +20,7 @@ Route::get('cdrneeded/{centerId}', 'UsuarioController@cdrNeeded');
 Route::get('programneeded/{centerId}', 'UsuarioController@programNeeded');
 
 Route::resource('/usuario', 'UsuarioController');
-Route::get('/usuario/{patientId}/patientExcel', 'UsuarioController@patientExcel')->name('patientExcel');
+// Route::get('/usuario/{patientId}/patientExcel', 'UsuarioController@patientExcel')->name('patientExcel');
 Route::get('/usuario/search/{searchTerm}', 'UsuarioController@search');
 Route::get('excel/programs', 'UsuarioController@programsExcel')->name('programs_excel');
 Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], function() {
@@ -41,9 +41,11 @@ Route::group(['prefix' => 'excel', 'middleware' => 'auth'], function() {
     Route::get('cdr/{patientId}', 'ExcelController@cdr')->name('cdre');
     Route::get('ps/{ps}', 'ExcelController@ps')->name('pse');
     Route::get('re/{id}', 'ExcelController@re')->name('ree');
-    Route::get('breve/{id}', 'ExcelController@breve')->name('brevee');
+    Route::get('rs/{id}', 'ExcelController@rs')->name('rse');
     Route::get('he/{id}', 'ExcelController@he')->name('hee');
     Route::get('cssp/{id}', 'ExcelController@cssp')->name('csspe');
+
+    Route::get('patient/{patientId}', 'ExcelController@patientAll')->name('patiente');
 });
 
 Route::get('/recepcion/{centerId}', 'UsuarioController@recepcion', ['middleware' => 'auth'])->name('recepcion');
@@ -108,8 +110,8 @@ Route::get('/clear-cache', function() {
     return 'DONE'; //Return anything
 });
 
-// use App\User;
-// use App\Partaker;
+use App\User;
+use App\Partaker;
 
 // Route::get('/update_users', function() {
 //     $users = User::where('type', 3)->get();
@@ -131,3 +133,16 @@ Route::get('/clear-cache', function() {
 //     }
 //     dd($users);
 // });
+
+Route::get('/create-missing-users', function() {
+    $partakers = Partaker::where('registro_extemporaneo', '>', 20000)->get();
+    foreach ($partakers as $partaker) {
+        if (!$partaker->user) {
+            User::create([
+                'type' => 3,
+                'email' => $partaker->correo,
+                'password' => bcrypt($partaker->num_cuenta)
+                ]);
+        }
+    }
+});

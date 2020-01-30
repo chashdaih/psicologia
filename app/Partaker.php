@@ -35,4 +35,9 @@ class Partaker extends Model
     {
         return $this->belongsToMany('App\Program', 'asigna_practica', 'id_participante', 'id_practica');
     }
+
+    public function user()
+    {
+        return $this->hasOne('App\User', 'email', 'correo');
+    }
 }
