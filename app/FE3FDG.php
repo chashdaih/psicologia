@@ -14,7 +14,7 @@ class FE3FDG extends Model
     protected $relationships = ['Madre', 'Padre', 'Tutor'];
     protected $studyLevels = ['No cuenta con escolaridad', 'Preescolar', 'Primaria', 'Secundaria', 'Preparatoria', 'Licenciatura', 'Posgrado'];
     protected $houseStatus = ['Otra', 'Propia', 'Propia, pero la está pagando', 'Rentada', 'Prestada', 'Intestada o en litigio'];
-    protected $serviceTypes = ['Orientación/Consejo breve', 'Evaluación', 'Taller', 'Intervención'];
+    protected $serviceTypes = ['Orientación/Consejo breve', 'Evaluación', 'Intervención'];
     protected $modalities = ['Individual/Grupal', 'Familiar/Pareja'];
     protected $times = ['Matutino', 'Vespertino', 'Indiferente'];
     

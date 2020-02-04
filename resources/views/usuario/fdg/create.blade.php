@@ -606,7 +606,7 @@
                     @component('components.array-sel', [
                         'title'=>'Tipo de servicio',
                         'field'=>'service_type',
-                        'options'=> ['Orientación/Consejo breve', 'Evaluación', 'Taller', 'Intervención'],
+                        'options'=> ['Orientación/Consejo breve', 'Evaluación', 'Intervención'],
                         'errors'=>$errors,
                         'prev'=>isset($fdg)?$fdg->service_type:null
                     ])@endcomponent

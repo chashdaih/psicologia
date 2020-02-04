@@ -26,10 +26,9 @@ class PsController extends Controller
         $this->interventions = [
             new Option(1, "Orientación/Consejo"),
             new Option(2, "Evaluación"),
-            new Option(3, "Taller"),
-            new Option(4, "Intervención breve"),
-            new Option(5, "Psicoterapia"),
-            new Option(6, "Intervención Psicoeducativa")
+            new Option(3, "Intervención breve"),
+            new Option(4, "Psicoterapia"),
+            new Option(5, "Intervención Psicoeducativa")
         ];
         $this->service_modality = [
             new Option(1, "Individual"),

@@ -18,7 +18,7 @@ class FE3FDGController extends Controller
     protected $relationship = ['de la madre', 'del padre', 'del tutor'];
     protected $studies_level = ['No cuenta con escolaridad', 'Preescolar', 'Primaria', 'Secundaria', 'Preparatoria', 'Licenciatura', 'Posgrado'];
     protected $house_is = ['Otra', 'Propia', 'Propia, pero la está pagando', 'Rentada', 'Prestada', 'Intestada o en litigio'];
-    protected $service_type = ['Orientación/Consejo breve', 'Evaluación', 'Taller', 'Intervención'];
+    protected $service_type = ['Orientación/Consejo breve', 'Evaluación', 'Intervención'];
     protected $service_modality = ['Individual/Grupal', 'Familiar/Pareja'];
     protected $mhGAP_cause_classification = ['Depresión', 'Psicosis', 'Epilepsia', 'Transtornos mentales y conductuales del niño y el adolescente', 'Demencia', 'Transtornos por el consumo de sustancias', 'Autolesión/Suicidio', 'Otros padecimientos de salud importantes'];
     protected $type_previous_treatment = ['Psicológica', 'Psiquiátrica', 'Médica', 'Neurológica', 'Otra'];

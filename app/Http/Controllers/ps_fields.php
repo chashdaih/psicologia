@@ -7,7 +7,7 @@ return [
     'tipo_de_intervencion' => [
         'title' => 'Tipo de intervención',
         'type' => 'select',
-        'options' => ['Orientación/Consejo', 'Evaluación', 'Taller', 'Intervención breve', 'Psicoterapia', 'Intervención Psicoeducativa']
+        'options' => ['Orientación/Consejo', 'Evaluación', 'Intervención breve', 'Psicoterapia', 'Intervención Psicoeducativa']
     ],
     'modelo_psicoterapia' => [
         'title' => 'Si el tipo de intervención es  psicoterapia, ¿cuál es el modelo?',
