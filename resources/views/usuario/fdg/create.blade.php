@@ -59,23 +59,27 @@
                     <article class="message is-danger">
                         <div class="message-header">Atención</div>
                         <div class="message-body">
-                            <p>El número de expediente sigue el formato {{ $yearLastDigits }}-0000</p>
-                            <p>El sistema coloca automáticamente el año y el centro.</p>
-                            <p>Por favor, introduce solamente los últimos dígitos del expediente.</p>
+                            <p>El número de expediente sigue el formato 00-0000</p>
+                            <p>Por favor, introduce los 4 dígitos del expediente.</p>
                         </div>
                     </article>
                     <label class="label">No. expediente</label>
                     <div class="field has-addons">
-                        <div class="control">
-                            <input type="text" class="input" value="{{$yearLastDigits}} - " disabled style="max-width: 50px;">
-                        </div>
-                        <!-- <span class="select">
-                            <select disabled><option>20 - </option></select>
-                        </span> -->
+                        <span class="select">
+                            <select name="file_year" >
+                                @foreach ($years as $year)
+                                <option value="{{$year}}"
+                                    @if ( old('file_year', isset($fdg)?$fdg->file_year:null) == $year )
+                                    selected="selected"
+                                    @endif
+                                    >{{$year}}</option>
+                                @endforeach
+                            </select>
+                        </span>
                         <div class="control">
                             <numeric-input
                                 name="file_number"
-                                value="{{substr(old('file_number', isset($fdg) ? $fdg->file_number : $yearLastDigits), 3)}}"
+                                value="{{old('file_number', isset($fdg) ? $fdg->file_number : '')}}"
                                 clazz="input {{$errors->has('file_number')? ' is-danger':'' }}"
                                 max=9999
                             />
@@ -538,19 +542,25 @@
                         'errors'=>$errors,
                         'prev'=>isset($fdg)?$fdg->household_members:null
                     ])@endcomponent
+                    <br>
+                    <p class="label">Ingreso familiar mensual</p>
                     <article class="message is-info">
                         <div class="message-body">
-                            <p>Por favor, solo ingrese números enteros.</p>
-                            <p>El sistema agrega el signo de pesos y los centavos.</p>
+                            <p>Por favor, solo ingrese números enteros, sin comas ni puntos.</p>
                         </div>
                     </article>
-                    @component('components.text-input', [
-                        'title'=>'Ingreso familiar mensual',
-                        'field'=>'monthly_family_income',
-                        'errors'=>$errors,
-                        'type'=> 'text',
-                        'prev'=> isset($fdg) ? $fdg->monthly_family_income : null
-                    ])@endcomponent
+                    <div class="field has-addons">
+                        <p class="control">
+                            <a class="button is-static">$</a>
+                        </p>
+                        <p class="control">
+                            <input type="number" min="0" max="99999" class="input{{ $errors->has('monthly_family_income')? ' is-danger':'' }}" type="text" placeholder="Ingreso familiar mensual" name="monthly_family_income" value="{{ old('monthly_family_income', isset($fdg) ? $fdg->monthly_family_income : null) }}" />
+                        </p>
+                        @if ($errors->has('monthly_family_income'))
+                        <p class="help is-danger">{{ $errors->first('monthly_family_income') }}</p>
+                        @endif
+                    </div>
+                    <br>
                     @component('components.array-sel', [
                         'title'=>'Número de personas que aportan a este ingreso (contando la persona que requiere el servicio)',
                         'field'=>'number_people_contributing',

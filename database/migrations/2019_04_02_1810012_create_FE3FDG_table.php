@@ -18,6 +18,7 @@ class CreateFe3fdgTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('user_id'); // account who made the interview
             $table->string('other_filler')->nullable();
+            $table->smallInteger('file_year')->nullable();
             $table->string('file_number')->nullable();
             $table->unsignedTinyInteger('center_id'); // where was registered
             //$table->unsignedBigInteger('program_id');

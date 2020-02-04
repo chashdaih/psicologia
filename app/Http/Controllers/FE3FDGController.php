@@ -42,35 +42,63 @@ class FE3FDGController extends Controller
     public function create($id)
     {
         $centers = Building::all();
-        $preferedCenter = null;
+        $preferedCenter = $this->getPreferedCenter();
+        $years = $this->getYears();
+        $migajas = [route('home') => 'Inicio', route('usuario.index')=>'Personas atendidas','#' => 'Nueva ficha de datos generales'];
+        return view('usuario.fdg.create', compact('migajas', 'centers', 'preferedCenter', 'years'));
+    }
+
+    public function edit($patient_id, $id)
+    {
+        $years = $this->getYears();
+        $fdg = FE3FDG::where('id', $id)->first();
+        $patient = Patient::where('id', $patient_id)->first();
+        $centers = Building::all();
+        $migajas = [route('home') => 'Inicio', route('usuario.index')=>'Personas atendidas', route('usuario.show', $patient_id)=>$patient->fdg->full_name,'#' => 'Editar ficha de datos generales'];
+        return view('usuario.fdg.create', compact('migajas', 'fdg', 'centers', 'years'));
+    }
+
+    private function getPreferedCenter()
+    {
         if (Auth::user()->type == 3) { // participante
             $partaker_id = Auth::user()->partaker->num_cuenta;
             $partPrograms = ProgramPartaker::where('id_participante', $partaker_id)->where('ciclo_activo', config('globales.semestre_activo'))->first();
             if ($partPrograms) {
-                $preferedCenter = $partPrograms->program->id_centro;
+                return $partPrograms->program->id_centro;
+            } else {
+                return null;
             }
         } else {
-            $preferedCenter = Auth::user()->supervisor->id_centro;
+            return Auth::user()->supervisor->id_centro;
         }
-        $yearLastDigits = Carbon::now()->format('y');
-        $migajas = [route('home') => 'Inicio', route('usuario.index')=>'Personas atendidas','#' => 'Nueva ficha de datos generales'];
-        return view('usuario.fdg.create', compact('migajas', 'centers', 'preferedCenter', 'yearLastDigits'));
-
-        // $program_id = $id;
-        // $program = Program::where('id_practica', $id)->first();
-        // $migajas = [route('home') => 'Inicio', route('patient.index', ['program_id' => $program_id]) => $program->programa, '#' => 'Nueva ficha de datos generales'];
-        // return view('procedures.3.fe.3.fdg.create', compact('program_id', 'migajas'));
     }
 
-    public function store(Request $request, $id)
+    private function getYears()
     {
-        $lastYearDigits = Carbon::now()->format('y');
-        $request->merge(['file_number' => $lastYearDigits."-".$request->get('file_number')]);
-        $this->validateForm();
+        $years = [];
+        $startingYear = 19;
+        $currentYear = Carbon::now()->format('y');
+        for ($y = $currentYear; $y>= $startingYear; $y--) {
+            array_push($years, $y);
+        }
+        return $years;
+    }
+
+    public function store(Request $request, $patient_id)
+    {
+        $this->validateForm(null);
         $parameters = collect($request)->toArray() + ['user_id' => auth()->id()];
         $fdg = FE3FDG::create($parameters);
         Patient::create(['fdg_id' => $fdg->id]);
         return redirect()->route('usuario.index')->with('success', 'Usuario registrado exitosamente');
+    }
+
+    public function update($patient_id, $id, Request $request)
+    {
+        $this->validateForm($id);
+        $values = collect($request->except(['_token', '_method']))->toArray();
+        FE3FDG::where('id', $id)->update($values);
+        return redirect()->route('usuario.index')->with('success', 'Ficha de datos generales actualizada exitosamente');
     }
 
     public function show($patient_id, $id)
@@ -83,49 +111,18 @@ class FE3FDGController extends Controller
         return $pdf->stream('fdg.pdf');
     }
 
-    public function edit($patient_id, $id)
-    {
-        $yearLastDigits = Carbon::now()->format('y');
-        $fdg = FE3FDG::where('id', $id)->first();
-        $patient = Patient::where('id', $patient_id)->first();
-        $centers = Building::all();
-        $migajas = [route('home') => 'Inicio', route('usuario.index')=>'Personas atendidas', route('usuario.show', $patient_id)=>$patient->fdg->full_name,'#' => 'Editar ficha de datos generales'];
-        return view('usuario.fdg.create', compact('migajas', 'fdg', 'centers', 'yearLastDigits'));
-
-        // $program_id = $id;
-        // $program = Program::where('id_practica', $id)->first();
-        // $fdg = FE3FDG::where('id', $fdg)->first();
-        // $migajas = [route('home') => 'Inicio', route('patient.index', ['program_id' => $program_id]) => $program->programa, '#' => $fdg->full_name];
-        // return view('procedures.3.fe.3.fdg.create', compact('program_id', 'fdg', 'migajas'));
-    }
-
-    public function update($patient_id, $id, Request $request)
-    {
-        $lastYearDigits = Carbon::now()->format('y');
-        $request->merge(['file_number' => $lastYearDigits."-".$request->get('file_number')]);
-        $this->validateForm();
-        $values = collect($request->except(['_token', '_method']))->toArray();
-        FE3FDG::where('id', $id)->update($values);
-        return redirect()->route('usuario.index')->with('success', 'Ficha de datos generales actualizada exitosamente');
-
-        // $this->validateForm();
-        // $values = collect($request->except(['_token', '_method']))->toArray();
-        // FE3FDG::where('id', $id)->update($values);
-        // return redirect()->route('fe.index', ['program_id'=>$program_id, 'patient_id'=>$id])->with('success', 'Resultados de evaluación actualizados exitosamente');
-        
-    }
-
     public function destroy(FE3FDG $fe3fdg)
     {
         //
     }
 
-    protected function validateForm()
+    protected function validateForm($id)
     {
         return $this->validate(request(), [
             'center_id' => 'required|integer|min:1|max:255',
             'other_filler' => 'nullable|string|max:255',
-            'file_number' => 'required|string|unique:fe3fdg',
+            'file_year' => 'required|integer',
+            'file_number' => 'required|string|multiple_unique:'.FE3FDG::class.','.$id.',file_year,file_number',
             'created_at' => 'required|date',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
