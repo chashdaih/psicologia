@@ -122,7 +122,7 @@ class FE3FDGController extends Controller
             'center_id' => 'required|integer|min:1|max:255',
             'other_filler' => 'nullable|string|max:255',
             'file_year' => 'required|integer',
-            'file_number' => 'required|string|multiple_unique:'.FE3FDG::class.','.$id.',file_year,file_number',
+            'file_number' => 'required|string|multiple_unique:'.FE3FDG::class.','.$id.',file_year,file_number,center_id',
             'created_at' => 'required|date',
             'name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
