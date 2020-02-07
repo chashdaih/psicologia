@@ -102,8 +102,9 @@ class PsController extends Controller
         $pdf->getDomPDF()->set_option("enable_php", true);
 
         $doc = $this->getFormatedPs($ps);
+        $full_code="3-FE4-PS_V4";
 
-        $pdf->loadView('usuario.ps.show', compact('doc'));
+        $pdf->loadView('usuario.ps.show', compact('doc', 'full_code'));
         return $pdf->stream('plan_de_servicio.pdf');
     }
 

@@ -18,7 +18,11 @@
     </div>
     <div>
         <p style="font-weight:bold;text-align:center;">Sugerencias de intervención</p>
-        <p>{{ $doc->sugerencias_de_intervencion }}</p>
+        <pre style="font-size: inherit;
+        color: inherit;
+        border: initial;
+        padding: initial;
+        font-family: inherit;">{{ $doc->sugerencias_de_intervencion }}</pre>
     </div>
 </section>
 @endsection
