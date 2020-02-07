@@ -4,10 +4,16 @@
 <section class="section">
     <h3 style="text-align:center;">Cuestionario de detección de riesgos en la salud física y mental</h3>
     <div style="text-align:right;">
-        <p><span style="font-weight:bold;">No. expediente: </span>{{ $process_model->file_number }}</p>
-        <p><span style="font-weight:bold;">No. Cuenta/No. Trabajador/CURP:</span> {{ $doc->fdg->curp }}</p>
         <p><span style="font-weight:bold;">Fecha de registro: </span>{{ $process_model->created_at->format('d/m/Y') }}</p>
+        <p><span style="font-weight:bold;">No. expediente: </span>{{$doc->fdg->file_year}} - {{ $doc->fdg->file_number }}</p>
+        <p><span style="font-weight:bold;">Nombre del usuario:</span> {{ $doc->fdg->full_name }}</p>
         <br>
+    </div>
+    <div>
+        <b>Escala</b>
+        <p>&nbsp;0 - No me pasa en lo absoluto</p>
+        <p>&nbsp;1 - Me pasa muy poco</p>
+        <p>10 - Me pasa siempre</p>
     </div>
     <div>
         @foreach ($sections as $section)
@@ -83,6 +89,20 @@
                         <td style="width:90%">{{$question}}</td>
                         <td>{{ $process_model->{$section['code'].strtok($question, '.')} }}</td>
                     </tr>
+                    @if ($section['code']=='sui')
+                    <tr>
+                        <td style="width:90%">- En el último mes</td>
+                        <td>{{ $process_model->{'sui'.strtok($question, '.').'m'} ? 'Si' : 'No'}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:90%">- En el último año</td>
+                        <td>{{ $process_model->{'sui'.strtok($question, '.').'y'} ? 'Si' : 'No'}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:90%">- ¿Cuándo empezaron?</td>
+                        <td>{{ $process_model->{'sui'.strtok($question, '.').'w'} }}</td>
+                    </tr>
+                    @endif
                     @endforeach
                 @endif
                 @if (array_key_exists('boolean', $sub))
@@ -91,6 +111,20 @@
                         <td style="width:90%">{{$question}}</td>
                         <td>{{ $process_model->{$section['code'].strtok($question, '.')} ? 'Si' : 'No'}}</td>
                     </tr>
+                    @if ($section['code']=='sui')
+                    <tr>
+                        <td style="width:90%">- En el último mes</td>
+                        <td>{{ $process_model->{'sui'.strtok($question, '.').'m'} ? 'Si' : 'No'}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:90%">- En el último año</td>
+                        <td>{{ $process_model->{'sui'.strtok($question, '.').'y'} ? 'Si' : 'No'}}</td>
+                    </tr>
+                    <tr>
+                        <td style="width:90%">- ¿Cuándo empezaron?</td>
+                        <td>{{ $process_model->{'sui'.strtok($question, '.').'w'} }}</td>
+                    </tr>
+                    @endif
                     @endforeach
                 @endif
                 </tbody>

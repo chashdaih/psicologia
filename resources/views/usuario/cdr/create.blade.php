@@ -24,14 +24,14 @@
             'maxlength' => 255,
         ])@endcomponent
         @endif
-        @component('components.text-input', [
+        {{-- @component('components.text-input', [
             'title'=>'No. expediente',
             'field'=>'file_number',
             'errors'=>$errors,
             'type'=> 'text',
             'prev' => old('file_number', isset($process_model) ? $process_model->file_number : null),
             'maxlength' => 255
-        ])@endcomponent
+        ])@endcomponent --}}
         <date-component
             label="Fecha de llenado"
             name="created_at"
@@ -171,6 +171,45 @@
                             </div>
                         </td>
                     </tr>
+                    @if ($section['code']=='sui')
+                    <tr>
+                        <td>En el último mes</td>
+                        <td>
+                            <div class="select">
+                                <select name="{{'sui'.strtok($question, '.').'m'}}" >
+                                    <option value="0">NO</option>
+                                    <option value="1"
+                                    @if( old( 'sui'.strtok($question, '.').'m',  isset($process_model) ? $process_model->{'sui'.strtok($question, '.').'m'} : 0) == "1" )
+                                    selected
+                                    @endif
+                                   >SI</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>En el último año</td>
+                        <td>
+                            <div class="select">
+                                <select name="{{'sui'.strtok($question, '.').'y'}}" >
+                                    <option value="0">NO</option>
+                                    <option value="1"
+                                    @if( old( 'sui'.strtok($question, '.').'y',  isset($process_model) ? $process_model->{'sui'.strtok($question, '.').'y'} : 0) == "1" )
+                                    selected
+                                    @endif
+                                   >SI</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>¿Cuándo empezaron?</td>
+                        <td>
+                            <input class="input" type="text" placeholder="¿Cuándo empezaron?" value="{{ old( 'sui'.strtok($question, '.').'w',  isset($process_model) ? $process_model->{'sui'.strtok($question, '.').'w'} : '') }}" name="{{'sui'.strtok($question, '.').'w'}}" />
+                        </td>
+                    </tr>
+                    <tr><td></td><td></td></tr>
+                    @endif
                     @endforeach
                 @endif
                 @if (array_key_exists('boolean', $sub))
@@ -190,6 +229,45 @@
                             </div>
                         </td>
                     </tr>
+                    @if ($section['code']=='sui')
+                    <tr>
+                        <td>En el último mes</td>
+                        <td>
+                            <div class="select">
+                                <select name="{{'sui'.strtok($question, '.').'m'}}" >
+                                    <option value="0">NO</option>
+                                    <option value="1"
+                                    @if( old( 'sui'.strtok($question, '.').'m',  isset($process_model) ? $process_model->{'sui'.strtok($question, '.').'m'} : 0) == "1" )
+                                    selected
+                                    @endif
+                                   >SI</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>En el último año</td>
+                        <td>
+                            <div class="select">
+                                <select name="{{'sui'.strtok($question, '.').'y'}}" >
+                                    <option value="0">NO</option>
+                                    <option value="1"
+                                    @if( old( 'sui'.strtok($question, '.').'y',  isset($process_model) ? $process_model->{'sui'.strtok($question, '.').'y'} : 0) == "1" )
+                                    selected
+                                    @endif
+                                   >SI</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>¿Cuándo empezaron?</td>
+                        <td>
+                            <input class="input" type="text" placeholder="¿Cuándo empezaron?" value="{{ old( 'sui'.strtok($question, '.').'w',  isset($process_model) ? $process_model->{'sui'.strtok($question, '.').'w'} : '') }}" name="{{'sui'.strtok($question, '.').'w'}}" />
+                        </td>
+                    </tr>
+                    <tr><td></td><td></td></tr>
+                    @endif
                     @endforeach
                 @endif
                 </tbody>
