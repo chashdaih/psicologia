@@ -95,6 +95,41 @@ class Fe3cdrController extends Controller
         //
     }
 
+    public function upCI(Request $request, $id)
+    {
+        // dd($request);   
+        if ($request->file("ci-file")) {
+            $extension = $request->file("ci-file")->extension();
+            $file_folder = 'public/patients/'.$id;
+            $file_name ='ci.'.$extension;
+            $request->file("ci-file")->storeAs($file_folder, $file_name);
+        } else {
+            dd('no hay archivo');
+        }
+
+        return redirect()->route('usuario.show', $id)->with('success', 'Consentimiento informado subido exitosamente');
+    }
+
+    public function downCI($id)
+    {
+        $base_path = public_path() . '/storage/patients/'.$id.'/ci.';
+        $extension = '';
+        if (file_exists($base_path.'jpeg')) {
+            $extension = 'jpeg';
+        } else if (file_exists($base_path.'jpg')) {
+            $extension = 'jpg';
+        }else if (file_exists($base_path.'pdf')) {
+            $extension = 'pdf';
+        }else if (file_exists($base_path.'docx')) {
+            $extension = 'docx';
+        }else if (file_exists($base_path.'doc')) {
+            $extension = 'doc';
+        }else if (file_exists($base_path.'png')) {
+            $extension = 'png';
+        }
+        return response()->download($base_path.$extension);
+    }
+
     private function removeUneededFields($patient_id, $sections) {
         
         $age = Patient::where('id', $patient_id)->first()->fdg->birthdate->age;

@@ -34,6 +34,9 @@ Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], funct
     Route::resource('cssp', 'CsspController');
 
     Route::get('descargar-archivo/{clave}/{id}/{extension}', 'UsuarioController@bajarDocumento')->name('usuario.bajar');
+
+    Route::post('upCI', 'Fe3cdrController@upCI')->name('upCI');
+    Route::get('downCI', 'Fe3cdrController@downCI')->name('downCI');
 });
 
 Route::group(['prefix' => 'excel', 'middleware' => 'auth'], function() {

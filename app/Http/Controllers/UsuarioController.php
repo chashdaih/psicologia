@@ -216,7 +216,18 @@ class UsuarioController extends Controller
             $data['centers'] = Building::all();
         }
 
+        $data['noCI'] = $this->checkForCI($id);
+
         return view('usuario.show', $data);
+    }
+
+    private function checkForCI($id)
+    {
+        $base_path = public_path() . '/storage/patients/'.$id.'/ci.';
+        if (file_exists($base_path.'jpeg') || file_exists($base_path.'jpg') || file_exists($base_path.'pdf') || file_exists($base_path.'doc')) {
+            return false;
+        }
+        return true;
     }
 
 
@@ -256,8 +267,27 @@ class UsuarioController extends Controller
 
     public function search($searchTerm)
     {
+        $userType = Auth::user()->type;
+        // if ($userType == 3) {
+        //     dd(Auth::user()->partaker->programs);
+        // } else if ($userType == 2) {
+        //     // TODO no existe ese programs
+        //     dd(Auth::user()->supervisor->programs);
+        // } else if ($userType == 5) {
+            // dd(Auth::user()->supervisor->center->id_centro);
+        // }
         return DB::table('patients as p')->join('fe3fdg as d', 'p.fdg_id', 'd.id')
             ->select('p.id', 'd.file_number', DB::raw("CONCAT(d.name, ' ', d.last_name, ' ', d.mothers_name) AS full_name"))
+            ->when($userType == 5, function ($query) {
+                return $query->where('d.center_id', Auth::user()->supervisor->center->id_centro);
+            })
+            ->when($userType == 3, function ($query) {
+                dd(Auth::user()->partaker->programs->toArray());
+                // TODO where los no asignados sean del centro donde tiene prácticas o los asignados a programas donde está inscrito
+            })
+            ->when($userType == 2, function ($query) {
+                // TODO where los no asignados donde tenga programas o los asignados a sus programas
+            })
             ->where('d.file_number', 'LIKE', "%{$searchTerm}%")
             ->orWhere('d.name', 'LIKE', "%{$searchTerm}%")
             ->orWhere('d.last_name', 'LIKE', "%{$searchTerm}%")
@@ -280,18 +310,18 @@ class UsuarioController extends Controller
                 // $sheet->row(3, $fe3_3_1);
                 // $sheet->row(4, $fe3_3_1_e);
 
-    public function patientExcel($patientId)
-    {
-        $patient = Patient::where('id', $patientId)->first();
-        $fdgFields = $this->formatFdgFields($patient);
-        $cdrFields = $this->formatCdrFields($patient);
-        $allFields = array_merge($fdgFields, $cdrFields);
-        Excel::create('Listado', function($excel) use ($allFields) {
-            $excel->sheet('FE3-FE8 SERVICIOS', function($sheet) use ($allFields) {
-                $sheet->row(5, $allFields);
-            });
-        })->download('xlsx');
-    }
+    // public function patientExcel($patientId)
+    // {
+    //     $patient = Patient::where('id', $patientId)->first();
+    //     $fdgFields = $this->formatFdgFields($patient);
+    //     $cdrFields = $this->formatCdrFields($patient);
+    //     $allFields = array_merge($fdgFields, $cdrFields);
+    //     Excel::create('Listado', function($excel) use ($allFields) {
+    //         $excel->sheet('FE3-FE8 SERVICIOS', function($sheet) use ($allFields) {
+    //             $sheet->row(5, $allFields);
+    //         });
+    //     })->download('xlsx');
+    // }
 
     public function recepcion($centerId)
     {
@@ -377,7 +407,7 @@ class UsuarioController extends Controller
         return Patient::whereHas('assigned', function($q) use ($programId) {
             return $q->where('program_id', $programId);
         })
-        ->join('fe3fdg', 'fdg_id', 'fe3fdg.id')
+        ->leftJoin('fe3fdg', 'fdg_id', 'fe3fdg.id')
         ->select('patients.id', 'file_number','name', 'last_name', 'mothers_name')
         ->get()->toArray();
         

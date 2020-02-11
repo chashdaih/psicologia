@@ -3,10 +3,10 @@
 <section class="section">
     <div class="container">
         <h1 class="title">{{$patient->fdg->full_name}}</h1>
-        {{-- <a href="{{route('patientExcel', $patient->id)}}" class="button is-success">
+        <a href="{{route('patiente', $patient->id)}}" class="button is-success">
                 <span class="icon"><fai icon="file-excel" size="1x" /></span>
                 <span>Generar excel de todos los procesos para la persona atendida</span>
-        </a> --}}
+        </a>
         <br><br>
         <div class="card">
         <div class="tile">
@@ -86,6 +86,18 @@
                         <article class="tile is-child notification has-text-centered">
                         <p class="title">FE4 - Admisión</p>
                         <a href={{ route('ps.index', $patient->id) }} class="button is-info is-fullwidth is-medium">PS - Plan de servicios</a>
+                        
+                        <p class="has-text-weight-bold">CI - Consentimiento informado</p>
+                        <upload-ci url="{{ route('upCI', ['patient_id'=>$patient->id]) }}"></upload-ci>
+                        <br>
+                        <div class="field">
+                                <a href={{ route('downCI', ['patient_id'=>$patient->id]) }} 
+                                        class="button is-link" @if($noCI) disabled @endif >
+                                        <span class="icon"><fai icon="file-code" size="1x" /></span>
+                                        <span>Descargar CI</span>
+                                </a>
+                        </div>
+
                         </article>
                 </div>
                 <div class="tile is-parent">
