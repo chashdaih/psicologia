@@ -16,7 +16,11 @@ export default {
             default: null
         },
         'room': { type: String },
-        'time': { type: String }
+        'time': { type: String },
+        'times': {
+            type: Array,
+            default: ['8:00:00', '9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00']
+        }
     },
     data() {
         return {
@@ -28,8 +32,8 @@ export default {
             if (this.appointment) {
                 eventBus.$emit('cancel-modal', this.appointment);
             } else {
-                let times = ['8:00:00', '9:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00'];
-                eventBus.$emit('detail-modal', {room: this.room, time:times[this.time]});
+                // let times = ;
+                eventBus.$emit('detail-modal', {room: this.room, time:this.times[this.time]});
             }
         }
     },
