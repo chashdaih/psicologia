@@ -5,7 +5,7 @@
     <div class="container">
         <h1 class="title">Calendario del día</h1>
         <h2 class="subtitle">{{ $center->nombre }}</h2>
-        @if (Auth::user()->type==6)
+        {{-- @if (Auth::user()->type==6) --}}
         <div class="field is-horizontal">
             <div class="field-label is-normal">
                 <label class="label">Cambiar centro</label>
@@ -24,7 +24,7 @@
                 </div>
             </div>
         </div>
-        @endif
+        {{-- @endif --}}
         @if (count($supervisors))
         <cal-date-sel url="{{ route('asignar', ['center_id'=> $center->id_centro]) }}" fecha="{{ $fecha }}"></cal-date-sel>
 

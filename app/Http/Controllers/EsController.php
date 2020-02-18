@@ -51,7 +51,7 @@ class EsController extends Controller
         $es = Es::where('id', $es)->first();
 
         $doc = ProgramPartaker::where('id_tramite', $assign_id)->first();
-        $full_code = "4-EE1-ES";
+        $full_code = "4-EE1-ES_V4";
 
         // $doc = $this->getFormattedDoc($cssp);
 

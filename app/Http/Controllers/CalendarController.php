@@ -79,8 +79,9 @@ class CalendarController extends Controller
 
         $supervisors = DB::table('supervisores as s')
         ->where('estatus', 'Activa')
-        ->where('id_centro', $center_id)
+        // ->where('id_centro', $center_id)
         ->select('id_supervisor', DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"))
+        ->orderBy('s.nombre')
         ->get();
         $supervisors = $this->fixNames($supervisors);
 
