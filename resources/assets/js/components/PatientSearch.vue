@@ -10,7 +10,7 @@
                 @select="selected"
             >
                 <template slot-scope="props">
-                    <p>{{props.option.file_number}} - {{props.option.full_name}}</p>
+                    <p>{{props.option.siglas}} - {{props.option.file_year}} - {{props.option.file_number}} - {{props.option.full_name}}</p>
                 </template>
             </b-autocomplete>
         </b-field>

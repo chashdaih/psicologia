@@ -276,8 +276,10 @@ class UsuarioController extends Controller
         // } else if ($userType == 5) {
             // dd(Auth::user()->supervisor->center->id_centro);
         // }
-        return DB::table('patients as p')->join('fe3fdg as d', 'p.fdg_id', 'd.id')
-            ->select('p.id', 'd.file_number', DB::raw("CONCAT(d.name, ' ', d.last_name, ' ', d.mothers_name) AS full_name"))
+        return DB::table('patients as p')
+            ->join('fe3fdg as d', 'p.fdg_id', 'd.id')
+            ->join('centros as c', 'd.center_id', 'c.id_centro')
+            ->select('p.id', 'c.siglas', 'd.file_year', 'd.file_number', DB::raw("CONCAT(d.name, ' ', d.last_name, ' ', d.mothers_name) AS full_name"))
             ->when($userType == 5, function ($query) {
                 return $query->where('d.center_id', Auth::user()->supervisor->center->id_centro);
             })
