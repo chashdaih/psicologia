@@ -1,8 +1,10 @@
 <template>
     <div @click="showModal" v-bind:class="{gray: taken}">
         <template v-if="appointment" style="background-color:#BEBEBE">
-            <b class="is-size-7">Sup:</b>
+            <b class="is-size-7">Supervisor:</b>
             <p class="is-size-7">{{appointment.full_name}}</p>
+            <b class="is-size-7">Estudiante:</b>
+            <p class="is-size-7">{{appointment.nombre_terapeuta}}</p>
         </template>
     </div>
 </template>

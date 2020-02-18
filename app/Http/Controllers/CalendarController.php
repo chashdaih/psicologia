@@ -71,11 +71,15 @@ class CalendarController extends Controller
         ->where('c.fecha', '=', $fecha)
         ->where('c.id_centro', '=', $center_id)
         ->join('supervisores as s', 'c.id_supervisor', 's.id_supervisor')
+        ->join('participante as p', 'c.id_terapeuta', 'p.num_cuenta')
         ->select('id_cita', 'hora', 'id_terapeuta', 'sala',
-            DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name")
+            DB::raw("CONCAT(s.nombre, ' ', s.ap_paterno, ' ', s.ap_materno) AS full_name"),
+            DB::raw("concat(p.nombre_part, ' ', p.ap_paterno, ' ', p.ap_materno) as nombre_terapeuta")
         )->get();
 
-        $appointments = $this->fixNames($appointments);
+        $appointments = $this->fixNames($appointments, true);
+
+        // dd($appointments);
 
         $supervisors = DB::table('supervisores as s')
         ->where('estatus', 'Activa')
@@ -153,11 +157,14 @@ class CalendarController extends Controller
         }
     }
 
-    protected function fixNames($records)
+    protected function fixNames($records, $has_ter = false)
     {
         if($records) {
             foreach ($records as $record) {
                 $record->full_name = preg_replace('/\s+/', ' ',ucwords(mb_strtolower($record->full_name)));
+                if ($has_ter) {
+                    $record->nombre_terapeuta = preg_replace('/\s+/', ' ',ucwords(mb_strtolower($record->nombre_terapeuta)));
+                }
             }
         }
         return $records;
