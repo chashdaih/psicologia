@@ -14,9 +14,9 @@
                 <div class="field">
                     <div class="control">
                         <div class="select">
-                            <select>
+                            <select onchange="(function(e){ window.location.href = '/asignar/'+e.value+'/{{$fecha}}'; })(this)" >
                             @foreach ($centers as $ctr)
-                                <option @if($ctr->id_centro == $center->id_centro) selected @endif value="{{$ctr->id_centro}}" onclick="window.location.href = '{{route('asignar', ['center_id'=> $ctr->id_centro, 'fecha'=>$fecha])}}';">{{$ctr->nombre}}</option>
+                                <option @if($ctr->id_centro == $center->id_centro) selected @endif value="{{$ctr->id_centro}}" >{{$ctr->nombre}}</option>
                             @endforeach
                             </select>
                         </div>
@@ -43,7 +43,7 @@
                     <th class="is-size-7">{{ $cubicule }}</th>
                     @foreach ($calendarData[$key] as $time => $data)
                     <td style="padding: 0;">
-                        <calendar-space @if($data) v-bind:appointment="{{ json_encode($data) }}" @endif room="{{ $cubicule }}" time={{ $time }}></calendar-space>
+                        <calendar-space @if($data) v-bind:appointment="{{ json_encode($data) }}" @endif room="{{ $cubicule }}" time={{ $time }} :times="{{json_encode($schedules)}}" ></calendar-space>
                     </td>
                     @endforeach
                 </tr>
