@@ -94,8 +94,10 @@ class HeController extends Controller
         $pdf->getDomPDF()->set_option("enable_php", true);
 
         $doc = $this->getFormattedHe($he);
+        $fields = $this->getFields();
+        $full_code = "3-FE8-HE_V4";
 
-        $pdf->loadView('usuario.he.show', compact('doc'));
+        $pdf->loadView('usuario.he.show', compact('doc', 'fields', 'full_code'));
         return $pdf->stream('he.pdf');
 
     }

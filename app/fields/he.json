@@ -1,9 +1,4 @@
 {
-    "file_number": {
-        "title": "No. expediente",
-        "type": "text",
-        "nullable": true
-    },
     "created_at": {
         "title": "Fecha de llenado",
         "type": "date"
@@ -12,5 +7,20 @@
         "title": "Tipo de egreso",
         "type": "select",
         "options": ["Alta/Cierre", "Interrupción del tratamiento por mejoría", "Interrupción del tratamiento sin mejoría", "Alta con referencia", "Primer contacto sin asistencia"]
+    },
+    "descripcion_del_egreso": {
+        "title": "Descripción del egreso",
+        "type": "area"
+    },
+    "observaciones_recomendaciones": {
+        "title": "Observaciones/recomendaciones",
+        "type": "area"
+    },
+    "hita": {
+        "title": "EL ESTUDIANTE LLENA LA SIGUIENTE SECCIÓN",
+        "type": "table",
+        "subtitle": "A continuación se presenta una lista con diferentes habilidades, según su consideración, anote el porcentaje del 0 al 100 con el que la persona atendida manejaba dicha habilidad al iniciar la intervención y el porcentaje del manejo de las habilidades posterior a la intervención.",
+        "headers": ["Habilidad de:", "Al iniciar la intervención", "Al terminar la intervención", "Ponga Si/No aplica"],
+        "questions": ["Comunicación", "Toma de decisiones", "Solución de problemas", "Interacción Social/Recreativa", "Manejo del enojo", "Manejo de la tristeza", "Manjeo de la ansiedad/estrés", "Manejo de los celos", "Búsqueda y mantenimiento de empleo", "Mantenerse en reducción/sin consumo de sustancias", "Prevención de recaídas en el consumo de sustancias", "Para mantener una mejor relación familiar", "Mantener una mejor relación de pareja", "Manjeo de la conducta de los hijos", "Crianza positiva para padres", "Manejo de problemas del desarrollo en los hijos (Problemas para leer o escribir, de comunicación, físicos, etc.)", "Manejo de duelo", "Estilos de vida saludable", "Otro:"]
     }
 }

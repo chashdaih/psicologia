@@ -62,6 +62,58 @@
                     @endif
                     </div>
                 </text-input>
+                @elseif($field['type'] == "table")
+                <h2 class="subtitle">{{$field['title']}}</h2>
+                <p>{{$field['subtitle']}}</p>
+                <br>
+                <table class="table is-fullwidth is-striped is-hoverable">
+                    <thead>
+                        <tr>
+                            @foreach ($field['headers'] as $header)
+                            <th>{{$header}}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($field['questions'] as $i=>$question)
+                        <tr>
+                            <td>{{$question}}</td>
+                            <td>
+                                <div class="field has-addons">
+                                    <div class="control">
+                                        <input type="number" min="0" max="100" class="input" value="{{ old('hi'.($i+1), $process_model['hi'.($i+1)]) }}" placeholder="0-100" name="{{'hi'.($i+1)}}">
+                                    </div>
+                                    <p class="control">
+                                        <a class="button is-static">%</a>
+                                    </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="field has-addons">
+                                    <div class="control">
+                                        <input type="number" min="0" max="100" class="input" value="{{ old('ht'.($i+1), $process_model['ht'.($i+1)]) }}" placeholder="0-100" name="{{'ht'.($i+1)}}">
+                                    </div>
+                                    <p class="control">
+                                        <a class="button is-static">%</a>
+                                    </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="field">
+                                    <span class="select">
+                                        <select name="{{'ha'.($i+1)}}">
+                                            <option value="1" 
+                                            @if(old('ha'.($i+1), $process_model['ha'.($i+1)]) == 1) selected="selected" @endif>Si</option>
+                                            <option value="0" 
+                                            @if(old('ha'.($i+1), $process_model['ha'.($i+1)]) === 0) selected="selected" @endif>No</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
                 @endif
             @endforeach
             <small-file
