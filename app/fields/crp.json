@@ -12,17 +12,17 @@
             {
                 "period": "En las últimas dos semanas",
                 "ten": [
-                    "1. Has tenido tristeza profunda.",
-                    "2. Has tenido desesperanza.",
-                    "3. Has tenido falta de satisfacción por las actividades que antes te eran placenteras.",
-                    "4. Has tenido falta de interes en actividades que ante te eran placenteras.",
-                    "5. Has tenido alterado el sueño (Duermes más o duermes menos de lo habitual)",
-                    "6. Has tenido disminución de tu concentración.",
-                    "7. Has tenido cambios en tu apetito (más hambre, menos hambre).",
-                    "8. Has tenido fatiga",
-                    "9. Has tenido pensamientos de que careces de logros",
-                    "10. Has tenido pensamientos de que todo lo que pasa es culpa tuya",
-                    "11. Has tenido dificultades en mi vida: Social, laboral o/y educativa."
+                    "1. Ha tenido tristeza profunda.",
+                    "2. Ha tenido desesperanza.",
+                    "3. Ha tenido falta de satisfacción por las actividades que antes te eran placenteras.",
+                    "4. Ha tenido falta de interes en actividades que ante te eran placenteras.",
+                    "5. Ha tenido alterado el sueño (Duermes más o duermes menos de lo habitual)",
+                    "6. Ha tenido disminución de tu concentración.",
+                    "7. Ha tenido cambios en tu apetito (más hambre, menos hambre).",
+                    "8. Ha tenido fatiga",
+                    "9. Ha tenido pensamientos de que careces de logros",
+                    "10. Ha tenido pensamientos de que todo lo que pasa es culpa tuya",
+                    "11. Ha tenido dificultades en mi vida: Social, laboral o/y educativa."
                 ]
             }
         ]
@@ -37,11 +37,11 @@
                     "1. Irritación",
                     "2. Mayor actividad",
                     "3. Disminución de la necesidad de sueño",
-                    "4. He sentido: que hablo demasiado rápido",
-                    "5. Que soy impulsivo (por ejemplo: tomo decisiones importantes sin pensar)",
-                    "6. Que he estado muy desinhibido",
-                    "7. Que me distraigo fácilmente",
-                    "8. En la última semana he sentido: que soy demasiado bueno para todo"
+                    "4. Ha sentido: que hablo demasiado rápido",
+                    "5. Es impulsivo (por ejemplo: tomo decisiones importantes sin pensar)",
+                    "6. Ha estado muy desinhibido",
+                    "7. Se distraigo fácilmente",
+                    "8. En la última semana ha sentido: que es demasiado bueno para todo"
                 ]
             }
 
@@ -63,11 +63,11 @@
             {
                 "period":"En los últimos tres meses...",
                 "boolean": [
-                    "1. Has sospechado que las personas planean algo en contra tuya",
-                    "2. Has escuchado voces que los demás no perciben",
-                    "3. Has visto cosas que los demás no perciben",
-                    "4. Has tenido pensamientos persistentes que los demás no comparten contigo",
-                    "5. Te han dicho que has descuidado tu aspecto personal"
+                    "1. Ha sospechado que las personas planean algo en contra tuya",
+                    "2. Ha escuchado voces que los demás no perciben",
+                    "3. Ha visto cosas que los demás no perciben",
+                    "4. Ha tenido pensamientos persistentes que los demás no comparten contigo",
+                    "5. Le han dicho que ha descuidado tu aspecto personal"
                 ]
             }
         ]
@@ -83,13 +83,13 @@
         ],
         "main":[
             {
-                "period":"Has presentado alguna de las siguientes condiciones...",
+                "period":"Ha presentado alguna de las siguientes condiciones...",
                 "boolean":[
                     "1. Crisis convulsivas",
                     "2. Los movimientos convulsivos duraron más de 1 minuto",
-                    "3. Durante la convulsión: he perdido el conocimiento",
-                    "4. Durante la convulsión: he tenido confusión",
-                    "5. Durante la convulsión: he tenido rigidez"
+                    "3. Durante la convulsión: ha perdido el conocimiento",
+                    "4. Durante la convulsión: ha tenido confusión",
+                    "5. Durante la convulsión: ha tenido rigidez"
                 ]
             }
         ]
@@ -100,19 +100,19 @@
         "medical": [
             "a. Presenta accidente cerebro vascular",
             "b. Presenta antecedentes de infecciones de transmisión sexual (incluida infección por VIH/SIDA)",
-            "c. Tienes factores de riesgo de enfermedades cardiovasculares: hipertensión",
-            "d. Tienes factores de riesgo de enfermedades cardiovasculares: colesterol alto",
-            "e. Tienes factores de riesgo de enfermedades cardiovasculares: diabetes",
-            "f. Tienes factores de riesgo de enfermedades cardiovasculares: obesidad"
+            "c. Tiene factores de riesgo de enfermedades cardiovasculares: hipertensión",
+            "d. Tiene factores de riesgo de enfermedades cardiovasculares: colesterol alto",
+            "e. Tiene factores de riesgo de enfermedades cardiovasculares: diabetes",
+            "f. Tiene factores de riesgo de enfermedades cardiovasculares: obesidad"
         ],
         "main": 
         [
             {
                 "period": "En los últimos seis meses (sección únicamente para edades de 55 años en adelante, responder las preguntas de la 1 a la 3)...",
                 "ten": [
-                    "1. Actualmente he presentado: problemas de memoria (olvidos)",
-                    "2. Actualmente he presentado: problemas de orientación (perder la conciencia d ela hora, el día de la semana, el mes, el año, el lugar)",
-                    "3. Has presentado: dificultad para desempeñar roles o actividades (por ejemplo ir de compras, cocinar, pagar facturas) dado la pérdida de memoria"
+                    "1. Actualmente ha presentado: problemas de memoria (olvidos)",
+                    "2. Actualmente ha presentado: problemas de orientación (perder la conciencia d ela hora, el día de la semana, el mes, el año, el lugar)",
+                    "3. Ha presentado: dificultad para desempeñar roles o actividades (por ejemplo ir de compras, cocinar, pagar facturas) dado la pérdida de memoria"
                 ],
                 "boolean": [
                     "4. Aparición de los síntomas antes de los 60 años"
@@ -256,8 +256,8 @@
                     "4. Planes de quitarme la vida"
                 ],
                 "boolean":[
-                    "5. Me he causado algún daño físico con la intención de lastimarme",
-                    "6. He intentado quitarme la vida"
+                    "5. Se ha causado algún daño físico con la intención de lastimarme",
+                    "6. Ha intentado quitarse la vida"
                 ]
             }
         ]
@@ -269,13 +269,13 @@
             {
                 "period":"En las últimas dos semanas...",
                 "ten": [
-                    "1. Te has sentido preocupado constantemente de que algo malo pueda pasar (asalto, enfermedad, tener un accidente, ‘hacer el ridículo’ frente a desconocidos, etc.)",
-                    "2. Te has sentido nervioso constantemente",
-                    "3. Has sentido tensión muscular",
-                    "4. Has sentido que tu corazón late más rápido de lo habitual",
-                    "5. Te has sentido tan nervioso que te ha impedido realizar tus actividades",
-                    "6. Te has alejado de situaciones que te hacen sentir nervioso",
-                    "7. Has sentido miedo sin razón aparente"
+                    "1. Se ha sentido preocupado constantemente de que algo malo pueda pasar (asalto, enfermedad, tener un accidente, ‘hacer el ridículo’ frente a desconocidos, etc.)",
+                    "2. Se ha sentido nervioso constantemente",
+                    "3. Ha sentido tensión muscular",
+                    "4. Ha sentido que tu corazón late más rápido de lo habitual",
+                    "5. Se ha sentido tan nervioso que te ha impedido realizar tus actividades",
+                    "6. Se ha alejado de situaciones que te hacen sentir nervioso",
+                    "7. Ha sentido miedo sin razón aparente"
                 ]
             }
         ]
@@ -287,10 +287,10 @@
             {
                 "period":"En el último año...",
                 "ten":[
-                    "1. Mantuviste relaciones sexuales con más de una persona",
-                    "2. Has tenido relaciones sexuales sin usar condón",
-                    "3. Enviaste y recibiste imágenes o mensajes con contenido sexul a través de dispositivos tecnológicos",
-                    "4. Tienes dificultades en tu vida sexual (por ejemplo, inhibición en el deseo sexual, dificultad para mantener la erección, eyaculación precoz, dificultad en la lubricación, dificultad para tener orgasmos, etc.)"
+                    "1. Mantuvo relaciones sexuales con más de una persona",
+                    "2. Ha tenido relaciones sexuales sin usar condón",
+                    "3. Envió y/o recibió imágenes o mensajes con contenido sexul a través de dispositivos tecnológicos",
+                    "4. Tiene dificultades en tu vida sexual (por ejemplo, inhibición en el deseo sexual, dificultad para mantener la erección, eyaculación precoz, dificultad en la lubricación, dificultad para tener orgasmos, etc.)"
                 ]
             },
             {
@@ -298,7 +298,7 @@
                 "boolean":[
                     "5. Infecciones de transimisión sexual (VIH/SIDA, VPH, clamidiasis, gonorrea, sífilis, tricomoniasis, etc.)",
                     "6. Embarazo no deseado",
-                    "7. Dudas sobre tu orientación sexual"
+                    "7. Malestar sobre tu orientación sexual"
                 ]
             }
         ]
@@ -310,12 +310,12 @@
             {
                 "period":"En el último año...",
                 "ten":[
-                    "1. Alguien te lastimó físicamente de forma intencional (por ejemplo, empujar, golpear, pellizcar, etc.)",
-                    "2. Alguien te lastimó emocionalmente de forma intencional (por ejemplo, humillarte, insultarte, amenazarte, ignorarte, prohibirte, celarte)",
+                    "1. Alguien lo lastimó físicamente de forma intencional (por ejemplo, empujar, golpear, pellizcar, etc.)",
+                    "2. Alguien lo lastimó emocionalmente de forma intencional (por ejemplo, humillarte, insultarte, amenazarte, ignorarte, prohibirte, celarte)",
                     "3. Alguien sobrepasó los límites en tu sexualidad (por ejemplo, acoso sexual, abuso sexual, violación)",
-                    "4. Lastimaste físicamente a otra persona con la intención de hacerlo (por ejemplo, empujar, golpear, pellizcar, etc.)",
-                    "5. Lastimaste emocionalmente a otra persona con la intención de hacerlo (por ejemplo, humillaste, insultaste, amenazaste, ignoraste, prohibiste, celaste)",
-                    "6. Sobrepasaste los límites en la sexualidad de otra persona (por ejemplo, acoso sexual, abuso sexual, violación)"
+                    "4. Lastimó físicamente a otra persona con la intención de hacerlo (por ejemplo, empujar, golpear, pellizcar, etc.)",
+                    "5. Lastimó emocionalmente a otra persona con la intención de hacerlo (por ejemplo, humillaste, insultaste, amenazaste, ignoraste, prohibiste, celaste)",
+                    "6. Sobrepasó los límites en la sexualidad de otra persona (por ejemplo, acoso sexual, abuso sexual, violación)"
                 ]
             }
         ]
@@ -329,49 +329,49 @@
                 "code":"sus1"
             },
             {
-                "subtitle":"2. En los últimos tres meses, ¿con qué frecuencia has consumido las sustancias que mencionó (primera droga, segunda droga, etc.)?",
+                "subtitle":"2. En los últimos tres meses, ¿con qué frecuencia ha consumido las sustancias que mencionó (primera droga, segunda droga, etc.)?",
                 "scale":[0,2,3,4,6],
                 "scale_text":"0 = nunca, 2 = Una o dos veces por semana, 3 = Mensualmente, 4 = Semanalmente, 6 = Diario o casi diario",
                 "code":"sus2"
             },
             {
-                "subtitle":"3. En los últimos tres meses, ¿con qué frecuencia has tenido un fuerte deseo o ansias de consumir (primera droga, segunda droga, etc.)?",
+                "subtitle":"3. En los últimos tres meses, ¿con qué frecuencia ha tenido un fuerte deseo o ansias de consumir (primera droga, segunda droga, etc.)?",
                 "scale":[0,3,4,5,6],
                 "scale_text":"0 = nunca, 3 = Una o dos veces por semana, 4 = Mensualmente, 5 = Semanalmente, 6 = Diario o casi diario",
                 "code":"sus3"
             },
             {
-                "subtitle":"4. En los últimos tres meses, ¿con qué frecuencia el consumo de (primera droga, segunda droga, etc.) te ha causado problemas de salud, sociales, legales o económicos?",
+                "subtitle":"4. En los últimos tres meses, ¿con qué frecuencia el consumo de (primera droga, segunda droga, etc.) le ha causado problemas de salud, sociales, legales o económicos?",
                 "scale":[0,4,5,6,7],
                 "scale_text":"0 = nunca, 4 = Una o dos veces por semana, 5 = Mensualmente, 6 = Semanalmente, 7 = Diario o casi diario",
                 "code":"sus4"
             },
             {
-                "subtitle":"5. En los últimos tres meses, ¿con qué frecuencia dejó de hacer lo que habitualmente se esperaba de ti por el consumo de (primera droga, segunda droga, etc.)?",
+                "subtitle":"5. En los últimos tres meses, ¿con qué frecuencia dejó de hacer lo que habitualmente se esperaba de usted por el consumo de (primera droga, segunda droga, etc.)?",
                 "scale":[0,5,6,7,8],
                 "scale_text":"0 = nunca, 5 = Una o dos veces por semana, 6 = Mensualmente, 7 = Semanalmente, 8 = Diario o casi diario",
                 "code":"sus5"
             },
             {
-                "subtitle":"6. ¿Un amigo, un familiar o alguien más alguna vez ha mostrado preocupación por tus hábitos de consumo de (primera droga, segunda droga, etc.)?",
+                "subtitle":"6. ¿Un amigo, un familiar o alguien más alguna vez ha mostrado preocupación por sus hábitos de consumo de (primera droga, segunda droga, etc.)?",
                 "scale":[0,3,6],
                 "scale_text":"0 = nunca, 3 = Sí, pero no en los últimos 3 meses, 6 = Sí, en los últimos 3 meses",
                 "code":"sus6"
             },
             {
-                "subtitle":"7. ¿Has intentado alguna vez reducir o eliminar el consumo de (primera droga, segunda droga, etc.) y no lo has logrado?",
+                "subtitle":"7. ¿Ha intentado alguna vez reducir o eliminar el consumo de (primera droga, segunda droga, etc.) y no lo ha logrado?",
                 "scale":[0,3, 6],
                 "scale_text":"0 = nunca, 3 = Sí, pero no en los últimos 3 meses, 6 = Sí, en los últimos 3 meses",
                 "code":"sus7"
             },
             {
-                "subtitle":"8. ¿Alguna vez has consumido alguna droga por vía inyectada?",
+                "subtitle":"8. ¿Alguna vez ha consumido alguna droga por vía inyectada?",
                 "scale":"other",
                 "options": ["No", "Si"],
                 "code": "sus80"
             },
             {
-                "subtitle":"9. Frecuencia con la que te inyectas:",
+                "subtitle":"9. Frecuencia con la que se inyecta:",
                 "scale":"other",
                 "options":["Nunca", "4 días al mes", "más de 4 días al mes"],
                 "code":"sus81"

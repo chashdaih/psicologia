@@ -58,7 +58,7 @@ class Fe3cdrController extends Controller
         $json = file_get_contents($this->dirname_r(__DIR__, 2).'/fields/'.'crp.json');
         $sections = json_decode($json, true);
         $sections = $this->removeUneededFields($patient_id, $sections);
-        $full_code="3-FE3-CDR_V5";
+        $full_code="3-FE3-CDR_V6";
 
         $results = $this->calculateResults($cdr);
 
