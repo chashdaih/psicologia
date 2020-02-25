@@ -21,7 +21,7 @@ Route::get('programneeded/{centerId}', 'UsuarioController@programNeeded');
 
 Route::resource('/usuario', 'UsuarioController');
 // Route::get('/usuario/{patientId}/patientExcel', 'UsuarioController@patientExcel')->name('patientExcel');
-Route::get('/usuario/search/{searchTerm}', 'UsuarioController@search');
+Route::get('/usuario/search/{centerId}/{year}/{searchTerm}', 'UsuarioController@search');
 Route::get('excel/programs', 'UsuarioController@programsExcel')->name('programs_excel');
 Route::group(['prefix' => 'usuario/{patient_id}', 'middleware' => 'auth'], function() {
     Route::resource('fdg', 'FE3FDGController');

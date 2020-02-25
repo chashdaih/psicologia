@@ -18,7 +18,9 @@
             @endif
         </div>
         <patient-search
+            :years="{{ json_encode($years) }}"
             url="{{route('usuario.index')}}"
+            :centers="{{ json_encode($centers) }}"
         ></patient-search>
         <patients-list
             :supervisors="{{ json_encode($supervisors) }}"

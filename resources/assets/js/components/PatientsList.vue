@@ -60,7 +60,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="(patient, idx) in assignedPatients" :key="idx">
-                        <td>{{patient.file_number}}</td>
+                        <td>{{patient.siglas + '-' + patient.file_year + '-' +patient.file_number}}</td>
                         <td>{{patient.name + " " + patient.last_name + " " + patient.mothers_name}}</td>
                         <td>
                             <a :href="baseUrl + '/usuario/' + patient.id">

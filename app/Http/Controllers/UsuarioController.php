@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Auth;
 use Excel;
 use App\Building;
+use App\Center;
 use App\FE3FDG;
 use App\Patient;
 use App\PatientAssign;
 use App\Program;
 use App\ProgramPartaker;
 use App\Supervisor;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -37,28 +38,41 @@ class UsuarioController extends Controller
             
             $type = Auth::user()->type;
             $programs = [];
-            if ($type > 4) {
+            if ($type > 4) { //jefe de centro o administrador
                 $supervisors = DB::table('supervisores')->where('estatus', '=', 'Activa')
                 ->orderBy('nombre', 'asc')->select('id_supervisor', 'id_centro',
                 DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
                 $data['supervisors'] = $this->fixNames($supervisors)->toArray();
-            } else if ($type == 3) {
+                if ($type == 5) {
+                    $data['centers'] = Center::where('id_centro', Auth::user()->supervisor->center->id_centro)->get();
+                } else {
+                    $data['centers'] = Center::whereIn('id_centro', [1,2,3,4,5,6,8,9,11])->get();
+                }
+            } else if ($type == 3) { // estudiante
                 $date = date('Y-m-d');
                 $programs = ProgramPartaker::where('asigna_practica.id_participante', Auth::user()->partaker->num_cuenta)
                 ->join('practicas', 'asigna_practica.id_practica', 'practicas.id_practica')
                 ->select('practicas.id_practica', 'programa')
-                ->get()->toArray();
+                ->get();
                 // dd($programs);
-                $data['programs'] = $programs;
                 $data['supervisors'] = [];
-            } else {
+                
+                 $data['centers'] = Center::whereIn('id_centro', [1,2,3,4,5,6,8,9,11])->get();
+
+            } else { // 2 -> supervisor
                 $supervisors = DB::table('supervisores')->where('id_supervisor', Auth::user()->supervisor->id_supervisor)
                 ->select('id_supervisor', 'id_centro',
                 DB::raw("CONCAT(nombre, ' ', ap_paterno, ' ', ap_materno) AS full_name"))->get();
                 $data['supervisors'] = $supervisors;
+
+                $programs = Program::where('id_supervisor', Auth::user()->supervisor->id_supervisor)->get();
+                
+                 $data['centers'] = Center::whereIn('id_centro', [1,2,3,4,5,6,8,9,11])->get();
             }
 
             $data['programs'] = $programs;
+
+            $data['years'] = $this->getYears();
 
             // dd($data['supervisors']);
 
@@ -173,6 +187,17 @@ class UsuarioController extends Controller
         return view('usuario.index', $data);
     }
 
+    private function getYears()
+    {
+        $years = [];
+        $startingYear = 19;
+        $currentYear = Carbon::now()->format('y');
+        for ($y = $currentYear; $y>= $startingYear; $y--) {
+            array_push($years, $y);
+        }
+        return $years;
+    }
+
     // public function create()
     // {
     //     $centers = Building::all();
@@ -265,7 +290,7 @@ class UsuarioController extends Controller
         return response (200);
     }
 
-    public function search($searchTerm)
+    public function search($centerId, $year, $searchTerm)
     {
         $userType = Auth::user()->type;
         // if ($userType == 3) {
@@ -280,21 +305,23 @@ class UsuarioController extends Controller
             ->join('fe3fdg as d', 'p.fdg_id', 'd.id')
             ->join('centros as c', 'd.center_id', 'c.id_centro')
             ->select('p.id', 'c.siglas', 'd.file_year', 'd.file_number', DB::raw("CONCAT(d.name, ' ', d.last_name, ' ', d.mothers_name) AS full_name"))
-            ->when($userType == 5, function ($query) {
-                return $query->where('d.center_id', Auth::user()->supervisor->center->id_centro);
-            })
-            ->when($userType == 3, function ($query) {
-                dd(Auth::user()->partaker->programs->toArray());
-                // TODO where los no asignados sean del centro donde tiene prácticas o los asignados a programas donde está inscrito
-            })
-            ->when($userType == 2, function ($query) {
-                // TODO where los no asignados donde tenga programas o los asignados a sus programas
-            })
+            // ->when($userType == 5, function ($query) {
+            //     return $query->where('d.center_id', Auth::user()->supervisor->center->id_centro);
+            // })
+            // ->when($userType == 3, function ($query) {
+            //     dd(Auth::user()->partaker->programs->toArray());
+            //     // TODO where los no asignados sean del centro donde tiene prácticas o los asignados a programas donde está inscrito
+            // })
+            // ->when($userType == 2, function ($query) {
+            //     // TODO where los no asignados donde tenga programas o los asignados a sus programas
+            // })
+            ->where('d.center_id', $centerId)
+            ->where('d.file_year', $year)
             ->where('d.file_number', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('d.name', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('d.last_name', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('d.mothers_name', 'LIKE', "%{$searchTerm}%")
-            ->orderBy('d.last_name')
+            // ->orWhere('d.name', 'LIKE', "%{$searchTerm}%")
+            // ->orWhere('d.last_name', 'LIKE', "%{$searchTerm}%")
+            // ->orWhere('d.mothers_name', 'LIKE', "%{$searchTerm}%")
+            // ->orderBy('d.last_name')
             ->limit(20)
             ->get();
 
@@ -410,7 +437,9 @@ class UsuarioController extends Controller
             return $q->where('program_id', $programId);
         })
         ->leftJoin('fe3fdg', 'fdg_id', 'fe3fdg.id')
-        ->select('patients.id', 'file_number','name', 'last_name', 'mothers_name')
+        ->join('centros', 'center_id', 'id_centro')
+        ->select('patients.id', 'centros.siglas', 'file_year', 'file_number','name', 'last_name', 'mothers_name')
+        ->orderBy('file_number', 'asc')
         ->get()->toArray();
         
     }
