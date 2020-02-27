@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHesTable extends Migration
+class CreateProgramCentersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateHesTable extends Migration
      */
     public function up()
     {
-        Schema::create('hes', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('program_centers', function (Blueprint $table) {
+            $table->increments('id');
             $table->timestamps();
-            $table->unsignedInteger('assign_id');
-            $table->unsignedInteger('user_id');
-            $table->string('file_number')->nullable();
-            $table->unsignedTinyInteger('egress_type');
+            $table->unsignedInteger('program_id');
+            $table->unsignedTinyInteger('center_id');
         });
     }
 
@@ -30,6 +28,6 @@ class CreateHesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hes');
+        Schema::dropIfExists('program_centers');
     }
 }

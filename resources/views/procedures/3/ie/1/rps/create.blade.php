@@ -38,7 +38,8 @@
                         'errors'=>$errors,
                         'type'=> 'text',
                         'prev' => isset($program) ? $program->programa : null,
-                        'maxlength' => 250
+                        'maxlength' => 250,
+                        'required' => true
                         ])@endcomponent
                     {{-- @if (Auth::user()->type == 6 || Auth::user()->supervisor->id_centro == 10) --}}
                     @component('components.select', [
@@ -49,6 +50,50 @@
                         'prev' => isset($program) ? $program->id_centro : null,
                         'id' => old('id_centro', Auth::user()->supervisor->id_centro)
                         ])@endcomponent
+
+                    <add-row inline-template :sups=0 @isset($extraCenters) :old={{ count($extraCenters) }} @endisset >
+                    <div>
+                        
+                        @if(isset($extraCenters))
+                        @foreach ($extraCenters as $key => $extraCenter)
+                        <template  v-if="visible[{{ $key }}]">
+
+                        <input type="hidden" name="extracenterid[]" value={{$extraCenter->id}} >
+
+                            @component('components.select', [
+                                'title'=>'Centro adicional',
+                                'field'=>'extracenter[]',
+                                'errors'=>$errors,
+                                'options'=> $buildings,
+                                'prev' => $extraCenter->center_id
+                                ])@endcomponent
+
+                            <button class="button is-danger is-outlined is-small" type="button" :id={{ $key }}
+                            @click="deleteOld('{{ route('del_row', ['center', $extraCenter->id]) }}')"
+                            >Borrar</button>
+                            <br><br>
+                        </template>
+                        @endforeach
+                        @endif
+
+                        <div v-for="row in rows" :key="row">
+                            @component('components.select', [
+                                'title'=>'Centro adicional',
+                                'field'=>'extracenter[]',
+                                'options'=> $buildings,
+                                ])@endcomponent
+                            <button v-if="row==rows && rows>sups" 
+                                class="button is-danger is-outlined is-small"
+                                type="button" @click="deleteRow(row)">
+                                Borrar centro adicional
+                            </button>
+                            <br><br>
+                        </div>
+
+                        <button class="button is-info is-small" type="button" v-on:click="addRow">Añadir otro centro</button>
+                        <br><br>
+                    </div>
+                    </add-row>
                     {{-- @else
                     <input name="id_centro" type="hidden" value={{  Auth::user()->supervisor->id_centro }}>
                     @endif --}}

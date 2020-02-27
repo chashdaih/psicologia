@@ -22,6 +22,7 @@ use App\Rps as Doc;
 use App\Supervisor;
 use App\SupInSitu;
 use App\Http\Requests\StoreProgramData;
+use App\ProgramCenter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -222,6 +223,14 @@ class RpsController extends Controller
             }
         }
 
+        // extra centers
+        foreach ($request['extracenter'] as $key => $value) {
+            if ($value != null) {
+                $center_id = $value;
+                ProgramCenter::create(compact('program_id', 'center_id'));
+            }
+        }
+
         // Auth::user()->notify(new ProgramRegistered($program_id));
 
         return redirect()->route('home')->with('success', 'El programa se registró exitosamente');//route($this->doc_code.'.index');
@@ -262,6 +271,7 @@ class RpsController extends Controller
             $cloneCarSer->program_id = $cloneProgram->id_practica;
             $cloneCarSer->save();
 
+            // TODO make this 4 foreachs one function
             $sups = SupInSitu::where('program_id', $id)->get();
             foreach ($sups as $sup) {
                 $cloneSup = $sup->replicate();
@@ -281,6 +291,13 @@ class RpsController extends Controller
                 $cloneSup = $sup->replicate();
                 $cloneSup->program_id = $cloneProgram->id_practica;
                 $cloneSup->save();
+            }
+
+            $extraCenters = ProgramCenter::where('program_id', $id)->get();
+            foreach ($extraCenters as $extraCenter) {
+                $cloneExtraCenter = $extraCenter->replicate();
+                $cloneExtraCenter->program_id = $cloneProgram->id_practica;
+                $cloneExtraCenter->save();
             }
 
             return response()->json([
@@ -332,6 +349,8 @@ class RpsController extends Controller
         $crits = CriteriosAcr::where('program_id', $id)->get();
         $this->params['crits'] = $crits;
 
+        $this->params['extraCenters'] = ProgramCenter::where('program_id', $id)->get();
+
         $this->params['user_id'] = $this->user_id;
 
         return view($this->base_url.'.create', $this->params);
@@ -340,6 +359,7 @@ class RpsController extends Controller
 
     public function update(StoreProgramData $request, $id)
     {
+        // dd($request);
         $program =  Program::where('id_practica', $id)->first();
         $old_cupo = $program->cupo;
         $old_actual = $program->cupo_actual;
@@ -477,6 +497,21 @@ class RpsController extends Controller
             }
         }
 
+        // extra centers
+        if (isset($request['extracenter'])) {
+            foreach ($request['extracenter'] as $key => $center_id) {
+                if ($center_id != null) {
+                    if (isset($request['extracenterid']) && count($request['extracenterid']) > $key) {
+                        $oldId = $request['extracenterid'][$key];
+                        ProgramCenter::where('id', $oldId)->update(compact('center_id'));
+                    } else {
+                        $program_id = $id;
+                        ProgramCenter::create(compact('program_id', 'center_id'));
+                    }
+                }
+            }
+        }
+
         return redirect()->route('home')->with('success', 'El programa se actualizó exitosamente');//route($this->doc_code.'.index');
     }
     
@@ -484,11 +519,13 @@ class RpsController extends Controller
     public function destroy($id) // api
     {
         Program::where('id_practica', $id)->delete();
+        // TODO todos los siguientes deberían estar con foreing keys, delete cascade
         ProgramData::where('id_practica', $id)->delete();
         CaracteristicasServicio::where('program_id', $id)->delete();
         ProgramaSemana::where('program_id', $id)->delete();
         CriteriosAcr::where('program_id', $id)->delete();
         SupInSitu::where('program_id', $id)->delete();
+        ProgramCenter::where('program_id', $id)->delete();
         // registros de estudiantes inscritos al programa
         EvaluateStudent::where('program_id', $id)->delete();
         $tramites = ProgramPartaker::where('id_practica', $id)->get();
@@ -573,6 +610,8 @@ class RpsController extends Controller
 
         $supsInSitu = SupInSitu::where('program_id', $id)->get();
         $this->params['supsInSitu'] = $supsInSitu;
+
+        $this->params['extraCenters'] = ProgramCenter::where('program_id', $id)->get();
     }
     
     public function filter($stage, $sup, $per) // webservice
@@ -633,7 +672,7 @@ class RpsController extends Controller
                     $inscritos = count($pp);
                     $sua = 0;
                     foreach ($pp as $p) {
-                        if($p->partaker->sistema == 'SUA') {
+                        if($p->partaker && $p->partaker->sistema == 'SUA') {
                             $sua++;
                         }
                     }
@@ -690,6 +729,9 @@ class RpsController extends Controller
             case "crit":
                 CriteriosAcr::where('id', $id)->delete();
                 break;
+            case "center":
+                ProgramCenter::where('id', $id)->delete();
+            break;
         }
         
         return 200;

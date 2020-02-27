@@ -102,6 +102,12 @@
                 <td class="left"><p class="p-left">CENTRO AL CUAL PERTENECE EL PROGRAMA</p></td>
                 <td class="right"><p>{{ $doc->center->full_name }}</p></td>
             </tr>
+            @foreach ($extraCenters as $extraCenter)
+            <tr>
+                <td class="left"><p class="p-left">CENTRO ADICIONAL</p></td>
+                <td class="right"><p>{{ $extraCenter->center->nombre }}</p></td>
+            </tr>
+            @endforeach
             <tr>
                 <td class="left"><p class="p-left">DIRECCIÓN DEL ESCENARIO</p></td>
                 <td class="right"><p>{{ $doc->center->direccion }}</p></td>
