@@ -2,12 +2,12 @@
 @section('content')
 <section class="section">
     <div class="container">
-        @if ($supervisor->id_supervisor)
+        @if (isset($supervisor))
         <div class="has-text-centered">
             <a href="{{route('supervisor.show', $supervisor->id_supervisor)}}" class="button is-info">Ver programas del supervisor</a>
         </div>
-        @endif
         <h1 class="title">Editar supervisor</h1>
+        @endif
         <div class="columns">
             <div class="column">
                 @if(session('success'))
