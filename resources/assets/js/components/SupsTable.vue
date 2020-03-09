@@ -66,6 +66,12 @@
           </a>
         </b-table-column>
 
+        <b-table-column label="Historial de programas" centered>
+          <a :href='url + "/supervisor/" + props.row.id_supervisor'>
+            <fai icon="history" size="2x" />
+          </a>
+        </b-table-column>
+
         <b-table-column label="Eliminar" centered>
           <form :action='url + "/supervisor/" + props.row.id_supervisor' method="POST">
             <input type="hidden" name="_method" value="DELETE">

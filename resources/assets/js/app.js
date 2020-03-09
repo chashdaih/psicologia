@@ -45,8 +45,8 @@ import To100Input from './components/To100Input';
 import uploadCi from './components/uploadCi';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt, faFileExcel, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons';
-library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt, faFileExcel, faAngleUp, faAngleDown);
+import { faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt, faFileExcel, faAngleUp, faAngleDown, faHistory } from '@fortawesome/free-solid-svg-icons';
+library.add(faFileCode, faFilePdf, faCheck, faTimes, faUpload, faClone, faFileUpload, faTrash, faAngleRight, faAngleLeft, faCalendar, faUserFriends, faChalkboardTeacher, faEdit, faArrowCircleRight, faBan, faPlusCircle, faDownload, faSignOutAlt, faFileExcel, faAngleUp, faAngleDown, faHistory);
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export const eventBus = new Vue();

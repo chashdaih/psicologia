@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use auth;
 use App\Building;
+use App\Program;
 use App\Supervisor;
 use App\User;
 use Illuminate\Http\Request;
@@ -46,6 +47,13 @@ class SupervisorController extends Controller
         $supervisors = $this->fixNames($supervisors);
 
         return view('supervisor.index', compact('supervisors', 'stages'));
+    }
+
+    public function show(Supervisor $supervisor)
+    {
+        $migajas = [route('home') => 'Inicio', route('supervisor.index') => 'Supervisores', '#' => $supervisor->fullname];
+        $programs = Program::where('id_supervisor', $supervisor->id_supervisor)->get()->sortByDesc('semestre_activo');
+        return view('supervisor.show', compact('migajas', 'programs'));
     }
 
     // public function create() // se crean en register
@@ -107,11 +115,12 @@ class SupervisorController extends Controller
 
     public function edit(Supervisor $supervisor)
     {
+        $migajas = [route('home') => 'Inicio', route('supervisor.index') => 'Supervisores', '#' => $supervisor->fullname];
         $buildings = Building::where('id_centro', '<', 12)->get();
 
         $sup_types = [2=>'Supervisor', 5=>'Jefe de centro', 6=>'Coordinación'];
 
-        return view('auth.register', compact('buildings', 'supervisor', 'sup_types'));
+        return view('auth.register', compact('buildings', 'supervisor', 'sup_types', 'migajas'));
     }
 
     public function update(Request $request, Supervisor $supervisor)

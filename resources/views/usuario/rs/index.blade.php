@@ -45,7 +45,7 @@
                             </a>
                         </td>
                         <td class="has-text-centered" >
-                            <a href="{{ route('brevee', $record->id) }}" class="button is-success">
+                            <a href="{{ route('rse', $record->id) }}" class="button is-success">
                                 <fai icon="file-excel" size="1x" />
                             </a>
                         </td>

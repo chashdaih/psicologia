@@ -59,8 +59,7 @@
                     <article class="message is-danger">
                         <div class="message-header">Atención</div>
                         <div class="message-body">
-                            <p>El número de expediente sigue el formato 00-0000</p>
-                            <p>Por favor, introduce los 4 dígitos del expediente.</p>
+                            <p>El número de expediente solo lleva números</p>
                         </div>
                     </article>
                     <label class="label">No. expediente</label>

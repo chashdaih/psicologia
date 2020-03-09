@@ -2,6 +2,12 @@
 @section('content')
 <section class="section">
     <div class="container">
+        @if ($supervisor->id_supervisor)
+        <div class="has-text-centered">
+            <a href="{{route('supervisor.show', $supervisor->id_supervisor)}}" class="button is-info">Ver programas del supervisor</a>
+        </div>
+        @endif
+        <h1 class="title">Editar supervisor</h1>
         <div class="columns">
             <div class="column">
                 @if(session('success'))
@@ -25,8 +31,8 @@
                             @if (isset($supervisor))
                                 @if ($supervisor->id_supervisor == Auth::user()->supervisor->id_supervisor)
                                     Editar mis datos 
-                                @else
-                                    Editar los datos de {{ $supervisor->full_name }}
+                                {{-- @else
+                                    Editar los datos de {{ $supervisor->full_name }} --}}
                                 @endif
                             @else
                             Registrar nuevo supervisor
