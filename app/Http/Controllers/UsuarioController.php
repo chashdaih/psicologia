@@ -322,6 +322,7 @@ class UsuarioController extends Controller
             // ->orWhere('d.last_name', 'LIKE', "%{$searchTerm}%")
             // ->orWhere('d.mothers_name', 'LIKE', "%{$searchTerm}%")
             // ->orderBy('d.last_name')
+            ->orderBy('d.file_number')
             ->limit(20)
             ->get();
 
