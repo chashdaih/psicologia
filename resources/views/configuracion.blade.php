@@ -19,6 +19,8 @@
                     <input class="input" name="semestre_activo" type="text" value={{config('globales.semestre_activo')}}>
                 </div>
             </div>
+            <date-component label="Inicio de altas y bajas" name="altas_inicio" old={{config('globales.altas_inicio')}}></date-component>
+            <date-component label="Fin de altas y bajas" name="altas_fin" old={{config('globales.altas_fin')}}></date-component>
             <button class="button is-success">Actualizar</button>
         </form>
     </div>

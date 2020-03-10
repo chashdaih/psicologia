@@ -16,6 +16,8 @@ class ConfiguracionController extends Controller
         $data = [
             'semestres' => json_decode($request->semestres),
             'semestre_activo' => $request->semestre_activo,
+            'altas_inicio' => $request->altas_inicio,
+            'altas_fin' => $request->altas_fin,
         ];
         $this->writeConfig('globales', $data);
         return redirect()->route('configuracion.index')->with('success', 'La configuración se actualizó.');
