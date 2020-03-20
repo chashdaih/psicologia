@@ -85,7 +85,7 @@
     <p style="font-size:12pt;">CARTA COMPROMISO DEL ESTUDIANTE DE PREGRADO</p>
     @endcomponent
     <div style="text-align: center;">
-        <b>Programa <i>Extra</i> Curricular</b>
+        <b>Programa @if($program->tipo == "EXTRACURRICULAR")<i>Extra</i>@endif Curricular</b>
     </div>
     <div style="line-height: 1.5">
         <br>
